@@ -6,5 +6,5 @@
 \contentsline {section}{\numberline {2}Architectural patterns or styles}{1}
 \contentsline {section}{\numberline {3}Architectural tactics or strategies}{1}
 \contentsline {section}{\numberline {4}Use of reference architectures and\\ frameworks}{1}
-\contentsline {section}{\numberline {5}Access and integration channels}{1}
-\contentsline {section}{\numberline {6}Technologies}{1}
+\contentsline {section}{\numberline {5}Access and integration channels}{2}
+\contentsline {section}{\numberline {6}Technologies}{2}
