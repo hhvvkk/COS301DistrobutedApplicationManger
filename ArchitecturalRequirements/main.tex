@@ -8,7 +8,7 @@
   \end{center}
   \textbf{\\}
 Vision and Scope\\
-}  %%% <<< Ek sien wat jy bedoel jaco... xD
+}
 \author{101 Solutions}
 \begin{document}
 \maketitle
@@ -43,6 +43,12 @@ Date & Version & Description\\
 \end{itemize}
 \subsection{Quality requirements}
 \subsection{Integration and access channel requirements}
+Our system must interact with Subversion (SVN), which is where the clients store the various builds of their applications. We will also be connecting to a MySql database where the information concerning confiugurations on slave pc's will be stored.
+\begin{itemize}
+\item We can use the SVN client library to connect to Subversion.
+\item Connector/C++ 1.1.3 is available to connect to MySql for both Windows and Linux.
+\end{itemize}
+The system will be accessible to users via a Graphical User Interface as specified by the client.
 \subsection{Architectural constraints}
 Overall constraints include the use of QT 4.8.4 with C++ throughout the project. The use of other technologies are allowed if need be such as 7zip for zipping of files and unzipping of files, however it would be advisable to use a QT API such as the file handling API to do so. Furthermore the project must be deployable on windows and linux and be capable of working on each of them.
 \vspace{6pt}\newline
@@ -84,6 +90,10 @@ QT 4.8.4 contains file API's such as QFile and QFileSystemWatcher and QDirIterat
 \vspace{6pt}\newline
 QT also contains an extensive API for networking that we can make use of when implementing the project. This will allow the slave and master computers to communicate and transfer files from one computer to the other. The applications can be run on multiple slaves by making use of QT networking capabilities. Examples of those networking API's are QUdpSocket and QTcpSocket that can be used to create connections between computers. The QNetworkInterface class can be used to obtain information on networking interfaces that a computer has if the need arises.
 \section{Access and integration channels}
+Below is a rough depiction of how the GUI will look. The different nodes each have a colour to indicate status. Green means ready, Yellow means some error has occured, Red means it is offline. A program build can be clicked on the list and placed on the slave it is needed on. This will initiate the copying sequence. Next a simulation is chosen and can be run.\\
+\begin{center}
+  	\includegraphics[scale=0.65]{GuiPlan.png} 
+  \end{center}
 \section{Technologies}
 
 \begin{itemize}
