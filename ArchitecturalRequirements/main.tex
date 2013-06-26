@@ -31,6 +31,8 @@ Date & Version & Description\\
 \hline
 25 Jul & Version 0.4 & Added initial section 2 and 6\\
 \hline
+26 Jul & Version 0.5 & Completed Section 1.2\\
+\hline
 \end{tabular}
 
 \pagenumbering{arabic}
@@ -42,10 +44,19 @@ Date & Version & Description\\
 \item Providing 
 \end{itemize}
 \subsection{Quality requirements}
+The following Quality requirements will be implemented in the system:
+\begin{itemize}
+\item Installability - The software should be able to easily install on any of the required platforms, without the need for further adjustments or 3rd party applications.
+\item Performance - The software should be able to run optimally. Specifically when copying required build files, for example larger files copy faster than smaller files.
+\item Usability - The software should be easy to use without the need to read extensive documentation on how to operate it.
+\item Look and feel - Look and feel ties in with usabilty.  How the software looks should conform to how it will be used, which should be in a visually intuitive manner.
+\item Reusability - The software should be able to be reused within different contexts, while still fulfilling the necessary functional requirements.
+\item Reliability - The software should be reliable in the sense that especially when build versions are updated that all the required file are sent and recieved without doubt.
+\end{itemize}
 \subsection{Integration and access channel requirements}
 Our system must interact with Subversion (SVN), which is where the clients store the various builds of their applications. We will also be connecting to a MySql database where the information concerning confiugurations on slave pc's will be stored.
 \begin{itemize}
-\item We can use the SVN client library to connect to Subversion.
+\item We can use the SVN client library to connesct to Subversion.
 \item Connector/C++ 1.1.3 is available to connect to MySql for both Windows and Linux.
 \end{itemize}
 The system will be accessible to users via a Graphical User Interface as specified by the client.
@@ -81,7 +92,7 @@ Client can in this case be the Master Computer or the Slave Computer.
 %%%%%%%%%%%%%%%%%%%%
 
 \section{Architectural tactics or strategies}
-
+TODO: Will be completed Thursday 27 June
 
 \section{Use of reference architectures and\\ frameworks}
 QT is a framework much the same as Java and their motto stated "Code Less. Create More. Deploy Everywhere." which means the framework allows cross platform development and deployment. This project will make use of QT 4.8.4 framework with C++ that will enable the project to be used on multiple platforms. We will strive to make use of the QT API's to provide a project with capabilities of compiling and running on multiple platforms.
