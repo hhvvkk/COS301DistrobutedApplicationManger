@@ -33,6 +33,8 @@ Date & Version & Description\\
 \hline
 26 Jul & Version 0.5 & Completed Section 1.2\\
 \hline
+27 Jul & Version 0.6 & Completed Section 3\\
+\hline
 \end{tabular}
 
 \pagenumbering{arabic}
@@ -92,7 +94,15 @@ Client can in this case be the Master Computer or the Slave Computer.
 %%%%%%%%%%%%%%%%%%%%
 
 \section{Architectural tactics or strategies}
-TODO: Will be completed Thursday 27 June
+For each quality requirements the following tactics will be used as a guide to solve them:
+\begin{itemize}
+\item Installability - Using the QT framework, which allows source code to be built for various platforms, the software should be able to install and work on those platforms.
+\item Performance - Compiling and copying larger files will be quicker than copying a lot of small files. Using 7zip to compress small files will increase performance.
+\item Usability - Using simple design and tooltips will allow for easy understanding of how the software is supposed to be used.  A quick help section will also enhance understanding and usability.
+\item Look and feel - Usabilty should also be enhanced by a visual intuitive layout that makes sense, is very simple and does not require typing.  A simple drag and drop feature will be used to achieve this.
+\item Reusability - The saving of configuations will allow the software to easily be reused to recreate simulations that have been run before.
+\item Reliability - Using coding protocols that will check that a message was successfully sent and received, such as TCP, will ensure a reliable connection.
+\end{itemize}
 
 \section{Use of reference architectures and\\ frameworks}
 QT is a framework much the same as Java and their motto stated "Code Less. Create More. Deploy Everywhere." which means the framework allows cross platform development and deployment. This project will make use of QT 4.8.4 framework with C++ that will enable the project to be used on multiple platforms. We will strive to make use of the QT API's to provide a project with capabilities of compiling and running on multiple platforms.
