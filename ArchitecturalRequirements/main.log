@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2013.2.23)  25 JUN 2013 10:47
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2013.2.23)  28 JUN 2013 13:46
 entering extended mode
  %&-line parsing enabled.
 **main.tex
@@ -50,18 +50,18 @@ File: pdftex.def 2009/08/25 v0.04m Graphics/color for pdfTeX
 ) (./main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 13.
-LaTeX Font Info:    ... okay on input line 13.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 13.
-LaTeX Font Info:    ... okay on input line 13.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 13.
-LaTeX Font Info:    ... okay on input line 13.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 13.
-LaTeX Font Info:    ... okay on input line 13.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 13.
-LaTeX Font Info:    ... okay on input line 13.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 13.
-LaTeX Font Info:    ... okay on input line 13.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 14.
+LaTeX Font Info:    ... okay on input line 14.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 14.
+LaTeX Font Info:    ... okay on input line 14.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 14.
+LaTeX Font Info:    ... okay on input line 14.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 14.
+LaTeX Font Info:    ... okay on input line 14.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 14.
+LaTeX Font Info:    ... okay on input line 14.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 14.
+LaTeX Font Info:    ... okay on input line 14.
 
 (/usr/share/texmf/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
@@ -79,9 +79,9 @@ LaTeX Font Info:    ... okay on input line 13.
 File: 101Logo.png Graphic file (type png)
  <use 101Logo.png>
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <14.4> on input line 14.
+(Font)              <14.4> on input line 15.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 14.
+(Font)              <7> on input line 15.
  [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./101Logo.png>] (./main.to
@@ -97,52 +97,55 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 \openout3 = `main.toc'.
 
  [2]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 40.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 51.
 
 (/usr/share/texmf-texlive/tex/latex/base/omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 40.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 51.
  [1]
-Underfull \hbox (badness 10000) in paragraph at lines 58--61
+Underfull \hbox (badness 10000) in paragraph at lines 79--82
 
- []
-
-
-Overfull \hbox (13.46785pt too wide) in paragraph at lines 62--75
-[] 
  []
 
 [2]
-Underfull \hbox (badness 10000) in paragraph at lines 93--94
+Overfull \hbox (13.46785pt too wide) in paragraph at lines 83--96
+[] 
+ []
+
+<ClientServer.jpeg, id=21, 350.81062pt x 322.95656pt>
+File: ClientServer.jpeg Graphic file (type jpg)
+ <use ClientServer.jpeg>
+[3 <./ClientServer.jpeg>] [4]
+Underfull \hbox (badness 10000) in paragraph at lines 122--123
 
  []
 
-<GuiPlan.png, id=21, 682.80093pt x 372.64218pt>
+<GuiPlan.png, id=28, 682.80093pt x 372.64218pt>
 File: GuiPlan.png Graphic file (type png)
  <use GuiPlan.png>
-Overfull \hbox (53.81534pt too wide) in paragraph at lines 95--96
+Overfull \hbox (53.81534pt too wide) in paragraph at lines 124--125
  [] 
  []
 
-[3] [4 <./GuiPlan.png (PNG copy)>] (./main.aux) ) 
+[5 <./GuiPlan.png (PNG copy)>] [6] [7] (./main.aux) ) 
 Here is how much of TeX's memory you used:
- 941 strings out of 495061
- 11704 string characters out of 1182621
- 64383 words of memory out of 3000000
- 4159 multiletter control sequences out of 15000+50000
+ 947 strings out of 495061
+ 11812 string characters out of 1182621
+ 63442 words of memory out of 3000000
+ 4163 multiletter control sequences out of 15000+50000
  9115 words of font info for 32 fonts, out of 3000000 for 9000
  28 hyphenation exceptions out of 8191
  25i,8n,21p,569b,250s stack positions out of 5000i,500n,10000p,200000b,50000s
-</usr/share/texmf-texlive/font
-s/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texmf-texlive/fonts/type1/pub
-lic/amsfonts/cm/cmr12.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts
-/cm/cmr17.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmsy10.p
-fb>
-Output written on main.pdf (6 pages, 178982 bytes).
+</usr/share/texmf-texlive/
+fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texmf-texlive/fonts/type1
+/public/amsfonts/cm/cmr12.pfb></usr/share/texmf-texlive/fonts/type1/public/amsf
+onts/cm/cmr17.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmsy
+10.pfb>
+Output written on main.pdf (9 pages, 201281 bytes).
 PDF statistics:
- 41 PDF objects out of 1000 (max. 8388607)
+ 53 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 11 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 16 words of extra memory for PDF output out of 10000 (max. 10000000)
 
