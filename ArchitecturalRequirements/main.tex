@@ -55,12 +55,12 @@ Date & Version & Description\\
 \subsection{Quality requirements}
 The following Quality requirements will be implemented in the system:
 \begin{itemize}
-\item Installability - The software should be able to easily install on any of the required platforms, without the need for further adjustments or 3rd party applications.
-\item Performance - The software should be able to run optimally. Specifically when copying required build files, for example one large file will copy faster than many small files.
-\item Usability - The software should be easy to use without the need to read extensive documentation on how to operate it.
-\item Look and feel - Look and feel ties in with usabilty.  How the software looks should conform to how it will be used, which should be in a visually intuitive manner.
-\item Reusability - The software should be able to be reused within different contexts, while still fulfilling the necessary functional requirements.
-\item Reliability - The software should be reliable in the sense that especially when build versions are updated that all the required files are sent and recieved without failures.
+\item \textbf{Installability} - The software should be able to easily install on any of the required platforms, without the need for further adjustments or 3rd party applications.
+\item \textbf{Performance} - The software should be able to run optimally. Specifically when copying required build files, for example one large file will copy faster than many small files.
+\item \textbf{Usability} - The software should be easy to use without the need to read extensive documentation on how to operate it.
+\item \textbf{Look and feel} - Look and feel ties in with usabilty.  How the software looks should conform to how it will be used, which should be in a visually intuitive manner.
+\item \textbf{Reusability} - The software should be able to be reused within different contexts, while still fulfilling the necessary functional requirements.
+\item \textbf{Reliability} - The software should be reliable in the sense that especially when build versions are updated that all the required files are sent and recieved without failures.
 \end{itemize}
 \subsection{Integration and access channel requirements}
 Our system can interact with Subversion (SVN), which is where the clients store the various builds of their applications. We will also be connecting to a MySql database where the information concerning confiugurations on slave pc's will be stored. XML is also an option for storing information.
@@ -104,12 +104,12 @@ Client can in this case be the Master Computer or the Slave Computer. The server
 \section{Architectural tactics or strategies}
 For each quality requirements the following tactics will be used as a guide to solve them:
 \begin{itemize}
-\item Installability - Using the QT framework, which allows source code to be built for various platforms, the software should be able to install and work on those platforms.
-\item Performance - Compiling and copying larger files will be quicker than copying a lot of small files. Using 7zip to compress small files will increase performance.
-\item Usability - Using simple design and tooltips will allow for easy understanding of how the software is supposed to be used.  A quick help section will also enhance understanding and usability.
-\item Look and feel - Usabilty should also be enhanced by a visual intuitive layout that makes sense, is very simple and does not require typing.  A simple drag and drop feature will be used to achieve this.
-\item Reusability - The saving of configuations will allow the software to easily be reused to recreate simulations that have been run before.
-\item Reliability - Using coding protocols that will check that a message was successfully sent and received, such as TCP, will ensure a reliable connection.
+\item \textbf{Installability} - Using the QT framework, which allows source code to be built for various platforms, the software should be able to install and work on those platforms.
+\item \textbf{Performance} - Compiling and copying larger files will be quicker than copying a lot of small files. Using 7zip to compress small files will increase performance.
+\item \textbf{Usability} - Using simple design and tooltips will allow for easy understanding of how the software is supposed to be used.  A quick help section will also enhance understanding and usability.
+\item \textbf{Look and feel} - Usabilty should also be enhanced by a visual intuitive layout that makes sense, is very simple and does not require typing.  A simple drag and drop feature will be used to achieve this.
+\item \textbf{Reusability} - The saving of configuations will allow the software to easily be reused to recreate simulations that have been run before.
+\item \textbf{Reliability} - Using coding protocols that will check that a message was successfully sent and received, such as TCP, will ensure a reliable connection.
 \end{itemize}
 
 \section{Use of reference architectures and\\ frameworks}
