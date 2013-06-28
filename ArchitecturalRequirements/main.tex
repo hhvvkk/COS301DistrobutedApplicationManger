@@ -35,6 +35,8 @@ Date & Version & Description\\
 \hline
 27 Jul & Version 0.6 & Completed Section 3\\
 \hline
+28 Jul & Version 0.7 & Completed Section 1.3 and 5\\
+\hline
 \end{tabular}
 
 \pagenumbering{arabic}
@@ -56,10 +58,11 @@ The following Quality requirements will be implemented in the system:
 \item Reliability - The software should be reliable in the sense that especially when build versions are updated that all the required file are sent and recieved without doubt.
 \end{itemize}
 \subsection{Integration and access channel requirements}
-Our system must interact with Subversion (SVN), which is where the clients store the various builds of their applications. We will also be connecting to a MySql database where the information concerning confiugurations on slave pc's will be stored.
+Our system must interact with Subversion (SVN), which is where the clients store the various builds of their applications. We will also be connecting to a MySql database where the information concerning confiugurations on slave pc's will be stored. XML is also an option for storing information.
 \begin{itemize}
 \item We can use the SVN client library to connesct to Subversion.
 \item Connector/C++ 1.1.3 is available to connect to MySql for both Windows and Linux.
+\item XML parsing and handling is supported through SAX and DOM compliant APIs as well as streaming classes in Qt.
 \end{itemize}
 The system will be accessible to users via a Graphical User Interface as specified by the client.
 \subsection{Architectural constraints}
@@ -115,6 +118,12 @@ Below is a rough depiction of how the GUI will look. The different nodes each ha
 \begin{center}
   	\includegraphics[scale=0.65]{GuiPlan.png} 
   \end{center}
+Below are the various channels we will be using:
+\begin{itemize}
+\item We can use the SVN client library to connect to Subversion. Subversion has a modular design: it's implemented as a collection of libraries written in C. Each library has a well-defined purpose and API, and that interface is available not only for Subversion itself to use, but for any software that wishes to embed or otherwise programmatically control Subversion. Additionally, Subversion's API is available not only to other C programs, but also to programs written in higher-level languages such as Python, Perl, Java, and Ruby.
+\item Connector/C++ 1.1.3 is available to connect to MySql for both Windows and Linux. It is a MySQL database connector for C++. It lets you develop C++ applications that connect to the MySQL Server.
+\item XML parsing and handling is supported through SAX and DOM compliant APIs as well as streaming classes in Qt. Additionally the QtXmlPatterns modules provide classes for querying XML files and custom data models.
+\end{itemize}
 \section{Technologies}
 
 \begin{itemize}
