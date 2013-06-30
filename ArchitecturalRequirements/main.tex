@@ -50,8 +50,8 @@ Date & Version & Description\\
 \section{Architecture requirements}
 \subsection{Architectural scope}
 \begin{itemize}
-\item Providing infrastructure for copying, synchronizing and managing files over multiple computers from one master
-\item Provide infrastructure supporting communication between more than one computer
+\item Providing infrastructure for copying, synchronizing and managing files over multiple computers from one master.
+\item Provide infrastructure supporting communication between more than one computer.
 \end{itemize}
 \subsection{Quality requirements}
 The following Quality requirements will be implemented in the system:
@@ -64,9 +64,9 @@ The following Quality requirements will be implemented in the system:
 \item \textbf{Reliability} - The software should be reliable to ensure that when build versions are updated all the required files are sent and received without failures occurring.
 \end{itemize}
 \subsection{Integration and access channel requirements}
-Our system can interact with Subversion (SVN), which is where the clients store the various builds of their applications. We will also be connecting to a MySql database where the information concerning confiugurations on slave pc's will be stored. XML is also an option given by the client for storing configuration information.
+Our system can interact with Subversion (SVN), which is where the clients store the various builds of their applications. We will also be connecting to a MySql database where the information concerning configurations on slave pc's will be stored. XML is also an option given by the client for storing configuration information.
 \begin{itemize}
-\item We can use the SVN client library to connesct to Subversion.
+\item We can use the SVN client library to connect to Subversion.
 \item Connector/C++ 1.1.3 is available to connect to MySql for both\\ Windows and Linux.
 \item XML parsing and handling is supported through SAX and DOM \\compliant API's as well as streaming classes in Qt.
 \end{itemize}
@@ -154,7 +154,7 @@ Below are the various channels we will be using:
 \end{itemize}
 
 
-\item{Graphical user interface}
+\item{Graphical User Interface}
 \begin{itemize}
 \item{QT Framework GUI API}
 \end{itemize}
@@ -164,13 +164,13 @@ Below are the various channels we will be using:
 
 \section{Glossary}
 \begin{itemize}
-\item{Build - An application build version that could potentially be distrobuted to slave computers}
+\item{Build - An application build version that could potentially be distributed to slave computers.}
 \item{Slave - A computer that will be controlled via a master computer. Application builds will be sent to this computer.}
-\item{Master - A computer that will control Slaves across a network}
-\item{Server - A machine waiting on the network for connections from other machines}
-\item{GUI - Graphical User Interface with which a user can control the project}
-\item{Project - This project. The distributed application manager}
-\item{Application Configuration - Environment variables that are specified when running an application}
+\item{Master - A computer that will control Slaves across a network.}
+\item{Server - A machine waiting on the network for connections from other machines.}
+\item{GUI - Graphical User Interface with which a user can control the project.}
+\item{Project - This project. The distributed application manager.}
+\item{Application Configuration - Environment variables that are specified when running an application.}
 \end{itemize}
 
 \end{document}
