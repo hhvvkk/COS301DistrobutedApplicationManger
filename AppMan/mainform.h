@@ -174,6 +174,11 @@ protected:
     virtual void dragEnterEvent ( QDragEnterEvent *event );
     virtual void dragLeaveEvent ( QDragLeaveEvent *event );
     virtual void dragMoveEvent ( QDragMoveEvent *event );
+private slots:
+    void on_actionHelp_triggered();
+
+    void on_actionVersion_triggered();
+
 private:
     /**
      * @brief dropBuildToSlave this function will call the copy function to copy a build over from master to slave

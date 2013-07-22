@@ -1,5 +1,7 @@
 #include <mainform.h>
 #include <ui_mainform.h>
+#include <abouthelp.h>
+#include <aboutversion.h>
 
 
 MainForm::MainForm(QWidget *parent) :
@@ -180,4 +182,14 @@ void MainForm::dragEnterEvent ( QDragEnterEvent *event ){
 
 void MainForm::dragLeaveEvent ( QDragLeaveEvent *event ){
     event->accept();
+}
+
+void MainForm::on_actionHelp_triggered(){
+    AboutHelp *abHelp = new AboutHelp();
+    abHelp->show();
+}
+
+void MainForm::on_actionVersion_triggered(){
+    AboutVersion *abversion = new AboutVersion();
+    abversion->show();
 }

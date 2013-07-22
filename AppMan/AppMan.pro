@@ -15,14 +15,17 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainform.cpp \
     build.cpp \
-    aboutversion.cpp
+    aboutversion.cpp \
+    abouthelp.cpp
 
 HEADERS  += mainform.h \
     build.h \
-    aboutversion.h
+    aboutversion.h \
+    abouthelp.h
 
 FORMS    += mainform.ui \
-    aboutversion.ui
+    aboutversion.ui \
+    abouthelp.ui
 
 RESOURCES += \
     images.qrc

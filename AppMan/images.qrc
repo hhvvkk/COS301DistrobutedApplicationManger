@@ -8,5 +8,7 @@
         <file>images/DescriptionGreen.png</file>
         <file>images/Add.png</file>
         <file>images/Run.png</file>
+        <file>images/Arrow.png</file>
+        <file>images/Offline.png</file>
     </qresource>
 </RCC>
