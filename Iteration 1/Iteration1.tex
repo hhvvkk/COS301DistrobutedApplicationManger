@@ -1,0 +1,68 @@
+\documentclass[a4paper,12pt,final]{article}
+
+
+\usepackage{graphicx}
+\title{
+\begin{center}
+  	\includegraphics[scale=0.3]{2.png} 
+  \end{center}
+  \textbf{\\}
+Iteration 1\\
+}
+\author{101 Solutions}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+\newpage
+\tableofcontents
+\thispagestyle{empty}
+\newpage
+\pagenumbering{arabic}
+
+\section{Introduction}
+The purpose of this document is to keep track of the ongoing development progress of the software application manager AppMan.  In each iteration additional content will be added which will result in this document being an up to date and relaible method to view progress and current development plans and ideas. Content will include milestones reached, current goals and the current functionality of the software.
+
+\section{Milestones reached}
+\begin{itemize}
+\item Successfully tendered and accepted to complete this project
+\item Completed vision and scope document
+\item Completed an arcitechtural design and documentation
+\item Completed a prototype GUI for AppMan
+\end{itemize}
+
+
+\section{Current Goals}
+Our next two main goals for the project:
+\subsection{Server \& Client network communication}
+\begin{itemize}
+\item Goal: To create a reliable socket connection between the server and client applications, which will serve as a pathway between them.
+\end{itemize}
+\subsection{Build transference}
+\begin{itemize}
+\item Goal: To establish a list of builds which will be recognized by the server application and the ability to copy the builds to the clients(Slave computers)
+\end{itemize}
+
+
+\section{Functionality}
+\subsection{Graphic User Interface}
+\begin{itemize}
+\item A gui built in c++ and QT and deployable in both windows and linux.
+\item Easy to understand gui layout used
+\item A help form that will describe some of the workings of the program. This form will display how to add a build, and understand how the program works, etc
+\item Drag and drop capability on the gui, which will be incorporated with further development
+\begin{itemize}
+\item Dragging the "drag" label to copy a build from master to slave(future development)
+\item Dropping a file or directory on the "+ Add" Button(future development)
+\end{itemize}
+\item Gui is capable running with or without the images that are to be deployed with it
+\item Gui Caters for other development
+\begin{itemize}
+\item Copy files over from master to slave( with a progressbar indicating the file copy progress )
+\item Running applications that have been copied to slave computers
+\item SpinBoxes that can allow a large amount of slave computers or builds to be shown by the program
+\end{itemize}
+\end{itemize}
+
+\end{document}
