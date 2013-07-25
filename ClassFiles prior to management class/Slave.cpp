@@ -22,21 +22,29 @@ Slave::Slave(int id, string ip, string status){
 	}
 }
 Slave::~Slave(){
-	cout<<"Starting to delete"<<endl;
-	//for(int i = 0; i<= buildCount; i++){
-		delete[] slaveBuilds/*[i]*/;
-	//}
-	cout<<"Delete success"<<endl;
+	cout<<"Starting to delete from slave.cpp"<<endl;
+	//cout<<buildCount<<endl;
+	if(buildCount != 0){
+		cout<<"hi"<<endl;
+		delete[] slaveBuilds;
+	}
+	cout<<"Delete success from slave.cpp"<<endl;
 }
 Slave::Slave(){
 	machineID = 0;
 	buildCount = 0;
 }
 
+Slave::Slave(Slave &toCopy){
+	this->machineID = toCopy.machineID;
+	this->machineIP = toCopy.machineIP;
+	this->machineStatus = toCopy.machineStatus;
+	this->buildCount = toCopy.buildCount;
+	this->slaveBuilds = toCopy.slaveBuilds;
+}
+
 void Slave::addBuild(Build buildToAdd){
-	//cout<<"here"<<endl;
 	if(buildCount != 0){
-		//cout<<"already have"<<endl;
 		Build temp[buildCount];
 		for(int i = 0; i < buildCount; i++){
 			temp[i] = slaveBuilds[i];
@@ -48,13 +56,10 @@ void Slave::addBuild(Build buildToAdd){
 		slaveBuilds[buildCount] = buildToAdd;
 	}
 	else{
-		//cout<<"dont have"<<endl;
 		slaveBuilds = new Build[buildCount+1];
 		slaveBuilds[buildCount] = buildToAdd;
 	}
-	//masterBuilds[buildCount] = buildToAdd;
 	buildCount++;
-	//cout<<"leaving"<<endl;
 }
 
 void Slave::printBuilds(){
