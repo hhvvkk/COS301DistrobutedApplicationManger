@@ -135,6 +135,10 @@ private:
         }
 
     protected:
+        /**
+         * @brief mousePressEvent this event is overridden to set the mimedata for later use
+         * @param event the event fired when clicking on a label to drag and drop it
+         */
         void mousePressEvent(QMouseEvent *event){
             //static cast an element that is pressed to QLabel
             QLabel *child = dynamic_cast<QLabel*>(childAt(event->pos()));
@@ -170,13 +174,35 @@ private:
     };
 
 protected:
+    /**
+     * @brief dropEvent once the Build is dropped this is called
+     * @param event the event that fired the drop
+     */
     virtual void dropEvent ( QDropEvent *event );
+    /**
+     * @brief dragEnterEvent once the Build is dragged and it is in view
+     * @param event the event that fired the dragEnter
+     */
     virtual void dragEnterEvent ( QDragEnterEvent *event );
+    /**
+     * @brief dragLeaveEvent once the Build leaves the view
+     * @param event the event that fired the dragLeave
+     */
     virtual void dragLeaveEvent ( QDragLeaveEvent *event );
+    /**
+     * @brief dragMoveEvent once the object is dragged and moved around this function is called
+     * @param event the event that fired the dragMove
+     */
     virtual void dragMoveEvent ( QDragMoveEvent *event );
 private slots:
+    /**
+     * @brief on_actionHelp_triggered The function called when the About>Help function is called
+     */
     void on_actionHelp_triggered();
 
+    /**
+     * @brief on_actionVersion_triggered The function called when the About>Version function is called
+     */
     void on_actionVersion_triggered();
 
 private:

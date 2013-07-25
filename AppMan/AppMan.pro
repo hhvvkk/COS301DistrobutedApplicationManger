@@ -14,12 +14,10 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainform.cpp \
-    build.cpp \
     aboutversion.cpp \
     abouthelp.cpp
 
 HEADERS  += mainform.h \
-    build.h \
     aboutversion.h \
     abouthelp.h
 
