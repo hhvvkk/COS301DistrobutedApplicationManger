@@ -17,9 +17,11 @@ Build::Build(int id, string name, string descript){
 	
 }
 Build::~Build(){
+	cout<<"Starting to delete from build"<<endl;
 	buildID = -1;
 	buildName = "";
 	buildDescription = "";
+	cout<<"Delete success from build"<<endl;
 }
 Build::Build(){
 	buildID = 0;

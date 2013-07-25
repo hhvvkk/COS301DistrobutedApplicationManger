@@ -19,17 +19,33 @@ Master::Master(int id, string ip, string status){
 		machineIP = ip;
 		machineStatus = status;
 		buildCount = 0;
+		slaveCount = 0;
 	}
 }
 Master::~Master(){
-	cout<<"Starting to delete"<<endl;
-	delete[] masterBuilds;
-	//delete[] masterSlaves;
-	cout<<"Delete success"<<endl;
+	cout<<"Starting to delete from master.cpp"<<endl;
+	//cout<<buildCount<<endl<<slaveCount<<endl;
+	if(buildCount != 0){
+		delete[] masterBuilds;
+	}
+	if(slaveCount != 0){
+		delete[] masterSlaves;
+	}
+	cout<<"Delete success from master.cpp"<<endl;
 }
 Master::Master(){
 	machineID = 0;
 	buildCount = 0;
+}
+
+Master::Master(Master &toCopy){
+	this->machineID = toCopy.machineID;
+	this->machineIP = toCopy.machineIP;
+	this->machineStatus = toCopy.machineStatus;
+	this->buildCount = toCopy.buildCount;
+	this->masterBuilds = toCopy.masterBuilds;
+	this->slaveCount = toCopy.slaveCount;
+	this->masterSlaves = toCopy.masterSlaves;
 }
 
 void Master::addSlave(Slave slaveToAdd){
