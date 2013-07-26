@@ -73,4 +73,78 @@ Our next two main goals for the project:
 \end{itemize}
 \end{itemize}
 
+\section{System Design}
+\subsection{AppMan}
+
+\begin{center}
+\includegraphics[scale=0.5]{AppManDiagram.jpg} 
+\end{center}
+
+\subsection{AppManClient}
+
+\begin{center}
+\includegraphics[scale=0.5]{AppManClientDiagram.jpg} 
+\end{center}
+
+\section{Processes}
+\subsection{ActivityDiagram}
+%%%%activity diagram possibly hier
+
+\section{Functional Requirements}
+\subsection{Use Case Diagrams}
+\begin{itemize}
+\item AppMan
+%usecase
+\item AppManClient
+%usecase
+\end{itemize}
+
+\subsection{Builds}
+\begin{itemize}
+\item Builds must be addible to the master
+\item Builds must be updated on the slave computers once a change have been made
+\item Only changed files must be sent to the slave computers once a change has been made
+\item Easy to manage the builds that are on the master computer
+\item Builds must be able to have the following
+\begin{itemize}
+\item Name
+\item Directory
+\end{itemize}
+\end{itemize}
+
+\subsection{Copying}
+\begin{itemize}
+\item Copying must be done over the network
+\item The copy of multiple files must be compressed to reduce the time it takes to copy a file
+\item Progress of copy must be shown on master computer while copying takes place
+\end{itemize}
+
+\subsection{User Interface}
+\begin{itemize}
+\item The user interface must be easy to use
+\item The user interface must make use of drag and drop capabilities to promote usability
+\end{itemize}
+
+\subsection{Slave Computers}
+\begin{itemize}
+\item Slave computers must connect to the master computer via the network
+\end{itemize}
+
+%Header dan class diagram
+%Possibly class diagram hierso as jy dit wil in sit 
+
+
+\section{Glossary}
+\begin{itemize}
+\item Build - An application build version that could potentially be distributed to slave computers
+\item Slave - A computer that will be controlled via a master computer
+\item Application builds will be sent to this computer
+\item Master - A computer that will control Slaves across a network
+\item Server - A machine waiting on the network for connections from other machines
+\item GUI - Graphical User Interface with which a user can control the project
+\item Project - This project. The distributed application manager
+\item Application Configuration - Environment variables that are specified when running an application
+\end{itemize}
+
+
 \end{document}

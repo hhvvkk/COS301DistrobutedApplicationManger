@@ -7,3 +7,15 @@
 \contentsline {subsection}{\numberline {3.4}Slave Application}{2}
 \contentsline {section}{\numberline {4}Functionality}{2}
 \contentsline {subsection}{\numberline {4.1}Graphic User Interface}{2}
+\contentsline {section}{\numberline {5}System Design}{3}
+\contentsline {subsection}{\numberline {5.1}AppMan}{3}
+\contentsline {subsection}{\numberline {5.2}AppManClient}{4}
+\contentsline {section}{\numberline {6}Processes}{4}
+\contentsline {subsection}{\numberline {6.1}ActivityDiagram}{4}
+\contentsline {section}{\numberline {7}Functional Requirements}{4}
+\contentsline {subsection}{\numberline {7.1}Use Case Diagrams}{4}
+\contentsline {subsection}{\numberline {7.2}Builds}{4}
+\contentsline {subsection}{\numberline {7.3}Copying}{5}
+\contentsline {subsection}{\numberline {7.4}User Interface}{5}
+\contentsline {subsection}{\numberline {7.5}Slave Computers}{5}
+\contentsline {section}{\numberline {8}Glossary}{5}
