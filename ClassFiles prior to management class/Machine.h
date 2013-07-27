@@ -32,6 +32,11 @@ class Machine{
 		* @brief the status of the machine
 		*/
 		string machineStatus;
+		/**
+		* @var machineType
+		* @brief 0 is Master, 1 is Slave
+		*/
+		bool machineType;
 	public:
 		/**
 		* \fn Machine(int id, string ip, string status);
@@ -39,8 +44,9 @@ class Machine{
 		* @param id The machineID to assign
 		* @param ip The machineIP to assign
 		* @param status The machineStatus to assign
+		* @param type The boolean indicating Master or Slave
 		*/
-		Machine(int id, string ip, string status);
+		Machine(int id, string ip, string status, bool type);
 		/**
 		* \fn ~Machine();
 		* @brief The destructor
@@ -57,8 +63,9 @@ class Machine{
 		* @param id The machineID to assign
 		* @param ip The machineIP to assign
 		* @param status The machineStatus to assign
+		* @param type The boolean indicating Master or Slave
 		*/
-		void setMachine(int id, string ip, string status);
+		void setMachine(int id, string ip, string status, bool type);
 		/**
 		* \fn int getMachineID() {return machineID;};
 		* @brief The function to access the machineID variable
@@ -78,6 +85,12 @@ class Machine{
 		*/
 		string getMachineStatus() {return machineStatus;};
 		/**
+		* \fn bool getMachineType() {return machineType;};
+		* @brief The function to access the machineType variable
+		* @return machineType
+		*/
+		bool getMachineType() {return machineType;};
+		/**
 		* \fn void setMachineID(int id);
 		* @brief The function to mutate the machineID variable
 		* @param id The ID to assign to machineID
@@ -95,6 +108,12 @@ class Machine{
 		* @param status The status to be assigned to machineStatus
 		*/
 		void setMachineStatus(string status);
+		/**
+		* \fn void setMachineType(bool type);
+		* @brief The function to mutate the machineType variable
+		* @param type The bool to be assigned to machineType
+		*/
+		void setMachineType(bool type);
 		/**
 		* \fn void printMachine();
 		*@brief The function to print this Machine

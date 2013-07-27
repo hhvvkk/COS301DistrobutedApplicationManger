@@ -9,7 +9,7 @@ using namespace std;
 		string machineIP;
 		string machineStatus;
 */
-Slave::Slave(int id, string ip, string status){
+Slave::Slave(int id, string ip, string status, bool type){
 	if(id <= 0){
 		cout<<"Cannot have a negative ID"<<endl;
 		return;
@@ -18,14 +18,13 @@ Slave::Slave(int id, string ip, string status){
 		machineID = id;
 		machineIP = ip;
 		machineStatus = status;
+		machineType = type;
 		buildCount = 0;
 	}
 }
 Slave::~Slave(){
 	cout<<"Starting to delete from slave.cpp"<<endl;
-	//cout<<buildCount<<endl;
 	if(buildCount != 0){
-		cout<<"hi"<<endl;
 		delete[] slaveBuilds;
 	}
 	cout<<"Delete success from slave.cpp"<<endl;
@@ -33,12 +32,14 @@ Slave::~Slave(){
 Slave::Slave(){
 	machineID = 0;
 	buildCount = 0;
+	machineType = 1;
 }
 
 Slave::Slave(Slave &toCopy){
 	this->machineID = toCopy.machineID;
 	this->machineIP = toCopy.machineIP;
 	this->machineStatus = toCopy.machineStatus;
+	this->machineType = toCopy.machineType;
 	this->buildCount = toCopy.buildCount;
 	this->slaveBuilds = toCopy.slaveBuilds;
 }

@@ -9,7 +9,7 @@ using namespace std;
 		string machineIP;
 		string machineStatus;
 */
-Master::Master(int id, string ip, string status){
+Master::Master(int id, string ip, string status, bool type){
 	if(id <= 0){
 		cout<<"Cannot have a negative ID"<<endl;
 		return;
@@ -18,6 +18,7 @@ Master::Master(int id, string ip, string status){
 		machineID = id;
 		machineIP = ip;
 		machineStatus = status;
+		machineType = type;
 		buildCount = 0;
 		slaveCount = 0;
 	}
@@ -42,13 +43,21 @@ Master::Master(Master &toCopy){
 	this->machineID = toCopy.machineID;
 	this->machineIP = toCopy.machineIP;
 	this->machineStatus = toCopy.machineStatus;
+	this->machineType = toCopy.machineType;
 	this->buildCount = toCopy.buildCount;
 	this->masterBuilds = toCopy.masterBuilds;
 	this->slaveCount = toCopy.slaveCount;
 	this->masterSlaves = toCopy.masterSlaves;
 }
 
-void Master::addSlave(Slave slaveToAdd){
+void Master::addSlave(Machine slaveToAdd){
+	//Slave p = new Slave(slaveToAdd);
+						//cout<<"HERERERERERE"<<endl;
+	Slave newSlaveToAdd;
+	newSlaveToAdd.setMachineID(slaveToAdd.getMachineID());
+	newSlaveToAdd.setMachineIP(slaveToAdd.getMachineIP());
+	newSlaveToAdd.setMachineStatus(slaveToAdd.getMachineStatus());
+	newSlaveToAdd.setMachineType(slaveToAdd.getMachineType());
 	if(slaveCount != 0){
 		Slave temp[slaveCount];
 		for(int i = 0; i < slaveCount; i++){
@@ -58,12 +67,12 @@ void Master::addSlave(Slave slaveToAdd){
 		for(int j = 0; j < slaveCount; j++){
 			masterSlaves[j] = temp[j];
 		}
-		masterSlaves[slaveCount] = slaveToAdd;
+		masterSlaves[slaveCount] = newSlaveToAdd;
 	}
 	else{
 		//cout<<"dont have"<<endl;
 		masterSlaves = new Slave[slaveCount+1];
-		masterSlaves[slaveCount] = slaveToAdd;
+		masterSlaves[slaveCount] = newSlaveToAdd;
 	}
 	//masterSlaves[slaveCount] = slaveToAdd;
 	slaveCount++;
@@ -71,7 +80,7 @@ void Master::addSlave(Slave slaveToAdd){
 }
 
 void Master::printSlaves(){
-	cout<<"Slave ID: "<<"\tSlave IP: "<<"\tSlave Status: "<<endl;
+	cout<<"Slave ID: "<<"\tSlave IP: "<<"\t\tSlave Status: "<<endl;
 	for(int i = 0; i< slaveCount; i++){
 		cout<<masterSlaves[i].getMachineID()<<"\t\t"<<masterSlaves[i].getMachineIP()<<"\t\t"<<masterSlaves[i].getMachineStatus()<<endl;
 	}
@@ -224,7 +233,3 @@ void Master:: deleteBuild(int id){
 		cout<<"Build not found"<<endl;
 	}
 }
-
-
-
-

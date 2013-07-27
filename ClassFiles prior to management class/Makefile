@@ -1,5 +1,5 @@
-ManagementTest:ManagementTest.o Machine.o Build.o Slave.o Master.o Management.o
-	g++ -o ManagementTest ManagementTest.o Machine.o Master.o Build.o Slave.o Management.o
+ManagementTest:ManagementTest.o Management.o Master.o Slave.o Machine.o Build.o
+	g++ -o ManagementTest ManagementTest.o Management.o Master.o Slave.o Machine.o Build.o
 
 ManagementTest.o : ManagementTest.cpp Management.h Master.h Machine.h Slave.h Build.h
 	g++ -c ManagementTest.cpp
@@ -25,5 +25,18 @@ BuildTest: BuildTest.o Build.o Build.h
 BuildTest.o: BuildTest.cpp Build.h
 	g++ -c BuildTest.cpp
 	
+MasterWithBuildsTest:MasterWithBuildsTest.o Master.o Slave.o Machine.o Build.o
+	g++ -o MasterWithBuildsTest MasterWithBuildsTest.o Master.o Slave.o Machine.o Build.o
+	
+MasterWithBuildsTest.o: MasterWithBuildsTest.cpp Machine.h Master.h Build.h Slave.h
+	g++ -c MasterWithBuildsTest.cpp
+
+MachineTest: MachineTest.o Master.o Slave.o Machine.o Build.o
+	g++ -o MachineTest MachineTest.o Master.o Slave.o Machine.o Build.o
+	
+MachineTest.o: MachineTest.cpp Machine.h Master.h Slave.h Build.h
+	g++ -c MachineTest.cpp
+	
 clean:
 	rm *.o
+	rm *.exe

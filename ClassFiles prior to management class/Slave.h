@@ -36,8 +36,9 @@ class Slave : public Machine{
 		* @param id the machineID to assign
 		* @param ip the machineIP to assign
 		* @param status the machineStatus to assign
+		* @param tpe the machineType to assign
 		*/
-		Slave(int id, string ip, string status);
+		Slave(int id, string ip, string status, bool type);
 		/**
 		* \fn ~Slave();
 		* @brief The destructor

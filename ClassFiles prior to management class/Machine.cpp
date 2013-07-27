@@ -8,7 +8,7 @@ using namespace std;
 		string machineIP;
 		string machineStatus;
 */
-Machine::Machine(int id, string ip, string status){
+Machine::Machine(int id, string ip, string status, bool type){
 	if(id <= 0){
 		cout<<"Cannot have a negative ID"<<endl;
 		return;
@@ -17,7 +17,7 @@ Machine::Machine(int id, string ip, string status){
 		machineID = id;
 		machineIP = ip;
 		machineStatus = status;
-		cout<<"booo"<<endl;
+		machineType = type;
 	}
 }
 Machine::~Machine(){
@@ -25,9 +25,10 @@ Machine::~Machine(){
 }
 Machine::Machine(){
 	machineID = 0;
+	machineType = 1;
 }
 
-void Machine::setMachine(int id, string ip, string status){
+void Machine::setMachine(int id, string ip, string status, bool type){
 	if(id <= 0){
 		cout<<"Cannot have a negative ID"<<endl;
 		return;
@@ -40,6 +41,7 @@ void Machine::setMachine(int id, string ip, string status){
 		machineID = id;
 		machineIP = ip;
 		machineStatus = status;
+		machineType = type;
 	}
 }
 void Machine::setMachineID(int id){
@@ -63,6 +65,9 @@ void Machine::setMachineIP(string ip){
 void Machine::setMachineStatus(string status){
 	machineStatus = status;
 }
+void Machine::setMachineType(bool type){
+	machineType = type;
+}
 
 void Machine::printMachine(){
 	if(this->machineID == 0 || this->machineIP=="" || this->machineStatus=="")
@@ -71,7 +76,14 @@ void Machine::printMachine(){
 	}
 	else
 	{
-		cout<<"Machine ID: "<<machineID<<"\t Machine IP: "<<machineIP<<"\t Machine Status: "<<machineStatus<<endl;
+		string theType = "";
+		if(machineType == 0){
+			theType = "Master";
+		}
+		else{
+			theType = "Slave";
+		}
+		cout<<"Machine ID: "<<machineID<<"\tMachine IP: "<<machineIP<<"\tMachine Status: "<<machineStatus<<"\t\tMachine Type: "<<theType<<endl;
 	}
 }
 

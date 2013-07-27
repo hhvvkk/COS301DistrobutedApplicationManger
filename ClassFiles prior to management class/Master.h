@@ -41,13 +41,14 @@ class Master : public Machine{
 		int slaveCount;
 	public:
 		/**
-		* \fn Master(int id, string ip, string status);
+		* \fn Master(int id, string ip, string status, bool type);
 		* @brief The parameterised constructor
 		* @param id the machineID to assign
 		* @param ip the machineIP to assign
 		* @param status the machineStatus to assign
+		* @param type The boolean indicating Master or Slave
 		*/
-		Master(int id, string ip, string status);
+		Master(int id, string ip, string status, bool type);
 		/**
 		* \fn ~Master();
 		* @brief The destructor
@@ -106,7 +107,7 @@ class Master : public Machine{
 		* @brief The overridden addSlave function
 		* @param slaveToAdd The Slave that will be added
 		*/
-		virtual void addSlave(Slave slaveToAdd);
+		virtual void addSlave(Machine slaveToAdd);
 		/**
 		* \fn virtual void printSlaves();
 		* @brief The overridden printSlaves fuction
