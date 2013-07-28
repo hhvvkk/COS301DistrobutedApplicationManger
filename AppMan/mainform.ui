@@ -50,7 +50,7 @@
      <x>0</x>
      <y>0</y>
      <width>791</width>
-     <height>21</height>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuAbout">
@@ -65,8 +65,18 @@
      <string>Settings</string>
     </property>
    </widget>
+   <widget class="QMenu" name="menuStartServer">
+    <property name="title">
+     <string>Server</string>
+    </property>
+    <addaction name="separator"/>
+    <addaction name="actionStart"/>
+    <addaction name="actionSet_Port"/>
+    <addaction name="actionStop_Server"/>
+   </widget>
    <addaction name="menuAdd"/>
    <addaction name="menuAbout"/>
+   <addaction name="menuStartServer"/>
   </widget>
   <widget class="QStatusBar" name="statusBar">
    <property name="statusTip">
@@ -81,6 +91,21 @@
   <action name="actionVersion">
    <property name="text">
     <string>Version</string>
+   </property>
+  </action>
+  <action name="actionStart">
+   <property name="text">
+    <string>Start</string>
+   </property>
+  </action>
+  <action name="actionSet_Port">
+   <property name="text">
+    <string>Set Port</string>
+   </property>
+  </action>
+  <action name="actionStop_Server">
+   <property name="text">
+    <string>Stop Server</string>
    </property>
   </action>
  </widget>

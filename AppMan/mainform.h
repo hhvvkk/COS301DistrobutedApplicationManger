@@ -21,6 +21,9 @@
 #include <QUrl>
 #include <QSpinBox>
 
+#include "management.h"
+#include "inputdialogue.h"
+
 namespace Ui {
 class MainForm;
 }
@@ -36,6 +39,8 @@ public:
     
 private:
     Ui::MainForm *ui;
+
+    Management *management;
 
     QSpinBox *spinBoxSlaves;
     QSpinBox *spinBoxMaster;
@@ -198,6 +203,9 @@ private slots:
     /**
      * @brief on_actionHelp_triggered The function called when the About>Help function is called
      */
+    void on_actionStop_Server_triggered();
+    void on_actionSet_Port_triggered();
+    void on_actionStart_triggered();
     void on_actionHelp_triggered();
 
     /**

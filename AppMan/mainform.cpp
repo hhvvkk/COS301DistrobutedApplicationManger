@@ -2,6 +2,7 @@
 #include <ui_mainform.h>
 #include <abouthelp.h>
 #include <aboutversion.h>
+#include "server.h"
 
 
 MainForm::MainForm(QWidget *parent) :
@@ -9,6 +10,13 @@ MainForm::MainForm(QWidget *parent) :
     ui(new Ui::MainForm)
 {
     ui->setupUi(this);
+
+    management = new Management();
+
+    Server *server = new Server(management);
+    management->setServer(server);
+
+    server = 0;
 
     this->setAcceptDrops(true);
 
@@ -116,6 +124,8 @@ MainForm::MainForm(QWidget *parent) :
 MainForm::~MainForm()
 {
     delete ui;
+    //this must be set to delete later or segmentation fault will occur!
+    management->deleteLater();
 }
 
 
@@ -192,4 +202,23 @@ void MainForm::on_actionHelp_triggered(){
 void MainForm::on_actionVersion_triggered(){
     AboutVersion *abversion = new AboutVersion();
     abversion->show();
+}
+
+void MainForm::on_actionStart_triggered()
+{
+    //start the server
+    management->startServer();
+}
+
+void MainForm::on_actionSet_Port_triggered()
+{
+    //set server port
+    InputDialogue *inputDialogue = new InputDialogue("port", management);
+    inputDialogue->show();
+}
+
+void MainForm::on_actionStop_Server_triggered()
+{
+    //stop the server
+    management->stopServer();
 }

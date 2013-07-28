@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui
+QT       += network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -15,15 +16,32 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainform.cpp \
     aboutversion.cpp \
-    abouthelp.cpp
+    abouthelp.cpp \
+    management.cpp \
+    serverthread.cpp \
+    server.cpp \
+    inputdialogue.cpp \
+    Slave.cpp \
+    Master.cpp \
+    Machine.cpp \
+    Build.cpp
 
 HEADERS  += mainform.h \
     aboutversion.h \
-    abouthelp.h
+    abouthelp.h \
+    management.h \
+    serverthread.h \
+    server.h \
+    inputdialogue.h \
+    Slave.h \
+    Master.h \
+    Machine.h \
+    Build.h
 
 FORMS    += mainform.ui \
     aboutversion.ui \
-    abouthelp.ui
+    abouthelp.ui \
+    inputdialogue.ui
 
 RESOURCES += \
     images.qrc
