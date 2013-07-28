@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2013.2.23)  26 JUL 2013 22:13
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2013.2.23)  28 JUL 2013 21:22
 entering extended mode
  %&-line parsing enabled.
 **Iteration1.tex
@@ -104,7 +104,7 @@ File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 29.
  [1]
-Overfull \hbox (11.1583pt too wide) in paragraph at lines 64--65
+Overfull \hbox (11.1583pt too wide) in paragraph at lines 65--66
 []\OT1/cmr/m/n/12 Dragging the "drag" la-bel to copy a build from mas-ter to sl
 ave(future
  []
@@ -112,30 +112,43 @@ ave(future
 <AppManDiagram.jpg, id=18, 919.435pt x 548.0475pt>
 File: AppManDiagram.jpg Graphic file (type jpg)
  <use AppManDiagram.jpg>
-Overfull \hbox (69.71637pt too wide) in paragraph at lines 80--81
+Overfull \hbox (69.71637pt too wide) in paragraph at lines 81--82
  [] 
  []
 
 [2] <AppManClientDiagram.jpg, id=22, 487.8225pt x 507.8975pt>
 File: AppManClientDiagram.jpg Graphic file (type jpg)
 
-<use AppManClientDiagram.jpg> [3 <./AppManDiagram.jpg>] [4 <./AppManClientDiagr
-am.jpg>] [5] [6] (./Iteration1.aux) ) 
+<use AppManClientDiagram.jpg> [3 <./AppManDiagram.jpg>]
+<ActivityDiagram.jpg, id=26, 989.6975pt x 568.1225pt>
+File: ActivityDiagram.jpg Graphic file (type jpg)
+
+<use ActivityDiagram.jpg>
+<UseCaseDiagram.png, id=27, 666.99188pt x 358.33875pt>
+File: UseCaseDiagram.png Graphic file (type png)
+
+<use UseCaseDiagram.png> [4 <./AppManClientDiagram.jpg> <./ActivityDiagram.jpg>
+] <UseCaseDiagramClient.png, id=31, 431.36156pt x 373.395pt>
+File: UseCaseDiagramClient.png Graphic file (type png)
+
+<use UseCaseDiagramClient.png> [5 <./UseCaseDiagram.png (PNG copy)> <./UseCaseD
+iagramClient.png (PNG copy)>] [6] [7] (./Iteration1.aux) ) 
 Here is how much of TeX's memory you used:
- 947 strings out of 495061
- 11923 string characters out of 1182621
+ 962 strings out of 495061
+ 12285 string characters out of 1182621
  62375 words of memory out of 3000000
- 4163 multiletter control sequences out of 15000+50000
+ 4175 multiletter control sequences out of 15000+50000
  9115 words of font info for 32 fonts, out of 3000000 for 9000
  28 hyphenation exceptions out of 8191
  25i,6n,21p,429b,250s stack positions out of 5000i,500n,10000p,200000b,50000s
-</usr/share/texmf-texlive/fonts/type1/publ
-ic/amsfonts/cm/cmbx12.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts
-/cm/cmr12.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr17.pf
-b></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on Iteration1.pdf (8 pages, 232955 bytes).
+</usr/share/texmf-tex
+live/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texmf-texlive/fonts/
+type1/public/amsfonts/cm/cmr12.pfb></usr/share/texmf-texlive/fonts/type1/public
+/amsfonts/cm/cmr17.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm
+/cmsy10.pfb>
+Output written on Iteration1.pdf (9 pages, 349121 bytes).
 PDF statistics:
- 50 PDF objects out of 1000 (max. 8388607)
+ 56 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 16 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 31 words of extra memory for PDF output out of 10000 (max. 10000000)
 
