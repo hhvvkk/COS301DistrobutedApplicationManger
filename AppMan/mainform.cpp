@@ -21,8 +21,10 @@ MainForm::MainForm(QWidget *parent) :
     this->setAcceptDrops(true);
 
     //connect up sinals(newSlaveConnected, slaveDisconnected)...
-    //connect(management, SIGNAL(newSlaveConnected()), this, SLOT(newSlaveConnected()));
     connect(management, SIGNAL(newSlaveConnected()),this,SLOT(newSlaveConnected()));
+    connect(management, SIGNAL(slaveDisconnected()),this,SLOT(slaveDisconnected()));
+
+
     /************************Master(setupBegin)***********************/
     QVBoxLayout *masterHorizontalLayout = new QVBoxLayout;
 
@@ -31,14 +33,14 @@ MainForm::MainForm(QWidget *parent) :
     masterHorizontalLayout->addWidget(spinBoxMaster);
 
     //create Horizontal Layout
-    Build *masterBuild0 = new Build("masterBuild0",true);
-    Build *masterBuild1 = new Build("masterBuild1",true);
-    Build *masterBuild2 = new Build("masterBuild2",true);
-    Build *masterBuild3 = new Build("masterBuild3",true);
-    masterHorizontalLayout->addWidget(masterBuild0);
-    masterHorizontalLayout->addWidget(masterBuild1);
-    masterHorizontalLayout->addWidget(masterBuild2);
-    masterHorizontalLayout->addWidget(masterBuild3);
+    BuildWidget *masterBuildWidget0 = new BuildWidget("masterBuildWidget0",true);
+    BuildWidget *masterBuildWidget1 = new BuildWidget("masterBuildWidget1",true);
+    BuildWidget *masterBuildWidget2 = new BuildWidget("masterBuildWidget2",true);
+    BuildWidget *masterBuildWidget3 = new BuildWidget("masterBuildWidget3",true);
+    masterHorizontalLayout->addWidget(masterBuildWidget0);
+    masterHorizontalLayout->addWidget(masterBuildWidget1);
+    masterHorizontalLayout->addWidget(masterBuildWidget2);
+    masterHorizontalLayout->addWidget(masterBuildWidget3);
 
     //w = 250 h = 80 / scaledContents = true    --- frameShape = panel + frameShadow = sunken + width = 2
     QFrame *addFrame = new QFrame();
@@ -73,42 +75,50 @@ MainForm::MainForm(QWidget *parent) :
      QVBoxLayout *slavesHorizontalLayout = new QVBoxLayout;
 
      //slave0
+
      QVBoxLayout *slave0HorizontalLayout = new QVBoxLayout;
-     Build *slave0Build0 = new Build("slave0Build0",false);
-     Build *slave0Build1 = new Build("slave0Build1",false);
-     Build *slave0Build2 = new Build("slave0Build2",false);
-     slave0HorizontalLayout->addWidget(slave0Build0);
-     slave0HorizontalLayout->addWidget(slave0Build1);
-     slave0HorizontalLayout->addWidget(slave0Build2);
+     offlineDisplay0 = new QPushButton("offlineShow");
+     slave0BuildWidget0 = new BuildWidget("slave0BuildWidget0",false);
+     slave0BuildWidget1 = new BuildWidget("slave0BuildWidget1",false);
+     slave0BuildWidget2 = new BuildWidget("slave0BuildWidget2",false);
+     slave0HorizontalLayout->addWidget(offlineDisplay0);
+     slave0HorizontalLayout->addWidget(slave0BuildWidget0);
+     slave0HorizontalLayout->addWidget(slave0BuildWidget1);
+     slave0HorizontalLayout->addWidget(slave0BuildWidget2);
      groupBoxSlave0 = new QGroupBox();
      groupBoxSlave0->setTitle("Slave0");
      groupBoxSlave0->setLayout(slave0HorizontalLayout);
 
      //slave1
      QVBoxLayout *slave1HorizontalLayout = new QVBoxLayout;
-     Build *slave1Build0 = new Build("slave1Build0",false);
-     Build *slave1Build1 = new Build("slave1Build1",false);
-     Build *slave1Build2 = new Build("slave1Build2",false);
-     slave1HorizontalLayout->addWidget(slave1Build0);
-     slave1HorizontalLayout->addWidget(slave1Build1);
-     slave1HorizontalLayout->addWidget(slave1Build2);
+     offlineDisplay1 = new QPushButton("offlineShow");
+     slave1BuildWidget0 = new BuildWidget("slave1BuildWidget0",false);
+     slave1BuildWidget1 = new BuildWidget("slave1BuildWidget1",false);
+     slave1BuildWidget2 = new BuildWidget("slave1BuildWidget2",false);
+     slave1HorizontalLayout->addWidget(offlineDisplay1);
+     slave1HorizontalLayout->addWidget(slave1BuildWidget0);
+     slave1HorizontalLayout->addWidget(slave1BuildWidget1);
+     slave1HorizontalLayout->addWidget(slave1BuildWidget2);
      groupBoxSlave1 = new QGroupBox();
      groupBoxSlave1->setTitle("Slave1");
      groupBoxSlave1->setLayout(slave1HorizontalLayout);
 
 
-     //slave2
-  /*   QVBoxLayout *slave2HorizontalLayout = new QVBoxLayout;
-     Build *slave2Build0 = new Build("slave2Build0",false);
-     Build *slave2Build1 = new Build("slave2Build1",false);
-     Build *slave2Build2 = new Build("slave2Build2",false);
-     slave2HorizontalLayout->addWidget(slave2Build0);
-     slave2HorizontalLayout->addWidget(slave2Build1);
-     slave2HorizontalLayout->addWidget(slave2Build2);
-     groupBoxSlave2 = new QGroupBox();
-     groupBoxSlave2->setTitle("Slave2");
-     groupBoxSlave2->setLayout(slave2HorizontalLayout);
-*/
+     //icons for offline buttons
+     if(QFile("./images/Offline.png").exists() == false){
+         offlineDisplay1->setText("OFFLINE");
+         offlineDisplay0->setText("OFFLINE");
+     }
+     else{
+         offlineDisplay1->setIcon(QIcon("./images/Offline.png"));
+         offlineDisplay1->setText("");
+         offlineDisplay0->setIcon(QIcon("./images/Offline.png"));
+         offlineDisplay0->setText("");
+     }
+     //seticonsizes
+     const static QSize defaultSize = QSize(200,50);
+     offlineDisplay0->setIconSize(defaultSize);
+     offlineDisplay1->setIconSize(defaultSize);
 
      //spinboxSlaves
      spinBoxSlaves = new QSpinBox();
@@ -118,9 +128,10 @@ MainForm::MainForm(QWidget *parent) :
      //add slaves to the main layout
      slavesHorizontalLayout->addWidget(groupBoxSlave0);
      slavesHorizontalLayout->addWidget(groupBoxSlave1);
-    // slavesHorizontalLayout->addWidget(groupBoxSlave2);
      ui->groupBoxSlaves->setLayout(slavesHorizontalLayout);
 
+     displaySlaves();
+     connect(spinBoxSlaves, SIGNAL(valueChanged(int)), this,SLOT(spinboxChanged()));
     /************************Slave(setupEnd)***********************/
 }
 
@@ -226,16 +237,35 @@ void MainForm::on_actionStop_Server_triggered()
     management->stopServer();
 }
 
+void MainForm::spinboxChanged(){
+    displaySlaves();
+}
+
 void MainForm::newSlaveConnected(){
     //now go find slave and show it if needed
+    displaySlaves();
+}
+
+void MainForm::slaveDisconnected(){
+    //now go find slave and show it if needed
+    //it will find what slave has been disconnected
+    qDebug()<<"slavedc's";
+    qDebug()<<"calling displaySlaves()";
     displaySlaves();
 }
 
 void MainForm::displaySlaves(){
     int index = spinBoxSlaves->value();
     int machineCount = management->getMachineCount();
-
-    qDebug()<<"NEW SLAVE CONNECTED..index"<<index;
+    int max=0;
+    if(machineCount%2 == 0)
+        max = (machineCount/2)-1;
+    else
+        max = (machineCount/2);
+    if(max < 0)
+        spinBoxSlaves->setMaximum(0);
+    else
+        spinBoxSlaves->setMaximum(max);;
     qDebug()<<"machineCount"<<machineCount;
     //get the machines that should be shown at index 1 and index2
     int show1 = index*2;
@@ -246,17 +276,41 @@ void MainForm::displaySlaves(){
 
     //then finally display the machines
     if(m0 == 0){
-        qDebug()<<"isZero";
         groupBoxSlave0->hide();
     }
     else{
+        groupBoxSlave0->show();
         groupBoxSlave0->setTitle(m0->getMachineIP());
+
+        slave0BuildWidget0->show();
+        slave0BuildWidget1->show();
+        slave0BuildWidget2->show();
+        offlineDisplay0->hide();
+        if(!m0->getMachineStatus().compare("offline")){
+            //means the machine has gone offline and offline button needs to be shown
+            slave0BuildWidget0->hide();
+            slave0BuildWidget1->hide();
+            slave0BuildWidget2->hide();
+            offlineDisplay0->show();
+        }
     }
 
     if(m1 == 0){
         groupBoxSlave1->hide();
     }else{
+        groupBoxSlave1->show();
         groupBoxSlave1->setTitle(m1->getMachineIP());
+        slave1BuildWidget0->show();
+        slave1BuildWidget1->show();
+        slave1BuildWidget2->show();
+        offlineDisplay1->hide();
+        if(!m1->getMachineStatus().compare("offline")){
+            //means the machine has gone offline and offline button needs to be shown
+            slave1BuildWidget0->hide();
+            slave1BuildWidget1->hide();
+            slave1BuildWidget2->hide();
+            offlineDisplay1->show();
+        }
     }
 
 

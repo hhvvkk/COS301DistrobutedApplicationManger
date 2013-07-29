@@ -28,7 +28,6 @@ namespace Ui {
 class MainForm;
 }
 
-
 class MainForm : public QMainWindow
 {
     Q_OBJECT
@@ -37,32 +36,18 @@ public:
     explicit MainForm(QWidget *parent = 0);
     ~MainForm();
     
-private:
-    Ui::MainForm *ui;
-
-    Management *management;
-
-    QSpinBox *spinBoxSlaves;
-    QSpinBox *spinBoxMaster;
-    //droppable items(i.e. there are items that can be dropped on them...
-    QLabel *addLabel;
-    QGroupBox *groupBoxSlave0;
-    QGroupBox *groupBoxSlave1;
-    //QGroupBox *groupBoxSlave2;
-
     //settings//
-    //int numSlavesShown = 2;
 
-    //the build class to show the builds on the master and slaves
-    class Build : public QGroupBox{
+    //the  BuildWidget class to show the  BuildWidgets on the master and slaves
+    class BuildWidget : public QGroupBox{
     public:
         /**
-         * @brief Build This instantiates the class for either the master or the slave to display bulids
-         * @param ObjName This is the name of the object such as "masterBuild3" or "slaveBuild1"
+         * @brief  BuildWidget This instantiates the class for either the master or the slave to display bulids
+         * @param ObjName This is the name of the object such as "master BuildWidget3" or "slave BuildWidget1"
          * @param isMaster This boolean indicates the behaviour of the class to be master or a slave
          */
-        Build(QString ObjName, bool isMaster) : QGroupBox(ObjName){
-            QPushButton *newName = new QPushButton("aDir"+ObjName);
+         BuildWidget(QString ObjName, bool isMaster) : QGroupBox(ObjName){
+            QPushButton *newName = new QPushButton("button"+ObjName);
             QPushButton *newDirectory = new QPushButton("directory"+ObjName);
             QPushButton *newDescription = new QPushButton("description"+ObjName);
             QLabel *newDragLabel = new QLabel("drag");
@@ -112,7 +97,7 @@ private:
             newDescription->setIconSize(defaultSize);
             newRunButton->setIconSize(defaultSize);
 
-            //add them to build
+            //add them to  BuildWidget
             QHBoxLayout *newHorizontalLayout = new QHBoxLayout;
             newHorizontalLayout->addWidget(newName);
             if(isMaster){
@@ -201,6 +186,7 @@ protected:
     virtual void dragMoveEvent ( QDragMoveEvent *event );
 private slots:
     void newSlaveConnected();
+    void slaveDisconnected();
     /**
      * @brief on_actionHelp_triggered The function called when the About>Help function is called
      */
@@ -213,6 +199,8 @@ private slots:
      * @brief on_actionVersion_triggered The function called when the About>Version function is called
      */
     void on_actionVersion_triggered();
+
+    void spinboxChanged();
 
 private:
     /**
@@ -230,6 +218,31 @@ private:
 
     void displaySlaves();
 
+
+private:
+    Ui::MainForm *ui;
+
+    Management *management;
+
+    QSpinBox *spinBoxSlaves;
+    QSpinBox *spinBoxMaster;
+    //droppable items(i.e. there are items that can be dropped on them...
+    QLabel *addLabel;
+
+    //Slave  BuildWidget displays
+    QGroupBox *groupBoxSlave0;
+    QGroupBox *groupBoxSlave1;
+
+    QPushButton *offlineDisplay0;
+    QPushButton *offlineDisplay1;
+
+    BuildWidget *slave0BuildWidget0;
+    BuildWidget *slave0BuildWidget1;
+    BuildWidget *slave0BuildWidget2;
+
+    BuildWidget *slave1BuildWidget0;
+    BuildWidget *slave1BuildWidget1;
+    BuildWidget *slave1BuildWidget2;
 };
 
 

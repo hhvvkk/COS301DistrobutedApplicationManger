@@ -3,11 +3,11 @@
 
 #include <QMainWindow>
 
-#include "dialog.h"
-
 namespace Ui {
 class MainWindow;
 }
+
+#include "management.h"
 
 class MainWindow : public QMainWindow
 {
@@ -16,13 +16,14 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    void goToNext(QString ip);
+
 private slots:
-    void on_pushButton_clicked();
+    void connectClick();
+    void disconnectClick();
 
 private:
     Ui::MainWindow *ui;
-    Dialog *myDialog;
+    Management *management;
 
 };
 

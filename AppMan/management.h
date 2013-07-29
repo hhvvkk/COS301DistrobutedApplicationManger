@@ -29,8 +29,10 @@ class Server;
 class Management : public QObject
 {
     Q_OBJECT
+   //signals to talk to the mainForm("in a sence")
 signals:
     void newSlaveConnected();
+    void slaveDisconnected();
 public:
     /**
     * \fn Management();
@@ -90,6 +92,7 @@ public:
     void startServer();
     void stopServer();
     void setPort(int newPort);
+    void setSlaveOffline(Machine *m, bool isOffline);
 signals:
 
 private:

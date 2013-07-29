@@ -90,10 +90,23 @@ void Management::setPort(int newPort){
     server->setPort(newPort);
 }
 
+void Management::setSlaveOffline(Machine *m, bool isOffline){
+    emit slaveDisconnected();
+    if(isOffline){
+        m->setMachineStatus("offline");
+    }
+    else{
+        m->setMachineStatus("online");
+    }
+}
+
 void Management::removeMachine(Machine *m){
+    qDebug()<<"attempting removal";
     int index = -1;
-    if(allMachines.size() == 0)
+    if(allMachines.size() == 0){
+        qDebug()<<"size = 0";
         return;
+    }
     for(int i = 0; i < allMachines.size(); i++)
         if(m == allMachines.at(i)){
             index = i;

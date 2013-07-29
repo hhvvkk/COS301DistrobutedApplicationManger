@@ -68,7 +68,7 @@ void ServerThread::disconnectedFunction() {
     qDebug() << socketID << " Disconnected--"<<adr.toString();
 
     //delete the client in management
-    management->removeMachine(machine);
+    management->setSlaveOffline(machine, true);
     //delete socket once it is not in use
     socket->deleteLater();
 
