@@ -6,6 +6,7 @@ Management::Management(QObject *parent) :
     QObject(parent)
 {
     server = 0;
+
 }
 
 void Management::setServer(Server *s){
@@ -44,6 +45,8 @@ void Management::addMachine(Slave *slaveToAdd){
 void Management::addMachine(Machine* machine){
     allMachines.push_back(machine);
     machineCount++;
+    //emit the signal so it can be used by main form
+    emit newSlaveConnected();
 }
 
 void Management::addBuild(Build buildToAdd){
@@ -66,6 +69,11 @@ void Management::addBuild(Build buildToAdd){
 }
 
 
+Machine* Management::getMachineAt(int i){
+    if(i<0 || i >= allMachines.size())
+        return 0;
+    return allMachines.at(i);
+}
 
 void Management::startServer(){
     if(server == NULL){

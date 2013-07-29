@@ -200,6 +200,7 @@ protected:
      */
     virtual void dragMoveEvent ( QDragMoveEvent *event );
 private slots:
+    void newSlaveConnected();
     /**
      * @brief on_actionHelp_triggered The function called when the About>Help function is called
      */
@@ -226,6 +227,9 @@ private:
      * @param newBuildDirectory this is the place on hard drive where the build is located
      */
     void dropNewBuildAdd(QString newBuildDirectory);
+
+    void displaySlaves();
+
 };
 
 

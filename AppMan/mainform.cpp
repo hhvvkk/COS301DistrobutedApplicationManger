@@ -20,6 +20,9 @@ MainForm::MainForm(QWidget *parent) :
 
     this->setAcceptDrops(true);
 
+    //connect up sinals(newSlaveConnected, slaveDisconnected)...
+    //connect(management, SIGNAL(newSlaveConnected()), this, SLOT(newSlaveConnected()));
+    connect(management, SIGNAL(newSlaveConnected()),this,SLOT(newSlaveConnected()));
     /************************Master(setupBegin)***********************/
     QVBoxLayout *masterHorizontalLayout = new QVBoxLayout;
 
@@ -221,4 +224,40 @@ void MainForm::on_actionStop_Server_triggered()
 {
     //stop the server
     management->stopServer();
+}
+
+void MainForm::newSlaveConnected(){
+    //now go find slave and show it if needed
+    displaySlaves();
+}
+
+void MainForm::displaySlaves(){
+    int index = spinBoxSlaves->value();
+    int machineCount = management->getMachineCount();
+
+    qDebug()<<"NEW SLAVE CONNECTED..index"<<index;
+    qDebug()<<"machineCount"<<machineCount;
+    //get the machines that should be shown at index 1 and index2
+    int show1 = index*2;
+    int show2 = show1+1;
+
+    Machine* m0 = management->getMachineAt(show1);
+    Machine* m1 = management->getMachineAt(show2);
+
+    //then finally display the machines
+    if(m0 == 0){
+        qDebug()<<"isZero";
+        groupBoxSlave0->hide();
+    }
+    else{
+        groupBoxSlave0->setTitle(m0->getMachineIP());
+    }
+
+    if(m1 == 0){
+        groupBoxSlave1->hide();
+    }else{
+        groupBoxSlave1->setTitle(m1->getMachineIP());
+    }
+
+
 }

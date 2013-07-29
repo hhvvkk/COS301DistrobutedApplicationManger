@@ -29,6 +29,8 @@ class Server;
 class Management : public QObject
 {
     Q_OBJECT
+signals:
+    void newSlaveConnected();
 public:
     /**
     * \fn Management();
@@ -82,6 +84,8 @@ public:
 
     void addMachine(Machine* machine);
     void removeMachine(Machine *m);
+    Machine *getMachineAt(int i);
+
     void setServer(Server *serv);
     void startServer();
     void stopServer();
