@@ -39,14 +39,14 @@ class Machine{
 		bool machineType;
 	public:
 		/**
-                * \fn Machine(int id, QString ip, QString status);
+        * \fn Machine(int id, QString ip, QString status);
 		* @brief The parameterised constructor
 		* @param id The machineID to assign
 		* @param ip The machineIP to assign
 		* @param status The machineStatus to assign
 		* @param type The boolean indicating Master or Slave
 		*/
-                Machine(int id, QString ip, QString status, bool type);
+        Machine(int id, QString ip, QString status, bool type);
 		/**
 		* \fn ~Machine();
 		* @brief The destructor

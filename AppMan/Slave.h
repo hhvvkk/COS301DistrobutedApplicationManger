@@ -4,6 +4,7 @@
 * @author 101Solutions
 * @version 2.0
 */
+
 #ifndef Slave_H
 #define Slave_H
 

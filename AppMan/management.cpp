@@ -1,12 +1,12 @@
 #include "management.h"
 #include <QDebug>
-#include <QList>
 
 Management::Management(QObject *parent) :
     QObject(parent)
 {
     server = 0;
-
+    buildCount = 0;
+    machineCount = 0;
 }
 
 void Management::setServer(Server *s){

@@ -4,6 +4,7 @@
 * @author 101Solutions
 * @version 2.0
 */
+
 #ifndef BUILD_H
 #define BUILD_H
 
@@ -33,7 +34,7 @@ class Build{
                 QString buildDescription;
 	public:
 		/**
-                * \fn Build(int id, QString name, QString descript);
+        * \fn Build(int id, QString name, QString descript);
 		* @brief The parameterised constructor
 		* @param id The buildID to assign
 		* @param name The buildName to assign

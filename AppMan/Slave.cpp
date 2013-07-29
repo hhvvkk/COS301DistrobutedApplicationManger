@@ -16,7 +16,7 @@ Slave::Slave(int id, QString ip, QString status, bool type){
 	}
 	else{
 		machineID = id;
-                this->machineIP = ip;
+        this->machineIP = ip;
 		machineStatus = status;
 		machineType = type;
 		buildCount = 0;
