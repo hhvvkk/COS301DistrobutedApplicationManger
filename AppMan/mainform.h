@@ -14,7 +14,6 @@
 #include <QPushButton>
 #include <QLayout>
 #include <QLabel>
-#include <QHBoxLayout>
 #include <QGroupBox>
 #include <QMouseEvent>
 #include <QMessageBox>
@@ -27,6 +26,7 @@
 #include <QFrame>
 #include <QUrl>
 #include <QSpinBox>
+#include <QTreeWidgetItem>
 
 #include "management.h"
 #include "inputdialogue.h"
@@ -63,131 +63,7 @@ public:
      * @class BuildWidget
      * @brief The BuildWidget class will be used to display a build for the user. It is a class that is created depending on whether it is a slave machine or not
      */
-    class BuildWidget : public QGroupBox{
-    public:
-        /**
-         * \fn BuildWidget(QString ObjName, bool isMaster) : QGroupBox(ObjName){
-         * @brief  BuildWidget This instantiates the class for either the master or the slave to display bulids
-         * @param ObjName This is the name of the object such as "master BuildWidget3" or "slave BuildWidget1"
-         * @param isMaster This boolean indicates the behaviour of the class to be master or a slave
-         */
-         BuildWidget(QString ObjName, bool isMaster) : QGroupBox(ObjName){
-            QPushButton *newName = new QPushButton("button"+ObjName);
-            QPushButton *newDirectory = new QPushButton("directory"+ObjName);
-            QPushButton *newDescription = new QPushButton("description"+ObjName);
-            QLabel *newDragLabel = new QLabel("drag");
-            newDragLabel->setObjectName("drag"+ObjName);
-            QPushButton *newRunButton = new QPushButton("runButton"+ObjName);
-            QProgressBar *newProgressBar = new QProgressBar();
 
-            newProgressBar->setValue(60);
-            newProgressBar->setAlignment(Qt::AlignCenter);
-            /*set the sizes and icons*/
-            //set icons
-            if(QFile("./images/Files.png").exists() == false)
-                newName->setText("[] Name");
-            else
-                newName->setIcon(QIcon("./images/Files.png"));
-            newName->setMaximumWidth(80);
-
-
-
-            if(QFile("./images/Directory.png").exists() == false)
-                newDirectory->setText("Directory");
-            else{
-                newDirectory->setIcon(QIcon("./images/Directory.png"));
-                newDirectory->setText("");
-            }
-
-            if(QFile("./images/DescriptionGreen.png").exists() == false)
-                newDescription->setText("Description");
-            else{
-                newDescription->setIcon(QIcon("./images/DescriptionGreen.png"));
-                newDescription->setText("");
-            }
-
-            if(QFile("./images/Directory.png").exists() == false)
-                newRunButton->setText("|> Run");
-            else{
-                newRunButton->setIcon(QIcon("./images/Run.png"));
-                newRunButton->setText("");
-            }
-
-
-            //set icon sizes
-            const static QSize newNameIconSize = QSize(20,30);
-            const static QSize defaultSize = QSize(100,30);
-            newName->setIconSize(newNameIconSize);
-            newDirectory->setIconSize(defaultSize);
-            newDescription->setIconSize(defaultSize);
-            newRunButton->setIconSize(defaultSize);
-
-            //add them to  BuildWidget
-            QHBoxLayout *newHorizontalLayout = new QHBoxLayout;
-            newHorizontalLayout->addWidget(newName);
-            if(isMaster){
-                newHorizontalLayout->addWidget(newDirectory);
-                delete newRunButton;
-            }
-            else{
-                newHorizontalLayout->addWidget(newRunButton);
-                delete newDirectory;
-            }
-
-            if(isMaster)
-                newHorizontalLayout->addWidget(newDescription);
-            else{
-                newHorizontalLayout->addWidget(newProgressBar);
-            }
-
-
-            if(isMaster)
-                newHorizontalLayout->addWidget(newDragLabel);
-            else
-                delete newDragLabel;
-
-            this->setLayout(newHorizontalLayout);
-        }
-
-    protected:
-        /**
-         * \fn void mousePressEvent(QMouseEvent *event){
-         * @brief mousePressEvent this event is overridden to set the mimedata for later use
-         * @param event the event fired when clicking on a label to drag and drop it
-         */
-        void mousePressEvent(QMouseEvent *event){
-            //static cast an element that is pressed to QLabel
-            QLabel *child = dynamic_cast<QLabel*>(childAt(event->pos()));
-
-            if(!child){
-                return;//return if it fails to dynamic cast
-            }
-
-            //the position where it will be created
-            QPoint hotSpot = event->pos() - child->pos();
-
-            //Set the mime data for the mouse drag (QDrag)
-            QMimeData *mimeData = new QMimeData;
-            mimeData->setText(child->objectName());
-            mimeData->setData("application/x-hotspot", QByteArray::number(hotSpot.x()) + " " + QByteArray::number(hotSpot.y()));
-
-            //set the size of the item that will be dragged and dropped
-            QPixmap pixmap(child->size());
-            child->render(&pixmap); //render the image of the item that will be dragged
-
-            //create a QDrag file to set all the mimedata for drag and drop
-            QDrag *drag = new QDrag(this);
-            drag->setMimeData(mimeData);
-            drag->setPixmap(pixmap);
-            drag->setHotSpot(hotSpot);
-
-            Qt::DropAction dropAction = drag->exec(Qt::CopyAction | Qt::MoveAction, Qt::CopyAction);
-
-            if (dropAction == Qt::MoveAction)
-                child->close();
-        }
-
-    };
 
 protected:
     /**
@@ -290,58 +166,23 @@ private:
     Management *management;
 
     /**
-     * @var spinBoxSlaves
-     * @brief spinBoxSlaves The slave computer traversing mechanisim
-     * @var spinBoxMaster
-     * @brief spinBoxMaster The master build traversing mechanism
+     * @class MasterBuilds
+     * @brief The MasterBuilds class will be used to display builds on the master machine
      */
-    QSpinBox *spinBoxSlaves;
-    QSpinBox *spinBoxMaster;
+    class MasterBuilds: public QTreeWidget{
+    public:
+        MasterBuilds(QWidget *par = 0);
 
-    /**
-     * @var addLabel
-     * @brief addLabel A label that will have a drop mode enabled to drop builds onto it
-     */
-    QLabel *addLabel;
+    protected:
+        /**
+         * \fn mousePressEvent(QMouseEvent *event);
+         * @brief A custom mouse press event to enable drag and drop
+         * @param event
+         */
+        void mousePressEvent(QMouseEvent *event);
+    };
 
-    //Slave  BuildWidget displays
-    /**
-     * @var groupBoxSlave0
-     * @brief groupBoxSlave0 The machine 0 at an index with regards to spinbox value
-     */
-    QGroupBox *groupBoxSlave0;
-    /**
-     * @var groupBoxSlave1
-     * @brief groupBoxSlave1 The machine 1 at an index with regards to spinbox value
-     */
-    QGroupBox *groupBoxSlave1;
-
-    /**
-     * @brief offlineDisplay0 The machine 0 status when it is offline
-     * @brief offlineDisplay1 The machine 1 status when it is offline
-     */
-    QPushButton *offlineDisplay0;
-    QPushButton *offlineDisplay1;
-
-
-    /**
-     * @brief slave0BuildWidget0 Machine 0 build 0 displayed here
-     * @brief slave0BuildWidget1 Machine 0 build 1 displayed here
-     * @brief slave0BuildWidget2 Machine 0 build 2 displayed here
-     */
-    BuildWidget *slave0BuildWidget0;
-    BuildWidget *slave0BuildWidget1;
-    BuildWidget *slave0BuildWidget2;
-
-
-    /**
-     * @brief slave1BuildWidget0 Machine 1 build 0 displayed here
-     * @brief slave1BuildWidget1 Machine 1 build 1 displayed here
-     * @brief slave1BuildWidget2 Machine 1 build 2 displayed here
-     */
-    BuildWidget *slave1BuildWidget0;
-    BuildWidget *slave1BuildWidget1;
-    BuildWidget *slave1BuildWidget2;
+    MasterBuilds *masterBuilds;
 };
 
 

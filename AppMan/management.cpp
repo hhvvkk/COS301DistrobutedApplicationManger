@@ -77,6 +77,7 @@ Machine* Management::getMachineAt(int i){
 
 void Management::startServer(){
     if(server == NULL){
+        qDebug()<<"FASD";
         return;
     }
     server->startServer();

@@ -5,6 +5,8 @@
 #include "server.h"
 
 
+
+
 MainForm::MainForm(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainForm)
@@ -12,128 +14,39 @@ MainForm::MainForm(QWidget *parent) :
     ui->setupUi(this);
 
     management = new Management();
-
     Server *server = new Server(management);
     management->setServer(server);
-
-    server = 0;
-
-    this->setAcceptDrops(true);
-
-    //connect up sinals(newSlaveConnected, slaveDisconnected)...
+    ///connect slots for backward signalling
     connect(management, SIGNAL(newSlaveConnected()),this,SLOT(newSlaveConnected()));
     connect(management, SIGNAL(slaveDisconnected()),this,SLOT(slaveDisconnected()));
 
-
-    /************************Master(setupBegin)***********************/
-    QVBoxLayout *masterHorizontalLayout = new QVBoxLayout;
-
-    spinBoxMaster = new QSpinBox();
-    spinBoxMaster->setMinimum(0);
-    masterHorizontalLayout->addWidget(spinBoxMaster);
-
-    //create Horizontal Layout
-    BuildWidget *masterBuildWidget0 = new BuildWidget("masterBuildWidget0",true);
-    BuildWidget *masterBuildWidget1 = new BuildWidget("masterBuildWidget1",true);
-    BuildWidget *masterBuildWidget2 = new BuildWidget("masterBuildWidget2",true);
-    BuildWidget *masterBuildWidget3 = new BuildWidget("masterBuildWidget3",true);
-    masterHorizontalLayout->addWidget(masterBuildWidget0);
-    masterHorizontalLayout->addWidget(masterBuildWidget1);
-    masterHorizontalLayout->addWidget(masterBuildWidget2);
-    masterHorizontalLayout->addWidget(masterBuildWidget3);
-
-    //w = 250 h = 80 / scaledContents = true    --- frameShape = panel + frameShadow = sunken + width = 2
-    QFrame *addFrame = new QFrame();
-    addLabel = new QLabel();
-    //addLabel->setFrameShadow();
-    addLabel->setMaximumSize(250,80);
-    addLabel->setScaledContents(true);
-
-    if(QFile("./images/Directory.png").exists() == false)
-        addLabel->setText("+ Add");
-    else{
-        QPixmap pixMap = QPixmap("./images/Add.png");
-        addLabel->setPixmap(pixMap);
-        addLabel->setText("");
-    }
-    addLabel->setFrameShadow(QFrame::Raised);
-    addLabel->setFrameShape(QFrame::Box);
-    addLabel->setLineWidth(2);
-    addLabel->setAcceptDrops(true);
-
-    QVBoxLayout *boxLayout = new QVBoxLayout;
-    boxLayout->addWidget(addLabel);
-    addFrame->setLayout(boxLayout);
-
-    addFrame->setAcceptDrops(true);
-    masterHorizontalLayout->addWidget(addFrame);
-    ui->groupBoxMaster->setLayout(masterHorizontalLayout);
-    /************************Master(setupEnd)***********************/
+    masterBuilds = new MasterBuilds();
+    masterBuilds->setHeaderHidden(true);
 
 
-    /************************Slave(setupBegin)***********************/
-     QVBoxLayout *slavesHorizontalLayout = new QVBoxLayout;
-
-     //slave0
-
-     QVBoxLayout *slave0HorizontalLayout = new QVBoxLayout;
-     offlineDisplay0 = new QPushButton("offlineShow");
-     slave0BuildWidget0 = new BuildWidget("slave0BuildWidget0",false);
-     slave0BuildWidget1 = new BuildWidget("slave0BuildWidget1",false);
-     slave0BuildWidget2 = new BuildWidget("slave0BuildWidget2",false);
-     slave0HorizontalLayout->addWidget(offlineDisplay0);
-     slave0HorizontalLayout->addWidget(slave0BuildWidget0);
-     slave0HorizontalLayout->addWidget(slave0BuildWidget1);
-     slave0HorizontalLayout->addWidget(slave0BuildWidget2);
-     groupBoxSlave0 = new QGroupBox();
-     groupBoxSlave0->setTitle("Slave0");
-     groupBoxSlave0->setLayout(slave0HorizontalLayout);
-
-     //slave1
-     QVBoxLayout *slave1HorizontalLayout = new QVBoxLayout;
-     offlineDisplay1 = new QPushButton("offlineShow");
-     slave1BuildWidget0 = new BuildWidget("slave1BuildWidget0",false);
-     slave1BuildWidget1 = new BuildWidget("slave1BuildWidget1",false);
-     slave1BuildWidget2 = new BuildWidget("slave1BuildWidget2",false);
-     slave1HorizontalLayout->addWidget(offlineDisplay1);
-     slave1HorizontalLayout->addWidget(slave1BuildWidget0);
-     slave1HorizontalLayout->addWidget(slave1BuildWidget1);
-     slave1HorizontalLayout->addWidget(slave1BuildWidget2);
-     groupBoxSlave1 = new QGroupBox();
-     groupBoxSlave1->setTitle("Slave1");
-     groupBoxSlave1->setLayout(slave1HorizontalLayout);
+    /*
+     * This part initializes the masterBuilds and adds it to mainform
+     */
+    QVBoxLayout *buildLayout = new QVBoxLayout();
+    ui->groupBoxMaster->setLayout(buildLayout);
+    buildLayout->addWidget(masterBuilds);
 
 
-     //icons for offline buttons
-     if(QFile("./images/Offline.png").exists() == false){
-         offlineDisplay1->setText("OFFLINE");
-         offlineDisplay0->setText("OFFLINE");
-     }
-     else{
-         offlineDisplay1->setIcon(QIcon("./images/Offline.png"));
-         offlineDisplay1->setText("");
-         offlineDisplay0->setIcon(QIcon("./images/Offline.png"));
-         offlineDisplay0->setText("");
-     }
-     //seticonsizes
-     const static QSize defaultSize = QSize(200,50);
-     offlineDisplay0->setIconSize(defaultSize);
-     offlineDisplay1->setIconSize(defaultSize);
+    QTreeWidgetItem *boola = new QTreeWidgetItem();
+    boola->setText(0,"buildNo1");
 
-     //spinboxSlaves
-     spinBoxSlaves = new QSpinBox();
-     slavesHorizontalLayout->addWidget(spinBoxSlaves);
-     spinBoxSlaves->setMinimum(0);
+        //boola->set
+        masterBuilds->addTopLevelItem(boola);
+        boola = new QTreeWidgetItem();
+        boola->setText(0,"buildNo2");
+        masterBuilds->addTopLevelItem(boola);boola = new QTreeWidgetItem();
+        boola->setText(0,"buildNo3");
+        masterBuilds->addTopLevelItem(boola);boola = new QTreeWidgetItem();
+        boola->setText(0,"buildNo4");
+        masterBuilds->addTopLevelItem(boola);
 
-     //add slaves to the main layout
-     slavesHorizontalLayout->addWidget(groupBoxSlave0);
-     slavesHorizontalLayout->addWidget(groupBoxSlave1);
-     ui->groupBoxSlaves->setLayout(slavesHorizontalLayout);
-
-     displaySlaves();
-     connect(spinBoxSlaves, SIGNAL(valueChanged(int)), this,SLOT(spinboxChanged()));
-    /************************Slave(setupEnd)***********************/
 }
+
 
 MainForm::~MainForm()
 {
@@ -143,26 +56,87 @@ MainForm::~MainForm()
 }
 
 
+MainForm::MasterBuilds::MasterBuilds(QWidget *parent)
+    :QTreeWidget(parent){
+
+}
+
+void MainForm::MasterBuilds::mousePressEvent(QMouseEvent *event){
+
+    /*Also not yet pointing to the qwidgetItem*/
+    /*
+    QRect widgetRect = this->geometry();
+    QPoint mousePos = this->mapFromGlobal(QCursor::pos());
+    */
+
+    //the point where the event was fired
+    QPoint hotSpot = event->pos();// - child->pos();
+
+    QTreeWidget::mousePressEvent(event);
+
+    QTreeWidgetItem  *theItem =  itemAt(hotSpot);
+
+    if(!theItem){
+        return;//return if it fails to dynamic cast
+    }
+
+    QMimeData *mimeData = new QMimeData;
+
+    //set the mime data for mouse drag
+    QString indexOfItem = QString::number(this->indexOfTopLevelItem(itemAt(hotSpot)));
+    mimeData->setText("#<<MBIndex="+indexOfItem );//+ theItem->text(0));
+    mimeData->setData("application/x-hotspot", QByteArray::number(hotSpot.x()) + " " + QByteArray::number(hotSpot.y()));
+
+
+    qDebug()<<mimeData->text();
+
+    QLabel *renderer = new QLabel();
+    renderer->setText(theItem->text(0));
+
+    QPixmap pixmap(renderer->size());
+    renderer->render(&pixmap); //render the image of the item that will be dragged
+
+
+    //create a QDrag file to set all the mimedata for drag and drop
+    QDrag *drag = new QDrag(this);
+    drag->setMimeData(mimeData);
+    drag->setPixmap(pixmap);
+    drag->setHotSpot(hotSpot);
+
+    Qt::DropAction dropAction = drag->exec(Qt::CopyAction | Qt::MoveAction, Qt::CopyAction);
+
+
+    if(dropAction == Qt::MoveAction){
+        renderer->close();
+        //Very very important! ")
+        renderer->deleteLater();
+    }
+    else{
+        renderer->close();
+        //Very very important! ")
+        renderer->deleteLater();
+    }
+}
+
+
 void MainForm::dropEvent ( QDropEvent *event ){
-    QGroupBox *grpBox = dynamic_cast<QGroupBox*>(childAt(event->pos()));
-    if (grpBox){//THIS MEANS THERE IS A DROPPED ITEM OVER A group box(E>G> Slave)
-        //i.e. it could be a build that is dropped for a slave
-        //here it checks if it is dropped on a slave group box or not
-        if(!(groupBoxSlave0 == grpBox))
-            if(!(groupBoxSlave1 == grpBox))
-                //if(!(groupBoxSlave2 == grpBox))
-                    return;
+    QTreeWidgetItem *slaveTreeWidget = dynamic_cast<QTreeWidgetItem*>(childAt(event->pos()));
 
-        QString fromBuild = event->mimeData()->text();
+    if (slaveTreeWidget){
 
-        //check to see if it is the right label that is dropped
-        if(!fromBuild.contains("dragmasterBuild"))
+        QString buildIndex = event->mimeData()->text();
+        qDebug()<<"ASDASDADASDFASGAC=="+buildIndex;
+        //check to see if it is the right item that is dropped
+        if(!buildIndex.contains("#<<MBIndex="))
             return;
-        dropBuildToSlave(fromBuild, grpBox->title());
+        dropBuildToSlave(buildIndex, "somethingForNow");
         event->accept();
         return;
     }
-
+    else{
+        qDebug()<<"...FALSE...";
+    }
+/*
     QLabel *labelTrue = dynamic_cast<QLabel*>(childAt(event->pos()));
     if(labelTrue){//droppped on a label
         //check to see if it is the addLabel
@@ -180,7 +154,7 @@ void MainForm::dropEvent ( QDropEvent *event ){
         event->accept();
         return;
     }
-
+*/
 }
 
 void MainForm::dropBuildToSlave(QString fromBuild, QString toSlave){
@@ -255,63 +229,12 @@ void MainForm::slaveDisconnected(){
 }
 
 void MainForm::displaySlaves(){
-    int index = spinBoxSlaves->value();
-    int machineCount = management->getMachineCount();
-    int max=0;
-    if(machineCount%2 == 0)
-        max = (machineCount/2)-1;
-    else
-        max = (machineCount/2);
-    if(max < 0)
-        spinBoxSlaves->setMaximum(0);
-    else
-        spinBoxSlaves->setMaximum(max);;
-    qDebug()<<"machineCount"<<machineCount;
-    //get the machines that should be shown at index 1 and index2
-    int show1 = index*2;
-    int show2 = show1+1;
-
-    Machine* m0 = management->getMachineAt(show1);
-    Machine* m1 = management->getMachineAt(show2);
-
-    //then finally display the machines
-    if(m0 == 0){
-        groupBoxSlave0->hide();
+    //Machine* machines= management->getAllMachines();
+    qDebug()<<"ASDASDS";
+    ui->treeWidgetSlaves->clear();
+    for(int i = 0; i <management->getMachineCount(); i++){
+        QTreeWidgetItem *slaveItem = new QTreeWidgetItem();
+        slaveItem->setText(0, management->getMachineAt(i)->getMachineIP());
+        ui->treeWidgetSlaves->addTopLevelItem(slaveItem);
     }
-    else{
-        groupBoxSlave0->show();
-        groupBoxSlave0->setTitle(m0->getMachineIP());
-
-        slave0BuildWidget0->show();
-        slave0BuildWidget1->show();
-        slave0BuildWidget2->show();
-        offlineDisplay0->hide();
-        if(!m0->getMachineStatus().compare("offline")){
-            //means the machine has gone offline and offline button needs to be shown
-            slave0BuildWidget0->hide();
-            slave0BuildWidget1->hide();
-            slave0BuildWidget2->hide();
-            offlineDisplay0->show();
-        }
-    }
-
-    if(m1 == 0){
-        groupBoxSlave1->hide();
-    }else{
-        groupBoxSlave1->show();
-        groupBoxSlave1->setTitle(m1->getMachineIP());
-        slave1BuildWidget0->show();
-        slave1BuildWidget1->show();
-        slave1BuildWidget2->show();
-        offlineDisplay1->hide();
-        if(!m1->getMachineStatus().compare("offline")){
-            //means the machine has gone offline and offline button needs to be shown
-            slave1BuildWidget0->hide();
-            slave1BuildWidget1->hide();
-            slave1BuildWidget2->hide();
-            offlineDisplay1->show();
-        }
-    }
-
-
 }
