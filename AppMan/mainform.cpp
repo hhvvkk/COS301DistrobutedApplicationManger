@@ -63,6 +63,9 @@ MainForm::MasterBuilds::MasterBuilds(QWidget *parent)
 
 void MainForm::MasterBuilds::mousePressEvent(QMouseEvent *event){
 
+    //if it is a normal click just call the parent's mouse press event
+    qDebug()<<"type = "<<event->type();
+    QTreeWidget::mousePressEvent(event);
     /*Also not yet pointing to the qwidgetItem*/
     /*
     QRect widgetRect = this->geometry();
@@ -71,8 +74,6 @@ void MainForm::MasterBuilds::mousePressEvent(QMouseEvent *event){
 
     //the point where the event was fired
     QPoint hotSpot = event->pos();// - child->pos();
-
-    QTreeWidget::mousePressEvent(event);
 
     QTreeWidgetItem  *theItem =  itemAt(hotSpot);
 
@@ -101,10 +102,10 @@ void MainForm::MasterBuilds::mousePressEvent(QMouseEvent *event){
     QDrag *drag = new QDrag(this);
     drag->setMimeData(mimeData);
     drag->setPixmap(pixmap);
-    drag->setHotSpot(hotSpot);
+    //dont set hotspot
+    //drag->setHotSpot(hotSpot);
 
     Qt::DropAction dropAction = drag->exec(Qt::CopyAction | Qt::MoveAction, Qt::CopyAction);
-
 
     if(dropAction == Qt::MoveAction){
         renderer->close();
@@ -120,7 +121,8 @@ void MainForm::MasterBuilds::mousePressEvent(QMouseEvent *event){
 
 
 void MainForm::dropEvent ( QDropEvent *event ){
-    QTreeWidgetItem *slaveTreeWidget = dynamic_cast<QTreeWidgetItem*>(childAt(event->pos()));
+    QAbstractScrollArea *slaveTreeWidget = dynamic_cast<QAbstractScrollArea*>(childAt(event->pos()));
+    qDebug()<<event->source();
 
     if (slaveTreeWidget){
 
