@@ -28,25 +28,25 @@ class Machine{
 		*/
                 QString machineIP;
 		/**
-		* @var machineStatus
-		* @brief the status of the machine
+                * @var online
+                * @brief the online status of the machine
 		*/
-                QString machineStatus;
+                bool online;
 		/**
 		* @var machineType
 		* @brief 0 is Master, 1 is Slave
 		*/
 		bool machineType;
 	public:
-		/**
-        * \fn Machine(int id, QString ip, QString status);
+                /**
+        * \fn Machine(int id, QString ip, bool onL);
 		* @brief The parameterised constructor
 		* @param id The machineID to assign
 		* @param ip The machineIP to assign
-		* @param status The machineStatus to assign
+                * @param onL The machineStatus to assign
 		* @param type The boolean indicating Master or Slave
 		*/
-        Machine(int id, QString ip, QString status, bool type);
+        Machine(int id, QString ip, bool onL, bool type);
 		/**
 		* \fn ~Machine();
 		* @brief The destructor
@@ -58,14 +58,14 @@ class Machine{
 		*/
 		Machine();
 		/**
-                * \fn void setMachine(int id, QString ip, QString status);
+                * \fn void setMachine(int id, QString ip, bool onL);
 		* @brief The function to set machine details
 		* @param id The machineID to assign
 		* @param ip The machineIP to assign
-		* @param status The machineStatus to assign
+                * @param onL The machineStatus to assign
 		* @param type The boolean indicating Master or Slave
 		*/
-                void setMachine(int id, QString ip, QString status, bool type);
+                void setMachine(int id, QString ip, bool onL, bool type);
 		/**
 		* \fn int getMachineID() {return machineID;};
 		* @brief The function to access the machineID variable
@@ -79,11 +79,11 @@ class Machine{
 		*/
                 QString getMachineIP() {return machineIP;}
 		/**
-                * \fn QString getMachineStatus() {return machineStatus;};
-		* @brief The function to access the machineStatus variable
-		* @return machineStatus
+                * \fn bool isOnline() {return online;}
+                * @brief The function to access the online variable
+                * @return Return if machine is online or not
 		*/
-                QString getMachineStatus() {return machineStatus;}
+                bool isOnline() {return online;}
 		/**
 		* \fn bool getMachineType() {return machineType;};
 		* @brief The function to access the machineType variable
@@ -103,11 +103,11 @@ class Machine{
 		*/
                 void setMachineIP(QString ip);
 		/**
-                * \fn void setMachineStatus(QString status);
-		* @brief The function to mutate the machineStatus variable
-		* @param status The status to be assigned to machineStatus
+                * \fn void setMachineOnline(bool isOnline);
+                * @brief The function to change online and offline boolean
+                * @param whether or not the machine is online
 		*/
-                void setMachineStatus(QString status);
+                void setMachineOnline(bool isOnline);
 		/**
 		* \fn void setMachineType(bool type);
 		* @brief The function to mutate the machineType variable

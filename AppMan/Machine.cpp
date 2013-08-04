@@ -8,7 +8,7 @@ using namespace std;
                 QString machineIP;
                 QString machineStatus;
 */
-Machine::Machine(int id, QString ip, QString status, bool type){
+Machine::Machine(int id, QString ip, bool online_, bool type){
 	if(id <= 0){
                 //cout<<"Cannot have a negative ID"<<endl;
 		return;
@@ -16,19 +16,21 @@ Machine::Machine(int id, QString ip, QString status, bool type){
 	else{
 		machineID = id;
 		machineIP = ip;
-		machineStatus = status;
+                online = online_;
 		machineType = type;
 	}
 }
+
 Machine::~Machine(){
 	
 }
+
 Machine::Machine(){
 	machineID = 0;
 	machineType = 1;
 }
 
-void Machine::setMachine(int id, QString ip, QString status, bool type){
+void Machine::setMachine(int id, QString ip, bool onL, bool type){
 	if(id <= 0){
                 //cout<<"Cannot have a negative ID"<<endl;
 		return;
@@ -40,10 +42,11 @@ void Machine::setMachine(int id, QString ip, QString status, bool type){
 	else{
 		machineID = id;
 		machineIP = ip;
-		machineStatus = status;
+                online = onL;
 		machineType = type;
 	}
 }
+
 void Machine::setMachineID(int id){
 	if(id <= 0){
                 //cout<<"Cannot have a negative ID"<<endl;
@@ -53,6 +56,7 @@ void Machine::setMachineID(int id){
 		machineID = id;
 	}
 }
+
 void Machine::setMachineIP(QString ip){
 	if(ip.length()!=15){
                 //cout<<"The IP is invalid"<<endl;
@@ -62,15 +66,17 @@ void Machine::setMachineIP(QString ip){
 		machineIP = ip;
 	}
 }
-void Machine::setMachineStatus(QString status){
-	machineStatus = status;
+
+void Machine::setMachineOnline(bool onL){
+        online = onL;
 }
+
 void Machine::setMachineType(bool type){
 	machineType = type;
 }
 
 void Machine::printMachine(){
-	if(this->machineID == 0 || this->machineIP=="" || this->machineStatus=="")
+        if(this->machineID == 0 || this->machineIP=="")
 	{
                 //cout<<"Cannot output an incomplete machine"<<endl;
 	}

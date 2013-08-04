@@ -27,7 +27,10 @@ void SocketClient::connectToServer(QString ipAddress, int port){
     if(!socket->waitForConnected(1000)){
         //error
         qDebug()<<"Error when connecting";
+        return;
     }
+    //write to the server
+    socket->write("Hello AppMan");
 
 }
 
@@ -41,8 +44,6 @@ void SocketClient::disconnectFromServer(){
 void SocketClient::connected(){
     qDebug()<<"connected!;";
 
-    //write to the server
-    socket->write("Hello AppMan");
 }
 
 void SocketClient::disconnected(){

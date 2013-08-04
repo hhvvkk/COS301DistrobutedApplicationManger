@@ -5,8 +5,6 @@
 #include "server.h"
 
 
-
-
 MainForm::MainForm(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainForm)
@@ -121,8 +119,9 @@ void MainForm::MasterBuilds::mousePressEvent(QMouseEvent *event){
 
 
 void MainForm::dropEvent ( QDropEvent *event ){
-    QAbstractScrollArea *slaveTreeWidget = dynamic_cast<QAbstractScrollArea*>(childAt(event->pos()));
-    qDebug()<<event->source();
+
+    QFrame *slaveTreeWidget = dynamic_cast<QFrame*>(childAt(event->pos()));
+
 
     if (slaveTreeWidget){
 
@@ -232,11 +231,14 @@ void MainForm::slaveDisconnected(){
 
 void MainForm::displaySlaves(){
     //Machine* machines= management->getAllMachines();
-    qDebug()<<"ASDASDS";
     ui->treeWidgetSlaves->clear();
     for(int i = 0; i <management->getMachineCount(); i++){
         QTreeWidgetItem *slaveItem = new QTreeWidgetItem();
-        slaveItem->setText(0, management->getMachineAt(i)->getMachineIP());
+
+        if(management->getMachineAt(i)->isOnline())
+            slaveItem->setText(0, management->getMachineAt(i)->getMachineIP());
+        else
+            slaveItem->setText(0, management->getMachineAt(i)->getMachineIP()+"[offline]");
         ui->treeWidgetSlaves->addTopLevelItem(slaveItem);
     }
 }

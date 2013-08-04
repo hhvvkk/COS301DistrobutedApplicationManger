@@ -9,7 +9,7 @@ using namespace std;
                 QString machineIP;
                 QString machineStatus;
 */
-Master::Master(int id, QString ip, QString status, bool type){
+Master::Master(int id, QString ip, bool onL, bool type){
 	if(id <= 0){
                 //cout<<"Cannot have a negative ID"<<endl;
 		return;
@@ -17,7 +17,7 @@ Master::Master(int id, QString ip, QString status, bool type){
 	else{
 		machineID = id;
 		machineIP = ip;
-		machineStatus = status;
+                online = onL;
 		machineType = type;
 		buildCount = 0;
 		slaveCount = 0;
@@ -42,7 +42,7 @@ Master::Master(){
 Master::Master(Master &toCopy){
 	this->machineID = toCopy.machineID;
 	this->machineIP = toCopy.machineIP;
-	this->machineStatus = toCopy.machineStatus;
+        this->online = toCopy.online;
 	this->machineType = toCopy.machineType;
 	this->buildCount = toCopy.buildCount;
 	this->masterBuilds = toCopy.masterBuilds;
@@ -56,7 +56,7 @@ void Master::addSlave(Machine slaveToAdd){
 	Slave newSlaveToAdd;
 	newSlaveToAdd.setMachineID(slaveToAdd.getMachineID());
 	newSlaveToAdd.setMachineIP(slaveToAdd.getMachineIP());
-	newSlaveToAdd.setMachineStatus(slaveToAdd.getMachineStatus());
+        newSlaveToAdd.setMachineOnline(slaveToAdd.isOnline());
 	newSlaveToAdd.setMachineType(slaveToAdd.getMachineType());
 	if(slaveCount != 0){
 		Slave temp[slaveCount];

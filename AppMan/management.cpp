@@ -92,13 +92,13 @@ void Management::setPort(int newPort){
 }
 
 void Management::setSlaveOffline(Machine *m, bool isOffline){
-    emit slaveDisconnected();
     if(isOffline){
-        m->setMachineStatus("offline");
+        m->setMachineOnline(false);
     }
     else{
-        m->setMachineStatus("online");
+        m->setMachineOnline(true);
     }
+    emit slaveDisconnected();
 }
 
 void Management::removeMachine(Machine *m){

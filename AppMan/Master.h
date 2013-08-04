@@ -42,14 +42,14 @@ class Master : public Machine{
 		int slaveCount;
 	public:
 		/**
-                * \fn Master(int id, QString ip, QString status, bool type);
+                * \fn Master(int id, QString ip, bool onL, bool type);
 		* @brief The parameterised constructor
 		* @param id the machineID to assign
 		* @param ip the machineIP to assign
-		* @param status the machineStatus to assign
+                * @param onL the machineStatus to assign
 		* @param type The boolean indicating Master or Slave
 		*/
-                Master(int id, QString ip, QString status, bool type);
+                Master(int id, QString ip, bool onL, bool type);
 		/**
 		* \fn ~Master();
 		* @brief The destructor

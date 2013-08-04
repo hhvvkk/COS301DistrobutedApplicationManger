@@ -32,14 +32,14 @@ class Slave : public Machine{
 		int buildCount;
 	public:
 		/**
-                * \fn Slave(int id, QString ip, QString status);
+                * \fn Slave(int id, QString ip,  bool onL, bool type);
 		* @brief The parameterised constructor
 		* @param id the machineID to assign
 		* @param ip the machineIP to assign
-		* @param status the machineStatus to assign
+                * @param onLine whether or not the machine is online or not
 		* @param tpe the machineType to assign
                 */
-                Slave(int id, QString ip, QString status, bool type);
+                Slave(int id, QString ip, bool onLine, bool type);
 		/**
 		* \fn ~Slave();
 		* @brief The destructor

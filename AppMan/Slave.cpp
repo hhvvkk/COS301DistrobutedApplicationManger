@@ -9,15 +9,15 @@ using namespace std;
                 QString machineIP;
                 QString machineStatus;
 */
-Slave::Slave(int id, QString ip, QString status, bool type){
+Slave::Slave(int id, QString ip, bool onL, bool type){
         if(id <= 0){
                 //cout<<"Cannot have a negative ID"<<endl;
 		return;
 	}
 	else{
 		machineID = id;
-        this->machineIP = ip;
-		machineStatus = status;
+                this->machineIP = ip;
+                online = onL;
 		machineType = type;
 		buildCount = 0;
 	}
@@ -38,7 +38,7 @@ Slave::Slave(){
 Slave::Slave(Slave &toCopy){
 	this->machineID = toCopy.machineID;
 	this->machineIP = toCopy.machineIP;
-	this->machineStatus = toCopy.machineStatus;
+        this->online = toCopy.online;
 	this->machineType = toCopy.machineType;
 	this->buildCount = toCopy.buildCount;
 	this->slaveBuilds = toCopy.slaveBuilds;
