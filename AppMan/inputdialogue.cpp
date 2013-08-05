@@ -37,6 +37,7 @@ void InputDialogue::okClicked(){
             showErrorMessage(message);
         }
         management->setPort(ui->lineEdit->text().toInt());
+        this->close();
     }
 }
 

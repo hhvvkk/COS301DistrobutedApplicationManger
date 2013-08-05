@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>676</width>
+    <width>818</width>
     <height>325</height>
    </rect>
   </property>
@@ -21,43 +21,47 @@
     <normaloff>:/images/images/ALogo.png</normaloff>:/images/images/ALogo.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QHBoxLayout" name="horizontalLayout">
-    <item>
-     <widget class="QGroupBox" name="groupBoxMaster">
-      <property name="acceptDrops">
-       <bool>true</bool>
-      </property>
-      <property name="title">
-       <string>Master</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QGroupBox" name="groupBoxSlaves">
-      <property name="acceptDrops">
-       <bool>true</bool>
-      </property>
-      <property name="title">
-       <string>Slaves</string>
-      </property>
-      <layout class="QVBoxLayout" name="verticalLayout">
-       <item>
-        <widget class="QTreeWidget" name="treeWidgetSlaves">
-         <property name="acceptDrops">
-          <bool>true</bool>
-         </property>
-         <attribute name="headerVisible">
-          <bool>false</bool>
-         </attribute>
-         <column>
-          <property name="text">
-           <string notr="true">1</string>
-          </property>
-         </column>
-        </widget>
-       </item>
-      </layout>
-     </widget>
+   <layout class="QGridLayout" name="gridLayout_2">
+    <item row="0" column="0">
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QGroupBox" name="groupBoxMaster">
+        <property name="acceptDrops">
+         <bool>true</bool>
+        </property>
+        <property name="title">
+         <string>Master</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QGroupBox" name="groupBoxSlaves">
+        <property name="acceptDrops">
+         <bool>true</bool>
+        </property>
+        <property name="title">
+         <string>Slaves</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <widget class="QTreeWidget" name="treeWidgetSlaves">
+           <property name="acceptDrops">
+            <bool>true</bool>
+           </property>
+           <attribute name="headerVisible">
+            <bool>false</bool>
+           </attribute>
+           <column>
+            <property name="text">
+             <string notr="true">1</string>
+            </property>
+           </column>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
     </item>
    </layout>
   </widget>
@@ -66,7 +70,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>676</width>
+     <width>818</width>
      <height>21</height>
     </rect>
    </property>
@@ -91,6 +95,13 @@
     <addaction name="actionSet_Port"/>
     <addaction name="actionStop_Server"/>
    </widget>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionAdd_Build"/>
+   </widget>
+   <addaction name="menuFile"/>
    <addaction name="menuAdd"/>
    <addaction name="menuAbout"/>
    <addaction name="menuStartServer"/>
@@ -100,32 +111,23 @@
     <string>Program Status Here</string>
    </property>
   </widget>
-  <widget class="QDockWidget" name="dockWidget">
+  <widget class="QDockWidget" name="dockWidgetProperty">
    <attribute name="dockWidgetArea">
     <number>2</number>
    </attribute>
-   <widget class="QWidget" name="dockWidgetContents">
-    <layout class="QGridLayout" name="gridLayout_2">
-     <item row="0" column="0">
-      <widget class="QTreeWidget" name="treeWidget">
-       <column>
-        <property name="text">
-         <string notr="true">1</string>
-        </property>
-       </column>
-      </widget>
-     </item>
-    </layout>
-   </widget>
+   <widget class="QWidget" name="dockWidgetContents"/>
   </widget>
-  <widget class="QDockWidget" name="dockWidget_2">
+  <widget class="QDockWidget" name="dockWidgetInfoBox">
    <attribute name="dockWidgetArea">
     <number>2</number>
    </attribute>
    <widget class="QWidget" name="dockWidgetContents_2">
-    <layout class="QGridLayout" name="gridLayout">
+    <layout class="QGridLayout" name="gridLayout_3">
      <item row="0" column="0">
       <widget class="QTreeWidget" name="treeWidgetInfoBox">
+       <property name="selectionBehavior">
+        <enum>QAbstractItemView::SelectItems</enum>
+       </property>
        <property name="columnCount">
         <number>2</number>
        </property>
@@ -167,6 +169,11 @@
   <action name="actionStop_Server">
    <property name="text">
     <string>Stop Server</string>
+   </property>
+  </action>
+  <action name="actionAdd_Build">
+   <property name="text">
+    <string>Add Build</string>
    </property>
   </action>
  </widget>

@@ -19,6 +19,7 @@ void ServerThread::run(){
 
     if(!socket->setSocketDescriptor(this->socketID)){
         qDebug()<<"socketID can't be set";
+
     }
 
 
@@ -57,8 +58,6 @@ void ServerThread::readyReadFunction(){
         }
         return;
     }
-
-
 
 }
 

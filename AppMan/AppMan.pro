@@ -24,7 +24,8 @@ SOURCES += main.cpp\
     Slave.cpp \
     Master.cpp \
     Machine.cpp \
-    Build.cpp
+    Build.cpp \
+    addbuild.cpp
 
 HEADERS  += mainform.h \
     aboutversion.h \
@@ -36,12 +37,14 @@ HEADERS  += mainform.h \
     Slave.h \
     Master.h \
     Machine.h \
-    Build.h
+    Build.h \
+    addbuild.h
 
 FORMS    += mainform.ui \
     aboutversion.ui \
     abouthelp.ui \
-    inputdialogue.ui
+    inputdialogue.ui \
+    addbuild.ui
 
 RESOURCES += \
     images.qrc

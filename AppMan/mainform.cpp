@@ -2,6 +2,7 @@
 #include <ui_mainform.h>
 #include <abouthelp.h>
 #include <aboutversion.h>
+#include "addbuild.h"
 #include "server.h"
 
 
@@ -29,22 +30,63 @@ MainForm::MainForm(QWidget *parent) :
     ui->groupBoxMaster->setLayout(buildLayout);
     buildLayout->addWidget(masterBuilds);
 
-
+/*
     QTreeWidgetItem *boola = new QTreeWidgetItem();
     boola->setText(0,"buildNo1");
 
-        //boola->set
-        masterBuilds->addTopLevelItem(boola);
-        boola = new QTreeWidgetItem();
-        boola->setText(0,"buildNo2");
-        masterBuilds->addTopLevelItem(boola);boola = new QTreeWidgetItem();
-        boola->setText(0,"buildNo3");
-        masterBuilds->addTopLevelItem(boola);boola = new QTreeWidgetItem();
-        boola->setText(0,"buildNo4");
-        masterBuilds->addTopLevelItem(boola);
+    //boola->set
+    masterBuilds->addTopLevelItem(boola);
+    boola = new QTreeWidgetItem();
+    boola->setText(0,"buildNo2");
+    masterBuilds->addTopLevelItem(boola);boola = new QTreeWidgetItem();
+    boola->setText(0,"buildNo3");
+    masterBuilds->addTopLevelItem(boola);boola = new QTreeWidgetItem();
+    boola->setText(0,"buildNo4");
+    masterBuilds->addTopLevelItem(boola);boola = new QTreeWidgetItem();
+    boola->setText(0,"buildNo3");
+    masterBuilds->addTopLevelItem(boola);boola = new QTreeWidgetItem();
+    boola->setText(0,"buildNo3");
+    masterBuilds->addTopLevelItem(boola);boola = new QTreeWidgetItem();
+    boola->setText(0,"buildNo3");
+    masterBuilds->addTopLevelItem(boola);boola = new QTreeWidgetItem();
+    boola->setText(0,"buildNo3");
+    masterBuilds->addTopLevelItem(boola);boola = new QTreeWidgetItem();
+    boola->setText(0,"buildNo3");
+    masterBuilds->addTopLevelItem(boola);boola = new QTreeWidgetItem();
+    boola->setText(0,"buildNo3");
+    masterBuilds->addTopLevelItem(boola);boola = new QTreeWidgetItem();
+    boola->setText(0,"buildNo3");
+    masterBuilds->addTopLevelItem(boola);boola = new QTreeWidgetItem();
+    boola->setText(0,"buildNo3");
+    masterBuilds->addTopLevelItem(boola);boola = new QTreeWidgetItem();
+    boola->setText(0,"buildNo3");
+    masterBuilds->addTopLevelItem(boola);boola = new QTreeWidgetItem();
+    boola->setText(0,"buildNo3");
+    masterBuilds->addTopLevelItem(boola);
+    QTreeWidgetItem *vblashd = new QTreeWidgetItem();
 
+    vblashd->setText(0,"ASGSDGSDF");
+    boola->addChild(vblashd);
+*/
+
+
+    /*
+     *TOP DOCKWIDGET(BEGIN)
+     **/
+    QVBoxLayout *topDocWidgetLayout = new QVBoxLayout();
+    buildInfo = new BuildInfo();
+
+    topDocWidgetLayout->addWidget(buildInfo);
+   // ui->dockWidgetProperty->layout()->addWidget(buildInfo);
+
+    ui->dockWidgetContents->setLayout(topDocWidgetLayout);
+    /*
+     *TOP DOCKWIDGET(END)
+     **/
+
+    //ui->dockWidgetProperty->setLayout();
+    connect(masterBuilds, SIGNAL(clicked(QModelIndex)), this, SLOT(masterBuildsClicked(QModelIndex)));
 }
-
 
 MainForm::~MainForm()
 {
@@ -59,11 +101,47 @@ MainForm::MasterBuilds::MasterBuilds(QWidget *parent)
 
 }
 
+MainForm::BuildInfo::BuildInfo(QWidget *parent)
+    :QTreeWidget(parent){
+
+    QString labelHeader1 = "Property";
+    QString labelHeader2 = "Value";
+    QStringList labelHeaders;
+    labelHeaders << labelHeader1<<labelHeader2;
+
+    QTreeWidget::setColumnCount(2);
+
+    QTreeWidget::setHeaderLabels(labelHeaders);
+
+    QTreeWidgetItem *newItem;
+
+    newItem = new QTreeWidgetItem();
+    newItem->setText(0,"Build Number");
+    this->addTopLevelItem(newItem);
+
+    newItem = new QTreeWidgetItem();
+    newItem->setText(0,"Name");
+    this->addTopLevelItem(newItem);
+
+
+    newItem = new QTreeWidgetItem();
+    newItem->setText(0,"Directory");
+    this->addTopLevelItem(newItem);
+
+
+    newItem = new QTreeWidgetItem();
+    newItem->setText(0,"Description");
+    this->addTopLevelItem(newItem);
+
+
+}
+
 void MainForm::MasterBuilds::mousePressEvent(QMouseEvent *event){
 
     //if it is a normal click just call the parent's mouse press event
     qDebug()<<"type = "<<event->type();
     QTreeWidget::mousePressEvent(event);
+    QTreeWidget::mouseReleaseEvent(event);
     /*Also not yet pointing to the qwidgetItem*/
     /*
     QRect widgetRect = this->geometry();
@@ -120,8 +198,23 @@ void MainForm::MasterBuilds::mousePressEvent(QMouseEvent *event){
 
 void MainForm::dropEvent ( QDropEvent *event ){
 
-    QFrame *slaveTreeWidget = dynamic_cast<QFrame*>(childAt(event->pos()));
+    /*check whether there is a item with url dropped*/
+    QList<QUrl> list = event->mimeData()->urls();
 
+    if(list.size() != 0){//means there is file urls
+        QString urlFromMime = list.at(0).toString();
+
+        if(!urlFromMime.contains("file"))
+            return;//returns if it is not a file
+
+        //this accept lets the other whatsits name know that the event have been accepted
+        dropNewBuildAdd(urlFromMime);
+        event->accept();
+        return;
+    }
+
+    /*else looks if a build is dropped from master builds to slave builds*/
+    QFrame *slaveTreeWidget = dynamic_cast<QFrame*>(childAt(event->pos()));
 
     if (slaveTreeWidget){
 
@@ -141,18 +234,10 @@ void MainForm::dropEvent ( QDropEvent *event ){
     QLabel *labelTrue = dynamic_cast<QLabel*>(childAt(event->pos()));
     if(labelTrue){//droppped on a label
         //check to see if it is the addLabel
-        if(!(addLabel == labelTrue))
-            return;
+        ///if(!(addLabel == labelTrue))
+         //   return;
 
-        QList<QUrl> list = event->mimeData()->urls();
 
-        if(list.size() == 0)
-            return;
-        QString urlFromMime = list.at(0).toString();
-
-        //this accept lets the other whatsits name know that the event have been accepted
-        dropNewBuildAdd(urlFromMime);
-        event->accept();
         return;
     }
 */
@@ -165,9 +250,8 @@ void MainForm::dropBuildToSlave(QString fromBuild, QString toSlave){
 }
 
 void MainForm::dropNewBuildAdd(QString newBuildDirectory){
-    QMessageBox msgBox;
-    msgBox.setText("Label: "+newBuildDirectory);
-    msgBox.exec();
+    AddBuild *newBuild = new AddBuild(management, newBuildDirectory );
+    newBuild->show();
 }
 
 void MainForm::dragMoveEvent ( QDragMoveEvent *event ){
@@ -241,4 +325,14 @@ void MainForm::displaySlaves(){
             slaveItem->setText(0, management->getMachineAt(i)->getMachineIP()+"[offline]");
         ui->treeWidgetSlaves->addTopLevelItem(slaveItem);
     }
+}
+
+
+void MainForm::masterBuildsClicked(QModelIndex index){
+    qDebug()<<"index="<<index.row();
+}
+
+void MainForm::on_actionAdd_Build_triggered(){
+    AddBuild *newBuild = new AddBuild(management);
+    newBuild->show();
 }

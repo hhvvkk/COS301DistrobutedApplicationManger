@@ -130,6 +130,14 @@ private slots:
      */
     void spinboxChanged();
 
+    /**
+     * @brief masterBuildsClicked
+     * @param index
+     */
+    void masterBuildsClicked(QModelIndex index);
+
+    void on_actionAdd_Build_triggered();
+
 private:
     /**
      * \fn dropBuildToSlave(QString from, QString to);
@@ -183,6 +191,17 @@ private:
     };
 
     MasterBuilds *masterBuilds;
+
+    /**
+     * @class BuildInfo
+     * @brief The BuildInfo class will be used to display information related to selected builds
+     */
+    class BuildInfo: public QTreeWidget{
+    public:
+        BuildInfo(QWidget *parent = 0);
+    };
+
+    BuildInfo *buildInfo;
 };
 
 
