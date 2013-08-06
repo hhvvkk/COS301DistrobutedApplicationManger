@@ -66,6 +66,7 @@ void Management::addBuild(Build buildToAdd){
         allBuilds[buildCount] = buildToAdd;
     }
     buildCount++;
+    qDebug("added");
 }
 
 

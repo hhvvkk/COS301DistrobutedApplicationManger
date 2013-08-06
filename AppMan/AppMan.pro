@@ -25,7 +25,8 @@ SOURCES += main.cpp\
     Master.cpp \
     Machine.cpp \
     Build.cpp \
-    addbuild.cpp
+    addbuild.cpp \
+    xmlWriter.cpp
 
 HEADERS  += mainform.h \
     aboutversion.h \
@@ -38,7 +39,8 @@ HEADERS  += mainform.h \
     Master.h \
     Machine.h \
     Build.h \
-    addbuild.h
+    addbuild.h \
+    xmlWriter.h
 
 FORMS    += mainform.ui \
     aboutversion.ui \

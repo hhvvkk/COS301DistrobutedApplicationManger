@@ -32,15 +32,21 @@ class Build{
 		* @brief the Description of the Build
 		*/
                 QString buildDescription;
+                /**
+                * @var buildDirectory
+                * @brief the Diretory of the Build
+                */
+                        QString buildDirectory;
 	public:
 		/**
-        * \fn Build(int id, QString name, QString descript);
+        * \fn Build(int id, QString name, QString descript, QString direc);
 		* @brief The parameterised constructor
 		* @param id The buildID to assign
 		* @param name The buildName to assign
 		* @param descript The buildDescription to assign
+        * @param direct The buildDirectory to assign
 		*/
-                Build(int id, QString name, QString descript);
+                Build(int id, QString name, QString descript, QString direct);
 		/**
 		* \fn ~Build();
 		*@brief The destructor
@@ -52,13 +58,13 @@ class Build{
 		*/
 		Build();
 		/**
-                * \fn void setBuild(int id, QString name, QString descript);
+                * \fn void setBuild(int id, QString name, QString descript, QString direc);
 		* @brief The function to set build details
 		* @param id The buildID to assign
 		* @param name The buildName to assign
 		* @param descript The buildDescription to assign
 		*/
-                void setBuild(int id, QString name, QString descript);
+                void setBuild(int id, QString name, QString descript, QString direc);
 		/**
                 * \fn int getBuildID() {return buildID;}
 		* @brief The function to access the buildID variable
@@ -77,6 +83,13 @@ class Build{
 		* @return buildDescription
 		*/
                 QString getBuildDescription() {return buildDescription;}
+
+                /**
+                        * \fn QString getBuildDirectory() {return buildDirectory;}
+                * @brief The function to access the buildDirectory variable
+                * @return buildDirectory
+                */
+                        QString getBuildDirectory() {return buildDirectory;}
 		/**
                 * \fn void setBuildID(int id);
 		* @brief The function to mutate the buildID variable
@@ -95,6 +108,13 @@ class Build{
 		* @param descript The description to be assigned tobuildDescription
 		*/
                 void setBuildDescription(QString descript);
+
+                /**
+                        * \fn void setBuildDirectory(QString direc);
+                * @brief The function to mutate the buildDirectory variable
+                * @param descript The description to be assigned to buildDirectory
+                */
+                        void setBuildDirectory(QString direc);
 		/**
 		* \fn void printBuild();
 		*@brief The function that prints out this Build

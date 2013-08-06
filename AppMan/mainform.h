@@ -30,6 +30,7 @@
 
 #include "management.h"
 #include "inputdialogue.h"
+#include "Build.h"
 
 namespace Ui {
 class MainForm;
@@ -97,6 +98,12 @@ private slots:
     void newSlaveConnected();
 
     /**
+     * \fn void initiateAddBuild(Build b);
+     * @brief initiateAddBuild will emit a signal to add the build
+     */
+    void initiateAddBuild(Build b);
+
+    /**
       * \fn void newSlaveConnected();
       * @brief When a slave disconnects this function is called
       */
@@ -137,6 +144,8 @@ private slots:
     void masterBuildsClicked(QModelIndex index);
 
     void on_actionAdd_Build_triggered();
+
+    void displayBuilds();
 
 private:
     /**

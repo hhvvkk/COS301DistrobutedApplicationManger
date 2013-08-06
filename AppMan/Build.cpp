@@ -4,7 +4,7 @@
 
 using namespace std;
 
-Build::Build(int id, QString name, QString descript){
+Build::Build(int id, QString name, QString descript, QString direc){
 	if(id <= -1){
                 ////cout<<"Cannot have a negative ID"<<endl;
 		return;
@@ -13,6 +13,7 @@ Build::Build(int id, QString name, QString descript){
 		buildID = id;
 		buildName = name;
 		buildDescription = descript;
+        buildDirectory = direc;
 	}
 	
 }
@@ -21,12 +22,13 @@ Build::~Build(){
 	buildID = -1;
 	buildName = "";
 	buildDescription = "";
+    buildDirectory = "";
         //cout<<"Delete success from build"<<endl;
 }
 Build::Build(){
 	buildID = 0;
 }
-void Build::setBuild(int id, QString name, QString descript){
+void Build::setBuild(int id, QString name, QString descript, QString direc){
 	if(id <= -1){
                 //cout<<"Cannot have a negative ID"<<endl;
 		return;
@@ -35,6 +37,7 @@ void Build::setBuild(int id, QString name, QString descript){
 		buildID = id;
 		buildName = name;
 		buildDescription = descript;
+        buildDirectory = direc;
 	}
 }
 void Build::setBuildID(int id){
@@ -45,6 +48,9 @@ void Build::setBuildName(QString name){
 }
 void Build::setBuildDescription(QString descript){
 	buildDescription = descript;
+}
+void Build::setBuildDirectory(QString direc){
+    buildDirectory = direc;
 }
 
 void Build::printBuild(){

@@ -3,6 +3,11 @@
 
 #include <QWidget>
 #include "management.h"
+#include "Build.h"
+#include <QString>
+#include <QFileDialog>
+#include <QMap>
+#include "xmlWriter.h"
 
 namespace Ui {
 class AddBuild;
@@ -17,10 +22,17 @@ class AddBuild : public QWidget
 {
     Q_OBJECT
     
+signals:
+    /**
+     * \fn void initiateAddBuild(Build b);
+     * @brief initiateAddBuild will emit a signal to add the build
+     */
+    void initiateAddBuild(Build b);
 public:
     explicit AddBuild(Management *man, QString directory = "", QWidget *parent = 0);
     ~AddBuild();
-    
+public:
+    void addToXML(int num,QString name,QString descript,QString direc);
 private slots:
     /**
      * \fn void cancelClick();
@@ -43,6 +55,7 @@ private slots:
 private:
     Ui::AddBuild *ui;
     Management *management;
+    xmlWriter *theXMLWriter;
 };
 
 #endif // ADDBUILD_H

@@ -4,6 +4,7 @@
 #include <aboutversion.h>
 #include "addbuild.h"
 #include "server.h"
+#include "Build.h"
 
 
 MainForm::MainForm(QWidget *parent) :
@@ -30,13 +31,13 @@ MainForm::MainForm(QWidget *parent) :
     ui->groupBoxMaster->setLayout(buildLayout);
     buildLayout->addWidget(masterBuilds);
 
-/*
+ /*
     QTreeWidgetItem *boola = new QTreeWidgetItem();
     boola->setText(0,"buildNo1");
 
     //boola->set
     masterBuilds->addTopLevelItem(boola);
-    boola = new QTreeWidgetItem();
+   boola = new QTreeWidgetItem();
     boola->setText(0,"buildNo2");
     masterBuilds->addTopLevelItem(boola);boola = new QTreeWidgetItem();
     boola->setText(0,"buildNo3");
@@ -327,6 +328,30 @@ void MainForm::displaySlaves(){
     }
 }
 
+void MainForm::initiateAddBuild(Build b){
+    management->addBuild(b);
+    qDebug()<<"hello";
+    displayBuilds();
+}
+
+void MainForm::displayBuilds(){
+    qDebug()<<"here";
+    masterBuilds->clear();
+    Build* myBuilds = management->getAllBuilds();
+    int len = management->getBuildCount();
+    qDebug()<<len;
+    QTreeWidgetItem *boola;
+    QString buildName = "";
+    int buildNum = -1;
+    for(int i = 0; i < len; i++){
+        qDebug()<<"looping";
+        buildName = myBuilds[i].getBuildName();
+        buildNum = myBuilds[i].getBuildID();
+        boola = new QTreeWidgetItem();
+        boola->setText(0,buildName);
+        masterBuilds->addTopLevelItem(boola);
+    }
+}
 
 void MainForm::masterBuildsClicked(QModelIndex index){
     qDebug()<<"index="<<index.row();
@@ -334,5 +359,6 @@ void MainForm::masterBuildsClicked(QModelIndex index){
 
 void MainForm::on_actionAdd_Build_triggered(){
     AddBuild *newBuild = new AddBuild(management);
+    connect(newBuild,SIGNAL(initiateAddBuild(Build)),this,SLOT(initiateAddBuild(Build)));
     newBuild->show();
 }
