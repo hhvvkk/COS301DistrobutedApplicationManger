@@ -26,7 +26,9 @@ SOURCES += main.cpp\
     Machine.cpp \
     Build.cpp \
     addbuild.cpp \
-    xmlWriter.cpp
+    xmlWriter.cpp \
+    xmlReader.cpp \
+    myDirIterator.cpp
 
 HEADERS  += mainform.h \
     aboutversion.h \
@@ -40,7 +42,9 @@ HEADERS  += mainform.h \
     Machine.h \
     Build.h \
     addbuild.h \
-    xmlWriter.h
+    xmlWriter.h \
+    xmlReader.h \
+    myDirIterator.h
 
 FORMS    += mainform.ui \
     aboutversion.ui \

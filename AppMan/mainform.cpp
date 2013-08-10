@@ -87,6 +87,7 @@ MainForm::MainForm(QWidget *parent) :
 
     //ui->dockWidgetProperty->setLayout();
     connect(masterBuilds, SIGNAL(clicked(QModelIndex)), this, SLOT(masterBuildsClicked(QModelIndex)));
+    loadXMLslaves();
 }
 
 MainForm::~MainForm()
@@ -330,31 +331,116 @@ void MainForm::displaySlaves(){
 
 void MainForm::initiateAddBuild(Build b){
     management->addBuild(b);
-    qDebug()<<"hello";
+    qDebug()<<"Build added";
     displayBuilds();
 }
 
 void MainForm::displayBuilds(){
-    qDebug()<<"here";
+    qDebug()<<"here to display";
     masterBuilds->clear();
     Build* myBuilds = management->getAllBuilds();
     int len = management->getBuildCount();
     qDebug()<<len;
     QTreeWidgetItem *boola;
     QString buildName = "";
+    QString strNum;
     int buildNum = -1;
     for(int i = 0; i < len; i++){
-        qDebug()<<"looping";
+        qDebug()<<"looping through builds";
         buildName = myBuilds[i].getBuildName();
         buildNum = myBuilds[i].getBuildID();
+        strNum = QString::number(buildNum);
         boola = new QTreeWidgetItem();
-        boola->setText(0,buildName);
+        // NOTA: Builds moet display word met 'n index en naam om track te hou
+        boola->setText(0,strNum+"-"+buildName);
         masterBuilds->addTopLevelItem(boola);
     }
 }
 
+void MainForm::loadXMLslaves(){
+    masterBuilds->clear();
+    xmlReader xRead;
+    xRead.parseXML();
+
+    QMap<QString,QString> buildsNum = xRead.getBuildNumber();
+    QMap<QString,QString> buildsName = xRead.getBuildName();
+    QMap<QString,QString> buildsDesc = xRead.getBuildDescription();
+    QMap<QString,QString> buildsDir = xRead.getBuildDirectory();
+
+    QMapIterator<QString, QString> i(buildsNum);
+    QMapIterator<QString, QString> j(buildsName);
+    QMapIterator<QString, QString> k(buildsDesc);
+    QMapIterator<QString, QString> l(buildsDir);
+
+    while (i.hasNext() && j.hasNext() && k.hasNext() && l.hasNext())
+    {
+        i.next(); j.next(); k.next(); l.next();
+        Build b(i.value().toInt(),j.value(),k.value(),l.value());
+        initiateAddBuild(b);
+    }
+}
+
 void MainForm::masterBuildsClicked(QModelIndex index){
-    qDebug()<<"index="<<index.row();
+    QString selBuild = index.data().toString();
+    int posit = selBuild.indexOf("-");
+    selBuild.chop(posit-1);
+    selBuild.remove(0,1);
+    selBuild.remove(selBuild.length()-2,selBuild.length()-1);
+    int searchNum = selBuild.toInt();
+    Build retr = management->getBuildByID(searchNum);
+    populateBuildInfo(retr);
+    populateTreeWidgetInfo(retr);
+}
+
+void MainForm::populateBuildInfo(Build retr){
+    buildInfo->clear();
+    QTreeWidgetItem *boola;
+    for(int i = 0; i < 4; i++){
+        boola = new QTreeWidgetItem();
+        if(i == 0){
+            int bID = retr.getBuildID();
+            QString buildID = QString::number(bID);
+            boola->setText(0,"Build Number");
+            boola->setText(1,buildID);
+        }
+        else if(i == 1){
+            boola->setText(0,"Name");
+            boola->setText(1,retr.getBuildName());
+        }
+        else if(i == 2){
+            boola->setText(0,"Directory");
+            boola->setText(1,retr.getBuildDirectory());
+        }
+        else{
+            boola->setText(0,"Description");
+            boola->setText(1,retr.getBuildDescription());
+        }
+        buildInfo->addTopLevelItem(boola);
+    }
+}
+
+void MainForm::populateTreeWidgetInfo(Build retr){
+    /*
+     *NOTA: Hierdie funksie is vir as mens sou die TreeWidgetInfo met files en hulle mod dates populate
+     */
+    ui->treeWidgetInfoBox->clear();
+    ui->treeWidgetInfoBox->setColumnCount(2);
+    QStringList headers;
+    headers << "File Name" << "Modification Date";
+    ui->treeWidgetInfoBox->setHeaderLabels(headers);
+    QString dir = retr.getBuildDirectory();
+    myDirIterator iter(dir);
+    iter.getFileInfo();
+    QVector<QString> fileNames = iter.retrieveFileNames();
+    QVector<QString> fileMods = iter.retrieveFileMods();
+    int amnt = fileNames.size();
+    QTreeWidgetItem *boola;
+    for(int i = 0; i < amnt; i++){
+        boola = new QTreeWidgetItem();
+        boola->setText(0,fileNames[i]);
+        boola->setText(1,fileMods[i]);
+        ui->treeWidgetInfoBox->addTopLevelItem(boola);
+    }
 }
 
 void MainForm::on_actionAdd_Build_triggered(){

@@ -1,8 +1,6 @@
 /**
 * @file Machine.h
 * @brief This is the structure for the Machine
-* @author 101Solutions
-* @version 2.0
 */
 #ifndef MACHINE_H
 #define MACHINE_H

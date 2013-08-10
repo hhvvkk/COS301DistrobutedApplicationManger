@@ -120,3 +120,12 @@ void Management::removeMachine(Machine *m){
     allMachines.erase(allMachines.begin()+index,allMachines.begin()+(index+1));
     machineCount--;
 }
+
+Build Management::getBuildByID(int id){
+    for(int i = 0; i < buildCount; i++){
+        if(allBuilds[i].getBuildID() == id){
+            return allBuilds[i];
+        }
+        //Need an else statement...
+    }
+}

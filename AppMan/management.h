@@ -54,6 +54,17 @@ public:
     */
     ~Management();
 
+    /**
+     * @fn Build * getBuildByID(int id);
+     * @brief returns the build by ID from the Management object
+     * @return buildToRetrieve
+     */
+    Build getBuildByID(int id);
+    /**
+     * @fn Build * getAllBuilds()
+     * @brief returns all the builds in the Management object
+     * @return allBuilds
+     */
     Build * getAllBuilds() {return allBuilds;}
     /**
     * \fn int getBuildCount();

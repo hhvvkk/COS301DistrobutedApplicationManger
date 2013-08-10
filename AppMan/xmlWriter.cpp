@@ -1,15 +1,13 @@
 #include "xmlWriter.h"
-#include <QMap>
-#include <QFile>
-#include <QMessageBox>
-#include <QXmlStreamWriter>
-#include <QMapIterator>
-#include <QDebug>
 
 xmlWriter::xmlWriter()
 {
-
-
+    xmlReader xRead;
+    xRead.parseXML();
+    this->buildNumber = xRead.getBuildNumber();
+    this->buildName = xRead.getBuildName();
+    this->buildDescription = xRead.getBuildDescription();
+    this->buildDirectory = xRead.getBuildDirectory();
 }
 
 void xmlWriter::CreateXMLFile()
@@ -46,7 +44,7 @@ void xmlWriter::CreateXMLFile()
         }
         theXMLWriter->writeEndElement();
         theXMLWriter->writeEndDocument();
-qDebug()<<"creating";
+qDebug()<<"creating xml";
     }
 }
 

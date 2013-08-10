@@ -1,8 +1,6 @@
 /**
 * @file mainform.h
 * @brief This is the file containing the main form that a user is greeted with
-* @author 101Solutions
-* @version 2.0
 */
 
 #ifndef MAINFORM_H
@@ -27,10 +25,15 @@
 #include <QUrl>
 #include <QSpinBox>
 #include <QTreeWidgetItem>
+#include <QMap>
+#include <QMapIterator>
+#include <QStringList>
 
 #include "management.h"
 #include "inputdialogue.h"
 #include "Build.h"
+#include "xmlReader.h"
+#include "myDirIterator.h"
 
 namespace Ui {
 class MainForm;
@@ -110,23 +113,28 @@ private slots:
     void slaveDisconnected();
 
     /**
-     * @brief on_actionHelp_triggered The function called when the About>Help function is called
+	 * @fn void on_actionStop_Server_triggered();
+     * @brief on_actionStop_Server_triggered The function called when the server is stopped
      */
     void on_actionStop_Server_triggered();
     /**
+	 * @fn void on_actionSet_Port_triggered();
      * @brief on_actionSet_Port_triggered The set port dropdown menu item clicked
      */
     void on_actionSet_Port_triggered();
     /**
+	 * @fn void on_actionStart_triggered();
      * @brief on_actionStart_triggered The start dropdown menu item clicked
      */
     void on_actionStart_triggered();
     /**
+	 * @fn void on_actionHelp_triggered();
      * @brief on_actionHelp_triggered The Help menu dropdown item clicked
      */
     void on_actionHelp_triggered();
 
     /**
+	 * @fn void on_actionVersion_triggered();
      * @brief on_actionVersion_triggered The function called when the About>Version function is called
      */
     void on_actionVersion_triggered();
@@ -138,13 +146,22 @@ private slots:
     void spinboxChanged();
 
     /**
-     * @brief masterBuildsClicked
+	 * @fn void masterBuildsClicked(QModelIndex index);
+     * @brief The Build instance of the relevant instance is displayed in the buildInfo tree
      * @param index
      */
     void masterBuildsClicked(QModelIndex index);
-
+	
+	/**
+	 * @fn void on_actionAdd_Build_triggered();
+	 * @brief on_actionAdd_Build_triggered The function that will be called to add a build
+	 */
     void on_actionAdd_Build_triggered();
 
+	/**
+	 * @fn displayBuilds();
+	 * @brief displayBuilds The function to show the builds on the main form
+	 */
     void displayBuilds();
 
 private:
@@ -168,6 +185,23 @@ private:
      */
     void displaySlaves();
 
+    /**
+     * @fn void loadXMLslaves();
+     * @brief Displays all slaves in the xml
+     */
+    void loadXMLslaves();
+    /**
+     * @fn void populateBuildInfo(Build retr);
+     * @brief Displays the selected slave in the xml
+     * @param retr the build that was retrieved
+     */
+    void populateBuildInfo(Build retr);
+    /**
+     * @fn void populateTreeWidgetInfo(Build retr);
+     * @brief Displays the selected slave in the xml
+     * @param retr the build that was retrieved
+     */
+    void populateTreeWidgetInfo(Build retr);
 
 private:
     /**
@@ -198,7 +232,11 @@ private:
          */
         void mousePressEvent(QMouseEvent *event);
     };
-
+	
+	/**
+	 * @var masterBuilds
+	 * @brief The pointer to a Masterbuilds object
+	 */
     MasterBuilds *masterBuilds;
 
     /**
@@ -210,6 +248,10 @@ private:
         BuildInfo(QWidget *parent = 0);
     };
 
+	/**
+	 * @var buildInfo
+	 * @brief The pointer to a BuildInfo object
+	 */
     BuildInfo *buildInfo;
 };
 

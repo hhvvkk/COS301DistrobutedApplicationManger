@@ -51,8 +51,7 @@ Master::Master(Master &toCopy){
 }
 
 void Master::addSlave(Machine slaveToAdd){
-	//Slave p = new Slave(slaveToAdd);
-                                                ////cout<<"HERERERERERE"<<endl;
+    //Slave p = new Slave(slaveToAdd);
 	Slave newSlaveToAdd;
 	newSlaveToAdd.setMachineID(slaveToAdd.getMachineID());
 	newSlaveToAdd.setMachineIP(slaveToAdd.getMachineIP());
