@@ -1,0 +1,132 @@
+\documentclass[a4paper,12pt,final]{article}
+
+
+\usepackage{graphicx}
+\title{
+\begin{center}
+  	\includegraphics[scale=0.3]{Logo.png} 
+  \end{center}
+  \textbf{\\}
+Iteration 2\\
+}
+\author{101 Solutions}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+\newpage
+\tableofcontents
+\thispagestyle{empty}
+\newpage
+\pagenumbering{arabic}
+
+\section{Introduction}
+The purpose of this document is to keep track of the ongoing development progress of the software application manager AppMan.  In each iteration additional content will be added which will result in this document being an up to date and relaible method to view progress and current development plans and ideas. Content will include milestones reached, current goals and the current functionality of the software.
+
+\section{Milestones reached}
+\begin{itemize}
+\item A cleaner GUI implementation
+\item Server running on the Master - AppMan
+\item Client connection to the master through network
+\item A reliable socket connection between the server and client applications, which will serve as a communication pathway
+\item Build add to the master computer
+\item View builds on the master
+\item Creating a database that can store information related to builds kept on the master and slaves
+\end{itemize}
+
+
+\section{Immediate Goals}
+Our next main goals for the project:
+\subsection{Build transference}
+\begin{itemize}
+\item Goal: The ability to copy the builds to the clients(Slave computers) and also to compress the files that will be copied
+\end{itemize}
+\subsection{Build Information Comparison}
+\begin{itemize}
+\item Goal: The ability to synchronize two builds on master and slave computers(i.e. if a change have been made to a file)
+\end{itemize}
+\subsection{Slave Build Display}
+\begin{itemize}
+\item Goal: The ability to show the builds on slave machine
+\end{itemize}
+
+\section{System Design}
+\subsection{AppMan}
+
+\begin{center}
+\includegraphics[scale=0.5]{AppManDiagram.jpg} 
+\end{center}
+
+\subsection{AppManClient}
+
+\begin{center}
+\includegraphics[scale=0.5]{AppManClientDiagram.jpg} 
+\end{center}
+
+\section{Processes}
+\subsection{ActivityDiagram}
+\begin{center}
+\includegraphics[scale=0.37]{ActivityDiagram.jpg} 
+\end{center}
+
+\section{Functional Requirements}
+\subsection{Use Case Diagrams}
+\begin{itemize}
+\item AppMan\\
+\includegraphics[scale=0.5]{UseCaseDiagram.png} 
+\item AppManClient\\
+\includegraphics[scale=0.6]{UseCaseDiagramClient.png} 
+\end{itemize}
+
+\subsection{Builds}
+\begin{itemize}
+\item Builds must be addable to the master
+\item Builds must be updated on the slave computers once a change have been made
+\item Only changed files must be sent to the slave computers once a change has been made
+\item Easy to manage the builds that are on the master computer
+\item Builds must be able to have the following
+\begin{itemize}
+\item Build Number
+\item Directory
+\item Name
+\item Description
+\end{itemize}
+\end{itemize}
+
+\subsection{Copying}
+\begin{itemize}
+\item Copying must be done over the network
+\item The copy of multiple files must be compressed to reduce the time it takes to copy a file
+\item Progress of copy must be shown on master computer while copying takes place
+\end{itemize}
+
+\subsection{User Interface}
+\begin{itemize}
+\item The user interface must be easy to use
+\item The user interface must make use of drag and drop capabilities to promote usability
+\end{itemize}
+
+\subsection{Server \& Client Applications}
+\begin{itemize}
+\item The Applications must start on computer startup in a minimized form(e.g. in the tray)
+\item The Master machine server must start on application start
+\item Slave machines must connect to the master computer via the network once the application starts up
+\item Slave machines must prompt connection details once and then connect automatically afterwards
+\item The user interface must make use of drag and drop capabilities to promote usability
+\end{itemize}
+
+\section{Glossary}
+\begin{itemize}
+\item Build - An application build version that could potentially be distributed to slave computers
+\item Slave - A computer that will be controlled via a master computer
+\item Application builds will be sent to this computer
+\item Master - A computer that will control Slaves across a network
+\item Server - A machine waiting on the network for connections from other machines
+\item GUI - Graphical User Interface with which a user can control an application
+\item Project - This project. The distributed application manager
+\item Application Configuration - Environment variables that are specified when running an application
+\end{itemize}
+
+
+\end{document}
