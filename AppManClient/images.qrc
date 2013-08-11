@@ -2,7 +2,6 @@
     <qresource prefix="/images">
         <file>images/Connect.png</file>
         <file>images/ALogoClient.png</file>
-        <file>images/Offline.png</file>
         <file>images/Disconnect.png</file>
     </qresource>
 </RCC>

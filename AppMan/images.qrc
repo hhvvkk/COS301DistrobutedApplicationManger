@@ -1,14 +1,7 @@
 <RCC>
     <qresource prefix="/images">
-        <file>images/Files.png</file>
         <file>images/ALogo.png</file>
-        <file>images/AppManLogo.png</file>
-        <file>images/Add2.png</file>
-        <file>images/Directory.png</file>
-        <file>images/DescriptionGreen.png</file>
-        <file>images/Add.png</file>
         <file>images/Run.png</file>
         <file>images/Arrow.png</file>
-        <file>images/Offline.png</file>
     </qresource>
 </RCC>
