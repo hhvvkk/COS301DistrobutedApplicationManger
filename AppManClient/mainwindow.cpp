@@ -12,6 +12,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->pushButtonDisconnect->setVisible(false);
     //connect(ui->pushButton, SIGNAL(clicked()),this, SLOT(connectClick()));
     management = new Management();
+    management->addMyBuilds();
+    ui->label_BuildCount->setText(QString::number(management->getBuildCount()));
 }
 
 MainWindow::~MainWindow()
@@ -51,4 +53,13 @@ void MainWindow::disconnectClick(){
     ui->pushButtonConnect->setVisible(true);
     ui->pushButtonDisconnect->setVisible(false);
     management->disconnectFromServer();
+}
+
+void MainWindow::on_pushButtonViewBuilds_clicked()
+{
+    viewBuilds *vb = new viewBuilds();
+    xmlReader p = management->getxRead();
+    vb->getManager(management);
+    vb->getReader(p);
+    vb->show();
 }

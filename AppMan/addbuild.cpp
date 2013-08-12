@@ -29,6 +29,11 @@ void AddBuild::okClick(){
     Build buildToAdd(buildID,buildName,buildDescription,buildDirectory);
     qDebug()<<"about to emit";
     addToXML(buildID,buildName,buildDescription,buildDirectory);
+    ui->lineEditBuildNo->setText("");
+    ui->lineEditName->setText("");
+    ui->lineEditDescription->setText("");
+    ui->lineEditDirectory->setText("");
+    ui->lineEditDirectory->setFocus();
     emit initiateAddBuild(buildToAdd);
 }
 

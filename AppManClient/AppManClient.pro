@@ -17,14 +17,23 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     socketclient.cpp \
     management.cpp \
-    network.cpp
+    network.cpp \
+    Build.cpp \
+    xmlReader.cpp \
+    xmlWriter.cpp \
+    viewbuilds.cpp
 
 HEADERS  += mainwindow.h \
     socketclient.h \
     management.h \
-    network.h
+    network.h \
+    Build.h \
+    xmlReader.h \
+    xmlWriter.h \
+    viewbuilds.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    viewbuilds.ui
 
 RESOURCES += \
     images.qrc

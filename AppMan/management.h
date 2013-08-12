@@ -1,22 +1,20 @@
 /**
 * @file management.h
 * @brief This is the facade for the Management
-* @author 101Solutions
 */
 
 #ifndef MANAGEMENT_H
 #define MANAGEMENT_H
 
+#include <QDebug>
+#include <QObject>
+#include <QVector>
 
-#include <string>
+#include "Build.h"
 #include "Machine.h"
 #include "Master.h"
-#include "Slave.h"
-#include "Build.h"
-#include <vector>
-
-#include <QObject>
 #include "server.h"
+#include "Slave.h"
 
 //forward declaration of server so that it can be used
 class Server;
@@ -77,7 +75,7 @@ public:
     * @brief The function that accesses the allMachines variable
     * @return allMachines
     */
-    vector<Machine*> getAllMachines() {return allMachines;}
+    QVector<Machine*> getAllMachines() {return allMachines;}
     /**
     * \fn int getMachineCount() {return machineCount;}
     * @brief The function that accesses the machineCount variable
@@ -187,7 +185,7 @@ private:
     * @var allMachines
     * @brief a vector of Machine objects
     */
-    vector<Machine*> allMachines;
+    QVector<Machine*> allMachines;
 
 };
 

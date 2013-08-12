@@ -1,5 +1,4 @@
 #include "management.h"
-#include <QDebug>
 
 Management::Management(QObject *parent) :
     QObject(parent)
@@ -21,7 +20,7 @@ Management::~Management()
         delete[] allBuilds;
     }
     if(machineCount != 0){
-        for( vector<Machine*>::iterator i = allMachines.begin(); i != allMachines.end(); ++i )
+        for( QVector<Machine*>::iterator i = allMachines.begin(); i != allMachines.end(); ++i )
         {
             delete *i;
         }
@@ -29,7 +28,6 @@ Management::~Management()
     }
 
 }
-
 
 void Management::addMachine(Master masterToAdd){
     allMachines.push_back(new Master(masterToAdd));
@@ -66,19 +64,18 @@ void Management::addBuild(Build buildToAdd){
         allBuilds[buildCount] = buildToAdd;
     }
     buildCount++;
-    qDebug("added");
+    qDebug("added build to management");
 }
 
-
 Machine* Management::getMachineAt(int i){
-    if(i<0 || i >= allMachines.size())
+    if(i<0 || i >= (int) allMachines.size())
         return 0;
     return allMachines.at(i);
 }
 
 void Management::startServer(){
     if(server == NULL){
-        qDebug()<<"FASD";
+        qDebug()<<"Server is NULL";
         return;
     }
     server->startServer();
@@ -103,13 +100,13 @@ void Management::setSlaveOffline(Machine *m, bool isOffline){
 }
 
 void Management::removeMachine(Machine *m){
-    qDebug()<<"attempting removal";
+    qDebug()<<"attempting removal of machine";
     int index = -1;
     if(allMachines.size() == 0){
         qDebug()<<"size = 0";
         return;
     }
-    for(int i = 0; i < allMachines.size(); i++)
+    for(unsigned int i = 0; i < allMachines.size(); i++)
         if(m == allMachines.at(i)){
             index = i;
         }
@@ -126,6 +123,8 @@ Build Management::getBuildByID(int id){
         if(allBuilds[i].getBuildID() == id){
             return allBuilds[i];
         }
-        //Need an else statement...
     }
+    // Returns a build with id 0 to show it does not exist
+    Build b(0,"NULL","NULL","NULL");
+    return b;
 }

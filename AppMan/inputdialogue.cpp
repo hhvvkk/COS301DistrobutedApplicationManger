@@ -1,7 +1,5 @@
 #include "inputdialogue.h"
 #include "ui_inputdialogue.h"
-#include <QMessageBox>
-#include <QDebug>
 
 InputDialogue::InputDialogue(QString setWhat, Management *m, QWidget *parent) :
     what(setWhat),

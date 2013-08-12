@@ -6,34 +6,37 @@
 #ifndef MAINFORM_H
 #define MAINFORM_H
 
-#include <QMainWindow>
-#include <QString>
-#include <QWidget>
-#include <QPushButton>
-#include <QLayout>
-#include <QLabel>
-#include <QGroupBox>
-#include <QMouseEvent>
-#include <QMessageBox>
 #include <QFile>
-#include <QProgressBar>
-#include <QGroupBox>
-#include <QVBoxLayout>
-#include <QMouseEvent>
-#include <QPicture>
 #include <QFrame>
-#include <QUrl>
-#include <QSpinBox>
-#include <QTreeWidgetItem>
+#include <QGroupBox>
+#include <QLabel>
+#include <QLayout>
+#include <QMainWindow>
 #include <QMap>
 #include <QMapIterator>
+#include <QMessageBox>
+#include <QMouseEvent>
+#include <QPicture>
+#include <QProgressBar>
+#include <QPushButton>
+#include <QSpinBox>
+#include <QString>
 #include <QStringList>
+#include <QTreeWidgetItem>
+#include <QUrl>
+#include <QVBoxLayout>
+#include <QWidget>
 
-#include "management.h"
-#include "inputdialogue.h"
+#include "abouthelp.h"
+#include "aboutversion.h"
+#include "addbuild.h"
 #include "Build.h"
-#include "xmlReader.h"
+#include "inputdialogue.h"
+#include "management.h"
 #include "myDirIterator.h"
+#include "server.h"
+#include "xmlReader.h"
+
 
 namespace Ui {
 class MainForm;

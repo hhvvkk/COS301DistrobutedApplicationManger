@@ -6,12 +6,13 @@
 #ifndef MYDIRITERATOR_H
 #define MYDIRITERATOR_H
 
-#include <QDirIterator>
-#include <QString>
-#include <QDir>
-#include <QVector>
 #include <QDateTime>
 #include <QDebug>
+#include <QDir>
+#include <QDirIterator>
+#include <QString>
+#include <QVector>
+
 /**
  * @class myDirIterator
  * @brief The myDirIterator class
