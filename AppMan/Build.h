@@ -8,7 +8,6 @@
 
 #include <QString>
 
-using namespace std;
 /**
 * @class Build
 * @brief This is the structure for the various builds
@@ -111,11 +110,6 @@ class Build{
         * @param descript The description to be assigned to buildDirectory
         */
         void setBuildDirectory(QString direc);
-		/**
-		* \fn void printBuild();
-		*@brief The function that prints out this Build
-		*/
-		void printBuild();
 };
 
 

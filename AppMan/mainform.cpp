@@ -1,10 +1,6 @@
-#include <mainform.h>
-#include <ui_mainform.h>
-#include <abouthelp.h>
-#include <aboutversion.h>
-#include "addbuild.h"
-#include "server.h"
-#include "Build.h"
+#include "mainform.h"
+#include "ui_mainform.h"
+
 
 
 MainForm::MainForm(QWidget *parent) :
@@ -338,6 +334,8 @@ void MainForm::initiateAddBuild(Build b){
 void MainForm::displayBuilds(){
     qDebug()<<"here to display";
     masterBuilds->clear();
+    masterBuilds->setColumnCount(2);
+    masterBuilds->hideColumn(1);
     Build* myBuilds = management->getAllBuilds();
     int len = management->getBuildCount();
     qDebug()<<len;
@@ -352,7 +350,8 @@ void MainForm::displayBuilds(){
         strNum = QString::number(buildNum);
         boola = new QTreeWidgetItem();
         // NOTA: Builds moet display word met 'n index en naam om track te hou
-        boola->setText(0,strNum+"-"+buildName);
+        boola->setText(0,buildName);
+        boola->setText(1,strNum);
         masterBuilds->addTopLevelItem(boola);
     }
 }
@@ -381,13 +380,10 @@ void MainForm::loadXMLslaves(){
 }
 
 void MainForm::masterBuildsClicked(QModelIndex index){
-    QString selBuild = index.data().toString();
-    int posit = selBuild.indexOf("-");
-    selBuild.chop(posit-1);
-    selBuild.remove(0,1);
-    selBuild.remove(selBuild.length()-2,selBuild.length()-1);
-    int searchNum = selBuild.toInt();
-    Build retr = management->getBuildByID(searchNum);
+    QString selBuild = index.sibling(index.row(),1).data().toString();
+    qDebug()<<"                                                           "<<selBuild;
+    int num = selBuild.toInt();
+    Build retr = management->getBuildByID(num);
     populateBuildInfo(retr);
     populateTreeWidgetInfo(retr);
 }

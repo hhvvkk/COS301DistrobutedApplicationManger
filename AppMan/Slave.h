@@ -1,18 +1,15 @@
 /**
 * @file Slave.h
 * @brief This is the structure for the Slave
-* @author 101Solutions
-* @version 2.0
 */
 
 #ifndef Slave_H
 #define Slave_H
 
-#include "Machine.h"
-#include "Build.h"
 #include <QString>
 
-using namespace std;
+#include "Build.h"
+#include "Machine.h"
 
 /**
 * @class Slave
@@ -75,11 +72,6 @@ class Slave : public Machine{
 		* @param buildToAdd The Build to add
 		*/
 		virtual void addBuild(Build buildToAdd);
-		/**
-		* \fn virtual void printBuilds();
-		* @brief The overridden printBuilds function
-		*/
-		virtual void printBuilds();
 
 };
 

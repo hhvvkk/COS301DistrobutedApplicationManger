@@ -1,17 +1,7 @@
-#include "Machine.h"
 #include "Master.h"
-//#include <iostream>
-#include <QString>
 
-using namespace std;
-/*
-		int machineID
-                QString machineIP;
-                QString machineStatus;
-*/
 Master::Master(int id, QString ip, bool onL, bool type){
-	if(id <= 0){
-                //cout<<"Cannot have a negative ID"<<endl;
+    if(id <= 0){
 		return;
 	}
 	else{
@@ -24,15 +14,12 @@ Master::Master(int id, QString ip, bool onL, bool type){
 	}
 }
 Master::~Master(){
-        //cout<<"Starting to delete from master.cpp"<<endl;
-        ////cout<<buildCount<<endl<<slaveCount<<endl;
 	if(buildCount != 0){
 		delete[] masterBuilds;
 	}
 	if(slaveCount != 0){
 		delete[] masterSlaves;
 	}
-        //cout<<"Delete success from master.cpp"<<endl;
 }
 Master::Master(){
 	machineID = 0;
@@ -40,14 +27,14 @@ Master::Master(){
 }
 
 Master::Master(Master &toCopy){
-	this->machineID = toCopy.machineID;
-	this->machineIP = toCopy.machineIP;
-        this->online = toCopy.online;
-	this->machineType = toCopy.machineType;
-	this->buildCount = toCopy.buildCount;
-	this->masterBuilds = toCopy.masterBuilds;
-	this->slaveCount = toCopy.slaveCount;
-	this->masterSlaves = toCopy.masterSlaves;
+    this->machineID = toCopy.machineID;
+    this->machineIP = toCopy.machineIP;
+    this->online = toCopy.online;
+    this->machineType = toCopy.machineType;
+    this->buildCount = toCopy.buildCount;
+    this->masterBuilds = toCopy.masterBuilds;
+    this->slaveCount = toCopy.slaveCount;
+    this->masterSlaves = toCopy.masterSlaves;
 }
 
 void Master::addSlave(Machine slaveToAdd){

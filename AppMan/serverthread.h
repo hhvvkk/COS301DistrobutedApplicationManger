@@ -1,17 +1,19 @@
 /**
 * @file serverthread.h
 * @brief This is the file containing the thread that are run for each client connecting
-* @author 101Solutions
-* @version 2.0
 */
 
 #ifndef SERVERTHREAD_H
 #define SERVERTHREAD_H
 
-#include <QThread>
-#include <QTcpSocket>
 #include <QDebug>
+#include <QHostAddress>
+#include <QTcpSocket>
+#include <QThread>
+
 #include "Machine.h"
+#include "management.h"
+#include "Slave.h"
 
 //forward declaration of Management so it can be used
 class Management;

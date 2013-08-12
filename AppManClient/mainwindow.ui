@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>525</width>
-    <height>320</height>
+    <width>538</width>
+    <height>414</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,6 +19,52 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QGroupBox" name="groupBoxMyBuilds">
+      <property name="title">
+       <string>Builds</string>
+      </property>
+      <widget class="QLabel" name="label_2">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>20</y>
+         <width>91</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Number of Builds:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_BuildCount">
+       <property name="geometry">
+        <rect>
+         <x>110</x>
+         <y>20</y>
+         <width>46</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButtonViewBuilds">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>40</y>
+         <width>75</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>View Builds</string>
+       </property>
+      </widget>
+     </widget>
+    </item>
     <item>
      <widget class="QGroupBox" name="groupBoxServerDetails">
       <property name="title">
@@ -126,7 +172,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>525</width>
+     <width>538</width>
      <height>21</height>
     </rect>
    </property>

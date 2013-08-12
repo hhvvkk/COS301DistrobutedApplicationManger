@@ -1,33 +1,21 @@
-#include "Machine.h"
 #include "Slave.h"
-//#include <iostream>
-#include <QString>
 
-using namespace std;
-/*
-		int machineID
-                QString machineIP;
-                QString machineStatus;
-*/
 Slave::Slave(int id, QString ip, bool onL, bool type){
         if(id <= 0){
-                //cout<<"Cannot have a negative ID"<<endl;
 		return;
 	}
 	else{
 		machineID = id;
-                this->machineIP = ip;
-                online = onL;
+        this->machineIP = ip;
+        online = onL;
 		machineType = type;
 		buildCount = 0;
 	}
 }
 Slave::~Slave(){
-        //cout<<"Starting to delete from slave.cpp"<<endl;
 	if(buildCount != 0){
 		delete[] slaveBuilds;
-	}
-        //cout<<"Delete success from slave.cpp"<<endl;
+    }
 }
 Slave::Slave(){
 	machineID = 0;
@@ -38,7 +26,7 @@ Slave::Slave(){
 Slave::Slave(Slave &toCopy){
 	this->machineID = toCopy.machineID;
 	this->machineIP = toCopy.machineIP;
-        this->online = toCopy.online;
+    this->online = toCopy.online;
 	this->machineType = toCopy.machineType;
 	this->buildCount = toCopy.buildCount;
 	this->slaveBuilds = toCopy.slaveBuilds;
@@ -61,13 +49,6 @@ void Slave::addBuild(Build buildToAdd){
 		slaveBuilds[buildCount] = buildToAdd;
 	}
 	buildCount++;
-}
-
-void Slave::printBuilds(){
-        //cout<<"Build ID: "<<"\tBuild name: "<<"\tBuild Description: "<<endl;
-	for(int i = 0; i< buildCount; i++){
-                //cout<<slaveBuilds[i].getBuildID()<<"\t\t"<<slaveBuilds[i].getBuildName()<<"\t\t"<<slaveBuilds[i].getBuildDescription()<<endl;
-	}
 }
 
 void Slave::deleteBuild(QString name){
@@ -95,9 +76,6 @@ void Slave::deleteBuild(QString name){
 		}
 		buildCount --;
 	}
-	else{
-                //cout<<"Build not found"<<endl;
-	}
 }
 
 void Slave:: deleteBuild(int id){
@@ -124,9 +102,6 @@ void Slave:: deleteBuild(int id){
 			slaveBuilds[k] = temp[k];
 		}
 		buildCount --;
-	}
-	else{
-                //cout<<"Build not found"<<endl;
 	}
 }
 

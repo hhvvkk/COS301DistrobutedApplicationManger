@@ -10,11 +10,14 @@
 
 #include <QMainWindow>
 
+#include "management.h"
+#include "viewbuilds.h"
+
 namespace Ui {
 class MainWindow;
 }
 
-#include "management.h"
+
 /**
  * @class MainWindow
  * @brief The MainWindow class will display the main Graphical User Interface for this application
@@ -45,6 +48,8 @@ private slots:
      * @brief disconnectClick The function called when the user clicks Disconnect
      */
     void disconnectClick();
+
+    void on_pushButtonViewBuilds_clicked();
 
 private:
     Ui::MainWindow *ui;

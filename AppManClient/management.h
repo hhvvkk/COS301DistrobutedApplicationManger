@@ -9,7 +9,10 @@
 #define MANAGEMENT_H
 
 #include <QString>
+
+#include "Build.h"
 #include "network.h"
+#include "xmlReader.h"
 
 /**
  * @class Management
@@ -47,12 +50,50 @@ public:
     void writeSomedata(){
         network->writeSOme();
     }
+    /**
+     * \fn void addBuild(Build buildToAdd);
+     * @brief The function that adds a Build to the management
+     * @param buildToAdd The Build that is to be added
+     */
+    void addBuild(Build buildToAdd);
+    /**
+     * @fn Build * getAllBuilds()
+     * @brief returns all the builds in the Management object
+     * @return allBuilds
+     */
+    Build * getAllBuilds() {return allBuilds;}
+    /**
+     * \fn int getBuildCount();
+     * @brief The function that accesses the buildCount variable
+     * @return buildCount
+     */
+    int getBuildCount() {return buildCount;}
 
+    /**
+     * @brief addMyBuilds adds the builds that are in the XML
+     */
+    void addMyBuilds();
+
+    xmlReader getxRead() {return xRead;}
+
+    Build getBuildByID(int num);
 private:
     /**
      * @brief network An Object that will harbour some of the network information
      */
     Network *network;
+    /**
+     * @var allBuilds
+     * @brief an array of Build objects
+     */
+     Build * allBuilds;
+     /**
+     * @var buildCount
+     * @brief a counter for the Build array
+     */
+     int buildCount;
+
+     xmlReader xRead;
 };
 
 #endif // MANAGEMENT_H

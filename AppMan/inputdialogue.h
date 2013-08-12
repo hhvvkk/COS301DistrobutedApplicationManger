@@ -8,8 +8,11 @@
 #ifndef INPUTDIALOGUE_H
 #define INPUTDIALOGUE_H
 
-#include <QWidget>
 #include "management.h"
+
+#include <QMessageBox>
+#include <QDebug>
+#include <QWidget>
 
 namespace Ui {
     class InputDialogue;

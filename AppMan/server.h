@@ -1,16 +1,15 @@
 /**
 * @file server.h
 * @brief This is the file containing the Server run on the Application
-* @author 101Solutions
-* @version 2.0
 */
 #ifndef SERVER_H
 #define SERVER_H
 
-#include <QTcpServer>
 #include <QDebug>
-#include "serverthread.h"
+#include <QTcpServer>
+
 #include "management.h"
+#include "serverthread.h"
 
 //forward declaration so that it can be used
 class Management;

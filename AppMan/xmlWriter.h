@@ -5,13 +5,14 @@
 #ifndef XMLWRITER_H
 #define XMLWRITER_H
 
-#include "xmlReader.h"
-#include <QXmlStreamWriter>
-#include <QString>
-#include <QMap>
-#include <QFile>
-#include <QMapIterator>
 #include <QDebug>
+#include <QFile>
+#include <QMap>
+#include <QMapIterator>
+#include <QString>
+#include <QXmlStreamWriter>
+
+#include "xmlReader.h"
 
 /**
  * @class xmlWriter

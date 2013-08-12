@@ -1,14 +1,12 @@
 #include "serverthread.h"
-#include <QHostAddress>
-#include "management.h"
-#include "Slave.h"
 
 ServerThread::ServerThread(int ID, Management *m, QObject *parent) :
     QThread(parent),
     management(m)
 {
     this->socketID = ID;
-    bool firstTalk = true;
+    //NOTA: Comment out unused var
+    //bool firstTalk = true;
 }
 
 void ServerThread::run(){

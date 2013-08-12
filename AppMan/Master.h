@@ -1,19 +1,17 @@
 /**
 * @file Master.h
 * @brief This is the structure for the Master
-* @author 101Solutions
-* @version 2.0
 */
 
 #ifndef Master_H
 #define Master_H
 
-#include "Machine.h"
-#include "Build.h"
-#include "Slave.h"
 #include <QString>
 
-using namespace std;
+#include "Build.h"
+#include "Machine.h"
+#include "Slave.h"
+
 /**
 * @class Master
 * @brief This is the structure for the Master
