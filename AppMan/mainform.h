@@ -26,6 +26,8 @@
 #include <QUrl>
 #include <QVBoxLayout>
 #include <QWidget>
+#include <QTimer>
+#include <QSystemTrayIcon>
 
 #include "abouthelp.h"
 #include "aboutversion.h"
@@ -74,6 +76,13 @@ public:
 
 protected:
     /**
+     * \fn void changeEvent(QEvent *event);
+     * @brief changeEvent is called if the window changes state such as minimize
+     * @param event The event that fires the change in the window
+     */
+    void changeEvent(QEvent *event);
+
+    /**
      * \fn virtual void dropEvent ( QDropEvent *event );
      * @brief dropEvent once the Build is dropped this is called
      * @param event the event that fired the drop
@@ -92,11 +101,19 @@ protected:
      */
     virtual void dragLeaveEvent ( QDragLeaveEvent *event );
     /**
+     * \fn virtual void dragMoveEvent(QDragMoveEvent *event);
      * @brief dragMoveEvent once the object is dragged and moved around this function is called
      * @param event the event that fired the dragMove
      */
     virtual void dragMoveEvent ( QDragMoveEvent *event );
+
 private slots:
+    /**
+     * \fn void showOrHideTrayClick();
+     * @brief showOrHideTray is a function that will show the tray or hide the tray depending on its current state
+     */
+    void showOrHideTrayClick();
+
     /**
       * \fn void newSlaveConnected();
       * @brief When a new slave connects this function is called
@@ -143,12 +160,6 @@ private slots:
     void on_actionVersion_triggered();
 
     /**
-     * \fn spinboxChanged();
-     * @brief spinboxChanged The function that will be called once the spinbox changes values
-     */
-    void spinboxChanged();
-
-    /**
 	 * @fn void masterBuildsClicked(QModelIndex index);
      * @brief The Build instance of the relevant instance is displayed in the buildInfo tree
      * @param index
@@ -189,10 +200,10 @@ private:
     void displaySlaves();
 
     /**
-     * @fn void loadXMLslaves();
-     * @brief Displays all slaves in the xml
+     * @fn void loadXMLBuilds();
+     * @brief Displays all builds in the xml
      */
-    void loadXMLslaves();
+    void loadXMLBuilds();
     /**
      * @fn void populateBuildInfo(Build retr);
      * @brief Displays the selected slave in the xml
@@ -212,6 +223,12 @@ private:
      * @brief ui It is the graphical user interface
      */
     Ui::MainForm *ui;
+
+    /**
+     * @var trayIcon
+     * @brief trayIcon is a variable to create the tray icon for the application
+     */
+    QSystemTrayIcon *trayIcon;
 
     /**
      * @var management

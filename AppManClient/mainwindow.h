@@ -9,6 +9,11 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QTimer>
+#include <QSystemTrayIcon>
+#include <QString>
+#include <QDebug>
+#include <QMessageBox>
 
 #include "management.h"
 #include "viewbuilds.h"
@@ -39,7 +44,22 @@ public:
       */
     ~MainWindow();
 
+protected:
+    /**
+     * \fn void changeEvent(QEvent * event);
+     * @brief changeEvent will fire once the window of this application changes, such as minimizing
+     * @param event the type of even that is fired which triggered the event
+     */
+    void changeEvent(QEvent * event);
+
 private slots:
+    /**
+     * \fn void showOrHideTrayClick();
+     * @brief showOrHideTray will fire if the button show or hide is clicked in the tray
+     */
+    void showOrHideTrayClick();
+
+
     /**
      * @brief connectClick The function called when the user clicks Connect
      */
@@ -49,11 +69,24 @@ private slots:
      */
     void disconnectClick();
 
+    /**
+     * \fn void on_pushButtonViewBuilds_clicked();
+     * @brief on_pushButtonViewBuilds_clicked will be fired once the user clicks on view builds or when user click build
+     */
     void on_pushButtonViewBuilds_clicked();
 
 private:
     Ui::MainWindow *ui;
+
     /**
+     * @var trayIcon
+     * @brief The tray icon that will be displayed for the client application
+     */
+    QSystemTrayIcon *trayIcon;
+
+
+    /**
+     * @var management
      * @brief management the Management facade object that houses the logic behind the application
      */
     Management *management;

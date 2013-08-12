@@ -1,8 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <QString>
-#include <QDebug>
-#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -14,6 +11,28 @@ MainWindow::MainWindow(QWidget *parent) :
     management = new Management();
     management->addMyBuilds();
     ui->label_BuildCount->setText(QString::number(management->getBuildCount()));
+
+
+    /*
+     *Create the tray(BEGIN)
+     **/
+    trayIcon = new QSystemTrayIcon(QIcon(":/images/images/ALogoClient.png"), this);
+    QAction *quitAction = new QAction( "Exit", trayIcon );
+    connect(quitAction, SIGNAL(triggered()), this, SLOT(close()));
+
+    QAction *hideAction = new QAction( "Show/Hide", trayIcon );
+    connect(hideAction, SIGNAL(triggered()), this, SLOT(showOrHideTrayClick()));
+
+    QMenu *trayMenu = new QMenu;
+    trayMenu->addAction(hideAction);
+    trayMenu->addAction(quitAction);
+    trayIcon->setContextMenu(trayMenu);
+
+    trayIcon->show();
+    //setWindowFlags(windowFlags() | Qt::Tool);
+    /*
+     *Create the tray(END)
+     **/
 }
 
 MainWindow::~MainWindow()
@@ -21,6 +40,35 @@ MainWindow::~MainWindow()
     if(management)
         management->deleteLater();
 }
+
+
+void MainWindow::changeEvent(QEvent* e){
+    switch (e->type()){
+        case QEvent::LanguageChange: this->ui->retranslateUi(this);
+            break;
+        case QEvent::WindowStateChange:
+                if (this->windowState() & Qt::WindowMinimized)
+                    QTimer::singleShot(250, this, SLOT(hide()));
+                break;
+    default:
+        break;
+    }
+
+    QMainWindow::changeEvent(e);
+}
+
+
+void MainWindow::showOrHideTrayClick(){
+    if(!this->isVisible()){
+        show();
+        raise();
+        setFocus();
+    }
+    else{
+        hide();
+    }
+}
+
 
 void MainWindow::connectClick()
 {
@@ -63,3 +111,4 @@ void MainWindow::on_pushButtonViewBuilds_clicked()
     vb->getReader(p);
     vb->show();
 }
+

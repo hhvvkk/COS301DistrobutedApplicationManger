@@ -27,46 +27,6 @@ MainForm::MainForm(QWidget *parent) :
     ui->groupBoxMaster->setLayout(buildLayout);
     buildLayout->addWidget(masterBuilds);
 
- /*
-    QTreeWidgetItem *boola = new QTreeWidgetItem();
-    boola->setText(0,"buildNo1");
-
-    //boola->set
-    masterBuilds->addTopLevelItem(boola);
-   boola = new QTreeWidgetItem();
-    boola->setText(0,"buildNo2");
-    masterBuilds->addTopLevelItem(boola);boola = new QTreeWidgetItem();
-    boola->setText(0,"buildNo3");
-    masterBuilds->addTopLevelItem(boola);boola = new QTreeWidgetItem();
-    boola->setText(0,"buildNo4");
-    masterBuilds->addTopLevelItem(boola);boola = new QTreeWidgetItem();
-    boola->setText(0,"buildNo3");
-    masterBuilds->addTopLevelItem(boola);boola = new QTreeWidgetItem();
-    boola->setText(0,"buildNo3");
-    masterBuilds->addTopLevelItem(boola);boola = new QTreeWidgetItem();
-    boola->setText(0,"buildNo3");
-    masterBuilds->addTopLevelItem(boola);boola = new QTreeWidgetItem();
-    boola->setText(0,"buildNo3");
-    masterBuilds->addTopLevelItem(boola);boola = new QTreeWidgetItem();
-    boola->setText(0,"buildNo3");
-    masterBuilds->addTopLevelItem(boola);boola = new QTreeWidgetItem();
-    boola->setText(0,"buildNo3");
-    masterBuilds->addTopLevelItem(boola);boola = new QTreeWidgetItem();
-    boola->setText(0,"buildNo3");
-    masterBuilds->addTopLevelItem(boola);boola = new QTreeWidgetItem();
-    boola->setText(0,"buildNo3");
-    masterBuilds->addTopLevelItem(boola);boola = new QTreeWidgetItem();
-    boola->setText(0,"buildNo3");
-    masterBuilds->addTopLevelItem(boola);boola = new QTreeWidgetItem();
-    boola->setText(0,"buildNo3");
-    masterBuilds->addTopLevelItem(boola);
-    QTreeWidgetItem *vblashd = new QTreeWidgetItem();
-
-    vblashd->setText(0,"ASGSDGSDF");
-    boola->addChild(vblashd);
-*/
-
-
     /*
      *TOP DOCKWIDGET(BEGIN)
      **/
@@ -83,7 +43,29 @@ MainForm::MainForm(QWidget *parent) :
 
     //ui->dockWidgetProperty->setLayout();
     connect(masterBuilds, SIGNAL(clicked(QModelIndex)), this, SLOT(masterBuildsClicked(QModelIndex)));
-    loadXMLslaves();
+    loadXMLBuilds();
+
+    management->startServer();
+
+    /*
+     *Create the tray(BEGIN)
+     **/
+    trayIcon = new QSystemTrayIcon(QIcon(":/images/images/ALogo.png"), this);
+    QAction *quitAction = new QAction( "Exit", trayIcon );
+    connect(quitAction, SIGNAL(triggered()), this, SLOT(close()));
+    QAction *hideAction = new QAction( "Show/Hide", trayIcon );
+    connect(hideAction, SIGNAL(triggered()), this, SLOT(showOrHideTrayClick()));
+
+    QMenu *trayMenu = new QMenu;
+    trayMenu->addAction(hideAction);
+    trayMenu->addAction(quitAction);
+    trayIcon->setContextMenu(trayMenu);
+
+    trayIcon->show();
+    //setWindowFlags(windowFlags() | Qt::Tool);
+    /*
+     *Create the tray(END)
+     **/
 }
 
 MainForm::~MainForm()
@@ -134,17 +116,27 @@ MainForm::BuildInfo::BuildInfo(QWidget *parent)
 
 }
 
+void MainForm::changeEvent(QEvent* e){
+    switch (e->type()){
+        case QEvent::LanguageChange: this->ui->retranslateUi(this);
+            break;
+        case QEvent::WindowStateChange:
+                if (this->windowState() & Qt::WindowMinimized)
+                    QTimer::singleShot(250, this, SLOT(hide()));
+                break;
+        default://important to have default or you get 100+ warnings
+            break;
+    }
+
+    QMainWindow::changeEvent(e);
+}
+
 void MainForm::MasterBuilds::mousePressEvent(QMouseEvent *event){
 
     //if it is a normal click just call the parent's mouse press event
     qDebug()<<"type = "<<event->type();
     QTreeWidget::mousePressEvent(event);
     QTreeWidget::mouseReleaseEvent(event);
-    /*Also not yet pointing to the qwidgetItem*/
-    /*
-    QRect widgetRect = this->geometry();
-    QPoint mousePos = this->mapFromGlobal(QCursor::pos());
-    */
 
     //the point where the event was fired
     QPoint hotSpot = event->pos();// - child->pos();
@@ -294,8 +286,13 @@ void MainForm::on_actionStop_Server_triggered()
     management->stopServer();
 }
 
-void MainForm::spinboxChanged(){
-    displaySlaves();
+void MainForm::showOrHideTrayClick(){
+    if(!this->isVisible()){
+        show();
+    }
+    else{
+        hide();
+    }
 }
 
 void MainForm::newSlaveConnected(){
@@ -317,11 +314,7 @@ void MainForm::displaySlaves(){
     for(int i = 0; i <management->getMachineCount(); i++){
         QTreeWidgetItem *slaveItem = new QTreeWidgetItem();
 
-        if(management->getMachineAt(i)->isOnline())
-            slaveItem->setText(0, management->getMachineAt(i)->getMachineIP());
-        else
-            slaveItem->setText(0, management->getMachineAt(i)->getMachineIP()+"[offline]");
-        ui->treeWidgetSlaves->addTopLevelItem(slaveItem);
+        slaveItem->setText(0, management->getMachineAt(i)->getMachineIP());
     }
 }
 
@@ -356,7 +349,7 @@ void MainForm::displayBuilds(){
     }
 }
 
-void MainForm::loadXMLslaves(){
+void MainForm::loadXMLBuilds(){
     masterBuilds->clear();
     xmlReader xRead;
     xRead.parseXML();

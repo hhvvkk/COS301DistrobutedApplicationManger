@@ -19,11 +19,13 @@ void Server::startServer(){
 
 
 void Server::stopServer(){
-
+    Server::close();
 }
 
 void Server::setPort(int newPort){
     port = newPort;
+    stopServer();
+    startServer();
 }
 
 void Server::incomingConnection(int socketID){
