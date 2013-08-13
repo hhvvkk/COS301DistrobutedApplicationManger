@@ -94,6 +94,15 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>lineEditDirectory</tabstop>
+  <tabstop>pushButtonChooseDirectory</tabstop>
+  <tabstop>lineEditBuildNo</tabstop>
+  <tabstop>lineEditName</tabstop>
+  <tabstop>lineEditDescription</tabstop>
+  <tabstop>pushButton</tabstop>
+  <tabstop>pushButton_2</tabstop>
+ </tabstops>
  <resources>
   <include location="images.qrc"/>
  </resources>

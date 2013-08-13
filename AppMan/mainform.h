@@ -32,6 +32,7 @@
 #include "abouthelp.h"
 #include "aboutversion.h"
 #include "addbuild.h"
+#include "copybuildover.h"
 #include "Build.h"
 #include "inputdialogue.h"
 #include "management.h"
@@ -64,15 +65,6 @@ public:
       * @brief A destructor for the main form
       */
     ~MainForm();
-    
-    //settings//
-
-    //the  BuildWidget class to show the  BuildWidgets on the master and slaves
-    /**
-     * @class BuildWidget
-     * @brief The BuildWidget class will be used to display a build for the user. It is a class that is created depending on whether it is a slave machine or not
-     */
-
 
 protected:
     /**
@@ -115,10 +107,10 @@ private slots:
     void showOrHideTrayClick();
 
     /**
-      * \fn void newSlaveConnected();
+      * \fn void newSlaveConnected(Machine *m, int index);
       * @brief When a new slave connects this function is called
       */
-    void newSlaveConnected();
+    void newSlaveConnected(Machine *m, int index);
 
     /**
      * \fn void initiateAddBuild(Build b);
@@ -127,10 +119,10 @@ private slots:
     void initiateAddBuild(Build b);
 
     /**
-      * \fn void newSlaveConnected();
+      * \fn void newSlaveConnected(Machine *m, int index);
       * @brief When a slave disconnects this function is called
       */
-    void slaveDisconnected();
+    void slaveDisconnected(Machine *m, int index);
 
     /**
 	 * @fn void on_actionStop_Server_triggered();
@@ -177,6 +169,8 @@ private slots:
 	 * @brief displayBuilds The function to show the builds on the main form
 	 */
     void displayBuilds();
+
+    void on_actionCopy_Build_Over_triggered();
 
 private:
     /**

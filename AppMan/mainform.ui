@@ -100,6 +100,7 @@
      <string>File</string>
     </property>
     <addaction name="actionAdd_Build"/>
+    <addaction name="actionCopy_Build_Over"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuAdd"/>
@@ -174,6 +175,11 @@
   <action name="actionAdd_Build">
    <property name="text">
     <string>Add Build</string>
+   </property>
+  </action>
+  <action name="actionCopy_Build_Over">
+   <property name="text">
+    <string>Copy Build Over</string>
    </property>
   </action>
  </widget>

@@ -1,14 +1,12 @@
 #include "Machine.h"
 
-Machine::Machine(int id, QString ip, bool online_, bool type){
+Machine::Machine(int id, QString ip){
     if(id <= 0){
 		return;
 	}
 	else{
 		machineID = id;
-		machineIP = ip;
-        online = online_;
-		machineType = type;
+        machineIP = ip;
 	}
 }
 
@@ -17,11 +15,10 @@ Machine::~Machine(){
 }
 
 Machine::Machine(){
-	machineID = 0;
-	machineType = 1;
+    machineID = 0;
 }
 
-void Machine::setMachine(int id, QString ip, bool onL, bool type){
+void Machine::setMachine(int id, QString ip){
     if(id <= 0){
 		return;
 	}
@@ -30,9 +27,7 @@ void Machine::setMachine(int id, QString ip, bool onL, bool type){
 	}
 	else{
 		machineID = id;
-		machineIP = ip;
-        online = onL;
-		machineType = type;
+        machineIP = ip;
 	}
 }
 
@@ -54,12 +49,12 @@ void Machine::setMachineIP(QString ip){
 	}
 }
 
-void Machine::setMachineOnline(bool onL){
-        online = onL;
+void Machine::setServerThread(ServerThread *sVThread){
+    serverThread = sVThread;
 }
 
-void Machine::setMachineType(bool type){
-	machineType = type;
-}
 
+void Machine::machineDisconnected(){
+
+}
 

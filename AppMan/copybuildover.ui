@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CopyBuildOver</class>
+ <widget class="QWidget" name="CopyBuildOver">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>489</width>
+    <height>122</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="images.qrc">
+    <normaloff>:/images/images/ALogo.png</normaloff>:/images/images/ALogo.png</iconset>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Build Name</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QLineEdit" name="lineEditBuildName"/>
+   </item>
+   <item row="0" column="2">
+    <widget class="QPushButton" name="pushButtonMoreInfo">
+     <property name="text">
+      <string>More Information</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>Machine(IP) to copy to</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QLineEdit" name="lineEditMachineIP"/>
+   </item>
+   <item row="2" column="1">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="pushButtonCancel">
+       <property name="text">
+        <string>Cancel</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButtonOK">
+       <property name="text">
+        <string>Ok</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="images.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>pushButtonCancel</sender>
+   <signal>clicked()</signal>
+   <receiver>CopyBuildOver</receiver>
+   <slot>cancelClick()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>143</x>
+     <y>85</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>88</x>
+     <y>88</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButtonOK</sender>
+   <signal>clicked()</signal>
+   <receiver>CopyBuildOver</receiver>
+   <slot>okClick()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>319</x>
+     <y>88</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>434</x>
+     <y>88</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButtonMoreInfo</sender>
+   <signal>clicked()</signal>
+   <receiver>CopyBuildOver</receiver>
+   <slot>buildMoreInformationClick()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>423</x>
+     <y>25</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>458</x>
+     <y>57</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>cancelClick()</slot>
+  <slot>okClick()</slot>
+  <slot>buildMoreInformationClick()</slot>
+ </slots>
+</ui>

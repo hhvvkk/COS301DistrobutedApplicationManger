@@ -10,7 +10,7 @@ xmlWriter::xmlWriter()
     this->buildDirectory = xRead.getBuildDirectory();
 }
 
-void xmlWriter::CreateXMLFile()
+void xmlWriter::createXMLFile()
 {
     QFile file("builds.xml");
 

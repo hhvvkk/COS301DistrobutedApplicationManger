@@ -11,6 +11,7 @@
 #include <QString>
 #include <QFileDialog>
 #include <QMap>
+#include <QMessageBox>
 #include "xmlWriter.h"
 
 namespace Ui {
@@ -68,6 +69,8 @@ private slots:
      * @brief okClick will add the build to the program
      */
     void okClick();
+
+    void showError(QString errorMessage);
 
     /**
      * @fn void chooseClick();

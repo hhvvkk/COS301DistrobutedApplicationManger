@@ -22,35 +22,36 @@ SOURCES += main.cpp\
     server.cpp \
     inputdialogue.cpp \
     Slave.cpp \
-    Master.cpp \
     Machine.cpp \
     Build.cpp \
     addbuild.cpp \
     xmlWriter.cpp \
     xmlReader.cpp \
-    myDirIterator.cpp
+    myDirIterator.cpp \
+    copybuildover.cpp
 
 HEADERS  += mainform.h \
     aboutversion.h \
     abouthelp.h \
     management.h \
-    serverthread.h \
     server.h \
     inputdialogue.h \
     Slave.h \
-    Master.h \
     Machine.h \
     Build.h \
     addbuild.h \
     xmlWriter.h \
     xmlReader.h \
-    myDirIterator.h
+    myDirIterator.h \
+    serverthread.h \
+    copybuildover.h
 
 FORMS    += mainform.ui \
     aboutversion.ui \
     abouthelp.ui \
     inputdialogue.ui \
-    addbuild.ui
+    addbuild.ui \
+    copybuildover.ui
 
 RESOURCES += \
     images.qrc

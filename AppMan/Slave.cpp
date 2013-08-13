@@ -1,33 +1,30 @@
 #include "Slave.h"
 
-Slave::Slave(int id, QString ip, bool onL, bool type){
+Slave::Slave(int id, QString ip){
         if(id <= 0){
 		return;
 	}
 	else{
 		machineID = id;
         this->machineIP = ip;
-        online = onL;
-		machineType = type;
 		buildCount = 0;
 	}
 }
+
 Slave::~Slave(){
 	if(buildCount != 0){
 		delete[] slaveBuilds;
     }
 }
+
 Slave::Slave(){
 	machineID = 0;
-	buildCount = 0;
-	machineType = 1;
+    buildCount = 0;
 }
 
 Slave::Slave(Slave &toCopy){
 	this->machineID = toCopy.machineID;
-	this->machineIP = toCopy.machineIP;
-    this->online = toCopy.online;
-	this->machineType = toCopy.machineType;
+    this->machineIP = toCopy.machineIP;
 	this->buildCount = toCopy.buildCount;
 	this->slaveBuilds = toCopy.slaveBuilds;
 }

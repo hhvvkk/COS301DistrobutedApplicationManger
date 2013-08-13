@@ -6,14 +6,14 @@ Management::Management(QObject *parent) :
     server = 0;
     buildCount = 0;
     machineCount = 0;
+    lock = new QMutex();
 }
 
 void Management::setServer(Server *s){
     this->server = s;
 }
 
-Management::~Management()
-{
+Management::~Management(){
     delete server;
     if(buildCount != 0)
     {
@@ -26,25 +26,43 @@ Management::~Management()
         }
             allMachines.clear();
     }
-
-}
-
-void Management::addMachine(Master masterToAdd){
-    allMachines.push_back(new Master(masterToAdd));
-
-    machineCount++;
-}
-
-void Management::addMachine(Slave *slaveToAdd){
-    allMachines.push_back(slaveToAdd);
-    machineCount++;
+    delete lock;
 }
 
 void Management::addMachine(Machine* machine){
+    lock->lock();//lock the critical sections
+
     allMachines.push_back(machine);
     machineCount++;
     //emit the signal so it can be used by main form
-    emit newSlaveConnected();
+    emit newSlaveConnected(machine ,machineCount-1);
+
+    lock->unlock();//finally unlock for the critical section
+}
+
+void Management::removeMachine(Machine *m){
+    lock->lock();
+
+    qDebug()<<"attempting removal of machine";
+    int index = -1;
+    if(allMachines.size() == 0){
+        qDebug()<<"size = 0";
+        return;
+    }
+    for(unsigned int i = 0; i < allMachines.size(); i++)
+        if(m == allMachines.at(i)){
+            index = i;
+        }
+
+    if(index == -1)//means its not found
+        return;
+
+    allMachines.erase(allMachines.begin()+index,allMachines.begin()+(index+1));
+    machineCount--;
+
+    emit slaveDisconnected(m,index);
+
+    lock->unlock();
 }
 
 void Management::addBuild(Build buildToAdd){
@@ -89,35 +107,6 @@ void Management::setPort(int newPort){
     server->setPort(newPort);
 }
 
-void Management::setSlaveOffline(Machine *m, bool isOffline){
-    if(isOffline){
-        m->setMachineOnline(false);
-    }
-    else{
-        m->setMachineOnline(true);
-    }
-    emit slaveDisconnected();
-}
-
-void Management::removeMachine(Machine *m){
-    qDebug()<<"attempting removal of machine";
-    int index = -1;
-    if(allMachines.size() == 0){
-        qDebug()<<"size = 0";
-        return;
-    }
-    for(unsigned int i = 0; i < allMachines.size(); i++)
-        if(m == allMachines.at(i)){
-            index = i;
-        }
-
-    if(index == -1)//means its not found
-        return;
-
-    allMachines.erase(allMachines.begin()+index,allMachines.begin()+(index+1));
-    machineCount--;
-}
-
 Build Management::getBuildByID(int id){
     for(int i = 0; i < buildCount; i++){
         if(allBuilds[i].getBuildID() == id){
@@ -127,4 +116,13 @@ Build Management::getBuildByID(int id){
     // Returns a build with id 0 to show it does not exist
     Build b(0,"NULL","NULL","NULL");
     return b;
+}
+
+
+bool Management::buildExistWithName(QString name){
+    for(int i = 0; i < buildCount; i++){
+        if(!name.compare(allBuilds[i].getBuildName()))
+            return true;
+    }
+    return false;
 }

@@ -33,10 +33,10 @@ public:
 	 */
     ~xmlWriter();
 	/**
-	 * @fn CreateXMLFile();
+     * @fn createXMLFile();
 	 * @brief The function to create and append to the XML file
 	 */
-    void CreateXMLFile();
+    void createXMLFile();
 	/**
 	 * @fn void receiveBuild(QString num,QString name,QString descript, QString direc);
 	 * @brief The function that accepts parameters of the build

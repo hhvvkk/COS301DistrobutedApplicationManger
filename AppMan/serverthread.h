@@ -11,12 +11,9 @@
 #include <QTcpSocket>
 #include <QThread>
 
-#include "Machine.h"
-#include "management.h"
-#include "Slave.h"
-
 //forward declaration of Management so it can be used
 class Management;
+class Machine;
 
 /**
  * @class ServerThread
@@ -32,7 +29,7 @@ public:
      * @param m the management object to harbour two way communications
      * @param parent The parent of the QThread object
      */
-    explicit ServerThread(int ID,Management *m, QObject *parent = 0);
+    explicit ServerThread(int ID, Management *m, QObject *parent = 0);
 
     /**
      * @brief run Function that will run once thread is started
@@ -54,15 +51,13 @@ private:
     /**
      * @brief socket
      * @brief socketID
-     * @brief management An Object to harbour two way communications
-     * @brief machine The machine for which this thread runs
      * @brief firstTalk Whether or not it is the first time the client talks
      */
     QTcpSocket *socket;
     int socketID;
+    bool firstTalk;
     Management *management;
     Machine *machine;
-    bool firstTalk;
 };
 
 #endif // SERVERTHREAD_H

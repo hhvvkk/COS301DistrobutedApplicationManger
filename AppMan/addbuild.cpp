@@ -21,10 +21,18 @@ void AddBuild::cancelClick(){
 }
 
 void AddBuild::okClick(){
+    QString buildDirectory = ui->lineEditDirectory->text();
+    //Check to see if directory actually exist...
+    if(!QDir(buildDirectory).exists()){
+        showError("Invalid directory path");
+        return;
+    }
+    //continue if it does exist
     QString buildNo = ui->lineEditBuildNo->text();
     QString buildName = ui->lineEditName->text();
     QString buildDescription = ui->lineEditDescription->text();
-    QString buildDirectory = ui->lineEditDirectory->text();
+
+
     int buildID = buildNo.toInt();
     Build buildToAdd(buildID,buildName,buildDescription,buildDirectory);
     qDebug()<<"about to emit";
@@ -34,17 +42,32 @@ void AddBuild::okClick(){
     ui->lineEditDescription->setText("");
     ui->lineEditDirectory->setText("");
     ui->lineEditDirectory->setFocus();
+
+
     emit initiateAddBuild(buildToAdd);
+}
+
+void AddBuild::showError(QString errorMessage){
+    QMessageBox *msb = new QMessageBox();
+    msb->setText(errorMessage);
+    msb->show();
 }
 
 void AddBuild::addToXML(int num,QString name,QString descript,QString direc){
     QString bNum = QString::number(num);
     theXMLWriter->receiveBuild(bNum,name,descript,direc);
-    theXMLWriter->CreateXMLFile();
-
+    theXMLWriter->createXMLFile();
 }
 
 void AddBuild::chooseClick(){
-    QString directory = QFileDialog::getExistingDirectory(this, tr("Open Directory"),"",QFileDialog::ShowDirsOnly| QFileDialog::DontResolveSymlinks);
-    ui->lineEditDirectory->setText(directory);
+    QString directory = "";
+    if(ui->lineEditDirectory->text().compare("")){
+        directory = QFileDialog::getExistingDirectory(this, tr("Open Directory"),ui->lineEditDirectory->text(),QFileDialog::ShowDirsOnly| QFileDialog::DontResolveSymlinks);
+    }
+    else{
+        directory = QFileDialog::getExistingDirectory(this, tr("Open Directory"),"",QFileDialog::ShowDirsOnly| QFileDialog::DontResolveSymlinks);
+    }
+
+    if(directory.compare(""))
+        ui->lineEditDirectory->setText(directory);
 }

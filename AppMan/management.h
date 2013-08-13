@@ -9,12 +9,12 @@
 #include <QDebug>
 #include <QObject>
 #include <QVector>
+#include <QMutex>
 
 #include "Build.h"
-#include "Machine.h"
-#include "Master.h"
-#include "server.h"
 #include "Slave.h"
+#include "Machine.h"
+#include "server.h"
 
 //forward declaration of server so that it can be used
 class Server;
@@ -30,16 +30,17 @@ class Management : public QObject
    //signals to talk to the mainForm("in a sence")
 signals:
     /**
-     * \fn newSlaveConnected()
+     * \fn newSlaveConnected(Machine *m, int index)
      * @brief newSlaveConnected A signal emitted each time a new slave connects
      */
-    void newSlaveConnected();
+    void newSlaveConnected(Machine *m, int index);
 
     /**
-     * \fn slaveDisconnected()
+     * \fn slaveDisconnected(Machine *m, int index)
      * @brief slaveDisconnected A signal emitted each time a slave disconnects
      */
-    void slaveDisconnected();
+    void slaveDisconnected(Machine *m, int index);
+
 public:
     /**
     * \fn Management();
@@ -83,18 +84,6 @@ public:
     */
     int getMachineCount() {return machineCount;}
 
-    /**
-    * \fn void addMachine(Master masterToAdd);
-    * @brief The function that adds a Master to the management
-    * @param masterToAdd The Master that is to be added
-    */
-    void addMachine(Master masterToAdd);
-    /**
-    * \fn void addMachine(Slave *slaveToAdd);
-    * @brief The function that adds a Slave to the management
-    * @param slaveToAdd The Slave that is to be added
-    */
-    void addMachine(Slave *slaveToAdd);
     /**
     * \fn void addBuild(Build buildToAdd);
     * @brief The function that adds a Build to the management
@@ -151,13 +140,12 @@ public:
     void setPort(int newPort);
 
     /**
-     * \fn void setSlaveOffline(Machine *m, bool isOffline);
-     * @brief setSlaveOffline The function that can change the machine's status from online to offline and vice versa
-     * @param m The machine on which the status will be changed
-     * @param isOffline A boolean to indicate whether the machine should be set online or offline
+     * \fn bool buildExistWithName(QString name);
+     * @brief buildExistWithName Will check whether a build exist with a certain name
+     * @param name The name of the build
+     * @return The function returns true if the build exist with that name
      */
-    void setSlaveOffline(Machine *m, bool isOffline);
-signals:
+    bool buildExistWithName(QString name);
 
 private:
     /**
@@ -165,16 +153,19 @@ private:
      * @brief server The server that will be run on which clients connect to
      */
     Server *server;
+
     /**
     * @var allBuilds
     * @brief an array of Build objects
     */
     Build * allBuilds;
+
     /**
     * @var buildCount
     * @brief a counter for the Build array
     */
     int buildCount;
+
     /**
     * @var machineCount
     * @brief a counter for the Machine array
@@ -186,6 +177,12 @@ private:
     * @brief a vector of Machine objects
     */
     QVector<Machine*> allMachines;
+
+    /**
+     * @var lock
+     * @brief A lock that will be used to ensure concurrent events take place in correct order
+     */
+    QMutex *lock;
 
 };
 

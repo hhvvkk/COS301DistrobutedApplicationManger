@@ -10,7 +10,6 @@
 
 #include "Build.h"
 #include "Machine.h"
-
 /**
 * @class Slave
 * @brief This is the structure for the Slave
@@ -29,14 +28,12 @@ class Slave : public Machine{
 		int buildCount;
 	public:
 		/**
-                * \fn Slave(int id, QString ip,  bool onL, bool type);
+        * \fn Slave(int id, QString ip);
 		* @brief The parameterised constructor
 		* @param id the machineID to assign
-		* @param ip the machineIP to assign
-                * @param onLine whether or not the machine is online or not
-		* @param tpe the machineType to assign
-                */
-                Slave(int id, QString ip, bool onLine, bool type);
+        * @param ip the machineIP to assign
+        */
+        Slave(int id, QString ip);
 		/**
 		* \fn ~Slave();
 		* @brief The destructor
@@ -55,11 +52,11 @@ class Slave : public Machine{
 		Slave(Slave &toCopy);
 
 		/**
-                * \fn virtual void deleteBuild(QString name);
+        * \fn virtual void deleteBuild(QString name);
 		* @brief The overridden deleteBuild function
 		* @param name The Build name
 		*/
-                virtual void deleteBuild(QString name);
+        virtual void deleteBuild(QString name);
 		/**
 		* \fn virtual void deleteBuild(int id);
 		* @brief The overridden deleteBuild function

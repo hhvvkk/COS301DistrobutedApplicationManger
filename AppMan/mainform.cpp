@@ -13,8 +13,8 @@ MainForm::MainForm(QWidget *parent) :
     Server *server = new Server(management);
     management->setServer(server);
     ///connect slots for backward signalling
-    connect(management, SIGNAL(newSlaveConnected()),this,SLOT(newSlaveConnected()));
-    connect(management, SIGNAL(slaveDisconnected()),this,SLOT(slaveDisconnected()));
+    connect(management, SIGNAL(newSlaveConnected(Machine*, int)),this,SLOT(newSlaveConnected(Machine*, int)));
+    connect(management, SIGNAL(slaveDisconnected(Machine*, int)),this,SLOT(slaveDisconnected(Machine*, int)));
 
     masterBuilds = new MasterBuilds();
     masterBuilds->setHeaderHidden(true);
@@ -134,7 +134,6 @@ void MainForm::changeEvent(QEvent* e){
 void MainForm::MasterBuilds::mousePressEvent(QMouseEvent *event){
 
     //if it is a normal click just call the parent's mouse press event
-    qDebug()<<"type = "<<event->type();
     QTreeWidget::mousePressEvent(event);
     QTreeWidget::mouseReleaseEvent(event);
 
@@ -154,9 +153,6 @@ void MainForm::MasterBuilds::mousePressEvent(QMouseEvent *event){
     mimeData->setText("#<<MBIndex="+indexOfItem );//+ theItem->text(0));
     mimeData->setData("application/x-hotspot", QByteArray::number(hotSpot.x()) + " " + QByteArray::number(hotSpot.y()));
 
-
-    qDebug()<<mimeData->text();
-
     QLabel *renderer = new QLabel();
     renderer->setText(theItem->text(0));
 
@@ -168,7 +164,7 @@ void MainForm::MasterBuilds::mousePressEvent(QMouseEvent *event){
     QDrag *drag = new QDrag(this);
     drag->setMimeData(mimeData);
     drag->setPixmap(pixmap);
-    //dont set hotspot
+    //don't set hotspot
     //drag->setHotSpot(hotSpot);
 
     Qt::DropAction dropAction = drag->exec(Qt::CopyAction | Qt::MoveAction, Qt::CopyAction);
@@ -198,18 +194,21 @@ void MainForm::dropEvent ( QDropEvent *event ){
             return;//returns if it is not a file
 
         //this accept lets the other whatsits name know that the event have been accepted
+        if(urlFromMime.contains("file:///"))
+            urlFromMime.remove(0,8);
         dropNewBuildAdd(urlFromMime);
         event->accept();
         return;
     }
 
     /*else looks if a build is dropped from master builds to slave builds*/
-    QFrame *slaveTreeWidget = dynamic_cast<QFrame*>(childAt(event->pos()));
+    QWidget *slaveTreeWidget = dynamic_cast<QWidget*>(childAt(event->pos()));
 
-    if (slaveTreeWidget){
-
+    if(slaveTreeWidget){
+        if(slaveTreeWidget != ui->groupBoxSlaves)
+            return;
         QString buildIndex = event->mimeData()->text();
-        qDebug()<<"ASDASDADASDFASGAC=="+buildIndex;
+
         //check to see if it is the right item that is dropped
         if(!buildIndex.contains("#<<MBIndex="))
             return;
@@ -218,29 +217,40 @@ void MainForm::dropEvent ( QDropEvent *event ){
         return;
     }
     else{
-        qDebug()<<"...FALSE...";
+        //qDebug()<<"...FALSE...";
     }
-/*
-    QLabel *labelTrue = dynamic_cast<QLabel*>(childAt(event->pos()));
-    if(labelTrue){//droppped on a label
-        //check to see if it is the addLabel
-        ///if(!(addLabel == labelTrue))
-         //   return;
 
-
-        return;
-    }
-*/
 }
 
 void MainForm::dropBuildToSlave(QString fromBuild, QString toSlave){
-    QMessageBox msgBox;
-    msgBox.setText(fromBuild+"<-- slaveDropped -->"+toSlave);
-    msgBox.exec();
+    //remove this #<<MBIndex=
+    fromBuild.remove(0,11);
+
+    int index = -1;
+
+    index = fromBuild.toInt();
+
+    if(index <= -1 || index >= masterBuilds->topLevelItemCount())
+        return;
+
+    QString buildname = masterBuilds->topLevelItem(index)->text(0);
+
+    QStringList nameListSuggest;
+    for(int i = 0; i < masterBuilds->topLevelItemCount(); i++)
+        nameListSuggest<<masterBuilds->topLevelItem(i)->text(0);
+
+    QStringList ipListSuggest;
+    for(int i = 0; i < ui->treeWidgetSlaves->topLevelItemCount(); i++)
+        ipListSuggest<<ui->treeWidgetSlaves->topLevelItem(i)->text(0);
+
+    CopyBuildOver *copyBuild = new CopyBuildOver(management, nameListSuggest, ipListSuggest,buildname);
+    copyBuild->show();
+
+
 }
 
 void MainForm::dropNewBuildAdd(QString newBuildDirectory){
-    AddBuild *newBuild = new AddBuild(management, newBuildDirectory );
+    AddBuild *newBuild = new AddBuild(management, newBuildDirectory);
     newBuild->show();
 }
 
@@ -295,27 +305,19 @@ void MainForm::showOrHideTrayClick(){
     }
 }
 
-void MainForm::newSlaveConnected(){
+void MainForm::newSlaveConnected(Machine *m, int index){
     //now go find slave and show it if needed
-    displaySlaves();
+    QTreeWidgetItem *slaveItem = new QTreeWidgetItem();
+    slaveItem->setText(0, management->getMachineAt(index)->getMachineIP());
+    ui->treeWidgetSlaves->addTopLevelItem(slaveItem);
+    QTreeWidgetItem *item = new QTreeWidgetItem();
+    item->setText(0,"ASDAS");
+    ui->treeWidgetSlaves->topLevelItem(0)->addChild(item);
 }
 
-void MainForm::slaveDisconnected(){
-    //now go find slave and show it if needed
-    //it will find what slave has been disconnected
-    qDebug()<<"slavedc's";
-    qDebug()<<"calling displaySlaves()";
-    displaySlaves();
-}
-
-void MainForm::displaySlaves(){
-    //Machine* machines= management->getAllMachines();
-    ui->treeWidgetSlaves->clear();
-    for(int i = 0; i <management->getMachineCount(); i++){
-        QTreeWidgetItem *slaveItem = new QTreeWidgetItem();
-
-        slaveItem->setText(0, management->getMachineAt(i)->getMachineIP());
-    }
+void MainForm::slaveDisconnected(Machine *m, int index){
+    //destroy the tree widget at that index
+    ui->treeWidgetSlaves->topLevelItem(index)->~QTreeWidgetItem();
 }
 
 void MainForm::initiateAddBuild(Build b){
@@ -374,7 +376,7 @@ void MainForm::loadXMLBuilds(){
 
 void MainForm::masterBuildsClicked(QModelIndex index){
     QString selBuild = index.sibling(index.row(),1).data().toString();
-    qDebug()<<"                                                           "<<selBuild;
+   // qDebug()<<"                                                           "<<selBuild;
     int num = selBuild.toInt();
     Build retr = management->getBuildByID(num);
     populateBuildInfo(retr);
@@ -436,4 +438,19 @@ void MainForm::on_actionAdd_Build_triggered(){
     AddBuild *newBuild = new AddBuild(management);
     connect(newBuild,SIGNAL(initiateAddBuild(Build)),this,SLOT(initiateAddBuild(Build)));
     newBuild->show();
+}
+
+void MainForm::on_actionCopy_Build_Over_triggered() {
+
+    QStringList nameListSuggest;
+    for(int i = 0; i < masterBuilds->topLevelItemCount(); i++)
+        nameListSuggest<<masterBuilds->topLevelItem(i)->text(0);
+
+    QStringList ipListSuggest;
+    for(int i = 0; i < ui->treeWidgetSlaves->topLevelItemCount(); i++)
+        ipListSuggest<<ui->treeWidgetSlaves->topLevelItem(i)->text(0);
+
+
+    CopyBuildOver *copyBuild = new CopyBuildOver(management, nameListSuggest, ipListSuggest);
+    copyBuild->show();
 }
