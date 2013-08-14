@@ -13,6 +13,10 @@
 #include <QMap>
 #include <QMessageBox>
 #include "xmlWriter.h"
+#include "xmlReader.h"
+#include <QPixmap>
+#include <QImage>
+#include <QMapIterator>
 
 namespace Ui {
 class AddBuild;
@@ -70,13 +74,26 @@ private slots:
      */
     void okClick();
 
-    void showError(QString errorMessage);
+    /**
+     * @fn void showError(QString errorMessage);
+     * @brief showError shows an error message
+     * @param errorMessage the message to show
+     * @param info The type of message
+     */
+    void showError(QString errorMessage, QString info);
 
     /**
      * @fn void chooseClick();
      * @brief chooseClick will open a dialogue to choose the directory of the build
      */
     void chooseClick();
+
+    /**
+     * @brief checkBuildNo looks if the buildnumber is already in the xml
+     * @param buildNum the current build number being passed
+     * @return a boolean indication wether the build number is taken
+     */
+    bool checkBuildNo(QString buildNum);
 
 private:
 	/**

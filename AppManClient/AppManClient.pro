@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     Build.cpp \
     xmlReader.cpp \
     xmlWriter.cpp \
-    viewbuilds.cpp
+    viewbuilds.cpp \
+    sysInfo.cpp
 
 HEADERS  += mainwindow.h \
     socketclient.h \
@@ -30,7 +31,8 @@ HEADERS  += mainwindow.h \
     Build.h \
     xmlReader.h \
     xmlWriter.h \
-    viewbuilds.h
+    viewbuilds.h \
+    sysInfo.h
 
 FORMS    += mainwindow.ui \
     viewbuilds.ui

@@ -1,8 +1,6 @@
 /**
 * @file mainwindow.h
 * @brief This is the file containing the main form which the user is greeted with when executing the application
-* @author 101Solutions
-* @version 2.0
 */
 
 #ifndef MAINWINDOW_H
@@ -12,8 +10,11 @@
 #include <QTimer>
 #include <QSystemTrayIcon>
 #include <QString>
+#include <QMap>
+#include <QMapIterator>
 #include <QDebug>
 #include <QMessageBox>
+#include "windows.h"
 
 #include "management.h"
 #include "viewbuilds.h"
@@ -39,14 +40,14 @@ public:
     explicit MainWindow(QWidget *parent = 0);
 
     /**
-      * \fn ~MainWindow();
+      * @fn ~MainWindow();
       * @brief the destructor for the main window
       */
     ~MainWindow();
 
 protected:
     /**
-     * \fn void changeEvent(QEvent * event);
+     * @fn void changeEvent(QEvent * event);
      * @brief changeEvent will fire once the window of this application changes, such as minimizing
      * @param event the type of even that is fired which triggered the event
      */
@@ -54,7 +55,7 @@ protected:
 
 private slots:
     /**
-     * \fn void showOrHideTrayClick();
+     * @fn void showOrHideTrayClick();
      * @brief showOrHideTray will fire if the button show or hide is clicked in the tray
      */
     void showOrHideTrayClick();
@@ -70,7 +71,7 @@ private slots:
     void disconnectClick();
 
     /**
-     * \fn void on_pushButtonViewBuilds_clicked();
+     * @fn void on_pushButtonViewBuilds_clicked();
      * @brief on_pushButtonViewBuilds_clicked will be fired once the user clicks on view builds or when user click build
      */
     void on_pushButtonViewBuilds_clicked();

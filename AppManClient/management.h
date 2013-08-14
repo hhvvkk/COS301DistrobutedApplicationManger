@@ -1,8 +1,6 @@
 /**
 * @file management.h
 * @brief This is the file containing the client management class
-* @author 101Solutions
-* @version 2.0
 */
 
 #ifndef MANAGEMENT_H
@@ -93,6 +91,10 @@ private:
      */
      int buildCount;
 
+     /**
+      * @var xRead
+      * @brief xRead is an xmlReader instance
+      */
      xmlReader xRead;
 };
 

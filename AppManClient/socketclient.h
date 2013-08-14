@@ -1,8 +1,6 @@
 /**
 * @file socketclient.h
 * @brief This is the file containing client socket class to manage socket
-* @author 101Solutions
-* @version 2.0
 */
 
 #ifndef SOCKETCLIENT_H

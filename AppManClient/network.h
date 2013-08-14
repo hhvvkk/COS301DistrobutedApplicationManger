@@ -1,8 +1,6 @@
 /**
 * @file network.h
 * @brief This is the file containing the network to help manage connections
-* @author 101Solutions
-* @version 2.0
 */
 
 #ifndef NETWORK_H

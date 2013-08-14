@@ -24,7 +24,7 @@ void AddBuild::okClick(){
     QString buildDirectory = ui->lineEditDirectory->text();
     //Check to see if directory actually exist...
     if(!QDir(buildDirectory).exists()){
-        showError("Invalid directory path");
+        showError("Invalid directory path","error");
         return;
     }
     //continue if it does exist
@@ -32,23 +32,66 @@ void AddBuild::okClick(){
     QString buildName = ui->lineEditName->text();
     QString buildDescription = ui->lineEditDescription->text();
 
+    //Exit if a field is empty
+    if(buildNo.compare("") == 0|| buildName.compare("") == 0 || buildDescription.compare("") == 0){
+        showError("All fields are required","error");
+        return;
+    }
 
+    //Exit if the BuildNo is in use
+    if(!checkBuildNo(buildNo)){
+        showError("The Build Number cannot be a duplicate entry","error");
+        return;
+    }
+
+    //If all is fine, continue
     int buildID = buildNo.toInt();
     Build buildToAdd(buildID,buildName,buildDescription,buildDirectory);
     qDebug()<<"about to emit";
     addToXML(buildID,buildName,buildDescription,buildDirectory);
+
+    //clean up for next add
     ui->lineEditBuildNo->setText("");
     ui->lineEditName->setText("");
     ui->lineEditDescription->setText("");
     ui->lineEditDirectory->setText("");
     ui->lineEditDirectory->setFocus();
 
+    //Use show error to confirm the build is added
+    showError("Build added successfully","info");
 
     emit initiateAddBuild(buildToAdd);
 }
 
-void AddBuild::showError(QString errorMessage){
+bool AddBuild::checkBuildNo(QString buildNum){
+    xmlReader xRead;
+    xRead.parseXML();
+    bool original = true;
+    QMap<QString,QString> buildNums = xRead.getBuildNumber();
+    QMapIterator<QString, QString> i(buildNums);
+    while (i.hasNext())
+    {
+        i.next();
+        if(i.value().compare(buildNum)==0){
+            original = false;
+            break;
+        }
+        else original = true;
+    }
+    return original;
+}
+
+void AddBuild::showError(QString errorMessage, QString info){
     QMessageBox *msb = new QMessageBox();
+    if(info.compare("error") == 0){
+        msb->setIcon(QMessageBox::Critical);
+    }
+    if(info.compare("inform") == 0){
+        msb->setIcon(QMessageBox::Information);
+    }
+    QPixmap pic(":/images/images/ALogo.png");
+    //msb->setIconPixmap(pic.scaled(50,50,Qt::IgnoreAspectRatio,Qt::FastTransformation));
+    msb->setWindowIcon(QIcon(pic));
     msb->setText(errorMessage);
     msb->show();
 }

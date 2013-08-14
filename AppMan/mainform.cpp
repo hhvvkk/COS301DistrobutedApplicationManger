@@ -344,7 +344,7 @@ void MainForm::displayBuilds(){
         buildNum = myBuilds[i].getBuildID();
         strNum = QString::number(buildNum);
         boola = new QTreeWidgetItem();
-        // NOTA: Builds moet display word met 'n index en naam om track te hou
+        // The build no in column 1, which is hidden
         boola->setText(0,buildName);
         boola->setText(1,strNum);
         masterBuilds->addTopLevelItem(boola);
@@ -376,7 +376,7 @@ void MainForm::loadXMLBuilds(){
 
 void MainForm::masterBuildsClicked(QModelIndex index){
     QString selBuild = index.sibling(index.row(),1).data().toString();
-   // qDebug()<<"                                                           "<<selBuild;
+    qDebug()<<"selBuild:  "<<selBuild;
     int num = selBuild.toInt();
     Build retr = management->getBuildByID(num);
     populateBuildInfo(retr);
@@ -393,18 +393,26 @@ void MainForm::populateBuildInfo(Build retr){
             QString buildID = QString::number(bID);
             boola->setText(0,"Build Number");
             boola->setText(1,buildID);
+            boola->setToolTip(0,QString::number(retr.getBuildID()));
+            boola->setToolTip(1,QString::number(retr.getBuildID()));
         }
         else if(i == 1){
             boola->setText(0,"Name");
             boola->setText(1,retr.getBuildName());
+            boola->setToolTip(0,retr.getBuildName());
+            boola->setToolTip(1,retr.getBuildName());
         }
         else if(i == 2){
             boola->setText(0,"Directory");
             boola->setText(1,retr.getBuildDirectory());
+            boola->setToolTip(0,retr.getBuildDirectory());
+            boola->setToolTip(1,retr.getBuildDirectory());
         }
         else{
             boola->setText(0,"Description");
             boola->setText(1,retr.getBuildDescription());
+            boola->setToolTip(0,retr.getBuildDescription());
+            boola->setToolTip(1,retr.getBuildDescription());
         }
         buildInfo->addTopLevelItem(boola);
     }
@@ -414,11 +422,13 @@ void MainForm::populateTreeWidgetInfo(Build retr){
     /*
      *NOTA: Hierdie funksie is vir as mens sou die TreeWidgetInfo met files en hulle mod dates populate
      */
+
     ui->treeWidgetInfoBox->clear();
     ui->treeWidgetInfoBox->setColumnCount(2);
     QStringList headers;
     headers << "File Name" << "Modification Date";
     ui->treeWidgetInfoBox->setHeaderLabels(headers);
+    //Run the DirIterator
     QString dir = retr.getBuildDirectory();
     myDirIterator iter(dir);
     iter.getFileInfo();
@@ -426,11 +436,23 @@ void MainForm::populateTreeWidgetInfo(Build retr){
     QVector<QString> fileMods = iter.retrieveFileMods();
     int amnt = fileNames.size();
     QTreeWidgetItem *boola;
-    for(int i = 0; i < amnt; i++){
+    //Check if dir is empty
+    if(amnt <1){
         boola = new QTreeWidgetItem();
-        boola->setText(0,fileNames[i]);
-        boola->setText(1,fileMods[i]);
+        boola->setText(0,"The Directory is empty");
+        boola->setText(1,"NA");
+        boola->setToolTip(0,"The Directory is empty");
+        boola->setToolTip(1,"The Directory is empty");
         ui->treeWidgetInfoBox->addTopLevelItem(boola);
+    }else{
+        for(int i = 0; i < amnt; i++){
+            boola = new QTreeWidgetItem();
+            boola->setText(0,fileNames[i]);
+            boola->setToolTip(0,fileNames[i]);
+            boola->setText(1,fileMods[i]);
+            boola->setToolTip(1,fileMods[i]);
+            ui->treeWidgetInfoBox->addTopLevelItem(boola);
+        }
     }
 }
 

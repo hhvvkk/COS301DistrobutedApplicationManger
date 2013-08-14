@@ -43,7 +43,7 @@ void xmlWriter::createXMLFile()
         }
         theXMLWriter->writeEndElement();
         theXMLWriter->writeEndDocument();
-qDebug()<<"creating xml";
+        qDebug()<<"creating xml";
     }
 
 }
@@ -54,10 +54,10 @@ xmlWriter::~xmlWriter()
 }
 
 void xmlWriter::receiveBuild(QString num,QString name,QString descript, QString direc){
-    qDebug()<<"receiving";
+    qDebug()<<"receiving build";
     buildNumber.insertMulti("buildNumber",num);
     buildName.insertMulti("buildName",name);
     buildDescription.insertMulti("buildDescription",descript);
     buildDirectory.insertMulti("buildDirectory",direc);
-    qDebug()<<"done receiving";
+    qDebug()<<"done receiving build";
 }

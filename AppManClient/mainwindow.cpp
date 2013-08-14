@@ -41,7 +41,6 @@ MainWindow::~MainWindow()
         management->deleteLater();
 }
 
-
 void MainWindow::changeEvent(QEvent* e){
     switch (e->type()){
         case QEvent::LanguageChange: this->ui->retranslateUi(this);
@@ -57,7 +56,6 @@ void MainWindow::changeEvent(QEvent* e){
     QMainWindow::changeEvent(e);
 }
 
-
 void MainWindow::showOrHideTrayClick(){
     if(!this->isVisible()){
         show();
@@ -68,7 +66,6 @@ void MainWindow::showOrHideTrayClick(){
         hide();
     }
 }
-
 
 void MainWindow::connectClick()
 {
@@ -111,4 +108,3 @@ void MainWindow::on_pushButtonViewBuilds_clicked()
     vb->getReader(p);
     vb->show();
 }
-

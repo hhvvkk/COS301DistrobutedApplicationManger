@@ -62,7 +62,9 @@ void viewBuilds::showBuilds(){
         boola->setText(1,i.value());
         boola->setText(0,j.value());
         boola1->setText(0,k.value());
+        boola1->setText(1,i.value());
         boola2->setText(0,l.value());
+        boola2->setText(1,i.value());
         boola->addChild(boola1);
         boola->addChild(boola2);
         ui->treeWidget->addTopLevelItem(boola);
