@@ -47,6 +47,48 @@ public slots:
      */
     void disconnectedFunction();
 
+    /**
+     * \fn void copyBuildOver(int buildId, QString buildName);
+     * @brief A function that will initiate a copy over from master to slave machine
+     * @param buildId The new id to send to the machine
+     * @param buildName The new name to send to the machine
+     */
+    void copyBuildOver(int buildId, QString buildName);
+
+
+private:
+    /**
+     * \fn void copyBuildOver(int buildId, QString buildName);
+     * @brief A function invoked when the ReadyRead observes 'GotABuild' in the data string and parses it
+     * @param data The data to be parsed by this function
+     */
+    void GotABuild(QString data);
+
+
+    /**
+     * \fn void copyBuildOver(int buildId, QString buildName);
+     * @brief A function invoked when the ReadyRead observes 'RecheckBuilds' in the data string and parses it
+     * @param data The data to be parsed by this function
+     */
+    void RecheckBuilds(QString data);
+
+
+    /**
+     * \fn void copyBuildOver(int buildId, QString buildName);
+     * @brief A function invoked when the ReadyRead observes 'RecheckDone' in the data string and parses it
+     * @param data The data to be parsed by this function
+     */
+    void RecheckDone(QString data);
+
+
+    /**
+     * \fn void copyBuildOver(int buildId, QString buildName);
+     * @brief A function invoked when the ReadyRead observes 'Rechecker' in the data string and parses it
+     * @param data The data to be parsed by this function
+     */
+    void Rechecker(QString data);
+
+
 private:
     /**
      * @brief socket

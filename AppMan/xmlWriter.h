@@ -22,57 +22,65 @@ class xmlWriter
 {
 
 public:
-	/**
-	 * @fn xmlWriter();
+
+    /**
+     * @fn xmlWriter();
      * @brief The constructor which creates a reader too....
-	 */
+     */
     xmlWriter();
-	/**
-	 * @fn ~xmlWriter();
-	 * @brief The deault destructor
-	 */
+
+    /**
+     * @fn ~xmlWriter();
+     * @brief The deault destructor
+     */
     ~xmlWriter();
-	/**
+
+    /**
      * @fn createXMLFile();
-	 * @brief The function to create and append to the XML file
-	 */
+     * @brief The function to create and append to the XML file
+     */
     void createXMLFile();
-	/**
-	 * @fn void receiveBuild(QString num,QString name,QString descript, QString direc);
-	 * @brief The function that accepts parameters of the build
-	 * @param num The Build number
-	 * @param name The Build name
-	 * @param descript The Build Description
-	 * @param direc The Build Directory
-	 */
-    void receiveBuild(QString num,QString name,QString descript, QString direc);
+
+    /**
+     * @fn void receiveBuild(QString num,QString name,QString descript, QString direc);
+     * @brief The function that accepts parameters of the build
+     * @param num The Build number
+     * @param name The Build name
+     * @param descript The Build Description
+     * @param direc The Build Directory
+     */
+     void receiveBuild(QString num,QString name,QString descript, QString direc);
 
 private:
-	/**
-	 * @var buildNumber
-	 * @brief A QMap of Build Numbers for the XML
-	 */
+    /**
+     * @var buildNumber
+     * @brief A QMap of Build Numbers for the XML
+     */
     QMap<QString,QString> buildNumber;
+
     /**
-	 * @var buildName
-	 * @brief A QMap of Build Names for the XML
-	 */
-	QMap<QString,QString> buildName;
+     * @var buildName
+     * @brief A QMap of Build Names for the XML
+     */
+    QMap<QString,QString> buildName;
+
     /**
-	 * @var buildDescription
-	 * @brief A QMap of Build Descriptions for the XML
-	 */
-	QMap<QString,QString> buildDescription;
+     * @var buildDescription
+     * @brief A QMap of Build Descriptions for the XML
+     */
+    QMap<QString,QString> buildDescription;
+
     /**
-	 * @var buildDirectory
-	 * @brief A QMap of Build Directories for the XML
-	 */
-	QMap<QString,QString> buildDirectory;
-    /**
-	 * @var theXMLWriter
-	 * @brief A QXmlStreamWriter instance
-	 */
-	QXmlStreamWriter* theXMLWriter;
+     * @var buildDirectory
+     * @brief A QMap of Build Directories for the XML
+     */
+    QMap<QString,QString> buildDirectory;
+
+   /**
+     * @var theXMLWriter
+     * @brief A QXmlStreamWriter instance
+     */
+    QXmlStreamWriter* theXMLWriter;
 
 };
 

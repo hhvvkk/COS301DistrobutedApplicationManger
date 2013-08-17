@@ -105,6 +105,7 @@ void Management::stopServer(){
 
 void Management::setPort(int newPort){
     server->setPort(newPort);
+    clearMachines();
 }
 
 Build Management::getBuildByID(int id){
@@ -125,4 +126,66 @@ bool Management::buildExistWithName(QString name){
             return true;
     }
     return false;
+}
+
+bool Management::machineExistWithIp(QString ip){
+    lock->lock();
+    for(int i = 0; i < machineCount; i++){
+        if(!ip.compare(allMachines[i]->getMachineIP())){
+            lock->unlock();
+            return true;
+        }
+    }
+    lock->unlock();
+    return false;
+}
+
+
+void Management::clearMachines(){
+
+    //NB Lock hierin gaan deadlock(BY setPort) dus los dit vir nou
+    //anyways die setPort disconnect anyways almal
+    //allMachines.clear();
+}
+
+
+void Management::copyBuildOver(QString ipAddress, QString buildName){
+
+    Build build = getBuildByName(buildName);
+
+    lock->lock();
+
+    Machine *machine = 0;
+    for(int i = 0; i < machineCount; i++){
+        if(!getMachineAt(i)->getMachineIP().compare(ipAddress))
+            machine = getMachineAt(i);
+    }
+
+    lock->unlock();
+    machine->copyBuildOver(build);
+
+}
+
+
+Build Management::getBuildByName(QString name){
+    for(int i = 0; i < buildCount; i++)
+        if(!allBuilds[i].getBuildName().compare(name))
+            return allBuilds[i];
+}
+
+void Management::addBuildToSlave(QString slaveIp, QString buildNo){
+    qDebug()<<"SLAVE GOT NEW BUILD";
+    lock->lock();
+
+    Machine *machine = 0;
+    for(int i = 0; i < machineCount; i++){
+        if(!allMachines.at(i)->getMachineIP().compare(slaveIp)){
+            machine = allMachines.at(i);
+            break;
+        }
+    }
+
+    lock->unlock();
+
+    emit slaveGotBuild(machine, buildNo);
 }

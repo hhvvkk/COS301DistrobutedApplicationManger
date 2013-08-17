@@ -30,23 +30,30 @@ class Management : public QObject
    //signals to talk to the mainForm("in a sence")
 signals:
     /**
-     * \fn newSlaveConnected(Machine *m, int index)
+     * \fn void newSlaveConnected(Machine *m, int index)
      * @brief newSlaveConnected A signal emitted each time a new slave connects
      */
     void newSlaveConnected(Machine *m, int index);
 
     /**
-     * \fn slaveDisconnected(Machine *m, int index)
+     * \fn void slaveDisconnected(Machine *m, int index)
      * @brief slaveDisconnected A signal emitted each time a slave disconnects
      */
     void slaveDisconnected(Machine *m, int index);
 
+    /**
+     * \fn void slaveGotBuild(Machine *machine, QString buildNo);
+     * @brief A signal that will invoke a function on the mainform to add the build to the view
+     *
+     */
+    void slaveGotBuild(Machine *machine, QString buildNo);
 public:
     /**
     * \fn Management();
     * @brief The default costructor
     */
     explicit Management(QObject *parent = 0);
+
     /**
     * \fn ~Management();
     * @brief The Destructor
@@ -59,30 +66,35 @@ public:
      * @return buildToRetrieve
      */
     Build getBuildByID(int id);
+
     /**
      * @fn Build * getAllBuilds()
      * @brief returns all the builds in the Management object
      * @return allBuilds
      */
     Build * getAllBuilds() {return allBuilds;}
+
     /**
     * \fn int getBuildCount();
     * @brief The function that accesses the buildCount variable
     * @return buildCount
     */
     int getBuildCount() {return buildCount;}
+
     /**
     * \fn vector<Machine*> getAllMachines() {return allMachines;}
     * @brief The function that accesses the allMachines variable
     * @return allMachines
     */
     QVector<Machine*> getAllMachines() {return allMachines;}
+
     /**
     * \fn int getMachineCount() {return machineCount;}
     * @brief The function that accesses the machineCount variable
     * @return machineCount
     */
     int getMachineCount() {return machineCount;}
+
 
     /**
     * \fn void addBuild(Build buildToAdd);
@@ -146,6 +158,41 @@ public:
      * @return The function returns true if the build exist with that name
      */
     bool buildExistWithName(QString name);
+
+    /**
+     * \fn Build getBuildByName(QString name);
+     * @brief A function that will search for a build and return it by name
+     * @param name The name of the build
+     * @return The function returns a build if it exist with that name
+     */
+    Build getBuildByName(QString name);
+
+    /**
+     * \fn bool machineExistWithIp(QString ip);
+     * @brief Will check whether a machine exist with a certain ip
+     * @param ip The ip of the machine
+     * @return Returns true if machine exist otherwise false
+     */
+    bool machineExistWithIp(QString ip);
+
+    /**
+     * \fn void copyBuildOver(QString ipAddress, QString buildName);
+     * @brief Will initiate a copy build over from master to slave
+     * @param ipAddress The ip of the machine
+     * @param buildName The buildName to copy over
+     */
+    void copyBuildOver(QString ipAddress, QString buildName);
+
+    /**
+     * \fn void addBuildToSlave(QString slaveIp, QString buildNo);
+     * @brief This function will be called once the build has been added to the slave machine. This emits a slaveGotBuild signal
+     * @param slaveIp The ip of the machine
+     * @param buildNo The buildName to copy over
+     */
+    void addBuildToSlave(QString slaveIp, QString buildNo);
+
+private:
+    void clearMachines();
 
 private:
     /**

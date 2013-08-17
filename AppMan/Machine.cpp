@@ -52,9 +52,3 @@ void Machine::setMachineIP(QString ip){
 void Machine::setServerThread(ServerThread *sVThread){
     serverThread = sVThread;
 }
-
-
-void Machine::machineDisconnected(){
-
-}
-

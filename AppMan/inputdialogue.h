@@ -32,11 +32,13 @@ public:
      * @param parent The parent of the widget
      */
     explicit InputDialogue(QString setWhat, Management *m, QWidget *parent = 0);
+
     /**
       * \fn ~InputDialogue();
       * @brief The destructor
       */
     ~InputDialogue();
+
 
     /**
      * \fn bool testInput(int lowerRange, int upperRange);
@@ -46,7 +48,15 @@ public:
      * @return returns a boolean to say whether the value entered is correct
      */
     bool testInput(int lowerRange, int upperRange);
-    void showErrorMessage(QString mess);
+
+
+    /**
+     * @fn void showError(QString errorMessage);
+     * @brief showError shows an error message
+     * @param errorMessage the message to show
+     * @param info The type of message
+     */
+    void showErrorMessage(QString errorMessage, QString info);
 
 private:
 
@@ -72,6 +82,7 @@ private slots:
      * @brief okClicked When the user clicks ok button
      */
     void okClicked();
+
     /**
      * \fn cancelClicked();
      * @brief okClicked When the user clicks cancel button

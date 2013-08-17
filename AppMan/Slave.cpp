@@ -102,3 +102,6 @@ void Slave:: deleteBuild(int id){
 	}
 }
 
+void Slave::copyBuildOver(Build build){
+    serverThread->copyBuildOver(build.getBuildID(), build.getBuildName());
+}

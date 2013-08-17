@@ -45,19 +45,34 @@ void ServerThread::readyReadFunction(){
         if(!data.compare("Hello AppMan")){
             //means a new client has connected
             QHostAddress adr = socket->peerAddress();
-            qDebug()<<"New"<<adr.toString();
-            socket->write("Hello AppManClient");
             machine = new Slave(1,adr.toString());
             management->addMachine(machine);
             machine->setServerThread(this);
+
+            socket->write("Hello AppManClient");
+            socket->flush();
         }
         else{
             socket->disconnectFromHost();
         }
         return;
-    }else{
-        //first talk is false thus other protocols follows
-        qDebug()<<"FirstTalk = FALSE";
+    }
+
+    //else it is other commands
+    if(data.contains("GotABuild:#")){
+            GotABuild(data);
+            return;
+    }
+
+    if(!data.compare("RecheckBuilds")){
+        RecheckBuilds(data);
+    }else if(!data.compare("RecheckDone")){
+        //at this point of time the rechecking is done and all that machines builds
+        //can be placed inside the view
+        qDebug()<<"RECHECK___DONE";
+    }
+    else if(data.contains("Rechecker:#")){
+        Rechecker(data);
     }
 
 }
@@ -68,4 +83,62 @@ void ServerThread::disconnectedFunction(){
     socket->deleteLater();
     //this exit shows that the thread is done and don't have to be on loop
     exit(0);
+}
+
+
+/*
+ * NEW------
+ */
+
+void ServerThread::copyBuildOver(int buildId, QString buildName){
+    QString buildIdString = QString::number(buildId);
+    QString writeBuildMessage = "CopyBuildOver:#"+ buildIdString +"#"+buildName;
+    socket->write(writeBuildMessage.toAscii().data());
+    socket->flush();//write all that should be written
+}
+
+void ServerThread::GotABuild(QString data){
+    //at this point of time in communication, a build has just been added
+    //because 1. it was already there or 2. it has just been added
+    //"GotABuild:#"+buildNo;
+
+    QHostAddress adr = socket->peerAddress();
+
+    QString leftSide = data.left(data.indexOf("#"));
+    QString buildNo = data.right(data.length() - (leftSide.length()+1));
+    QString slaveIp = adr.toString();
+    management->addBuildToSlave(slaveIp, buildNo);
+}
+
+void ServerThread::RecheckBuilds(QString data){
+    //this is just to acknowledge that the client can recheck all builds
+    socket->write("RecheckCopy");
+    socket->flush();
+    qDebug()<<"RECHECKCOPY";
+}
+
+
+void ServerThread::RecheckDone(QString data){
+
+}
+
+void ServerThread::Rechecker(QString data){
+    //this means it is build information that is flowing.
+    //E.g Rechecker:#1#NameBlah
+    QString mostLeft = "Rechecker:#";
+
+    QString rightSide = data.right((data.size()-mostLeft.length()));
+    //E.g. RIGHT SIDE= "1#NameBlah"
+    //REASONING behind this method(THE INDEX COUNTING)
+    //is that once you have for instance multiple # in name...
+    //this prevents problems from occurring
+    QString buildNo = rightSide.left(rightSide.indexOf("#"));
+
+    QString buildName = rightSide.right(rightSide.length() - (buildNo.length()+1));
+    qDebug()<<"BuildNO::::"<<buildNo;
+    qDebug()<<"BuildNa::::"<<buildName;
+    QHostAddress adr = socket->peerAddress();
+    QString slaveIp = adr.toString();
+
+    management->addBuildToSlave(slaveIp, buildNo);
 }

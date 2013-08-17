@@ -33,34 +33,38 @@ class AddBuild : public QWidget
 signals:
     /**
      * @fn void initiateAddBuild(Build b);
-	 * @param b the Build to add
+     * @param b the Build to add
      * @brief initiateAddBuild will emit a signal to add the build
      */
     void initiateAddBuild(Build b);
+
 public:
-	/**
+    /**
      * @fn AddBuild(Management *man, QString directory = "", QWidget *parent = 0);
      * @brief AddBuild This will construct the graphical user interface of the AppMan application AddBuild fuctionality
      * @param parent The parent that will be set for the application
-	 * @param directory The directory that will be set for the application
-	 * @param man The Management link that will be set for the application
+     * @param directory The directory that will be set for the application
+     * @param man The Management link that will be set for the application
      */
     explicit AddBuild(Management *man, QString directory = "", QWidget *parent = 0);
+
 	/**
 	 * @fn ~AddBuild();
 	 * @brief The destructor
 	 */
     ~AddBuild();
+
 public:
-	/**
+    /**
      * @fn void addToXML(int num,QString name,QString descript,QString direc);
-	 * @param num the Build number to add
-	 * @param name the Build name to add
-	 * @param descript the Build description to add
-	 * @param direc the Build directory to add
+     * @param num the Build number to add
+     * @param name the Build name to add
+     * @param descript the Build description to add
+     * @param direc the Build directory to add
      * @brief addToXML will add the current build to the xml file
      */
     void addToXML(int num,QString name,QString descript,QString direc);
+
 private slots:
     /**
      * @fn void cancelClick();

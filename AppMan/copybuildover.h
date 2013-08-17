@@ -47,7 +47,30 @@ private slots:
      */
     void buildMoreInformationClick();
 
-    void showError(QString error);
+    /**
+     * @fn void showError(QString errorMessage);
+     * @brief showError shows an error message
+     * @param errorMessage the message to show
+     * @param info The type of message
+     */
+    void showMessage(QString errorMessage, QString info);
+
+signals:
+    /**
+     * @fn void copyBuildOver(QString ipAddress, QString buildName);
+     * @brief signal to copy the build from master to slave machine
+     * @param ipAddress The ip Address of the machine to copy to
+     * @param buildName The name of the build to copy over
+     */
+    void copyBuildOver(QString ipAddress, QString buildName);
+
+private:
+    /**
+     * @fn bool validateInput();
+     * @brief A function to validate the user input
+     * @return Returns true if the user entered a correct input
+     */
+    bool validateInput();
 
 private:
     Ui::CopyBuildOver *ui;

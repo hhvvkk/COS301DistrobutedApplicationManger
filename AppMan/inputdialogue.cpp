@@ -26,13 +26,13 @@ void InputDialogue::okClicked(){
         try{
             parsed = testInput(1200,65000);
         }catch(ErrorClass ec){
-            showErrorMessage(ec.message);
+            showErrorMessage(ec.message, "error");
             return;
         }
 
         if(!parsed){
             QString message = "Incorrect input for port. Port must be between 1200 and 65000";
-            showErrorMessage(message);
+            showErrorMessage(message, "error");
         }
         management->setPort(ui->lineEdit->text().toInt());
         this->close();
@@ -61,9 +61,17 @@ bool InputDialogue::testInput(int lowerRange, int upperRange) {
 
 }
 
-void InputDialogue::showErrorMessage(QString error){
+void InputDialogue::showErrorMessage(QString errorMessage, QString info){
     QMessageBox *msb = new QMessageBox();
-    QString showIt = "Error: "+error;
-    msb->setText(showIt);
+    if(info.compare("error") == 0){
+        msb->setIcon(QMessageBox::Critical);
+    }
+    if(info.compare("inform") == 0){
+        msb->setIcon(QMessageBox::Information);
+    }
+    QPixmap pic(":/images/images/ALogo.png");
+    //msb->setIconPixmap(pic.scaled(50,50,Qt::IgnoreAspectRatio,Qt::FastTransformation));
+    msb->setWindowIcon(QIcon(pic));
+    msb->setText(errorMessage);
     msb->show();
 }

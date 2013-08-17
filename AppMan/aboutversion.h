@@ -28,6 +28,7 @@ public:
      * @param parent the parent of the widget
      */
     explicit AboutVersion(QWidget *parent = 0);
+
     /**
       * \fn ~AboutVersion();
       * @brief The destructor

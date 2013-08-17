@@ -28,6 +28,7 @@ public:
      * @param parent Parent of this class which will destroy it
      */
     explicit AboutHelp(QWidget *parent = 0);
+
     /**
       * \fn ~AboutHelp();
       * @brief The destructor

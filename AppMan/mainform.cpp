@@ -15,6 +15,7 @@ MainForm::MainForm(QWidget *parent) :
     ///connect slots for backward signalling
     connect(management, SIGNAL(newSlaveConnected(Machine*, int)),this,SLOT(newSlaveConnected(Machine*, int)));
     connect(management, SIGNAL(slaveDisconnected(Machine*, int)),this,SLOT(slaveDisconnected(Machine*, int)));
+    connect(management, SIGNAL(slaveGotBuild(Machine*,QString)), this, SLOT(slaveGotBuild(Machine*,QString)));
 
     masterBuilds = new MasterBuilds();
     masterBuilds->setHeaderHidden(true);
@@ -52,7 +53,7 @@ MainForm::MainForm(QWidget *parent) :
      **/
     trayIcon = new QSystemTrayIcon(QIcon(":/images/images/ALogo.png"), this);
     QAction *quitAction = new QAction( "Exit", trayIcon );
-    connect(quitAction, SIGNAL(triggered()), this, SLOT(close()));
+    connect(quitAction, SIGNAL(triggered()), this, SLOT(quitTheApplication()));
     QAction *hideAction = new QAction( "Show/Hide", trayIcon );
     connect(hideAction, SIGNAL(triggered()), this, SLOT(showOrHideTrayClick()));
 
@@ -66,6 +67,11 @@ MainForm::MainForm(QWidget *parent) :
     /*
      *Create the tray(END)
      **/
+}
+
+void MainForm::quitTheApplication(){
+    //will be connected to the QApplicaiton and will quit when emitting this
+    emit quitApplication();
 }
 
 MainForm::~MainForm()
@@ -116,20 +122,6 @@ MainForm::BuildInfo::BuildInfo(QWidget *parent)
 
 }
 
-void MainForm::changeEvent(QEvent* e){
-    switch (e->type()){
-        case QEvent::LanguageChange: this->ui->retranslateUi(this);
-            break;
-        case QEvent::WindowStateChange:
-                if (this->windowState() & Qt::WindowMinimized)
-                    QTimer::singleShot(250, this, SLOT(hide()));
-                break;
-        default://important to have default or you get 100+ warnings
-            break;
-    }
-
-    QMainWindow::changeEvent(e);
-}
 
 void MainForm::MasterBuilds::mousePressEvent(QMouseEvent *event){
 
@@ -235,16 +227,25 @@ void MainForm::dropBuildToSlave(QString fromBuild, QString toSlave){
 
     QString buildname = masterBuilds->topLevelItem(index)->text(0);
 
+    //create a list of name suggestions
     QStringList nameListSuggest;
     for(int i = 0; i < masterBuilds->topLevelItemCount(); i++)
         nameListSuggest<<masterBuilds->topLevelItem(i)->text(0);
 
+    //create a list of ip suggestions
     QStringList ipListSuggest;
-    for(int i = 0; i < ui->treeWidgetSlaves->topLevelItemCount(); i++)
-        ipListSuggest<<ui->treeWidgetSlaves->topLevelItem(i)->text(0);
+    QTreeWidgetItem *safetyItem;//so that if that item is retrieved, but does not exist(concurrency)
+    for(int i = 0; i < ui->treeWidgetSlaves->topLevelItemCount(); i++){
+        safetyItem = ui->treeWidgetSlaves->topLevelItem(i);
+        if(safetyItem != 0)
+            ipListSuggest<< safetyItem->text(0);
+    }
 
+    //send the lists as parameters to the new dialogue
     CopyBuildOver *copyBuild = new CopyBuildOver(management, nameListSuggest, ipListSuggest,buildname);
+    connect(copyBuild, SIGNAL(copyBuildOver(QString,QString)), this, SLOT(initiateCopyBuildOver(QString,QString)));
     copyBuild->show();
+
 
 
 }
@@ -310,9 +311,6 @@ void MainForm::newSlaveConnected(Machine *m, int index){
     QTreeWidgetItem *slaveItem = new QTreeWidgetItem();
     slaveItem->setText(0, management->getMachineAt(index)->getMachineIP());
     ui->treeWidgetSlaves->addTopLevelItem(slaveItem);
-    QTreeWidgetItem *item = new QTreeWidgetItem();
-    item->setText(0,"ASDAS");
-    ui->treeWidgetSlaves->topLevelItem(0)->addChild(item);
 }
 
 void MainForm::slaveDisconnected(Machine *m, int index){
@@ -469,10 +467,49 @@ void MainForm::on_actionCopy_Build_Over_triggered() {
         nameListSuggest<<masterBuilds->topLevelItem(i)->text(0);
 
     QStringList ipListSuggest;
-    for(int i = 0; i < ui->treeWidgetSlaves->topLevelItemCount(); i++)
-        ipListSuggest<<ui->treeWidgetSlaves->topLevelItem(i)->text(0);
 
+
+    QTreeWidgetItem *safetyItem;//so that if that item is retrieved, but does not exist(concurrency)
+    for(int i = 0; i < ui->treeWidgetSlaves->topLevelItemCount(); i++){
+        safetyItem = ui->treeWidgetSlaves->topLevelItem(i);
+        if(safetyItem != 0)
+            ipListSuggest<< safetyItem->text(0);
+    }
 
     CopyBuildOver *copyBuild = new CopyBuildOver(management, nameListSuggest, ipListSuggest);
     copyBuild->show();
+
+    connect(copyBuild, SIGNAL(copyBuildOver(QString,QString)), this, SLOT(initiateCopyBuildOver(QString,QString)));
 }
+
+void MainForm::initiateCopyBuildOver(QString ipAddress, QString buildName){
+    management->copyBuildOver(ipAddress, buildName);
+}
+
+void MainForm::slaveGotBuild(Machine*m, QString buildId){
+    QTreeWidgetItem *machineT = getSlaveTreeItemByIp(m->getMachineIP());
+
+    if(machineT == 0)
+        return;
+
+    QTreeWidgetItem *newBuildForSlave = new QTreeWidgetItem();
+    QString buildName = management->getBuildByID(buildId.toInt()).getBuildName();
+    newBuildForSlave->setText(0, buildName);
+    machineT->addChild(newBuildForSlave);
+}
+
+
+QTreeWidgetItem* MainForm::getSlaveTreeItemByIp(QString ip){
+    ////NB GAAAN DALK `n LOCK HIERIN SIT a.g.v. concurrency
+    QTreeWidgetItem * machineTreeItem = 0;
+     QTreeWidgetItem *safetyItem;//so that if that item is retrieved, but does not exist(concurrency)
+    for(int i = 0; i < ui->treeWidgetSlaves->topLevelItemCount(); i++){
+        safetyItem = ui->treeWidgetSlaves->topLevelItem(i);
+        if(safetyItem != 0)
+            if(!safetyItem->text(0).compare(ip))
+                machineTreeItem = ui->treeWidgetSlaves->topLevelItem(i);
+    }
+
+    return machineTreeItem;
+}
+
