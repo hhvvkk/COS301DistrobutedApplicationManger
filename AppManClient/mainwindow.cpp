@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
      **/
     trayIcon = new QSystemTrayIcon(QIcon(":/images/images/ALogoClient.png"), this);
     QAction *quitAction = new QAction( "Exit", trayIcon );
-    connect(quitAction, SIGNAL(triggered()), this, SLOT(close()));
+    connect(quitAction, SIGNAL(triggered()), this, SLOT(quitTheApplication()));
 
     QAction *hideAction = new QAction( "Show/Hide", trayIcon );
     connect(hideAction, SIGNAL(triggered()), this, SLOT(showOrHideTrayClick()));
@@ -35,25 +35,16 @@ MainWindow::MainWindow(QWidget *parent) :
      **/
 }
 
+
+void MainWindow::quitTheApplication(){
+    //will be connected to the QApplicaiton and will quit when emitting this
+    emit quitApplication();
+}
+
 MainWindow::~MainWindow()
 {
     if(management)
         management->deleteLater();
-}
-
-void MainWindow::changeEvent(QEvent* e){
-    switch (e->type()){
-        case QEvent::LanguageChange: this->ui->retranslateUi(this);
-            break;
-        case QEvent::WindowStateChange:
-                if (this->windowState() & Qt::WindowMinimized)
-                    QTimer::singleShot(250, this, SLOT(hide()));
-                break;
-    default:
-        break;
-    }
-
-    QMainWindow::changeEvent(e);
 }
 
 void MainWindow::showOrHideTrayClick(){

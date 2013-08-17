@@ -7,6 +7,7 @@
 #define MANAGEMENT_H
 
 #include <QString>
+#include <QDir>
 
 #include "Build.h"
 #include "network.h"
@@ -72,9 +73,23 @@ public:
      */
     void addMyBuilds();
 
+   ////////////
     xmlReader getxRead() {return xRead;}
 
+    /**
+     * \fn Build getBuildByID(int num);
+     * @brief The function finds a build by its id and returns it
+     * @return Returns a build
+     * @param num the id of the build
+     */
     Build getBuildByID(int num);
+
+    /**
+     * \fn void createBuildDirectory(Build build);
+     * @brief This creates a build for a directory
+     */
+    void createBuildDirectory(Build build);
+
 private:
     /**
      * @brief network An Object that will harbour some of the network information
@@ -85,6 +100,7 @@ private:
      * @brief an array of Build objects
      */
      Build * allBuilds;
+
      /**
      * @var buildCount
      * @brief a counter for the Build array
@@ -96,6 +112,12 @@ private:
       * @brief xRead is an xmlReader instance
       */
      xmlReader xRead;
+
+     /**
+     * @var allBuildsDirectory
+     * @brief A directory where all builds will be located
+     */
+     QString allBuildsDirectory;
 };
 
 #endif // MANAGEMENT_H

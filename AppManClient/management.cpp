@@ -2,8 +2,14 @@
 
 Management::Management()
 {
-    network = new Network();
+    network = new Network(this);
     buildCount = 0;
+
+    //if the directory for all builds does not exist, create it
+    ///@todo change directory of builds...
+    allBuildsDirectory = "builds";
+    if(!QDir(allBuildsDirectory).exists())
+        QDir().mkdir(allBuildsDirectory);
 }
 
 
@@ -27,6 +33,9 @@ void Management::disconnectFromServer(){
 }
 
 void Management::addBuild(Build buildToAdd){
+    //create the directory for that build if it does not exist
+    createBuildDirectory(buildToAdd);
+
     if(buildCount != 0){
         Build temp[buildCount];
         for(int i = 0; i < buildCount; i++){
@@ -44,6 +53,12 @@ void Management::addBuild(Build buildToAdd){
     }
     buildCount++;
     qDebug("added build to management");
+}
+
+void Management::createBuildDirectory(Build build){
+    QString newBuildDirectory = QString::number(build.getBuildID());
+    if(!QDir(allBuildsDirectory+"/"+newBuildDirectory).exists())
+        QDir().mkdir(allBuildsDirectory+"/"+newBuildDirectory);
 }
 
 void Management::addMyBuilds(){

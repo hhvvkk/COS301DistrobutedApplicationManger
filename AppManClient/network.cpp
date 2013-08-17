@@ -1,8 +1,9 @@
 #include "network.h"
+#include "management.h"
 
-Network::Network()
+Network::Network(Management *man)
 {
-    socketClient = new SocketClient();
+    socketClient = new SocketClient(man);
 }
 
 void Network::setConnectionDetails(QString ip, int port){

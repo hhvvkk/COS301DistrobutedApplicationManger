@@ -9,6 +9,10 @@
 #include <QString>
 #include "socketclient.h"
 
+//forward declaration of Management for use
+class Management;
+
+
 /**
  * @class Network
  * @brief The Network class will be used to manage some of the network related aspects of the AppMan Client application
@@ -19,7 +23,7 @@ public:
     /**
      * @brief Network The constructor for the class
      */
-    Network();
+    Network(Management *man);
 
     /**
      * @brief connecToServer Function that will call the connect on the SocketClass (SocketClient)

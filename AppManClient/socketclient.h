@@ -11,6 +11,11 @@
 #include <QTcpSocket>
 #include <QAbstractSocket>
 #include <QDebug>
+
+
+//forward declaration of the class so it can be used
+class Management;
+
 /**
  * @class SocketClient
  * @brief The SocketClient class will be a class containing socket related items that will communicate with the AppMan Server
@@ -23,7 +28,7 @@ public:
      * @brief SocketClient The constructor that will create the object
      * @param parent The parent of the object
      */
-    explicit SocketClient(QObject *parent = 0);
+    explicit SocketClient(Management *man, QObject *parent = 0);
     /**
       * \fn ~SocketClient();
       * The destructor
@@ -75,11 +80,37 @@ public slots:
      */
     void readyRead();
 
+
+    /**
+     * @brief A function called in recheck builds when master invoked it, part of phase 1
+     */
+    void recheckBuildsPhase1();
+
+    /**
+     * @brief A function called in recheck builds when master invoked it, part of phase 2
+     */
+    void recheckBuildsPhase2();
+
+private:
+    /**
+     * @brief A function that will be invoked when 'CopyBuildOver' has been found in ReadyCheck
+     * @param data The data that will be parsed
+     */
+    void copyBuildOver(QString data);
+
+signals:
+    void connectionEstablished();
+
 private:
     /**
      * @brief socket The socket object that will connec to the server
      */
     QTcpSocket *socket;
+
+    /**
+     * @brief A management link that will allow backwards communication
+     */
+    Management *management;
     
 };
 

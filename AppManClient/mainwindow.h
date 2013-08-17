@@ -14,7 +14,7 @@
 #include <QMapIterator>
 #include <QDebug>
 #include <QMessageBox>
-#include "windows.h"
+//#include "windows.h"
 
 #include "management.h"
 #include "viewbuilds.h"
@@ -31,29 +31,36 @@ class MainWindow;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
+    /**
+     * \fn void quitApplication();
+     * @brief The signal that is emitted when clicking exit on the tray item
+     */
+signals:
+    void quitApplication();
+
     
 public:
     /**
      * @brief MainWindow The constructor creating the Graphical User Interface
      * @param parent
+     * @param app The link to applicaiton so that it may be closed manually
      */
     explicit MainWindow(QWidget *parent = 0);
-
     /**
       * @fn ~MainWindow();
       * @brief the destructor for the main window
       */
     ~MainWindow();
 
-protected:
-    /**
-     * @fn void changeEvent(QEvent * event);
-     * @brief changeEvent will fire once the window of this application changes, such as minimizing
-     * @param event the type of even that is fired which triggered the event
-     */
-    void changeEvent(QEvent * event);
 
 private slots:
+
+    /**
+     * \fn void quitTheApplication();
+     * @brief A function emitting a signal called quitApplication which will then end application
+     */
+    void quitTheApplication();
+
     /**
      * @fn void showOrHideTrayClick();
      * @brief showOrHideTray will fire if the button show or hide is clicked in the tray
@@ -65,9 +72,10 @@ private slots:
      * @brief connectClick The function called when the user clicks Connect
      */
     void connectClick();
+
     /**
      * @brief disconnectClick The function called when the user clicks Disconnect
-     */
+     */    
     void disconnectClick();
 
     /**
