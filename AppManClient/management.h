@@ -12,6 +12,7 @@
 #include "Build.h"
 #include "network.h"
 #include "xmlReader.h"
+#include "xmlWriter.h"
 
 /**
  * @class Management
@@ -73,7 +74,11 @@ public:
      */
     void addMyBuilds();
 
-   ////////////
+    /**
+     * @fn xmlReader getxRead() {return xRead;}
+     * @brief getxRead
+     * @return the xmlReader
+     */
     xmlReader getxRead() {return xRead;}
 
     /**
@@ -87,8 +92,10 @@ public:
     /**
      * \fn void createBuildDirectory(Build build);
      * @brief This creates a build for a directory
+     * @param build the Build to be added
+     * @return a Build object with the new directory
      */
-    void createBuildDirectory(Build build);
+    Build createBuildDirectory(Build build);
 
 private:
     /**

@@ -18,6 +18,7 @@
 
 #include "management.h"
 #include "viewbuilds.h"
+#include "addbuildfortest.h"
 
 namespace Ui {
 class MainWindow;
@@ -83,6 +84,14 @@ private slots:
      * @brief on_pushButtonViewBuilds_clicked will be fired once the user clicks on view builds or when user click build
      */
     void on_pushButtonViewBuilds_clicked();
+
+    /**
+    * \fn void initiateAddBuild(Build b);
+    * @brief initiateAddBuild will emit a signal to add the build
+    */
+    void initiateAddBuild(Build b);
+
+    void on_pushButton_clicked();
 
 private:
     Ui::MainWindow *ui;

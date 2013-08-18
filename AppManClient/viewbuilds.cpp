@@ -32,6 +32,7 @@ void viewBuilds::showBuilds(){
     QTreeWidgetItem *boola;
     QTreeWidgetItem *boola1;
     QTreeWidgetItem *boola2;
+    QTreeWidgetItem *boola3;
     xReader.parseXML();
     QString msg;
     if(xReader.getBuildDescription().size() == 1){
@@ -60,10 +61,10 @@ void viewBuilds::showBuilds(){
         boola1 = new QTreeWidgetItem();
         boola2 = new QTreeWidgetItem();
         boola->setText(1,i.value());
-        boola->setText(0,j.value());
-        boola1->setText(0,k.value());
+        boola->setText(0,"Build Name: "+j.value());
+        boola1->setText(0,"Build Description: "+k.value());
         boola1->setText(1,i.value());
-        boola2->setText(0,l.value());
+        boola2->setText(0,"Build Directory: "+l.value());
         boola2->setText(1,i.value());
         boola->addChild(boola1);
         boola->addChild(boola2);

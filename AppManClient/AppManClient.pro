@@ -22,7 +22,8 @@ SOURCES += main.cpp\
     xmlReader.cpp \
     xmlWriter.cpp \
     viewbuilds.cpp \
-    sysInfo.cpp
+    sysInfo.cpp \
+    addbuildfortest.cpp
 
 HEADERS  += mainwindow.h \
     socketclient.h \
@@ -32,10 +33,12 @@ HEADERS  += mainwindow.h \
     xmlReader.h \
     xmlWriter.h \
     viewbuilds.h \
-    sysInfo.h
+    sysInfo.h \
+    addbuildfortest.h
 
 FORMS    += mainwindow.ui \
-    viewbuilds.ui
+    viewbuilds.ui \
+    addbuildfortest.ui
 
 RESOURCES += \
     images.qrc

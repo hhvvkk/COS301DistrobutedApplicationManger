@@ -34,7 +34,8 @@ void Management::disconnectFromServer(){
 
 void Management::addBuild(Build buildToAdd){
     //create the directory for that build if it does not exist
-    createBuildDirectory(buildToAdd);
+    Build myBuild = createBuildDirectory(buildToAdd);
+
 
     if(buildCount != 0){
         Build temp[buildCount];
@@ -45,20 +46,24 @@ void Management::addBuild(Build buildToAdd){
         for(int j = 0; j < buildCount; j++){
             allBuilds[j] = temp[j];
         }
-        allBuilds[buildCount] = buildToAdd;
+        allBuilds[buildCount] = myBuild;
     }
     else{
         allBuilds = new Build[buildCount+1];
-        allBuilds[buildCount] = buildToAdd;
+        allBuilds[buildCount] = myBuild;
     }
     buildCount++;
     qDebug("added build to management");
 }
 
-void Management::createBuildDirectory(Build build){
+Build Management::createBuildDirectory(Build build){
     QString newBuildDirectory = QString::number(build.getBuildID());
     if(!QDir(allBuildsDirectory+"/"+newBuildDirectory).exists())
+    {
         QDir().mkdir(allBuildsDirectory+"/"+newBuildDirectory);
+    }
+    build.setBuildDirectory(allBuildsDirectory+"/"+newBuildDirectory);
+    return build;
 }
 
 void Management::addMyBuilds(){

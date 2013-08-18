@@ -99,3 +99,20 @@ void MainWindow::on_pushButtonViewBuilds_clicked()
     vb->getReader(p);
     vb->show();
 }
+
+void MainWindow::initiateAddBuild(Build myBuild){
+    Build myAltered = management->createBuildDirectory(myBuild);
+    management->addBuild(myAltered);
+    xmlWriter xWrite;
+    xWrite.receiveBuild(QString::number(myAltered.getBuildID()),myAltered.getBuildName(),myAltered.getBuildDescription(),myAltered.getBuildDirectory());
+    xWrite.CreateXMLFile();
+    ui->label_BuildCount->setText(QString::number(management->getBuildCount()));
+    qDebug()<<"Build added";
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    addBuildForTest * testBuildAdd = new addBuildForTest();
+    connect(testBuildAdd,SIGNAL(initiateAddBuild(Build)),this,SLOT(initiateAddBuild(Build)));
+    testBuildAdd->show();
+}
