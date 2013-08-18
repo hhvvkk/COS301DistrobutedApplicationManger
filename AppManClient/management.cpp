@@ -98,3 +98,11 @@ Build Management::getBuildByID(int id){
     Build b(0,"NULL","NULL","NULL");
     return b;
 }
+
+QString Management::getBuildMD5(Build build){
+    //kry die MD5 van die hele directory van build
+}
+
+BuildMD5 *Management::getBuildMD5Class(Build build){
+    //create BuildMD5 class en generate md5s in die class van al die files
+}

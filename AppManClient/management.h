@@ -13,6 +13,7 @@
 #include "network.h"
 #include "xmlReader.h"
 #include "xmlWriter.h"
+#include "buildmd5.h"
 
 /**
  * @class Management
@@ -97,6 +98,21 @@ public:
      */
     Build createBuildDirectory(Build build);
 
+    /**
+    * \fn QString getBuildMD5(Build b);
+    * @brief This function will calculate the MD5 of a build by calculating the MD5 of the whole directory where build is stored
+    * @param build The build on which the MD5 will be calculated
+    * @return Returns the MD5 sum of a directory where a build will be
+    */
+    QString getBuildMD5(Build build);
+
+    /**
+    * \fn BuildMD5 *getBuildMD5Class(Build build);
+    * @brief This function will calculate the MD5 of each of the files inside a build
+    * @param build The build on which the MD5 file values will be calculated
+    * @return Returns a BuildMD5 Class containing MD5 values for each and every file
+    */
+    BuildMD5 *getBuildMD5Class(Build build);
 private:
     /**
      * @brief network An Object that will harbour some of the network information

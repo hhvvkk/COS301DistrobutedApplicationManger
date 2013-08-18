@@ -189,3 +189,7 @@ void Management::addBuildToSlave(QString slaveIp, QString buildNo){
 
     emit slaveGotBuild(machine, buildNo);
 }
+
+QString Management::getBuildMD5(Build build){
+    //kry die MD5 van die hele directory van build
+}

@@ -191,6 +191,14 @@ public:
      */
     void addBuildToSlave(QString slaveIp, QString buildNo);
 
+    /**
+    * \fn QString getBuildMD5(Build b);
+    * @brief This function will calculate the MD5 of a build by calculating the MD5 of the whole directory where build is stored
+    * @param build The build on which the MD5 will be calculated
+    * @return Returns the MD5 sum of a directory where a build will be
+    */
+    QString getBuildMD5(Build build);
+
 private:
     void clearMachines();
 

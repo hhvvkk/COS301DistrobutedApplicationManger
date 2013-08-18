@@ -23,7 +23,8 @@ SOURCES += main.cpp\
     xmlWriter.cpp \
     viewbuilds.cpp \
     sysInfo.cpp \
-    addbuildfortest.cpp
+    addbuildfortest.cpp \
+    buildmd5.cpp
 
 HEADERS  += mainwindow.h \
     socketclient.h \
@@ -34,7 +35,8 @@ HEADERS  += mainwindow.h \
     xmlWriter.h \
     viewbuilds.h \
     sysInfo.h \
-    addbuildfortest.h
+    addbuildfortest.h \
+    buildmd5.h
 
 FORMS    += mainwindow.ui \
     viewbuilds.ui \
