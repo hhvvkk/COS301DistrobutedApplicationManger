@@ -70,6 +70,47 @@ Our next main goals for the project:
 \includegraphics[scale=0.37]{ActivityDiagram.jpg} 
 \end{center}
 
+\section{Communication Protocol}
+Brief Description: The following diagrams are Data Flow Diagrams describing the protocol that is used to implement communication between the AppMan and AppManClient. The protocol is easy to understand and each of them serve a purpose in order to harbour proper communication. The order in which the communication takes place are indicated by the numbers near the flow.
+
+\subsection{Connect}
+This protocol is followed when the client application first connects to the AppMan server. The connecting application will directly be disconnected if the correct protocol is not followed. SlaveCurrentBuilds protocol directly follows this protocol.
+\begin{center}
+\includegraphics[scale=1.0]{CommunicationProtocol/ConnectProtocol.jpg} 
+\end{center}
+
+\subsection{SlaveCurrentBuilds}
+This protocol is invoked directly after Connect protocol and will update all the builds that are currently on the slave and show them on the master. With this protocol one can see all the builds that are there. Apon reaching the "RecheckDone" data, the SizeCheckBuilds protocol will be invoked for each build.
+\begin{center}
+\includegraphics[scale=1.0]{CommunicationProtocol/SlaveCurrentBuildsProtocol.jpg} 
+\end{center}
+
+\subsection{SizeCheckBuilds}
+This protocol is followed when determining if the build of the AppMan and AppManClient have different MD5 values which will indicate that there are differences in the builds themself. If a difference is detected CopyOver protocol is invoked to copy the build files over from the Master machine to Slave Machine.
+\begin{center}
+\includegraphics[scale=1.0]{CommunicationProtocol/SizeCheckBuildsProtocol.jpg} 
+\end{center}
+
+\subsection{CopyOver}
+This protocol is followed when a build is logically copied over from master to slave. The build name and number is saved on the slave side. 
+\begin{center}
+\includegraphics[scale=0.85]{CommunicationProtocol/CopyOverProtocol.jpg} 
+\end{center}
+
+\subsection{GetSysInfo}
+This protocol is used to obtain various system info from the slave machine to display on the master machine. The slave machine returns its "vitality" which is displayed on the master machine.
+\begin{center}
+\includegraphics[scale=0.85]{CommunicationProtocol/GetSysInfoProtocol.jpg} 
+\end{center}
+
+\subsection{SendBuild}
+This protocol is where a physical build is being sent to the slave machine. Before sending a build, the MD5 values are calculated for each and every file so that one can see what files are different. The MD5 values sent to the master will be used to create a CopyCompare class which will indicate which files will be sent across the network. The file that is sent across the network will be uncompressed and those files will be added in an uncompressed format on the AppManClient side.
+\begin{center}
+\includegraphics[scale=0.85]{CommunicationProtocol/SendBuildProtocol.jpg} 
+\end{center}
+
+
+
 \section{Functional Requirements}
 \subsection{Use Case Diagrams}
 \begin{itemize}
