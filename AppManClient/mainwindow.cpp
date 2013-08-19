@@ -80,6 +80,7 @@ void MainWindow::connectClick()
     ui->pushButtonConnect->setVisible(false);
     ui->pushButtonDisconnect->setVisible(true);
     management->connectToServer(ui->lineEditIPAddress->text(), port);
+    ui->label_BuildCount->setText(QString::number(management->getBuildCount()));
 }
 
 void MainWindow::disconnectClick(){
@@ -89,6 +90,7 @@ void MainWindow::disconnectClick(){
     ui->pushButtonConnect->setVisible(true);
     ui->pushButtonDisconnect->setVisible(false);
     management->disconnectFromServer();
+    ui->label_BuildCount->setText(QString::number(management->getBuildCount()));
 }
 
 void MainWindow::on_pushButtonViewBuilds_clicked()
@@ -98,6 +100,7 @@ void MainWindow::on_pushButtonViewBuilds_clicked()
     vb->getManager(management);
     vb->getReader(p);
     vb->show();
+    ui->label_BuildCount->setText(QString::number(management->getBuildCount()));
 }
 
 void MainWindow::initiateAddBuild(Build myBuild){

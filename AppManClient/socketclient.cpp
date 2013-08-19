@@ -129,7 +129,11 @@ void SocketClient::copyBuildOver(QString data){
     QString buildName = rightSide.right(rightSide.length() - (buildNo.length()+1));
     Build newBuild = Build(buildNo.toInt() , buildName,"", "");
 
-    management->addBuild(newBuild);
+    xmlWriter xWrite;
+    Build buildToAdd = management->createBuildDirectory(newBuild);
+    xWrite.receiveBuild(QString::number(buildToAdd.getBuildID()),buildToAdd.getBuildName(),buildToAdd.getBuildDescription(),buildToAdd.getBuildDirectory());
+    xWrite.CreateXMLFile();
+    management->addBuild(buildToAdd);
 
     QString buildAddedMessage = "GotABuild:#"+buildNo;
     socket->write(buildAddedMessage.toAscii().data());

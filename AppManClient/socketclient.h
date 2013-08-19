@@ -11,6 +11,7 @@
 #include <QTcpSocket>
 #include <QAbstractSocket>
 #include <QDebug>
+#include "xmlWriter.h"
 
 
 //forward declaration of the class so it can be used

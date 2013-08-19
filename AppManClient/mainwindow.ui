@@ -66,14 +66,14 @@
       <widget class="QPushButton" name="pushButton">
        <property name="geometry">
         <rect>
-         <x>150</x>
+         <x>390</x>
          <y>40</y>
-         <width>75</width>
+         <width>121</width>
          <height>23</height>
         </rect>
        </property>
        <property name="text">
-        <string>PushButton</string>
+        <string>Add Build client side</string>
        </property>
       </widget>
      </widget>

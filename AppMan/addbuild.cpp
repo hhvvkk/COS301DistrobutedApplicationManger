@@ -61,6 +61,7 @@ void AddBuild::okClick(){
     showError("Build added successfully","info");
 
     emit initiateAddBuild(buildToAdd);
+    this->close();
 }
 
 bool AddBuild::checkBuildNo(QString buildNum){

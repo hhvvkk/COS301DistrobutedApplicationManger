@@ -7,6 +7,12 @@
 
 #include <QDialog>
 #include "Build.h"
+#include "xmlReader.h"
+#include <QMap>
+#include <QMapIterator>
+#include <QMessageBox>
+#include <QDir>
+#include <QFileDialog>
 
 namespace Ui {
 class addBuildForTest;
@@ -38,6 +44,21 @@ public:
      * @brief the destructor
      */
     ~addBuildForTest();
+
+    /**
+     * @brief checkBuildNo looks if the buildnumber is already in the xml
+     * @param buildNum the current build number being passed
+     * @return a boolean indication wether the build number is taken
+     */
+    bool checkBuildNo(QString buildNum);
+
+    /**
+     * @fn void showError(QString errorMessage);
+     * @brief showError shows an error message
+     * @param errorMessage the message to show
+     * @param info The type of message
+     */
+    void showError(QString errorMessage, QString info);
     
 private slots:
     /**
@@ -45,6 +66,8 @@ private slots:
      * @brief on_pushButton_clicked the onclick button function
      */
     void on_pushButton_clicked();
+
+    void on_pushButton_2_clicked();
 
 private:
     /**
