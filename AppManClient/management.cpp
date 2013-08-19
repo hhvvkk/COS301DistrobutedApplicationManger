@@ -101,6 +101,7 @@ Build Management::getBuildByID(int id){
 
 QString Management::getBuildMD5(Build build){
     //kry die MD5 van die hele directory van build
+    return "MD5Hash";
 }
 
 BuildMD5 *Management::getBuildMD5Class(Build build){

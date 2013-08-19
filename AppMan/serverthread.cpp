@@ -61,6 +61,7 @@ void ServerThread::readyReadFunction(){
     //else it is other commands
     if(data.contains("GotABuild:#")){
             GotABuild(data);
+            SizeCheckAllBuilds();
             return;
     }
 
@@ -119,7 +120,8 @@ void ServerThread::RecheckBuilds(QString data){
 
 
 void ServerThread::RecheckDone(QString data){
-
+    //call sizeCheckBuilds
+    SizeCheckAllBuilds();
 }
 
 void ServerThread::Rechecker(QString data){
@@ -141,4 +143,28 @@ void ServerThread::Rechecker(QString data){
     QString slaveIp = adr.toString();
 
     management->addBuildToSlave(slaveIp, buildNo);
+
+    socket->write("RecheckCopy");
+    socket->flush();
+}
+
+
+void ServerThread::SizeCheckAllBuilds(){
+    qDebug()<<"SizeCheckingallBuilds(BEGIN)........";
+    Machine *machine;
+
+    machine = management->getMachineByIp(socket->peerAddress().toString());
+
+    if(machine == 0)
+        return;
+
+    qDebug()<<"SizeCheckingallBuilds(END)........";
+
+}
+
+
+QString ServerThread::sizeCheckBuild(QString buildNo){
+    QString writeData = "SizeCheckBuild:#"+buildNo;
+    socket->write(writeData.toAscii().data());
+    socket->flush();
 }

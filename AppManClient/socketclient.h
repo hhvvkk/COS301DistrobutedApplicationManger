@@ -16,6 +16,8 @@
 
 //forward declaration of the class so it can be used
 class Management;
+//forward declaration of the class so it can be used
+class Build;
 
 /**
  * @class SocketClient
@@ -54,6 +56,7 @@ public:
     void writeSome(){
         socket->write("asdasds");
     }
+
 
 signals:
 
@@ -99,6 +102,13 @@ private:
      */
     void copyBuildOver(QString data);
 
+
+    /**
+     * @brief A function that will be invoked when 'MD5Inspection' has been found in ReadyCheck
+     * @param data The data that will be parsed
+     */
+    void sizeCheckBuild(QString data);
+
 signals:
     void connectionEstablished();
 
@@ -112,6 +122,15 @@ private:
      * @brief A management link that will allow backwards communication
      */
     Management *management;
+
+    /**
+     * @brief A management link that will allow backwards communication
+     */
+    int buildIterator;
+    /**
+     * @brief Will be used to loop through the builds
+     */
+    Build * allBuilds;
     
 };
 

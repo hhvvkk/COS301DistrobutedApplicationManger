@@ -199,6 +199,13 @@ public:
     */
     QString getBuildMD5(Build build);
 
+    /**
+    * \fn Machine *getMachineByIp(QString machineIp);
+    * @brief This function will run through the machines and find the machine with a certain IP address
+    * @param machineIp The IP of the machine to return
+    * @return Returns the pointer to a machine with an ip or returns 0 if that machine does not exist anymore
+    */
+    Machine *getMachineByIp(QString machineIp);
 private:
     void clearMachines();
 

@@ -192,4 +192,21 @@ void Management::addBuildToSlave(QString slaveIp, QString buildNo){
 
 QString Management::getBuildMD5(Build build){
     //kry die MD5 van die hele directory van build
+    return "MD5Hash";
+}
+
+
+Machine *Management::getMachineByIp(QString machineIp){
+    lock->lock();
+
+    Machine *machine = 0;
+    for(int i = 0; i < machineCount; i++){
+        if(!allMachines.at(i)->getMachineIP().compare(machineIp)){
+            machine = allMachines.at(i);
+            break;
+        }
+    }
+
+    lock->unlock();
+    return machine;
 }

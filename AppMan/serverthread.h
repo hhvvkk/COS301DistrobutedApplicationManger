@@ -88,7 +88,18 @@ private:
      */
     void Rechecker(QString data);
 
+    /**
+     * \fn void SizeCheckAllBuilds();
+     * @brief This function finds the md5 value for each build and if it is different, the CopyBuild function will be called
+     */
+    void SizeCheckAllBuilds();
 
+    /**
+     * \fn void SizeCheckBuild();
+     * @brief This function will find and return the MD5 value for a specefic build
+     ..............>>>>DOCUKMeTNATIONSDS:S:AS:DS:ADGKDGKNGJRONO
+     */
+    QString sizeCheckBuild(QString buildNo);
 private:
     /**
      * @brief socket

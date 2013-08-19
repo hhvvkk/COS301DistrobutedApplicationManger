@@ -28,7 +28,8 @@ SOURCES += main.cpp\
     xmlWriter.cpp \
     xmlReader.cpp \
     myDirIterator.cpp \
-    copybuildover.cpp
+    copybuildover.cpp \
+    copycompare.cpp
 
 HEADERS  += mainform.h \
     aboutversion.h \
@@ -44,7 +45,8 @@ HEADERS  += mainform.h \
     xmlReader.h \
     myDirIterator.h \
     serverthread.h \
-    copybuildover.h
+    copybuildover.h \
+    copycompare.h
 
 FORMS    += mainform.ui \
     aboutversion.ui \

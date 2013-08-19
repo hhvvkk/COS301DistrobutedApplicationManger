@@ -14,6 +14,9 @@ SocketClient::SocketClient(Management *man, QObject *parent) :
     connect(socket, SIGNAL(bytesWritten(qint64)),this, SLOT(bytesWritten(qint64)));
 
     connect(this, SIGNAL(connectionEstablished()), this, SLOT(recheckBuildsPhase1()));
+
+    buildIterator = 0;
+    allBuilds = 0;
 }
 
 SocketClient::~SocketClient(){
@@ -31,13 +34,21 @@ void SocketClient::recheckBuildsPhase1(){
 void SocketClient::recheckBuildsPhase2(){
     QString rechecker = "";
 
-    Build * allBuilds = management->getAllBuilds();
+    if(allBuilds == 0)
+        allBuilds = management->getAllBuilds();
 
-    for(int i = 0; i < management->getBuildCount(); i++){
-        qDebug()<<"RecheckingWithBuild ->"<<allBuilds[i].getBuildID();
-        rechecker = "Rechecker:#"+QString::number(allBuilds[i].getBuildID())+"#"+allBuilds[i].getBuildName();
+
+    if(buildIterator < management->getBuildCount()){
+        qDebug()<<"RecheckingWithBuild ->"<<allBuilds[buildIterator].getBuildID();
+        rechecker = "Rechecker:#"+QString::number(allBuilds[buildIterator].getBuildID())+"#"+allBuilds[buildIterator].getBuildName();
         socket->write(rechecker.toAscii().data());
         socket->flush();
+        buildIterator++;
+    }
+    else{
+        //reset the iterator
+        allBuilds = 0;
+        buildIterator = 0;
     }
 }
 
@@ -111,6 +122,10 @@ void SocketClient::readyRead(){
 
     }
 
+    if(data.contains("SizeCheckBuild:#")){
+        this->sizeCheckBuild(data);
+    }
+
 }
 
 void SocketClient::copyBuildOver(QString data){
@@ -138,4 +153,15 @@ void SocketClient::copyBuildOver(QString data){
     QString buildAddedMessage = "GotABuild:#"+buildNo;
     socket->write(buildAddedMessage.toAscii().data());
     socket->flush();//write all that should be written
+}
+
+void SocketClient::sizeCheckBuild(QString data){
+    //this means it is build information that is flowing.
+    //E.g MD5Inspection:#1
+    QString mostLeft = "SizeCheckBuild:#";
+
+    QString buildNo = data.right((data.size()-mostLeft.length()));
+
+    qDebug()<<"SizeCheckBuildvv=========? "<<buildNo;
+
 }
