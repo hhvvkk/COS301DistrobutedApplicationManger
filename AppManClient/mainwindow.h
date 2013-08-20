@@ -14,7 +14,9 @@
 #include <QMapIterator>
 #include <QDebug>
 #include <QMessageBox>
-//#include "windows.h"
+#ifdef WIN32
+    #include <windows.h>
+#endif
 
 #include "management.h"
 #include "viewbuilds.h"
