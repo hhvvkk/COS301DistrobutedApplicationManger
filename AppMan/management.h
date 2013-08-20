@@ -42,11 +42,13 @@ signals:
     void slaveDisconnected(Machine *m, int index);
 
     /**
-     * \fn void slaveGotBuild(Machine *machine, QString buildNo);
+     * \fn void slaveGotBuild(Machine *machine, QString buildNo, bool buildExists);
      * @brief A signal that will invoke a function on the mainform to add the build to the view
-     *
+     * @param machine The machine on which the build must be displayed
+     * @param buildNo The number of the build that must be added
+     * @param buildExists A boolean value indicating whether the build on slave exist on master
      */
-    void slaveGotBuild(Machine *machine, QString buildNo);
+    void slaveGotBuild(Machine *machine, QString buildNo, bool buildExists);
 public:
     /**
     * \fn Management();

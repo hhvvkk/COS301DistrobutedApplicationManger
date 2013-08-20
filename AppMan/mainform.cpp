@@ -15,7 +15,7 @@ MainForm::MainForm(QWidget *parent) :
     ///connect slots for backward signalling
     connect(management, SIGNAL(newSlaveConnected(Machine*, int)),this,SLOT(newSlaveConnected(Machine*, int)));
     connect(management, SIGNAL(slaveDisconnected(Machine*, int)),this,SLOT(slaveDisconnected(Machine*, int)));
-    connect(management, SIGNAL(slaveGotBuild(Machine*,QString)), this, SLOT(slaveGotBuild(Machine*,QString)));
+    connect(management, SIGNAL(slaveGotBuild(Machine*,QString, bool)), this, SLOT(slaveGotBuild(Machine*,QString, bool)));
 
     masterBuilds = new MasterBuilds();
     masterBuilds->setHeaderHidden(true);
@@ -486,15 +486,24 @@ void MainForm::initiateCopyBuildOver(QString ipAddress, QString buildName){
     management->copyBuildOver(ipAddress, buildName);
 }
 
-void MainForm::slaveGotBuild(Machine*m, QString buildId){
+void MainForm::slaveGotBuild(Machine*m, QString buildId, bool buildExist){
     QTreeWidgetItem *machineT = getSlaveTreeItemByIp(m->getMachineIP());
 
     if(machineT == 0)
         return;
 
     QTreeWidgetItem *newBuildForSlave = new QTreeWidgetItem();
-    QString buildName = management->getBuildByID(buildId.toInt()).getBuildName();
-    newBuildForSlave->setText(0, buildName);
+
+    if(buildExist == false){
+        //show the background colour as red as well as display that buildId
+        newBuildForSlave->setBackgroundColor(0, Qt::red);
+        QString buildName = buildId + "[N/A]";
+        newBuildForSlave->setText(0, buildName );
+    }
+    else{
+        QString buildName = management->getBuildByID(buildId.toInt()).getBuildName();
+        newBuildForSlave->setText(0, buildName);
+    }
     machineT->addChild(newBuildForSlave);
 }
 

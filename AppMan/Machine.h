@@ -28,7 +28,6 @@ class Machine{
         * @brief the IP of the machine
         */
         QString machineIP;
-        ServerThread *serverThread;
 public:
         /**
         * \fn Machine(int id, QString ip);
@@ -87,17 +86,45 @@ public:
         void setMachineIP(QString ip);
 
         /**
+        * \fn virtual void deleteBuild(QString name);
+        * @brief The pure virtual deleteBuild function that will be overridden by Slave class which receives buildName as parameter
+        * @param name The Build name
+        */
+        virtual void deleteBuild(QString name) = 0;
+
+        /**
+        * \fn virtual void deleteBuild(int id);
+        * @brief The pure virtual deleteBuild function that will be overridden by Slave class which receives the buildId as parameter
+        * @param id The Build ID
+        */
+        virtual void deleteBuild(int id) = 0;
+
+        /**
+        * \fn virtual void addBuild(Build buildToAdd);
+        * @brief The pure virtual addBuild function that will be overridden by Slave class
+        * @param buildToAdd The Build to add
+        */
+        virtual void addBuild(Build buildToAdd) = 0;
+
+        /**
         * \fn void setServerThread(ServerThread *sVThread);
-        * @brief A function that will be used to set a serverthread that will be used to access the thread
+        * @brief A pure virtual function that will be used to set a serverthread that will be used to access the thread
         * @param sVThread the thread of the client connected
         */
-        void setServerThread(ServerThread *sVThread);
+        virtual void setServerThread(ServerThread *sVThread) = 0;
 
         /**
         * \fn void copyBuildOver(Build build) = 0;
-        * @brief The function that will be overridden by the Slave class to initiate a copy of a build
+        * @brief The pure virtual function that will be overridden by the Slave class to initiate a copy of a build
         */
         virtual void copyBuildOver(Build build) = 0;
+
+        /**
+        * \fn Build* getBuilds() = 0;
+        * @brief The pure virtual function that will be overridden by the Slave class to return all builds
+        * @return Returns all builds for this machine. Will be overridden by Slave to return all the builds
+        */
+        virtual Build* getBuilds() = 0;
 };
 
 #endif // MACHINE_H

@@ -49,6 +49,8 @@ void SocketClient::recheckBuildsPhase2(){
         //reset the iterator
         allBuilds = 0;
         buildIterator = 0;
+        socket->write("RecheckDone");
+        socket->flush();
     }
 }
 
@@ -111,6 +113,8 @@ void SocketClient::readyRead(){
     }
 
     if(!data.compare("RecheckCopy")){
+        //this basically loops through the builds and sends it to master
+        //
         this->recheckBuildsPhase2();
         return;
     }

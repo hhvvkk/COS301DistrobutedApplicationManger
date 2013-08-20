@@ -48,7 +48,3 @@ void Machine::setMachineIP(QString ip){
 		machineIP = ip;
 	}
 }
-
-void Machine::setServerThread(ServerThread *sVThread){
-    serverThread = sVThread;
-}

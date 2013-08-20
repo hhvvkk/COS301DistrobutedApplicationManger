@@ -194,12 +194,13 @@ private slots:
     void initiateCopyBuildOver(QString ipAddress, QString buildName);
 
     /**
-     * @fn void slaveGotBuild(Machine*m, QString buildId);
+     * @fn void slaveGotBuild(Machine*m, QString buildId, bool buildExist);
      * @brief A function that is invoked once a machine successfully acknowledges a new build is added to their side
      * @param m The machine which acknowledges the new build
      * @param buildId the build id that the machine received
+     * @param buildExist A parameter indicating whether or not a build exist on master
      */
-    void slaveGotBuild(Machine*m, QString buildId);
+    void slaveGotBuild(Machine*m, QString buildId, bool buildExist);
 
 private:
     /**

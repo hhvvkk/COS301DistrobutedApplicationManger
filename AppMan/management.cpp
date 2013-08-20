@@ -185,9 +185,21 @@ void Management::addBuildToSlave(QString slaveIp, QString buildNo){
         }
     }
 
-    lock->unlock();
+    Build buildToAdd = getBuildByID(buildNo.toInt());
 
-    emit slaveGotBuild(machine, buildNo);
+    if(!buildToAdd.getBuildDescription().compare("NULL")
+        && !buildToAdd.getBuildDirectory().compare("NULL")
+        && !buildToAdd.getBuildName().compare("NULL")
+        && buildToAdd.getBuildID() == 0){
+        //this point the build does not exist
+        emit slaveGotBuild(machine, buildNo, false);
+    }
+    else{
+        machine->addBuild(buildToAdd);
+        emit slaveGotBuild(machine, buildNo, true);
+    }
+
+    lock->unlock();
 }
 
 QString Management::getBuildMD5(Build build){

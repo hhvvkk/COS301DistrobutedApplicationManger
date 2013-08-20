@@ -11,6 +11,8 @@
 #include <QTcpSocket>
 #include <QThread>
 
+#include "Build.h"
+
 //forward declaration of Management so it can be used
 class Management;
 class Machine;
@@ -111,6 +113,7 @@ private:
     bool firstTalk;
     Management *management;
     Machine *machine;
+    //Build* recheckBuilds;
 };
 
 #endif // SERVERTHREAD_H

@@ -69,8 +69,8 @@ void ServerThread::readyReadFunction(){
         RecheckBuilds(data);
     }else if(!data.compare("RecheckDone")){
         //at this point of time the rechecking is done and all that machines builds
-        //can be placed inside the view
-        qDebug()<<"RECHECK___DONE";
+        //are placed inside view
+        SizeCheckAllBuilds();
     }
     else if(data.contains("Rechecker:#")){
         Rechecker(data);
@@ -120,6 +120,7 @@ void ServerThread::RecheckBuilds(QString data){
 
 
 void ServerThread::RecheckDone(QString data){
+    qDebug()<<"RecheckDone";
     //call sizeCheckBuilds
     SizeCheckAllBuilds();
 }
@@ -151,13 +152,13 @@ void ServerThread::Rechecker(QString data){
 
 void ServerThread::SizeCheckAllBuilds(){
     qDebug()<<"SizeCheckingallBuilds(BEGIN)........";
-    Machine *machine;
 
     machine = management->getMachineByIp(socket->peerAddress().toString());
 
     if(machine == 0)
         return;
 
+    //recheckBuilds = machine->
     qDebug()<<"SizeCheckingallBuilds(END)........";
 
 }

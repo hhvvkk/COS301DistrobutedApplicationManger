@@ -105,3 +105,15 @@ void Slave:: deleteBuild(int id){
 void Slave::copyBuildOver(Build build){
     serverThread->copyBuildOver(build.getBuildID(), build.getBuildName());
 }
+
+
+
+void Slave::setServerThread(ServerThread *sVThread){
+    serverThread = sVThread;
+}
+
+
+
+Build *Slave::getBuilds(){
+    return slaveBuilds;
+}

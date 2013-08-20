@@ -26,6 +26,13 @@ private:
         * @brief a counter for the Builds
         */
         int buildCount;
+
+
+        /**
+        * @var serverThread
+        * @brief The serverthread on which this machine runs
+        */
+        ServerThread *serverThread;
 public:
         /**
         * \fn Slave(int id, QString ip);
@@ -55,25 +62,32 @@ public:
         Slave(Slave &toCopy);
 
         /**
-        * \fn virtual void deleteBuild(QString name);
+        * \fn void deleteBuild(QString name);
         * @brief The overridden deleteBuild function
         * @param name The Build name
         */
-        virtual void deleteBuild(QString name);
+        void deleteBuild(QString name);
 
         /**
-        * \fn virtual void deleteBuild(int id);
+        * \fn void deleteBuild(int id);
         * @brief The overridden deleteBuild function
         * @param id The Build ID
         */
-        virtual void deleteBuild(int id);
+        void deleteBuild(int id);
 
         /**
-        * \fn virtual void addBuild(Build buildToAdd);
+        * \fn void addBuild(Build buildToAdd);
         * @brief The overridden addBuild function
         * @param buildToAdd The Build to add
         */
-        virtual void addBuild(Build buildToAdd);
+        void addBuild(Build buildToAdd);
+
+        /**
+        * \fn void setServerThread(ServerThread *sVThread);
+        * @brief A function that will be used to set a serverthread that will be used to access the thread
+        * @param sVThread the thread of the client connected
+        */
+        void setServerThread(ServerThread *sVThread);
 
         /**
         * \fn copyBuildOver(Build b);
@@ -81,6 +95,14 @@ public:
         * @param buildToAdd The Build to add
         */
         void copyBuildOver(Build b);
+
+        /**
+        * \fn Build* getBuilds() = 0;
+        * @brief This function will return all builds related to this slave
+        * @return Returns all builds for this machine
+        */
+        Build *getBuilds();
+
 };
 
 #endif // Slave_H
