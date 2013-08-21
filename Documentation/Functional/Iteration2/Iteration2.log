@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2013.2.23)  18 AUG 2013 22:44
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2013.2.23)  21 AUG 2013 18:47
 entering extended mode
  %&-line parsing enabled.
 **Iteration2.tex
@@ -107,7 +107,7 @@ LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
 <AppManDiagram.jpg, id=18, 919.435pt x 548.0475pt>
 File: AppManDiagram.jpg Graphic file (type jpg)
  <use AppManDiagram.jpg>
-Overfull \hbox (69.71637pt too wide) in paragraph at lines 58--59
+Overfull \hbox (69.71637pt too wide) in paragraph at lines 59--60
  [] 
  []
 
@@ -124,61 +124,104 @@ File: ActivityDiagram.jpg Graphic file (type jpg)
 File: CommunicationProtocol/ConnectProtocol.jpg Graphic file (type jpg)
 
 <use CommunicationProtocol/ConnectProtocol.jpg>
-Overfull \hbox (10.49527pt too wide) in paragraph at lines 79--80
+Overfull \hbox (10.49527pt too wide) in paragraph at lines 83--84
  [] 
  []
 
-[4]
-<CommunicationProtocol/SlaveCurrentBuildsProtocol.jpg, id=31, 337.26pt x 333.49
+[4] [5 <./CommunicationProtocol/ConnectProtocol.jpg>]
+<CommunicationProtocol/SequenceDiagrams/Client/Connect.jpg, id=35, 923.45pt x 6
+46.415pt>
+File: CommunicationProtocol/SequenceDiagrams/Client/Connect.jpg Graphic file (t
+ype jpg)
+ <use CommunicationProtocol/SequenceDiagrams/Client/Connect.jpg>
+<CommunicationProtocol/SequenceDiagrams/Server/Connect.jpeg, id=36, 884.30376pt
+ x 698.61pt>
+File: CommunicationProtocol/SequenceDiagrams/Server/Connect.jpeg Graphic file (
+type jpg)
+ <use CommunicationProtocol/SequenceDiagrams/Server/Connect.jpeg>
+[6 <./CommunicationProtocol/SequenceDiagrams/Client/Connect.jpg> <./Communicati
+onProtocol/SequenceDiagrams/Server/Connect.jpeg>]
+<CommunicationProtocol/SlaveCurrentBuildsProtocol.jpg, id=40, 337.26pt x 333.49
 594pt>
 File: CommunicationProtocol/SlaveCurrentBuildsProtocol.jpg Graphic file (type j
 pg)
- <use CommunicationProtocol/SlaveCurrentBuildsProtocol.jpg> [5 <./Communication
-Protocol/ConnectProtocol.jpg>]
-<CommunicationProtocol/SizeCheckBuildsProtocol.jpg, id=36, 347.04657pt x 364.36
+ <use CommunicationProtocol/SlaveCurrentBuildsProtocol.jpg> [7 <./Communication
+Protocol/SlaveCurrentBuildsProtocol.jpg>]
+<CommunicationProtocol/SequenceDiagrams/Client/SlaveCurrentBuilds.jpg, id=44, 6
+81.54625pt x 396.48125pt>
+File: CommunicationProtocol/SequenceDiagrams/Client/SlaveCurrentBuilds.jpg Grap
+hic file (type jpg)
+
+<use CommunicationProtocol/SequenceDiagrams/Client/SlaveCurrentBuilds.jpg>
+<CommunicationProtocol/SequenceDiagrams/Server/SlaveCurrentBuilds.jpeg, id=45, 
+758.835pt x 570.13pt>
+File: CommunicationProtocol/SequenceDiagrams/Server/SlaveCurrentBuilds.jpeg Gra
+phic file (type jpg)
+
+<use CommunicationProtocol/SequenceDiagrams/Server/SlaveCurrentBuilds.jpeg>
+[8 <./CommunicationProtocol/SequenceDiagrams/Client/SlaveCurrentBuilds.jpg> <./
+CommunicationProtocol/SequenceDiagrams/Server/SlaveCurrentBuilds.jpeg>]
+<CommunicationProtocol/SizeCheckBuildsProtocol.jpg, id=49, 347.04657pt x 364.36
 125pt>
 File: CommunicationProtocol/SizeCheckBuildsProtocol.jpg Graphic file (type jpg)
 
- <use CommunicationProtocol/SizeCheckBuildsProtocol.jpg> [6 <./CommunicationPro
-tocol/SlaveCurrentBuildsProtocol.jpg>]
-<CommunicationProtocol/CopyOverProtocol.jpg, id=40, 509.65407pt x 491.58656pt>
+ <use CommunicationProtocol/SizeCheckBuildsProtocol.jpg>
+<CommunicationProtocol/CopyOverProtocol.jpg, id=50, 509.65407pt x 491.58656pt>
 File: CommunicationProtocol/CopyOverProtocol.jpg Graphic file (type jpg)
 
 <use CommunicationProtocol/CopyOverProtocol.jpg>
-Overfull \hbox (43.208pt too wide) in paragraph at lines 97--98
+Overfull \hbox (43.208pt too wide) in paragraph at lines 146--147
  [] 
  []
 
-[7 <./CommunicationProtocol/SizeCheckBuildsProtocol.jpg>]
-<CommunicationProtocol/GetSysInfoProtocol.jpg, id=44, 456.20438pt x 334.24875pt
+[9 <./CommunicationProtocol/SizeCheckBuildsProtocol.jpg>] [10 <./CommunicationP
+rotocol/CopyOverProtocol.jpg>]
+<CommunicationProtocol/SequenceDiagrams/Client/CopyOver.jpg, id=57, 851.18pt x 
+441.65pt>
+File: CommunicationProtocol/SequenceDiagrams/Client/CopyOver.jpg Graphic file (
+type jpg)
+ <use CommunicationProtocol/SequenceDiagrams/Client/CopyOver.jpg>
+<CommunicationProtocol/SequenceDiagrams/Server/CopyOver.jpeg, id=58, 1116.17pt 
+x 538.01pt>
+File: CommunicationProtocol/SequenceDiagrams/Server/CopyOver.jpeg Graphic file 
+(type jpg)
+ <use CommunicationProtocol/SequenceDiagrams/Server/CopyOver.jpeg>
+Overfull \hbox (56.4601pt too wide) in paragraph at lines 156--158
+ [] 
+ []
+
+
+<CommunicationProtocol/GetSysInfoProtocol.jpg, id=59, 456.20438pt x 334.24875pt
 >
 File: CommunicationProtocol/GetSysInfoProtocol.jpg Graphic file (type jpg)
- <use CommunicationProtocol/GetSysInfoProtocol.jpg> [8 <./CommunicationProtocol
-/CopyOverProtocol.jpg>]
-<CommunicationProtocol/SendBuildProtocol.jpg, id=48, 405.01312pt x 332.74312pt>
+ <use CommunicationProtocol/GetSysInfoProtocol.jpg> [11 <./CommunicationProtoco
+l/SequenceDiagrams/Client/CopyOver.jpg> <./CommunicationProtocol/SequenceDiagra
+ms/Server/CopyOver.jpeg>]
+<CommunicationProtocol/SendBuildProtocol.jpg, id=64, 405.01312pt x 332.74312pt>
 File: CommunicationProtocol/SendBuildProtocol.jpg Graphic file (type jpg)
-<use CommunicationProtocol/SendBuildProtocol.jpg> [9 <./CommunicationProtocol/G
-etSysInfoProtocol.jpg>] <UseCaseDiagram.png, id=52, 666.99188pt x 358.33875pt>
+<use CommunicationProtocol/SendBuildProtocol.jpg> [12 <./CommunicationProtocol/
+GetSysInfoProtocol.jpg>]
+<UseCaseDiagram.png, id=68, 666.99188pt x 358.33875pt>
 File: UseCaseDiagram.png Graphic file (type png)
 
 <use UseCaseDiagram.png>
-<UseCaseDiagramClient.png, id=53, 431.36156pt x 373.395pt>
+<UseCaseDiagramClient.png, id=69, 431.36156pt x 373.395pt>
 File: UseCaseDiagramClient.png Graphic file (type png)
 
-<use UseCaseDiagramClient.png> [10 <./CommunicationProtocol/SendBuildProtocol.j
-pg> <./UseCaseDiagram.png (PNG copy)>] [11 <./UseCaseDiagramClient.png (PNG cop
+<use UseCaseDiagramClient.png> [13 <./CommunicationProtocol/SendBuildProtocol.j
+pg> <./UseCaseDiagram.png (PNG copy)>] [14 <./UseCaseDiagramClient.png (PNG cop
 y)>]
-Overfull \hbox (12.03749pt too wide) in paragraph at lines 153--154
+Overfull \hbox (12.03749pt too wide) in paragraph at lines 233--234
 []\OT1/cmr/m/n/12 The Ap-pli-ca-tions must start on com-puter startup in a min-
 i-mized form(e.g.
  []
 
-[12] [13] (./Iteration2.aux) ) 
+[15] [16] (./Iteration2.aux) ) 
 Here is how much of TeX's memory you used:
- 993 strings out of 495061
- 13644 string characters out of 1182621
+ 1023 strings out of 495061
+ 15388 string characters out of 1182621
  62375 words of memory out of 3000000
- 4199 multiletter control sequences out of 15000+50000
+ 4223 multiletter control sequences out of 15000+50000
  9115 words of font info for 32 fonts, out of 3000000 for 9000
  28 hyphenation exceptions out of 8191
  25i,6n,21p,502b,250s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -186,9 +229,9 @@ Here is how much of TeX's memory you used:
 onts/cm/cmbx12.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr
 12.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr
 /share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on Iteration2.pdf (15 pages, 650001 bytes).
+Output written on Iteration2.pdf (18 pages, 1009774 bytes).
 PDF statistics:
- 81 PDF objects out of 1000 (max. 8388607)
+ 96 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 61 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 91 words of extra memory for PDF output out of 10000 (max. 10000000)
 

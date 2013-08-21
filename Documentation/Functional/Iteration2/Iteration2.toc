@@ -11,15 +11,15 @@
 \contentsline {subsection}{\numberline {5.1}ActivityDiagram}{3}
 \contentsline {section}{\numberline {6}Communication Protocol}{4}
 \contentsline {subsection}{\numberline {6.1}Connect}{4}
-\contentsline {subsection}{\numberline {6.2}SlaveCurrentBuilds}{5}
-\contentsline {subsection}{\numberline {6.3}SizeCheckBuilds}{6}
-\contentsline {subsection}{\numberline {6.4}CopyOver}{7}
-\contentsline {subsection}{\numberline {6.5}GetSysInfo}{8}
-\contentsline {subsection}{\numberline {6.6}SendBuild}{9}
-\contentsline {section}{\numberline {7}Functional Requirements}{10}
-\contentsline {subsection}{\numberline {7.1}Use Case Diagrams}{10}
-\contentsline {subsection}{\numberline {7.2}Builds}{11}
-\contentsline {subsection}{\numberline {7.3}Copying}{11}
-\contentsline {subsection}{\numberline {7.4}User Interface}{12}
-\contentsline {subsection}{\numberline {7.5}Server \& Client Applications}{12}
-\contentsline {section}{\numberline {8}Glossary}{12}
+\contentsline {subsection}{\numberline {6.2}SlaveCurrentBuilds}{7}
+\contentsline {subsection}{\numberline {6.3}SizeCheckBuilds}{9}
+\contentsline {subsection}{\numberline {6.4}CopyOver}{9}
+\contentsline {subsection}{\numberline {6.5}GetSysInfo}{11}
+\contentsline {subsection}{\numberline {6.6}SendBuild}{12}
+\contentsline {section}{\numberline {7}Functional Requirements}{13}
+\contentsline {subsection}{\numberline {7.1}Use Case Diagrams}{13}
+\contentsline {subsection}{\numberline {7.2}Builds}{14}
+\contentsline {subsection}{\numberline {7.3}Copying}{14}
+\contentsline {subsection}{\numberline {7.4}User Interface}{15}
+\contentsline {subsection}{\numberline {7.5}Server \& Client Applications}{15}
+\contentsline {section}{\numberline {8}Glossary}{15}
