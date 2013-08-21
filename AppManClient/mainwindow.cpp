@@ -119,3 +119,15 @@ void MainWindow::on_pushButton_clicked()
     connect(testBuildAdd,SIGNAL(initiateAddBuild(Build)),this,SLOT(initiateAddBuild(Build)));
     testBuildAdd->show();
 }
+
+void MainWindow::on_pushButton_2_clicked()
+{
+    sysInfo s;
+    s.netStat();
+    s.memPerc();
+    s.cpuUsage();
+    s.osVersion();
+    s.getDiskDetails();
+    s.cpuStats();
+    s.listProcesses();
+}

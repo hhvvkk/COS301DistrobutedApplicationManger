@@ -20,7 +20,6 @@
  * @class sysInfo
  * @brief The sysInfo class
  */
-////////////////////////NOTE: TO UNCOMMENT HIGHLIGHT ALL AND PRESS ( [Ctrl] + [/] )
 class sysInfo{
 private:
 #ifdef WIN32
@@ -66,11 +65,6 @@ private:
      */
     QString freeOnDisk;
     /**
-     * @fn void getDiskDetails();
-     * @brief getDiskDetails initializes diskSize and freeOnDisk
-     */
-    void getDiskDetails();
-    /**
      * @var bytesTransmitted
      * @brief bytesTransmitted is the amount of bytes transmitted to be returned as a QString
      */
@@ -80,6 +74,66 @@ private:
      * @brief bytesReceived is the amount of bytes received to be returned as a QString
      */
     QString bytesReceived;
+    /**
+     * @var packetsReceived
+     * @brief packetsReceived is the amount of packets that have been received
+     */
+    QString packetsReceived;
+    /**
+     * @var packetsTransmitted
+     * @brief packetsTransmitted is the amount of packets that have been transmitted
+     */
+    QString packetsTransmitted;
+    /**
+     * @var receiveErrors
+     * @brief receiveErrors the amount of errors encountered while receiving data
+     */
+    QString receiveErrors;
+    /**
+     * @var transmitErrors
+     * @brief transmitErrors the amount of errors encountered while transmitting data
+     */
+    QString transmitErrors;
+    /**
+     * @var filesystems
+     * @brief filesystems the QStringList containing filesystem names
+     */
+    QStringList filesystems;
+    /**
+     * @var capacitys
+     * @brief capacitys the QStringList containing filesystem capacities
+     */
+    QStringList capacitys;
+    /**
+     * @var useds
+     * @brief useds the QStringList containing filesystem used space
+     */
+    QStringList useds;
+    /**
+     * @var osVers
+     * @brief osVers the version of the Operating System
+     */
+    QString osVers;
+    /**
+     * @var cpuPerc
+     * @brief cpuPerc the load of the cpu
+     */
+    QString cpuPerc;
+    /**
+     * @var procIDs
+     * @brief procIDs the QStringList containing process ID's
+     */
+    QStringList procIDs;
+    /**
+     * @var procNames
+     * @brief procNames the QStringList containing process names
+     */
+    QStringList procNames;
+    /**
+     * @var procCount
+     * @brief procCount the amount of processes
+     */
+    QString procCount;
 public:
     /**
      * @fn sysInfo();
@@ -134,6 +188,58 @@ public:
      */
     QString getFreeOnDisk() {return freeOnDisk;}
 
+
+    /**
+     * @fn void netStat();
+     * @brief netStat sets the bytes transmitted and received variables
+     * @bug Packets received stays 0 in windows
+     */
+    void netStat();
+    /**
+     * @fn QString recrun(QString in);
+     * @brief recrun is a recursive function to run
+     * @param in the QString input
+     * @return the QString containing the stripped line
+     */
+    QString recrun(QString in);
+    /**
+     * @fn void memPerc();
+     * @brief memPerc reads memory (ram) and calculates percentage used
+     */
+    void memPerc();
+    /**
+     * @fn void getDiskDetails();
+     * @brief getDiskDetails initializes diskSize and freeOnDisk
+     */
+    void getDiskDetails();
+    /**
+     * @fn void osVersion();
+     * @brief osVersion sets the Operating System version variable
+     */
+    void osVersion();
+    /**
+     * @fn void cpuUsage();
+     * @brief cpuUsage sets the CPU usage % variable
+     */
+    void cpuUsage();
+    
+    /**
+     * @fn void cpuStats();
+     * @brief cpuStats gets more statistics from the CPU
+     */
+     void cpuStats();
+     
+     /**
+      * @fn void listProcesses();
+      * @brief listProcesses populates the processes QStringList
+      */
+     void listProcesses();
+     /**
+      * @fn void popHDDList(QString driveLabel);
+      * @brief popHDDList populates the list of filesystems on windows
+      * @param driveLabel the label of the hdd to check
+      */
+     void popHDDList(QString driveLabel);
 };
 
 #endif // SYSINFO_H

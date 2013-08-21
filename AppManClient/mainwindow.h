@@ -14,10 +14,9 @@
 #include <QMapIterator>
 #include <QDebug>
 #include <QMessageBox>
-#ifdef WIN32
-    #include <windows.h>
-#endif
+//#include "windows.h"
 
+#include "sysInfo.h"
 #include "management.h"
 #include "viewbuilds.h"
 #include "addbuildfortest.h"
@@ -39,6 +38,9 @@ class MainWindow : public QMainWindow
      * @brief The signal that is emitted when clicking exit on the tray item
      */
 signals:
+    /**
+     * @brief quitApplication the quit signal
+     */
     void quitApplication();
 
     
@@ -93,9 +95,22 @@ private slots:
     */
     void initiateAddBuild(Build b);
 
+    /**
+     * @fn void on_pushButton_clicked();
+     * @brief on_pushButton_clicked the click function of the button
+     */
     void on_pushButton_clicked();
+    /**
+     * @fn void on_pushButton_@_clicked();
+     * @brief on_pushButton_@_clicked the click function of the button
+     */
+    void on_pushButton_2_clicked();
 
 private:
+    /**
+     * @var ui;
+     * @brief ui the MainWindow user interface
+     */
     Ui::MainWindow *ui;
 
     /**

@@ -110,6 +110,9 @@ private:
     void sizeCheckBuild(QString data);
 
 signals:
+    /**
+     * @brief connectionEstablished the established signal
+     */
     void connectionEstablished();
 
 private:

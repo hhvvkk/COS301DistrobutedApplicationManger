@@ -52,11 +52,15 @@ public:
 private:
     /**
      * @brief socketClient The socket object containing socket related items and management
-     * @brief serverPort The port on which the AppMan server will be listening
-     * @brief IpAddress The IP Address on which the AppMan server will be run
      */
     SocketClient *socketClient;
+    /**
+     * @brief serverPort The port on which the AppMan server will be listening
+     */
     int serverPort;
+    /**
+     * @brief IpAddress The IP Address on which the AppMan server will be run
+     */
     QString IpAddress;
 };
 

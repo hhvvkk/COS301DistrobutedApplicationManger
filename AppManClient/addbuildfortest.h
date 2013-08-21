@@ -67,6 +67,10 @@ private slots:
      */
     void on_pushButton_clicked();
 
+    /**
+     * @fn void on_pushButton_2_clicked();
+     * @brief on_pushButton_2_clicked the onclick button function
+     */
     void on_pushButton_2_clicked();
 
 private:
