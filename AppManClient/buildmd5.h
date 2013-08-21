@@ -2,7 +2,9 @@
 #define BUILDMD5_H
 
 #include <QObject>
+#include <QCryptographicHash>
 #include "Build.h"
+#include "myDirIterator.h"
 
 /**
   * @class BuildMD5
@@ -13,14 +15,24 @@ class BuildMD5 : public QObject
     Q_OBJECT
 public:
     explicit BuildMD5(QObject *parent = 0);
-
-
     /**
      * \fn void generateAllMD5(Build build);
      * @brief this generates the list of files and md5's linked to them
      * @param build The build for which the MD5 sum values are generated
      */
-    void generateAllMD5(Build build);
+    void generateAllMD5(Build build);    
+    /**
+     * @fn QStringList* getBuildFiles();
+     * @brief retrieves buildFiles
+     * @return buildFiles
+     */
+    QStringList* getBuildFiles(){return buildFiles;}
+    /**
+     * @fn QStringList* getBuildFilesMD5();
+     * @brief retrieves buildFilesMD5
+     * @return buildFilesMD5
+     */
+    QStringList* getBuildFilesMD5(){return buildFilesMD5;}
 
 signals:
 
@@ -34,11 +46,11 @@ private:
     /**
       * @var buildFiles The filepath for each of the files
       **/
-    QStringList *buildFiles;
+    QStringList* buildFiles;
     /**
       * @var buildFiles The filepath for each of the files
       **/
-    QStringList *buildFilesMD5;
+    QStringList* buildFilesMD5;
 
 };
 

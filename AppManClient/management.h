@@ -8,12 +8,14 @@
 
 #include <QString>
 #include <QDir>
+#include <QCryptographicHash>
 
 #include "Build.h"
 #include "network.h"
 #include "xmlReader.h"
 #include "xmlWriter.h"
 #include "buildmd5.h"
+#include "myDirIterator.h"
 
 /**
  * @class Management

@@ -24,7 +24,8 @@ SOURCES += main.cpp\
     viewbuilds.cpp \
     sysInfo.cpp \
     addbuildfortest.cpp \
-    buildmd5.cpp
+    buildmd5.cpp \
+    myDirIterator.cpp
 
 HEADERS  += mainwindow.h \
     socketclient.h \
@@ -36,7 +37,8 @@ HEADERS  += mainwindow.h \
     viewbuilds.h \
     sysInfo.h \
     addbuildfortest.h \
-    buildmd5.h
+    buildmd5.h \
+    myDirIterator.h
 
 FORMS    += mainwindow.ui \
     viewbuilds.ui \

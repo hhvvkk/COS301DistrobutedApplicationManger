@@ -202,9 +202,43 @@ void Management::addBuildToSlave(QString slaveIp, QString buildNo){
     lock->unlock();
 }
 
-QString Management::getBuildMD5(Build build){
-    //kry die MD5 van die hele directory van build
-    return "MD5Hash";
+QString Management::getBuildMD5(Build* build){
+/*  This method iterates through all files and sub-directories
+ *  of the current build directory, adding all file data and then
+ *  calculates a MD5 checksum of all files combined
+ */
+    QCryptographicHash md5(QCryptographicHash::Md5);
+
+    QString dir = build->getBuildDirectory();
+
+    myDirIterator dirIt(dir,1);
+    dirIt.getFileInfo();
+    QVector<QString> paths = dirIt.retrieveFilePaths();
+
+    for (int i=0;i<paths.size();i++) {
+        QFile file(paths.at(i));
+        qDebug()<< "PATH: " + paths.at(i);
+        file.open(QFile::ReadOnly);
+        md5.addData(file.readAll());
+        file.close();
+    }
+    qDebug()<< md5.result().toHex();
+    QString hash(md5.result().toHex().constData());
+    return hash;
+
+
+/*  First Attempt - Trying to calculate hash on sinlge folder
+ *  Gives same value even on update
+ *
+ *  QString dir = build->getBuildDirectory();
+ *  QFile file(dir);
+ *  file.open(QFile::ReadOnly);
+ *  QByteArray ba = QCryptographicHash::hash(file.readAll(),QCryptographicHash::Md5).toHex();
+ *  qDebug()<< ba;
+ *  file.close();
+ *  QString hash(ba.constData());
+ *  return hash;
+ */
 }
 
 

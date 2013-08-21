@@ -10,11 +10,14 @@
 #include <QObject>
 #include <QVector>
 #include <QMutex>
+#include <QFile>
+#include <QCryptographicHash>
 
 #include "Build.h"
 #include "Slave.h"
 #include "Machine.h"
 #include "server.h"
+#include "myDirIterator.h"
 
 //forward declaration of server so that it can be used
 class Server;
@@ -199,7 +202,7 @@ public:
     * @param build The build on which the MD5 will be calculated
     * @return Returns the MD5 sum of a directory where a build will be
     */
-    QString getBuildMD5(Build build);
+    QString getBuildMD5(Build* build);
 
     /**
     * \fn Machine *getMachineByIp(QString machineIp);

@@ -100,10 +100,28 @@ Build Management::getBuildByID(int id){
 }
 
 QString Management::getBuildMD5(Build build){
-    //kry die MD5 van die hele directory van build
-    return "MD5Hash";
+    QCryptographicHash md5(QCryptographicHash::Md5);
+
+    QString dir = build->getBuildDirectory();
+
+    myDirIterator dirIt(dir,1);
+    dirIt.getFileInfo();
+    QVector<QString> paths = dirIt.retrieveFilePaths();
+
+    for (int i=0;i<paths.size();i++) {
+        QFile file(paths.at(i));
+        qDebug()<< "PATH: " + paths.at(i);
+        file.open(QFile::ReadOnly);
+        md5.addData(file.readAll());
+        file.close();
+    }
+    qDebug()<< md5.result().toHex();
+    QString hash(md5.result().toHex().constData());
+    return hash;
 }
 
-BuildMD5 *Management::getBuildMD5Class(Build build){
-    //create BuildMD5 class en generate md5s in die class van al die files
+BuildMD5* Management::getBuildMD5Class(Build build){
+    BuildMD5 md5class = new BuildMD5();
+    md5class.generateAllMD5(build);
+    return md5class;
 }
