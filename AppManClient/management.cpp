@@ -110,12 +110,12 @@ QString Management::getBuildMD5(Build build){
 
     for (int i=0;i<paths.size();i++) {
         QFile file(paths.at(i));
-        qDebug()<< "PATH: " + paths.at(i);
+        //qDebug()<< "PATH: " + paths.at(i);
         file.open(QFile::ReadOnly);
         md5.addData(file.readAll());
         file.close();
     }
-    qDebug()<< md5.result().toHex();
+    //qDebug()<< md5.result().toHex();
     QString hash(md5.result().toHex().constData());
     return hash;
 }

@@ -98,8 +98,8 @@ private:
 
     /**
      * \fn void SizeCheckBuild();
-     * @brief This function will find and return the MD5 value for a specefic build
-     ..............>>>>DOCUKMeTNATIONSDS:S:AS:DS:ADGKDGKNGJRONO
+     * @brief This function will find and return the MD5 value for a specific build
+     ..............>>>>DOCUKMeTNATIONSDS:S:AS:DS:ADGKDGKNGJRONO   <--LOLWUT??
      */
     QString sizeCheckBuild(QString buildNo);
 private:

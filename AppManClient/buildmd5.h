@@ -48,7 +48,7 @@ private:
       **/
     QStringList* buildFiles;
     /**
-      * @var buildFiles The filepath for each of the files
+      * @var buildFilesMD5 The MD5 Checksum for each of the files linked to buildFiles
       **/
     QStringList* buildFilesMD5;
 
