@@ -102,7 +102,7 @@ Build Management::getBuildByID(int id){
 QString Management::getBuildMD5(Build build){
     QCryptographicHash md5(QCryptographicHash::Md5);
 
-    QString dir = build->getBuildDirectory();
+    QString dir = build.getBuildDirectory();
 
     myDirIterator dirIt(dir,1);
     dirIt.getFileInfo();
@@ -121,7 +121,7 @@ QString Management::getBuildMD5(Build build){
 }
 
 BuildMD5* Management::getBuildMD5Class(Build build){
-    BuildMD5 md5class = new BuildMD5();
-    md5class.generateAllMD5(build);
+    BuildMD5* md5class = new BuildMD5();
+    md5class->generateAllMD5(build);
     return md5class;
 }

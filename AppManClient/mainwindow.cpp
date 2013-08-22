@@ -10,8 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //connect(ui->pushButton, SIGNAL(clicked()),this, SLOT(connectClick()));
     management = new Management();
     management->addMyBuilds();
-    ui->label_BuildCount->setText(QString::number(management->getBuildCount()));
-
+    ui->label_BuildCount->setText(QString::number(management->getBuildCount()));    
 
     /*
      *Create the tray(BEGIN)
