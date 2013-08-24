@@ -19,11 +19,11 @@ void sysInfo::memPerc(){
 #else
     //reads the data from /proc/meminfo and parses if for relevant data
     QFile inputFile("/proc/meminfo");
-	QString memtotal, freemem;
+        QString memtotal, freemem;
     if (inputFile.open(QIODevice::ReadOnly | QIODevice::Text))
         {
-		QTextStream in(&inputFile);
-		QString line;
+                QTextStream in(&inputFile);
+                QString line;
            while ( (line = in.readLine()) != NULL )
            {
               if(line.contains("MemTotal")){
@@ -73,41 +73,41 @@ void sysInfo::getDiskDetails(){
     }
 #else
     //uses popen to make a file pointer to a system call "df -B K" which displays all filesystems with capacity and load in KB
-	FILE *pop = popen("df -B K","r");
-	size_t bufsize = 1024 * sizeof(char);
-	char* buffer = (char*)malloc( bufsize );
-	QString prev = "";
-	QStringList listy;
-	int count =0;
-	while(getline(&buffer,&bufsize ,pop)){
-		QString line = buffer;
+        FILE *pop = popen("df -B K","r");
+        size_t bufsize = 1024 * sizeof(char);
+        char* buffer = (char*)malloc( bufsize );
+        QString prev = "";
+        QStringList listy;
+        int count =0;
+        while(getline(&buffer,&bufsize ,pop)){
+                QString line = buffer;
         //prev to avoid infinite loops
-		if(line.compare(prev)==0){
-			break;
-		}
-		else{
+                if(line.compare(prev)==0){
+                        break;
+                }
+                else{
             //prev and line cant be the same above to avoid infinite loops
-			prev = line;
+                        prev = line;
             //string mainpulation
-			line.replace("\n","#");
-			line.replace(" ","#");
-			count++;
+                        line.replace("\n","#");
+                        line.replace(" ","#");
+                        count++;
             //skip the header
-			if(count != 1){
-				listy<<line;
-			}
-		}
-	}
-	for(int i = 0; i < listy.length(); i++){
+                        if(count != 1){
+                                listy<<line;
+                        }
+                }
+        }
+        for(int i = 0; i < listy.length(); i++){
         //strip #'s from listy[i]
-		listy[i] = recrun(listy[i]);
+                listy[i] = recrun(listy[i]);
         //tokenise listy[i]
-		QStringList listyElements = listy[i].split("#");
+                QStringList listyElements = listy[i].split("#");
         //add listy contents to relevant containers
-		filesystems<<listyElements[0];
-		capacitys<<listyElements[1];
-		useds<<listyElements[2];
-	}
+                filesystems<<listyElements[0];
+                capacitys<<listyElements[1];
+                useds<<listyElements[2];
+        }
 
 #endif
     for(int i = 0; i < filesystems.length(); i++){
@@ -249,11 +249,11 @@ void sysInfo::osVersion(){
     inputFile.close();
 #else
     //reads the data from /proc/version and parses if for relevant data, cutting away excess info
-	QFile inputFile("/proc/version");
+        QFile inputFile("/proc/version");
     if (inputFile.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         QTextStream in(&inputFile);
-		QString read;
+                QString read;
         while ( ( read= in.readLine()) != NULL){
             int posit;
             while((posit = read.indexOf("(")) != -1){
@@ -295,32 +295,32 @@ void sysInfo::cpuUsage(){
     inputFile.close();
 #else
     //reads the data from /proc/stat and parses if for relevant data
-	QFile inputFile("/proc/stat");
+        QFile inputFile("/proc/stat");
     if (inputFile.open(QIODevice::ReadOnly | QIODevice::Text))
         {
            QTextStream in(&inputFile);
-		QString read;
+                QString read;
            while ( ( read= in.readLine()) != NULL)
            {
-		   if(read.contains("cpu")){
-			   break;
-		   }
+                   if(read.contains("cpu")){
+                           break;
+                   }
            }
-	   read.replace(" ","#");
-	   read = recrun(read);
-	   QStringList cpuToke = read.split("#");
-	     int  user,nice,system,idle,iowait,irq,softirq;
-	   user = cpuToke[1].toInt();
-	   nice = cpuToke[2].toInt();
-	   system = cpuToke[3].toInt();
-	   idle = cpuToke[4].toInt();
-	   iowait = cpuToke[5].toInt();
-	   irq = cpuToke[6].toInt();
-	   softirq = cpuToke[7].toInt();
-	   float total = user + nice + system + idle + iowait + irq + softirq;
-	   float used = total - idle;
-	   float perc = used/total*100;
-	   cpuPerc = QString::number(perc);
+           read.replace(" ","#");
+           read = recrun(read);
+           QStringList cpuToke = read.split("#");
+             int  user,nice,system,idle,iowait,irq,softirq;
+           user = cpuToke[1].toInt();
+           nice = cpuToke[2].toInt();
+           system = cpuToke[3].toInt();
+           idle = cpuToke[4].toInt();
+           iowait = cpuToke[5].toInt();
+           irq = cpuToke[6].toInt();
+           softirq = cpuToke[7].toInt();
+           float total = user + nice + system + idle + iowait + irq + softirq;
+           float used = total - idle;
+           float perc = used/total*100;
+           cpuPerc = QString::number(perc);
         }
     else{
         qDebug()<<"error reading file";
@@ -336,23 +336,23 @@ void sysInfo::cpuStats(){
     GetSystemInfo(&siSysInfo);
     procNum = QString::number(siSysInfo.dwNumberOfProcessors);
 #else
-	int cpuCount = 0;
+        int cpuCount = 0;
     //reads the data from/proc/cpuinfo and counts occurences for a cpu count
-	QFile inputFile("/proc/cpuinfo");
+        QFile inputFile("/proc/cpuinfo");
     if (inputFile.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         QTextStream in(&inputFile);
-		QString read;
-		bool OK = true;
+                QString read;
+                bool OK = true;
         while ( OK)
         {
             read = in.readLine();
             if(read.contains("processor")){
                 cpuCount++;
             }
-		    if(in.atEnd()){
+                    if(in.atEnd()){
                 OK=false;
-		    }
+                    }
         }
         procNum = QString::number(cpuCount);
     }
@@ -410,40 +410,40 @@ void sysInfo::listProcesses(){
     }
 #else
     //uses popen to make a file pointer to a system call "ps -e" which displays all processes
-	FILE *pop = popen("ps -e","r");
-	size_t bufsize = 1024 * sizeof(char);
-	char* buffer = (char*)malloc( bufsize );
-	QString prev = "";
-	QStringList listy;
-	int count =0;
-	while(getline(&buffer,&bufsize ,pop)){
-		QString line = buffer;
+        FILE *pop = popen("ps -e","r");
+        size_t bufsize = 1024 * sizeof(char);
+        char* buffer = (char*)malloc( bufsize );
+        QString prev = "";
+        QStringList listy;
+        int count =0;
+        while(getline(&buffer,&bufsize ,pop)){
+                QString line = buffer;
         //to avoid infinte loop
-		if(line.compare(prev)==0){
-			break;
-		}
-		else{
-			count++;
+                if(line.compare(prev)==0){
+                        break;
+                }
+                else{
+                        count++;
             //to avoid infinite loops prev and line must never be the same above
-			prev = line;
+                        prev = line;
             //string manipulation
-			line.replace("\n","#");
-			line.replace(" ","#");
-			line = recrun(line);
-			listy = line.split("#");
+                        line.replace("\n","#");
+                        line.replace(" ","#");
+                        line = recrun(line);
+                        listy = line.split("#");
             //the first line is a header
-			if((count !=1)&&(!listy[4].isEmpty())){
+                        if((count !=1)&&(!listy[4].isEmpty())){
                 procIDs<<listy[1];
                 procNames<<listy[4];
-			}
-		}
-	}
+                        }
+                }
+        }
 #endif
     procCount = QString::number(procIDs.length());
-	for(int i = 0; i < procIDs.length(); i++){
-		qDebug()<<procIDs[i]<<"\t"<<procNames[i];
-	}
-	qDebug()<<"There are: "<<procCount<<" processes running";
+        for(int i = 0; i < procIDs.length(); i++){
+                qDebug()<<procIDs[i]<<"\t"<<procNames[i];
+        }
+        qDebug()<<"There are: "<<procCount<<" processes running";
 }
 
 void sysInfo::popHDDList(QString driveLabel){

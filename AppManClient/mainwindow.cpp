@@ -10,7 +10,9 @@ MainWindow::MainWindow(QWidget *parent) :
     //connect(ui->pushButton, SIGNAL(clicked()),this, SLOT(connectClick()));
     management = new Management();
     management->addMyBuilds();
-    ui->label_BuildCount->setText(QString::number(management->getBuildCount()));    
+    ui->label_BuildCount->setText(QString::number(management->getBuildCount()));
+
+    connect(management, SIGNAL(signalConnected(bool)), this, SLOT(signalConnected(bool)));
 
     /*
      *Create the tray(BEGIN)
@@ -73,23 +75,12 @@ void MainWindow::connectClick()
         msb->show();
         return;
     }
-    ui->groupBoxServerDetails->setTitle("Connected to ");
-    ui->lineEditIPAddress->setReadOnly(true);
-    ui->lineEditPort->setReadOnly(true);
-    ui->pushButtonConnect->setVisible(false);
-    ui->pushButtonDisconnect->setVisible(true);
+
     management->connectToServer(ui->lineEditIPAddress->text(), port);
-    ui->label_BuildCount->setText(QString::number(management->getBuildCount()));
 }
 
 void MainWindow::disconnectClick(){
-    ui->groupBoxServerDetails->setTitle("Server Details");
-    ui->lineEditIPAddress->setReadOnly(false);
-    ui->lineEditPort->setReadOnly(false);
-    ui->pushButtonConnect->setVisible(true);
-    ui->pushButtonDisconnect->setVisible(false);
     management->disconnectFromServer();
-    ui->label_BuildCount->setText(QString::number(management->getBuildCount()));
 }
 
 void MainWindow::on_pushButtonViewBuilds_clicked()
@@ -129,4 +120,34 @@ void MainWindow::on_pushButton_2_clicked()
     s.getDiskDetails();
     s.cpuStats();
     s.listProcesses();
+}
+
+
+void MainWindow::signalConnected(bool connectionValue){
+    if(connectionValue == true){
+        //means connected Thus display the connected values
+        showConnectedWidgets();
+    }
+    else{
+        //means connected Thus display the connected values
+        showDisconnectedWidgets();
+    }
+}
+
+void MainWindow::showConnectedWidgets(){
+    ui->groupBoxServerDetails->setTitle("Connected to ");
+    ui->lineEditIPAddress->setReadOnly(true);
+    ui->lineEditPort->setReadOnly(true);
+    ui->pushButtonConnect->setVisible(false);
+    ui->pushButtonDisconnect->setVisible(true);
+    ui->label_BuildCount->setText(QString::number(management->getBuildCount()));
+}
+
+void MainWindow::showDisconnectedWidgets(){
+    ui->groupBoxServerDetails->setTitle("Server Details");
+    ui->lineEditIPAddress->setReadOnly(false);
+    ui->lineEditPort->setReadOnly(false);
+    ui->pushButtonConnect->setVisible(true);
+    ui->pushButtonDisconnect->setVisible(false);
+    ui->label_BuildCount->setText(QString::number(management->getBuildCount()));
 }

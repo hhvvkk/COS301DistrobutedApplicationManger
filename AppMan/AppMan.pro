@@ -29,7 +29,14 @@ SOURCES += main.cpp\
     xmlReader.cpp \
     myDirIterator.cpp \
     copybuildover.cpp \
-    copycompare.cpp
+    copycompare.cpp \
+    protocolhandler.cpp \
+    protoslavecurrentbuilds.cpp \
+    protocol.cpp \
+    protosizecheckbuilds.cpp \
+    protocopyover.cpp \
+    protoconnect.cpp \
+    protogetsysinfo.cpp
 
 HEADERS  += mainform.h \
     aboutversion.h \
@@ -46,7 +53,14 @@ HEADERS  += mainform.h \
     myDirIterator.h \
     serverthread.h \
     copybuildover.h \
-    copycompare.h
+    copycompare.h \
+    protocolhandler.h \
+    protoslavecurrentbuilds.h \
+    protocol.h \
+    protosizecheckbuilds.h \
+    protocopyover.h \
+    protoconnect.h \
+    protogetsysinfo.h
 
 FORMS    += mainform.ui \
     aboutversion.ui \

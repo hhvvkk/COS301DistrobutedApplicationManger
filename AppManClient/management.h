@@ -24,6 +24,10 @@
 class Management : public QObject
 {
     Q_OBJECT
+
+signals:
+    void signalConnected(bool connectionValue);
+
 public:
     /**
      * @brief Management The constructor of the management class
@@ -34,6 +38,8 @@ public:
       * The destructor
       */
     ~Management();
+
+    void setConnected(bool connectionValue);
 
     /**
      * @brief connectToServer function called to connect to server through chain of command from Management to SocketClient

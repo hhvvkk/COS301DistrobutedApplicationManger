@@ -13,6 +13,7 @@
 #include <QDebug>
 #include "xmlWriter.h"
 
+#include "protocolhandler.h"
 
 //forward declaration of the class so it can be used
 class Management;
@@ -62,21 +63,9 @@ signals:
 
 public slots:
     /**
-     * @brief connected A function called when the socket connects to a server
-     */
-    void connected();
-
-    /**
      * @brief disconnected a function called when the socket disconnects from a server
      */
     void disconnected();
-
-    //want to know when there is bytest availaible and when tor read
-    /**
-     * @brief bytesWritten Function called to see how much bytes are written to the server
-     * @param bytes The amount of bytes that have been written
-     */
-    void bytesWritten(qint64 bytes);
 
     //when there is info to read
     /**
@@ -85,35 +74,9 @@ public slots:
     void readyRead();
 
 
-    /**
-     * @brief A function called in recheck builds when master invoked it, part of phase 1
-     */
+private:
     void recheckBuildsPhase1();
 
-    /**
-     * @brief A function called in recheck builds when master invoked it, part of phase 2
-     */
-    void recheckBuildsPhase2();
-
-private:
-    /**
-     * @brief A function that will be invoked when 'CopyBuildOver' has been found in ReadyCheck
-     * @param data The data that will be parsed
-     */
-    void copyBuildOver(QString data);
-
-
-    /**
-     * @brief A function that will be invoked when 'MD5Inspection' has been found in ReadyCheck
-     * @param data The data that will be parsed
-     */
-    void sizeCheckBuild(QString data);
-
-signals:
-    /**
-     * @brief connectionEstablished the established signal
-     */
-    void connectionEstablished();
 
 private:
     /**
@@ -126,14 +89,9 @@ private:
      */
     Management *management;
 
-    /**
-     * @brief A management link that will allow backwards communication
-     */
-    int buildIterator;
-    /**
-     * @brief Will be used to loop through the builds
-     */
-    Build * allBuilds;
+
+
+    ProtocolHandler *protocolHandler;
     
 };
 

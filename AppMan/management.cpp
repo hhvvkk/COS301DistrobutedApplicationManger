@@ -29,8 +29,12 @@ Management::~Management(){
     delete lock;
 }
 
-void Management::addMachine(Machine* machine){
+void Management::addMachine(QString address, ProtocolHandler *handler){
     lock->lock();//lock the critical sections
+
+    Machine *machine = new Slave(1, address);
+    machine->setProtocolHandler(handler);
+    handler->setMachine(machine);
 
     allMachines.push_back(machine);
     machineCount++;
@@ -43,7 +47,9 @@ void Management::addMachine(Machine* machine){
 void Management::removeMachine(Machine *m){
     lock->lock();
 
-    qDebug()<<"attempting removal of machine";
+    if(m == 0)
+        return;
+
     int index = -1;
     if(allMachines.size() == 0){
         qDebug()<<"size = 0";
@@ -60,8 +66,9 @@ void Management::removeMachine(Machine *m){
     allMachines.erase(allMachines.begin()+index,allMachines.begin()+(index+1));
     machineCount--;
 
-    emit slaveDisconnected(m,index);
-
+    //delete the machine
+    m->~Machine();
+    emit slaveDisconnected(index);
     lock->unlock();
 }
 
@@ -174,7 +181,6 @@ Build Management::getBuildByName(QString name){
 }
 
 void Management::addBuildToSlave(QString slaveIp, QString buildNo){
-    qDebug()<<"SLAVE GOT NEW BUILD";
     lock->lock();
 
     Machine *machine = 0;
@@ -255,4 +261,25 @@ Machine *Management::getMachineByIp(QString machineIp){
 
     lock->unlock();
     return machine;
+}
+
+void Management::slaveBuildSize(QString buildNo, QString buildMD5Value, QString slaveIp){
+    Build theBuild = getBuildByID(buildNo.toInt());
+
+    if(!theBuild.getBuildDescription().compare("NULL")
+        && !theBuild.getBuildDirectory().compare("NULL")
+        && !theBuild.getBuildName().compare("NULL")
+        && theBuild.getBuildID() == 0){
+        //this point the build does not exist
+        qDebug()<<"Build does not exist"<<buildNo;
+        return;
+    }
+    else{
+        qDebug()<<"EXISTS::"<<buildNo;
+    }
+
+    if(!buildMD5Value.compare(getBuildMD5(&theBuild)))
+        emit slaveBuildSizeSame(theBuild.getBuildName(), slaveIp, true);
+    else
+        emit slaveBuildSizeSame(theBuild.getBuildName(), slaveIp, false);
 }

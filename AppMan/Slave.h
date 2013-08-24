@@ -10,6 +10,8 @@
 
 #include "Build.h"
 #include "Machine.h"
+#include "protocolhandler.h"
+
 /**
 * @class Slave
 * @brief This is the structure for the Slave
@@ -29,10 +31,10 @@ private:
 
 
         /**
-        * @var serverThread
-        * @brief The serverthread on which this machine runs
+        * @var protocolHandler
+        * @brief The protocolHandler to send data via the protocols
         */
-        ServerThread *serverThread;
+        ProtocolHandler *protocolHandler;
 public:
         /**
         * \fn Slave(int id, QString ip);
@@ -82,12 +84,8 @@ public:
         */
         void addBuild(Build buildToAdd);
 
-        /**
-        * \fn void setServerThread(ServerThread *sVThread);
-        * @brief A function that will be used to set a serverthread that will be used to access the thread
-        * @param sVThread the thread of the client connected
-        */
-        void setServerThread(ServerThread *sVThread);
+
+        void setProtocolHandler(ProtocolHandler *handler);
 
         /**
         * \fn copyBuildOver(Build b);

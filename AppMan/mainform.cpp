@@ -14,8 +14,9 @@ MainForm::MainForm(QWidget *parent) :
     management->setServer(server);
     ///connect slots for backward signalling
     connect(management, SIGNAL(newSlaveConnected(Machine*, int)),this,SLOT(newSlaveConnected(Machine*, int)));
-    connect(management, SIGNAL(slaveDisconnected(Machine*, int)),this,SLOT(slaveDisconnected(Machine*, int)));
+    connect(management, SIGNAL(slaveDisconnected(int)),this,SLOT(slaveDisconnected(int)));
     connect(management, SIGNAL(slaveGotBuild(Machine*,QString, bool)), this, SLOT(slaveGotBuild(Machine*,QString, bool)));
+    connect(management, SIGNAL(slaveBuildSizeSame(QString,QString,bool)), this, SLOT(slaveBuildSizeSame(QString,QString,bool)));
 
     masterBuilds = new MasterBuilds();
     masterBuilds->setHeaderHidden(true);
@@ -309,11 +310,11 @@ void MainForm::showOrHideTrayClick(){
 void MainForm::newSlaveConnected(Machine *m, int index){
     //now go find slave and show it if needed
     QTreeWidgetItem *slaveItem = new QTreeWidgetItem();
-    slaveItem->setText(0, management->getMachineAt(index)->getMachineIP());
+    slaveItem->setText(0, m->getMachineIP());
     ui->treeWidgetSlaves->addTopLevelItem(slaveItem);
 }
 
-void MainForm::slaveDisconnected(Machine *m, int index){
+void MainForm::slaveDisconnected(int index){
     //destroy the tree widget at that index
     ui->treeWidgetSlaves->topLevelItem(index)->~QTreeWidgetItem();
 }
@@ -511,7 +512,7 @@ void MainForm::slaveGotBuild(Machine*m, QString buildId, bool buildExist){
 QTreeWidgetItem* MainForm::getSlaveTreeItemByIp(QString ip){
     ////NB GAAAN DALK `n LOCK HIERIN SIT a.g.v. concurrency
     QTreeWidgetItem * machineTreeItem = 0;
-     QTreeWidgetItem *safetyItem;//so that if that item is retrieved, but does not exist(concurrency)
+    QTreeWidgetItem *safetyItem;//so that if that item is retrieved, but does not exist(concurrency)
     for(int i = 0; i < ui->treeWidgetSlaves->topLevelItemCount(); i++){
         safetyItem = ui->treeWidgetSlaves->topLevelItem(i);
         if(safetyItem != 0)
@@ -522,3 +523,24 @@ QTreeWidgetItem* MainForm::getSlaveTreeItemByIp(QString ip){
     return machineTreeItem;
 }
 
+void MainForm::slaveBuildSizeSame(QString buildName, QString slaveIp, bool isTheSame){
+    QTreeWidgetItem * slaveTreeWidgetItem = getSlaveTreeItemByIp(slaveIp);
+    QTreeWidgetItem * buildItem = 0;
+
+    for(int i = 0; i < slaveTreeWidgetItem->childCount(); i++){
+        if(!slaveTreeWidgetItem->child(i)->text(0).compare(buildName)){
+            buildItem = slaveTreeWidgetItem->child(i);
+            break;
+        }
+    }
+
+    if(buildItem == 0)
+        return;
+
+    if(isTheSame){
+        buildItem->setBackgroundColor(0, Qt::green);
+    }
+    else{
+        buildItem->setBackgroundColor(0, Qt::yellow);
+    }
+}

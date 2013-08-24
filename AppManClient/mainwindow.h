@@ -59,6 +59,7 @@ public:
 
 
 private slots:
+    void signalConnected(bool connectionValue);
 
     /**
      * \fn void quitTheApplication();
@@ -105,6 +106,11 @@ private slots:
      * @brief on_pushButton_@_clicked the click function of the button
      */
     void on_pushButton_2_clicked();
+
+private:
+    void showConnectedWidgets();
+
+    void showDisconnectedWidgets();
 
 private:
     /**

@@ -8,9 +8,7 @@
 #include <QString>
 
 #include "Build.h"
-#include "serverthread.h"
-
-class ServerThread;
+#include "protocolhandler.h"
 
 /**
 * @class Machine
@@ -41,7 +39,7 @@ public:
         * \fn ~Machine();
         * @brief The destructor
         */
-        ~Machine();
+        virtual ~Machine();
 
         /**
         * \fn Machine();
@@ -111,7 +109,7 @@ public:
         * @brief A pure virtual function that will be used to set a serverthread that will be used to access the thread
         * @param sVThread the thread of the client connected
         */
-        virtual void setServerThread(ServerThread *sVThread) = 0;
+        virtual void setProtocolHandler(ProtocolHandler *handler) = 0;
 
         /**
         * \fn void copyBuildOver(Build build) = 0;

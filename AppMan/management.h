@@ -18,6 +18,7 @@
 #include "Machine.h"
 #include "server.h"
 #include "myDirIterator.h"
+#include "protocolhandler.h"
 
 //forward declaration of server so that it can be used
 class Server;
@@ -39,10 +40,10 @@ signals:
     void newSlaveConnected(Machine *m, int index);
 
     /**
-     * \fn void slaveDisconnected(Machine *m, int index)
+     * \fn void slaveDisconnected(int index)
      * @brief slaveDisconnected A signal emitted each time a slave disconnects
      */
-    void slaveDisconnected(Machine *m, int index);
+    void slaveDisconnected(int index);
 
     /**
      * \fn void slaveGotBuild(Machine *machine, QString buildNo, bool buildExists);
@@ -52,6 +53,8 @@ signals:
      * @param buildExists A boolean value indicating whether the build on slave exist on master
      */
     void slaveGotBuild(Machine *machine, QString buildNo, bool buildExists);
+
+    void slaveBuildSizeSame(QString buildName, QString slaveIp, bool isTheSame);
 public:
     /**
     * \fn Management();
@@ -109,11 +112,12 @@ public:
     void addBuild(Build buildToAdd);
 
     /**
-     * \fn void addMachine(Machine* machine);
+     * \fn void addMachine(QString address, ProtocolHandler handler);
      * @brief addMachine A function adding a machine to the allMachines
-     * @param machine The machine to add
+     * @param address The machine Ip address to add
+     * @param handler the Protocol handler to allow communication to the machine
      */
-    void addMachine(Machine* machine);
+    void addMachine(QString address, ProtocolHandler *handler);
 
     /**
      * \fn void removeMachine(Machine *m);
@@ -211,6 +215,8 @@ public:
     * @return Returns the pointer to a machine with an ip or returns 0 if that machine does not exist anymore
     */
     Machine *getMachineByIp(QString machineIp);
+
+    void slaveBuildSize(QString buildNo, QString buildMD5Value, QString slaveIp);
 private:
     void clearMachines();
 

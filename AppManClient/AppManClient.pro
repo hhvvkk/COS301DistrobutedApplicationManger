@@ -25,7 +25,13 @@ SOURCES += main.cpp\
     sysInfo.cpp \
     addbuildfortest.cpp \
     buildmd5.cpp \
-    myDirIterator.cpp
+    myDirIterator.cpp \
+    protocolhandler.cpp \
+    protocol.cpp \
+    protosizecheckbuilds.cpp \
+    protoslavecurrentbuilds.cpp \
+    protoconnect.cpp \
+    protocopyover.cpp
 
 HEADERS  += mainwindow.h \
     socketclient.h \
@@ -38,7 +44,13 @@ HEADERS  += mainwindow.h \
     sysInfo.h \
     addbuildfortest.h \
     buildmd5.h \
-    myDirIterator.h
+    myDirIterator.h \
+    protocolhandler.h \
+    protocol.h \
+    protosizecheckbuilds.h \
+    protoslavecurrentbuilds.h \
+    protoconnect.h \
+    protocopyover.h
 
 FORMS    += mainwindow.ui \
     viewbuilds.ui \

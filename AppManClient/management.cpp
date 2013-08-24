@@ -125,3 +125,9 @@ BuildMD5* Management::getBuildMD5Class(Build build){
     md5class->generateAllMD5(build);
     return md5class;
 }
+
+void Management::setConnected(bool connectionValue){
+    if(connectionValue == false)
+        this->disconnectFromServer();
+    emit signalConnected(connectionValue);
+}

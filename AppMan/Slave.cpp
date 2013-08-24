@@ -12,8 +12,8 @@ Slave::Slave(int id, QString ip){
 }
 
 Slave::~Slave(){
-	if(buildCount != 0){
-		delete[] slaveBuilds;
+    if(buildCount != 0){
+        delete[] slaveBuilds;
     }
 }
 
@@ -103,13 +103,13 @@ void Slave:: deleteBuild(int id){
 }
 
 void Slave::copyBuildOver(Build build){
-    serverThread->copyBuildOver(build.getBuildID(), build.getBuildName());
+    protocolHandler->copyBuildOver(build.getBuildID(), build.getBuildName());
 }
 
 
 
-void Slave::setServerThread(ServerThread *sVThread){
-    serverThread = sVThread;
+void Slave::setProtocolHandler(ProtocolHandler *handler){
+    protocolHandler = handler;
 }
 
 

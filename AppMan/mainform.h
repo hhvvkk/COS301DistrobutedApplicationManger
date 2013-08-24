@@ -131,7 +131,7 @@ private slots:
       * \fn void newSlaveConnected(Machine *m, int index);
       * @brief When a slave disconnects this function is called
       */
-    void slaveDisconnected(Machine *m, int index);
+    void slaveDisconnected(int index);
 
     /**
      * @fn void on_actionStop_Server_triggered();
@@ -202,6 +202,8 @@ private slots:
      */
     void slaveGotBuild(Machine*m, QString buildId, bool buildExist);
 
+
+    void slaveBuildSizeSame(QString name, QString slaveIp, bool isTheSame);
 private:
     /**
      * \fn dropBuildToSlave(QString from, QString to);
