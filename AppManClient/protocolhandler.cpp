@@ -9,6 +9,7 @@ ProtocolHandler::ProtocolHandler(Management *man,QObject *parent) :
     slaveCurrentBuilds = new ProtoSlaveCurrentBuilds(this);
     connect = new ProtoConnect(this);
     copyOver = new ProtoCopyOver(this);
+    getSysInfo = new ProtoGetSysInfo(this);
 }
 
 
@@ -63,6 +64,12 @@ void ProtocolHandler::requestHandler(QString data, QTcpSocket *masterSocket){
 
     if(data.contains("CopyBuildOver:#"))
         copyOver->handle(data, management, masterSocket);
+
+    if(data.contains("SizeCheckABuild:#"))
+        sizeCheckBuilds->handle(data, management, masterSocket);
+
+    if(data.compare("GetAllSysInfo"))
+        getSysInfo->handle(data, management, masterSocket);
 }
 
 void ProtocolHandler::disconnectedFromMaster(){

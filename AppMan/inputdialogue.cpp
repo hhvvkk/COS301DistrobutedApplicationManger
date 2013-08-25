@@ -2,10 +2,10 @@
 #include "ui_inputdialogue.h"
 
 InputDialogue::InputDialogue(QString setWhat, Management *m, QWidget *parent) :
-    what(setWhat),
-    management(m),
     QWidget(parent),
-    ui(new Ui::InputDialogue)
+    ui(new Ui::InputDialogue),
+    management(m),
+    what(setWhat)
 {
     ui->setupUi(this);
     ui->labelSetWhat->setText("Set "+setWhat);

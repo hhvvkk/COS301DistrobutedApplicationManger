@@ -21,7 +21,6 @@ void ProtoConnect::disconnectedFromMaster(Management *management){
 
 void ProtoConnect::initiateSlaveCurrentBuilds(QTcpSocket *masterSocket){
     //to get an acknowledgement that the builds can be rechecked
-    qDebug()<<"INITIATESLAVECURRENTBUILD";
     masterSocket->write("||RecheckBuilds||");
     masterSocket->flush();
 }

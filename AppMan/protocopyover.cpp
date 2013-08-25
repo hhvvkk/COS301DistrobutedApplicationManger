@@ -22,6 +22,9 @@ void ProtoCopyOver::GotABuild(QString data, Management *management, QTcpSocket *
     QString buildNo = data.right(data.length() - (leftSide.length()+1));
     QString slaveIp = adr.toString();
     management->addBuildToSlave(slaveIp, buildNo);
+
+    //finally call size check on that build
+    sizeCheckCertainBuild(buildNo, slaveSocket);
 }
 
 
@@ -30,4 +33,10 @@ void ProtoCopyOver::copyBuildOver(int buildId, QString buildName, QTcpSocket *sl
     QString writeBuildMessage = "||CopyBuildOver:#"+ buildIdString +"#"+buildName+"||";
     slaveSocket->write(writeBuildMessage.toAscii().data());
     slaveSocket->flush();//write all that should be written
+}
+
+void ProtoCopyOver::sizeCheckCertainBuild(QString buildNo, QTcpSocket *slaveSocket){
+    QString sizeCheckMessage = "||SizeCheckABuild:#" + buildNo +"||";
+    slaveSocket->write(sizeCheckMessage.toAscii().data());
+    slaveSocket->flush();
 }

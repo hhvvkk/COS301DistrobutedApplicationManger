@@ -13,7 +13,7 @@ MainForm::MainForm(QWidget *parent) :
     Server *server = new Server(management);
     management->setServer(server);
     ///connect slots for backward signalling
-    connect(management, SIGNAL(newSlaveConnected(Machine*, int)),this,SLOT(newSlaveConnected(Machine*, int)));
+    connect(management, SIGNAL(newSlaveConnected(Machine*)),this,SLOT(newSlaveConnected(Machine*)));
     connect(management, SIGNAL(slaveDisconnected(int)),this,SLOT(slaveDisconnected(int)));
     connect(management, SIGNAL(slaveGotBuild(Machine*,QString, bool)), this, SLOT(slaveGotBuild(Machine*,QString, bool)));
     connect(management, SIGNAL(slaveBuildSizeSame(QString,QString,bool)), this, SLOT(slaveBuildSizeSame(QString,QString,bool)));
@@ -205,7 +205,7 @@ void MainForm::dropEvent ( QDropEvent *event ){
         //check to see if it is the right item that is dropped
         if(!buildIndex.contains("#<<MBIndex="))
             return;
-        dropBuildToSlave(buildIndex, "somethingForNow");
+        dropBuildToSlave(buildIndex);
         event->accept();
         return;
     }
@@ -215,7 +215,7 @@ void MainForm::dropEvent ( QDropEvent *event ){
 
 }
 
-void MainForm::dropBuildToSlave(QString fromBuild, QString toSlave){
+void MainForm::dropBuildToSlave(QString fromBuild){
     //remove this #<<MBIndex=
     fromBuild.remove(0,11);
 
@@ -246,9 +246,6 @@ void MainForm::dropBuildToSlave(QString fromBuild, QString toSlave){
     CopyBuildOver *copyBuild = new CopyBuildOver(management, nameListSuggest, ipListSuggest,buildname);
     connect(copyBuild, SIGNAL(copyBuildOver(QString,QString)), this, SLOT(initiateCopyBuildOver(QString,QString)));
     copyBuild->show();
-
-
-
 }
 
 void MainForm::dropNewBuildAdd(QString newBuildDirectory){
@@ -307,7 +304,7 @@ void MainForm::showOrHideTrayClick(){
     }
 }
 
-void MainForm::newSlaveConnected(Machine *m, int index){
+void MainForm::newSlaveConnected(Machine *m){
     //now go find slave and show it if needed
     QTreeWidgetItem *slaveItem = new QTreeWidgetItem();
     slaveItem->setText(0, m->getMachineIP());

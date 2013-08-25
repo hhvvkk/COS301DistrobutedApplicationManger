@@ -32,7 +32,7 @@ void viewBuilds::showBuilds(){
     QTreeWidgetItem *boola;
     QTreeWidgetItem *boola1;
     QTreeWidgetItem *boola2;
-    QTreeWidgetItem *boola3;
+    //QTreeWidgetItem *boola3;
     xReader.parseXML();
     QString msg;
     if(xReader.getBuildDescription().size() == 1){

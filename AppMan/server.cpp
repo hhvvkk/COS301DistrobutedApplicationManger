@@ -29,7 +29,6 @@ void Server::setPort(int newPort){
 }
 
 void Server::incomingConnection(int socketID){
-    qDebug() << socketID << " Connecting...";
 
     ServerThread *serverThread = new ServerThread(socketID, management, this);
 

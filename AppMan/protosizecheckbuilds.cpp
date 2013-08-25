@@ -7,13 +7,14 @@ ProtoSizeCheckBuilds::ProtoSizeCheckBuilds(QObject *parent):
 }
 
 void ProtoSizeCheckBuilds::handle(QString data, Management *management, QTcpSocket *slaveSocket){
-    if(data.contains("BuildMD5:#"))
+    if(data.contains("BuildMD5:#")){
         BuildMD5(data, management, slaveSocket);
+    }
 }
 
 void ProtoSizeCheckBuilds::BuildMD5(QString data, Management *management, QTcpSocket *slaveSocket){
     //this means it is build information that is following.
-    //E.g Rechecker:#1#NameBlah
+    //E.g BuildMD5:#1#NameBlah
     QString mostLeft = "BuildMD5:#";
 
     QString rightSide = data.right((data.size()-mostLeft.length()));
@@ -30,3 +31,4 @@ void ProtoSizeCheckBuilds::BuildMD5(QString data, Management *management, QTcpSo
     management->slaveBuildSize(buildNo, buildMD5Value, slaveIp);
 
 }
+

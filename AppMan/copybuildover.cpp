@@ -2,9 +2,9 @@
 #include "ui_copybuildover.h"
 
 CopyBuildOver::CopyBuildOver(Management *man, QStringList suggestName, QStringList suggestIP, QString buildName, QWidget *parent) :
-    management(man),
     QWidget(parent),
-    ui(new Ui::CopyBuildOver)
+    ui(new Ui::CopyBuildOver),
+    management(man)
 {
     ui->setupUi(this);
 

@@ -119,7 +119,7 @@ private slots:
       * \fn void newSlaveConnected(Machine *m, int index);
       * @brief When a new slave connects this function is called
       */
-    void newSlaveConnected(Machine *m, int index);
+    void newSlaveConnected(Machine *m);
 
     /**
      * \fn void initiateAddBuild(Build b);
@@ -206,12 +206,11 @@ private slots:
     void slaveBuildSizeSame(QString name, QString slaveIp, bool isTheSame);
 private:
     /**
-     * \fn dropBuildToSlave(QString from, QString to);
+     * \fn dropBuildToSlave(QString from);
      * @brief dropBuildToSlave this function will call the copy function to copy a build over from master to slave
      * @param from The object name of the item that is dragged
-     * @param to The item on which it is dropped(the slave name)
      */
-    void dropBuildToSlave(QString from, QString to);
+    void dropBuildToSlave(QString from);
 
     /**
      * @brief dropNewBuildAdd This function will add new builds on the master computer and save it accordingly

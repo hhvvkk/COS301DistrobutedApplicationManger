@@ -23,10 +23,10 @@ Slave::Slave(){
 }
 
 Slave::Slave(Slave &toCopy){
-	this->machineID = toCopy.machineID;
+    this->machineID = toCopy.machineID;
     this->machineIP = toCopy.machineIP;
-	this->buildCount = toCopy.buildCount;
-	this->slaveBuilds = toCopy.slaveBuilds;
+    this->buildCount = toCopy.buildCount;
+    this->slaveBuilds = toCopy.slaveBuilds;
 }
 
 void Slave::addBuild(Build buildToAdd){

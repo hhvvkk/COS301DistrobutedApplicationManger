@@ -178,6 +178,8 @@ Build Management::getBuildByName(QString name){
     for(int i = 0; i < buildCount; i++)
         if(!allBuilds[i].getBuildName().compare(name))
             return allBuilds[i];
+
+    return Build(0, "NULL", "NULL", "NULL");
 }
 
 void Management::addBuildToSlave(QString slaveIp, QString buildNo){
@@ -271,11 +273,11 @@ void Management::slaveBuildSize(QString buildNo, QString buildMD5Value, QString 
         && !theBuild.getBuildName().compare("NULL")
         && theBuild.getBuildID() == 0){
         //this point the build does not exist
-        qDebug()<<"Build does not exist"<<buildNo;
+        //qDebug()<<"Build does not exist"<<buildNo;
         return;
     }
     else{
-        qDebug()<<"EXISTS::"<<buildNo;
+        //qDebug()<<"EXISTS::"<<buildNo;
     }
 
     if(!buildMD5Value.compare(getBuildMD5(&theBuild)))

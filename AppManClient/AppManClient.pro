@@ -31,7 +31,8 @@ SOURCES += main.cpp\
     protosizecheckbuilds.cpp \
     protoslavecurrentbuilds.cpp \
     protoconnect.cpp \
-    protocopyover.cpp
+    protocopyover.cpp \
+    protogetsysinfo.cpp
 
 HEADERS  += mainwindow.h \
     socketclient.h \
@@ -50,7 +51,8 @@ HEADERS  += mainwindow.h \
     protosizecheckbuilds.h \
     protoslavecurrentbuilds.h \
     protoconnect.h \
-    protocopyover.h
+    protocopyover.h \
+    protogetsysinfo.h
 
 FORMS    += mainwindow.ui \
     viewbuilds.ui \

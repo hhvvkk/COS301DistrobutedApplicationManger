@@ -24,6 +24,7 @@ private:
      */
     void GotABuild(QString data, Management *man, QTcpSocket *slaveSocket);
 
+    void sizeCheckCertainBuild(QString buildNo, QTcpSocket *slaveSocket);
 
 };
 

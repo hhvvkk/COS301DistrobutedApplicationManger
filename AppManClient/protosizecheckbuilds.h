@@ -13,6 +13,8 @@ public:
     void handle(QString data, Management *management, QTcpSocket *masterSocket);
 
     void sendCurrentBuildMD5(Management *management, QTcpSocket *masterSocket);
+
+    void sendABuildMD5(QString data, Management *management, QTcpSocket *masterSocket);
 private:
     int buildIterator;
 };

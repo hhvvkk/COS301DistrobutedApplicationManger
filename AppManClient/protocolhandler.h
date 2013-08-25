@@ -7,6 +7,7 @@
 #include "protoslavecurrentbuilds.h"
 #include "protoconnect.h"
 #include "protocopyover.h"
+#include "protogetsysinfo.h"
 
 class Management;
 
@@ -32,6 +33,7 @@ private:
     Protocol *copyOver;
     Protocol *sizeCheckBuilds;
     Protocol *slaveCurrentBuilds;
+    Protocol *getSysInfo;
 
 };
 
