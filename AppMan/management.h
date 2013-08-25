@@ -34,10 +34,10 @@ class Management : public QObject
    //signals to talk to the mainForm("in a sence")
 signals:
     /**
-     * \fn void newSlaveConnected(Machine *m, int index)
+     * \fn void newSlaveConnected(Machine *m)
      * @brief newSlaveConnected A signal emitted each time a new slave connects
      */
-    void newSlaveConnected(Machine *m, int index);
+    void newSlaveConnected(Machine *m);
 
     /**
      * \fn void slaveDisconnected(int index)

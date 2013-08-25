@@ -128,7 +128,7 @@ private slots:
     void initiateAddBuild(Build b);
 
     /**
-      * \fn void newSlaveConnected(Machine *m, int index);
+      * \fn void slaveDisconnected(int index);
       * @brief When a slave disconnects this function is called
       */
     void slaveDisconnected(int index);

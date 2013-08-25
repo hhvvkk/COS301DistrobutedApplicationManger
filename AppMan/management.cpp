@@ -39,7 +39,7 @@ void Management::addMachine(QString address, ProtocolHandler *handler){
     allMachines.push_back(machine);
     machineCount++;
     //emit the signal so it can be used by main form
-    emit newSlaveConnected(machine ,machineCount-1);
+    emit newSlaveConnected(machine);
 
     lock->unlock();//finally unlock for the critical section
 }
