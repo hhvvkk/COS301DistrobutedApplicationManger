@@ -27,12 +27,13 @@ The purpose of this document is to keep track of the ongoing development progres
 \section{Milestones reached}
 \begin{itemize}
 \item A cleaner GUI implementation
-\item Server running on the Master - AppMan
-\item Client connection to the master through network
-\item A reliable socket connection between the server and client applications, which will serve as a communication pathway
-\item Build add to the master computer
-\item View builds on the master
+\item A reliable socket connection(Tcp) between the server and client applications, which will serve as a communication pathway
+\item Build Copy from master to slave(Logically)
+\item View builds on the master including further information that can be displayed
+\item An expandible communication protocol which will be expanded to include new and further functionality
 \item Creating a database that can store information related to builds kept on the master and slaves
+\item MD5 sum generation to determine if there is a difference between the build on Master Machine and Slave Machine
+\item Colour coding to display if builds on master or slave machine have similar content(Green, Yellow, Red)
 \end{itemize}
 
 
@@ -46,9 +47,9 @@ Our next main goals for the project:
 \begin{itemize}
 \item Goal: The ability to synchronize two builds on master and slave computers(i.e. if a change have been made to a file)
 \end{itemize}
-\subsection{Slave Build Display}
+\subsection{Slave System Information}
 \begin{itemize}
-\item Goal: The ability to show the builds on slave machine
+\item Goal: The ability to transfer system information to master and back
 \end{itemize}
 
 
@@ -59,30 +60,42 @@ Our next main goals for the project:
 \includegraphics[scale=0.5]{AppManDiagram.jpg} 
 \end{center}
 
+\newpage
+\begin{center}
+Detailed Class Diagram(AppMan)
+\includegraphics[angle = 90, height=20cm]{ClassDiagramAppMan.jpg} 
+\end{center}
+
 \subsection{AppManClient}
 
 \begin{center}
 \includegraphics[scale=0.5]{AppManClientDiagram.jpg} 
 \end{center}
 
+\newpage
+\begin{center}
+Detailed Class Diagram(AppManClient)
+\includegraphics[angle = 90, height=20cm]{ClassDiagramAppManClient.jpg} 
+\end{center}
+
 \section{Processes}
 \subsection{ActivityDiagram}
 \begin{center}
-\includegraphics[scale=0.37]{ActivityDiagram.jpg} 
+\includegraphics[scale=0.38]{ActivityDiagram.jpg} 
 \end{center}
 \subsection{Add Build ActivityDiagram}
 \begin{center}
-\includegraphics[scale=0.37]{AddBuildActivity.png} 
+\includegraphics[scale=0.45]{AddBuildActivity.png} 
 \end{center}
 \subsection{Get System Info ActivityDiagram}
 \begin{center}
-\includegraphics[scale=0.37]{GetSystemInfo.png} 
+\includegraphics[scale=0.45]{GetSystemInfo.png} 
 \end{center}
 
 \section{Communication Protocol}
-Brief Description: The following diagrams are Data Flow Diagrams and Sequence Diagrams describing the protocol that is used to implement communication between the AppMan and AppManClient. The protocol is easy to understand and each of them serve a purpose in order to harbour proper communication. The order in which the communication takes place are indicated by the numbers near the flow.
+Brief Description: The following diagrams are Data Flow Diagrams describing the protocol that is used to implement communication between the AppMan and AppManClient. The protocol is easy to understand and each of them serve a purpose in order to harbour proper communication. The order in which the communication takes place are indicated by the numbers near the flow.
 \vspace{12pt}\newline
-Note: while not all the functions are shown in the sequence diagrams, they merely serve as a simple representation to find out how the communication takes place. Furthermore after the Connect protocol are followed, most of the classes are initialized along with all the required variables.
+%Note: while not all the functions are shown in the sequence diagrams, they merely serve as a simple representation to find out how the communication takes place. Furthermore after the Connect protocol are followed, most of the classes are initialized along with all the required variables.
 
 %%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%CONNECT			(Begin)
@@ -93,15 +106,15 @@ This protocol is followed when the client application first connects to the AppM
 \includegraphics[scale=1.0]{CommunicationProtocol/ConnectProtocol.jpg} 
 \end{center}
 
-\newpage
-\begin{center}
-Sequence Diagram(For Client Application)
-\includegraphics[scale=0.4]{CommunicationProtocol/SequenceDiagrams/Client/Connect.jpg} 
-\end{center}
-\begin{center}
-Sequence Diagram(For Master Application)
-\includegraphics[scale=0.4]{CommunicationProtocol/SequenceDiagrams/Server/Connect.jpeg} 
-\end{center}
+%\newpage
+%\begin{center}
+%Sequence Diagram(For Client Application)
+%\includegraphics[scale=0.4]{CommunicationProtocol/SequenceDiagrams/Client/Connect.jpg} 
+%\end{center}
+%\begin{center}
+%Sequence Diagram(For Master Application)
+%\includegraphics[scale=0.4]{CommunicationProtocol/SequenceDiagrams/Server/Connect.jpeg} 
+%\end{center}
 %%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%CONNECT			(End)
 %%%%%%%%%%%%%%%%%%%%%%%
@@ -116,15 +129,15 @@ This protocol is invoked directly after Connect protocol and will update all the
 \includegraphics[scale=1.0]{CommunicationProtocol/SlaveCurrentBuildsProtocol.jpg} 
 \end{center}
 
-\newpage
-\begin{center}
-Sequence Diagram(For Client Application)
-\includegraphics[scale=0.5]{CommunicationProtocol/SequenceDiagrams/Client/SlaveCurrentBuilds.jpg} 
-\end{center}
-\begin{center}
-Sequence Diagram(For Master Application)
-\includegraphics[scale=0.5]{CommunicationProtocol/SequenceDiagrams/Server/SlaveCurrentBuilds.jpeg} 
-\end{center}
+%\newpage
+%\begin{center}
+%Sequence Diagram(For Client Application)
+%\includegraphics[scale=0.5]{CommunicationProtocol/SequenceDiagrams/Client/SlaveCurrentBuilds.jpg} 
+%\end{center}
+%\begin{center}
+%Sequence Diagram(For Master Application)
+%\includegraphics[scale=0.5]{CommunicationProtocol/SequenceDiagrams/Server/SlaveCurrentBuilds.jpeg} 
+%\end{center}
 %%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%SlaveCurrentBuilds(End)
 %%%%%%%%%%%%%%%%%%%%%%%
@@ -157,15 +170,15 @@ This protocol is followed when a build is logically copied over from master to s
 \end{center}
 
 
-\newpage
-\begin{center}
-Sequence Diagram(For Client Application)
-\includegraphics[scale=0.4]{CommunicationProtocol/SequenceDiagrams/Client/CopyOver.jpg} 
-\end{center}
-\begin{center}
-Sequence Diagram(For Master Application)
-\includegraphics[scale=0.4]{CommunicationProtocol/SequenceDiagrams/Server/CopyOver.jpeg} 
-\end{center}
+%\newpage
+%\begin{center}
+%Sequence Diagram(For Client Application)
+%\includegraphics[scale=0.4]{CommunicationProtocol/SequenceDiagrams/Client/CopyOver.jpg} 
+%\end{center}
+%\begin{center}
+%Sequence Diagram(For Master Application)
+%\includegraphics[scale=0.4]{CommunicationProtocol/SequenceDiagrams/Server/CopyOver.jpeg} 
+%\end{center}
 %%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%CopyOver			(End)
 %%%%%%%%%%%%%%%%%%%%%%%
@@ -200,16 +213,17 @@ This protocol is where a physical build is being sent to the slave machine. Befo
 %%%%%%%%%%%%%%%%%%%%%%%
 
 
-
 \section{Functional Requirements}
+
 \subsection{Use Case Diagrams}
 \begin{itemize}
 \item AppMan\\
-\includegraphics[scale=0.4]{UseCaseDiagram.png} 
+\includegraphics[angle = 90, scale=0.7]{UseCaseDiagram.png} 
 \item AppManClient\\
-\includegraphics[scale=0.6]{UseCaseDiagramClient.png} 
+\includegraphics[angle = 90, scale=0.8]{UseCaseDiagramClient.png} 
 \end{itemize}
 
+\newpage
 \subsection{Builds}
 \begin{itemize}
 \item Builds must be addable to the master
@@ -257,6 +271,7 @@ This protocol is where a physical build is being sent to the slave machine. Befo
 \item GUI - Graphical User Interface with which a user can control an application
 \item Project - This project. The distributed application manager
 \item Application Configuration - Environment variables that are specified when running an application
+\item Colour coding - The use of different colours to display certain information
 \end{itemize}
 
 
