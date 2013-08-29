@@ -217,6 +217,8 @@ public:
     Machine *getMachineByIp(QString machineIp);
 
     void slaveBuildSize(QString buildNo, QString buildMD5Value, QString slaveIp);
+
+    void setSlaveBuildIsSame(bool isSame, QString slaveIp, int buildID);
 private:
     /**
      * \fn void clearMachines();

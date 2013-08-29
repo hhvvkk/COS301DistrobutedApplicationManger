@@ -36,7 +36,9 @@ SOURCES += main.cpp\
     protosizecheckbuilds.cpp \
     protocopyover.cpp \
     protoconnect.cpp \
-    protogetsysinfo.cpp
+    protogetsysinfo.cpp \
+    protosendbuild.cpp \
+    copysenderserver.cpp
 
 HEADERS  += mainform.h \
     aboutversion.h \
@@ -60,7 +62,9 @@ HEADERS  += mainform.h \
     protosizecheckbuilds.h \
     protocopyover.h \
     protoconnect.h \
-    protogetsysinfo.h
+    protogetsysinfo.h \
+    protosendbuild.h \
+    copysenderserver.h
 
 FORMS    += mainform.ui \
     aboutversion.ui \

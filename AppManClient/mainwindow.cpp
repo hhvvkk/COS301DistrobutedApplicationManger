@@ -68,8 +68,8 @@ void MainWindow::connectClick()
 
     port = ui->lineEditPort->text().toInt(&ok);
 
-    qDebug()<<"port = "<<port;
-    if(!ok || port <= 1000 || port >= 65000){
+
+    if(!ok || port <= 1024 || port >= 65000){
         QMessageBox *msb = new QMessageBox();
         msb->setText("invalid port number assigned");
         msb->show();

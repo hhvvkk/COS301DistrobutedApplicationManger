@@ -105,6 +105,15 @@ public:
         */
         Build *getBuilds();
 
+        /**
+        * \fn int getBuildCount();
+        * @brief The function to return the amount of builds on the machine
+        * @return Returns buildCount
+        */
+        int getBuildCount();
+
+        void setBuildSame(bool isSame, int buildID);
+
 };
 
 #endif // Slave_H

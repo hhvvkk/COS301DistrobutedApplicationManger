@@ -29,6 +29,10 @@ void ProtoSizeCheckBuilds::sendCurrentBuildMD5(Management *management, QTcpSocke
         buildIterator++;//go to next build
     }
 
+    //finally to indicate that it is done
+    masterSocket->write("||SizeCheckAllBuildsDone||");
+    masterSocket->flush();
+
     if(buildIterator >= management->getBuildCount()){
         buildIterator = 0;//reset the iterator
         return;//Done

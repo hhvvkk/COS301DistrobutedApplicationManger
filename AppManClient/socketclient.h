@@ -34,8 +34,6 @@ public:
       */
     ~SocketClient();
 
-signals:
-
 public slots:
     /**
      * @brief disconnected a function called when the socket disconnects from a server
@@ -51,10 +49,15 @@ public slots:
 
 private:
     /**
+     * @var socket
      * @brief socket The socket object that will connec to the server
      */
     QTcpSocket *socket;
 
+    /**
+     * @var protocolHandler
+     * @brief The protocolhandler which will use the protocols
+     */
     ProtocolHandler *protocolHandler;
     
 };

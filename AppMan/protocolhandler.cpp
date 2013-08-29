@@ -13,8 +13,8 @@ ProtocolHandler::ProtocolHandler( Management *man, QObject *parent) :
     connect = new ProtoConnect(this);
     sizeCheckBuilds = new ProtoSizeCheckBuilds(this);
     getSysInfo = new ProtoGetSysInfo(this);
+    sendBuild = new ProtoSendBuild(this);
     firstTalk = true;
-
 }
 
 void ProtocolHandler::handle(QString data){
@@ -77,11 +77,19 @@ void ProtocolHandler::requestHandler(QString data){
 
     if(data.contains("SysInfoFollows:#"))
         getSysInfo->handle(data, management, slaveSocket);
+
+    if(!data.compare("SizeCheckAllBuildsDone")){
+        sendBuild->handle(data, management, slaveSocket);
+    }
 }
 
 
 void ProtocolHandler::setMachine(Machine *m){
     machine = m;
+}
+
+Machine* ProtocolHandler::getMachine(){
+    return machine;
 }
 
 

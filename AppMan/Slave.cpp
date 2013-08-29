@@ -117,3 +117,16 @@ void Slave::setProtocolHandler(ProtocolHandler *handler){
 Build *Slave::getBuilds(){
     return slaveBuilds;
 }
+
+
+int Slave::getBuildCount(){
+    return buildCount;
+}
+
+void Slave::setBuildSame(bool isSame, int buildID){
+    Build *builds = getBuilds();
+    for(int i = 0; i < getBuildCount(); i++){
+        if(buildID == builds[i].getBuildID())
+            builds[i].setIsSame(isSame);
+    }
+}

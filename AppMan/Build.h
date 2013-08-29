@@ -29,11 +29,17 @@ class Build{
 		* @brief the Description of the Build
 		*/
 		QString buildDescription;
-        /**
-        * @var buildDirectory
-        * @brief the Diretory of the Build
-        */
-        QString buildDirectory;
+                /**
+                * @var buildDirectory
+                * @brief the Diretory of the Build
+                */
+                QString buildDirectory;
+
+                /**
+                  * @var isSame
+                  * @brief This is a flag indicating if there is a difference between the master build and slave build(purely used in slave builds)
+                  */
+                bool isSame;
 	public:
 		/**
         * \fn Build(int id, QString name, QString descript, QString direc);
@@ -104,12 +110,26 @@ class Build{
 		* @param descript The description to be assigned tobuildDescription
 		*/
         void setBuildDescription(QString descript);
-		/**
+        /**
         * \fn void setBuildDirectory(QString direc);
         * @brief The function to mutate the buildDirectory variable
         * @param descript The description to be assigned to buildDirectory
         */
         void setBuildDirectory(QString direc);
+
+        /**
+        * \fn void setBuildDifference(bool same);
+        * @brief This function will be used to set whether the build on master is same as the one that the slave got
+        * @param diffr Boolean which should be set to false if there is a different and if it is the same should be set to true
+        */
+        void setIsSame(bool same);
+
+        /**
+        * \fn bool getIsSame();
+        * @brief This function is used to determine whether a build has different build Md5 values
+        * @return Returns true if the build on master and slave are the same and false if its different
+        */
+        bool getIsSame();
 };
 
 

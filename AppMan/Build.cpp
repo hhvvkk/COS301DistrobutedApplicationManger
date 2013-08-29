@@ -10,7 +10,8 @@ Build::Build(int id, QString name, QString descript, QString direc){
 		buildDescription = descript;
         buildDirectory = direc;
 	}
-	
+    //set the issame for the slaveBuilds
+    isSame = true;
 }
 Build::~Build(){
 	buildID = -1;
@@ -44,3 +45,12 @@ void Build::setBuildDescription(QString descript){
 void Build::setBuildDirectory(QString direc){
     buildDirectory = direc;
 }
+
+void Build::setIsSame(bool same){
+   isSame = same;
+}
+
+bool Build::getIsSame(){
+    return isSame;
+}
+

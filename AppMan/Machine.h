@@ -123,6 +123,15 @@ public:
         * @return Returns all builds for this machine. Will be overridden by Slave to return all the builds
         */
         virtual Build* getBuilds() = 0;
+
+        /**
+        * \fn int getBuildCount() = 0;
+        * @brief The pure virtual function that will be overridden by the Slave class to return build count
+        * @return returns the build count
+        */
+        virtual int getBuildCount() = 0;
+
+        virtual void setBuildSame(bool isSame, int buildID) = 0;
 };
 
 #endif // MACHINE_H

@@ -10,6 +10,7 @@
 #include "protosizecheckbuilds.h"
 #include "protoconnect.h"
 #include "protogetsysinfo.h"
+#include "protosendbuild.h"
 
 
 class Management;
@@ -48,6 +49,13 @@ public:
      * @param m The machine to set so that a link backwards is possible
      */
     void setMachine(Machine *m);
+
+    /**
+     * \fn Machine* ProtocolHandler::getMachine();
+     * @brief This function will return the machine variable that is set
+     * @return Returns the machine that is set
+     */
+    Machine* getMachine();
 
     ////////////////////REQUESTS BY USER INTERACTION////////////////
     /**
@@ -98,6 +106,11 @@ private:
      * @var getSysInfo The protocol GetSysInfo
      */
     Protocol *getSysInfo;
+
+    /**
+     * @var getSysInfo The protocol SendBuild
+     */
+    Protocol *sendBuild;
 
     /**
      * @var management A management pointer so that it may be used directly

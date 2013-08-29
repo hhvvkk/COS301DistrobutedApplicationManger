@@ -153,7 +153,6 @@ void Management::clearMachines(){
     //NB Lock hierin gaan deadlock(BY setPort) dus los dit vir nou
     //anyways die setPort disconnect anyways almal
     //allMachines.clear();
-    qDebug()<<"calling clear machines??--line 156(round about) what must it do";
 }
 
 
@@ -280,8 +279,19 @@ void Management::slaveBuildSize(QString buildNo, QString buildMD5Value, QString 
         //qDebug()<<"EXISTS::"<<buildNo;
     }
 
-    if(!buildMD5Value.compare(getBuildMD5(&theBuild)))
+    if(!buildMD5Value.compare(getBuildMD5(&theBuild))){
+        setSlaveBuildIsSame(true, slaveIp, theBuild.getBuildID());
         emit slaveBuildSizeSame(theBuild.getBuildName(), slaveIp, true);
-    else
+    }
+    else{
+        setSlaveBuildIsSame(false, slaveIp, theBuild.getBuildID());
         emit slaveBuildSizeSame(theBuild.getBuildName(), slaveIp, false);
+    }
+}
+
+
+void Management::setSlaveBuildIsSame(bool isSame, QString slaveIp, int buildID){
+    Machine * slave = getMachineByIp(slaveIp);
+
+    slave->setBuildSame(isSame, buildID);
 }
