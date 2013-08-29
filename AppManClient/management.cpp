@@ -127,7 +127,6 @@ BuildMD5* Management::getBuildMD5Class(Build build){
 }
 
 void Management::setConnected(bool connectionValue){
-    if(connectionValue == false)
-        this->disconnectFromServer();
     emit signalConnected(connectionValue);
 }
+

@@ -3,6 +3,9 @@
 
 #include "protocol.h"
 
+//forward declaration for use
+class ProtocolHandler;
+
 class ProtoConnect : public Protocol
 {
 public:
@@ -10,8 +13,9 @@ public:
 
     void handle(QString data, Management *management, QTcpSocket *masterSocket);
 
-    void disconnectedFromMaster(Management *management);
+    void disconnectFromMaster(Management *management, QTcpSocket *socket);
 
+    void connectToMaster(QString ipAddress, int serverPort, ProtocolHandler * protocolHandler);
 private:
     void initiateSlaveCurrentBuilds(QTcpSocket *masterSocket);
 };

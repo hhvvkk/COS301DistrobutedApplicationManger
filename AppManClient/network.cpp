@@ -3,7 +3,7 @@
 
 Network::Network(Management *man)
 {
-    socketClient = new SocketClient(man);
+    protocolHandler = new ProtocolHandler(man);
 }
 
 void Network::setConnectionDetails(QString ip, int port){
@@ -12,9 +12,10 @@ void Network::setConnectionDetails(QString ip, int port){
 }
 
 void Network::connecToServer(){
-    socketClient->connectToServer(this->IpAddress, this->serverPort);
+    //socketClient->connectToServer(this->IpAddress, this->serverPort);
+    protocolHandler->connectToServer(this->IpAddress, this->serverPort);
 }
 
 void Network::disconnect(){
-    socketClient->disconnectFromServer();
+    protocolHandler->disconnectFromMaster();
 }

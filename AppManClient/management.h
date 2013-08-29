@@ -54,12 +54,6 @@ public:
     void disconnectFromServer();
 
     /**
-     * @brief writeSomedata a function that writes some data to debug this
-     */
-    void writeSomedata(){
-        network->writeSOme();
-    }
-    /**
      * \fn void addBuild(Build buildToAdd);
      * @brief The function that adds a Build to the management
      * @param buildToAdd The Build that is to be added
@@ -121,6 +115,7 @@ public:
     * @return Returns a BuildMD5 Class containing MD5 values for each and every file
     */
     BuildMD5 *getBuildMD5Class(Build build);
+
 private:
     /**
      * @brief network An Object that will harbour some of the network information

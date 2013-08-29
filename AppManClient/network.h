@@ -7,7 +7,7 @@
 #define NETWORK_H
 
 #include <QString>
-#include "socketclient.h"
+#include "protocolhandler.h"
 
 //forward declaration of Management for use
 class Management;
@@ -42,18 +42,9 @@ public:
      */
     void disconnect();
 
-    /**
-     * @brief writeSOme function writing some text to server for debugging
-     */
-    void writeSOme(){
-        socketClient->writeSome();
-    }
-
 private:
-    /**
-     * @brief socketClient The socket object containing socket related items and management
-     */
-    SocketClient *socketClient;
+    ProtocolHandler *protocolHandler;
+
     /**
      * @brief serverPort The port on which the AppMan server will be listening
      */

@@ -1,7 +1,7 @@
 #include "protocolhandler.h"
 #include "management.h"
 
-ProtocolHandler::ProtocolHandler(Management *man,QObject *parent) :
+ProtocolHandler::ProtocolHandler(Management *man, QObject *parent) :
     QObject(parent),
     management(man)
 {
@@ -10,13 +10,18 @@ ProtocolHandler::ProtocolHandler(Management *man,QObject *parent) :
     connect = new ProtoConnect(this);
     copyOver = new ProtoCopyOver(this);
     getSysInfo = new ProtoGetSysInfo(this);
+    masterSocket = 0;
 }
 
 
-void ProtocolHandler::handle( QString data, QTcpSocket *masterSocket){
+void ProtocolHandler::handle(QString data){
 
     QStringList protocolRequests;
 
+    if(masterSocket == 0){
+        qDebug()<<"masterSocket = 0(handle--protocolHandler)";
+        return;
+    }
     //firstly strip the slashes to reveal all the requests sent through(in case of multiple requests)
     while(data.contains("|")){
         int indexOfLine = -1;
@@ -44,13 +49,13 @@ void ProtocolHandler::handle( QString data, QTcpSocket *masterSocket){
     ///////////HANDLE ALL THE REQUESTS THAT IS SENT THROUGH///////////////
     /////////////E.g. It could be multiple requests///////////////////
     for(int i = 0; i < protocolRequests.length(); i++){
-        requestHandler(protocolRequests.at(i), masterSocket);
+        requestHandler(protocolRequests.at(i));
     }
 
 
 }
 
-void ProtocolHandler::requestHandler(QString data, QTcpSocket *masterSocket){
+void ProtocolHandler::requestHandler(QString data){
     if(!data.compare("SizeCheckAllBuilds")){
         //which means execute sizeCheckAllBuilds protocol
         sizeCheckBuilds->handle(data, management, masterSocket);
@@ -72,7 +77,21 @@ void ProtocolHandler::requestHandler(QString data, QTcpSocket *masterSocket){
         getSysInfo->handle(data, management, masterSocket);
 }
 
-void ProtocolHandler::disconnectedFromMaster(){
+void ProtocolHandler::disconnectFromMaster(){
     ProtoConnect *connectProtocol = dynamic_cast<ProtoConnect*>(connect);
-    connectProtocol->disconnectedFromMaster(management);
+    connectProtocol->disconnectFromMaster(management, masterSocket);
+}
+
+
+void ProtocolHandler::connectToServer(QString IpAddress, int serverPort){
+    ProtoConnect *connectProtocol = dynamic_cast<ProtoConnect*>(connect);
+    connectProtocol->connectToMaster(IpAddress, serverPort, this);
+}
+
+void ProtocolHandler::setSocket(QTcpSocket *newSocket){
+    if(newSocket == 0){
+        qDebug()<<"masterSocket = 0(setSocket--protocolHandler)";
+        return;
+    }
+    masterSocket = newSocket;
 }

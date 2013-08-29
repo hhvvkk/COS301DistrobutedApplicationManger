@@ -17,17 +17,24 @@ class ProtocolHandler : public QObject
 public:
     explicit ProtocolHandler(Management *man, QObject *parent = 0);
 
-    void handle(QString data, QTcpSocket *masterSocket);
+    void handle(QString data);
 
-    void requestHandler( QString data, QTcpSocket *masterSocket);
+    void requestHandler(QString data);
 
-    void disconnectedFromMaster();
+    void disconnectFromMaster();
+
+    void connectToServer(QString IpAddress, int serverPort);
+
+    void setSocket(QTcpSocket *newSocket);
+
 signals:
 
 public slots:
 
 private:
     Management *management;
+
+    QTcpSocket *masterSocket;
 
     Protocol *connect;
     Protocol *copyOver;
