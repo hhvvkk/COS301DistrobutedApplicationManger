@@ -39,6 +39,11 @@ public:
       */
     ~Management();
 
+    /**
+     * \fn void setConnected(bool connectionValue);
+     * @brief A function that will set whether it is online or not
+     * @param connectionValue the boolean that determines whether it is online or offline
+     */
     void setConnected(bool connectionValue);
 
     /**

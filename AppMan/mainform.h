@@ -167,16 +167,16 @@ private slots:
      */
     void masterBuildsClicked(QModelIndex index);
 	
-	/**
-	 * @fn void on_actionAdd_Build_triggered();
-	 * @brief on_actionAdd_Build_triggered The function that will be called to add a build
-	 */
+    /**
+     * @fn void on_actionAdd_Build_triggered();
+     * @brief on_actionAdd_Build_triggered The function that will be called to add a build
+     */
     void on_actionAdd_Build_triggered();
 
-	/**
-	 * @fn displayBuilds();
-	 * @brief displayBuilds The function to show the builds on the main form
-	 */
+    /**
+     * @fn displayBuilds();
+     * @brief displayBuilds The function to show the builds on the main form
+     */
     void displayBuilds();
 
     /**
@@ -286,10 +286,10 @@ private:
         void mousePressEvent(QMouseEvent *event);
     };
 	
-	/**
-	 * @var masterBuilds
-	 * @brief The pointer to a Masterbuilds object
-	 */
+    /**
+     * @var masterBuilds
+     * @brief The pointer to a Masterbuilds object
+     */
     MasterBuilds *masterBuilds;
 
     /**
@@ -301,10 +301,10 @@ private:
         BuildInfo(QWidget *parent = 0);
     };
 
-	/**
-	 * @var buildInfo
-	 * @brief The pointer to a BuildInfo object
-	 */
+    /**
+     * @var buildInfo
+     * @brief The pointer to a BuildInfo object
+     */
     BuildInfo *buildInfo;
 };
 

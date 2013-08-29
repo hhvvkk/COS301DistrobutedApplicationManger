@@ -75,9 +75,19 @@ private:
 private:
     Ui::CopyBuildOver *ui;
 
+    /**
+      * @var management The management class to use checking functions on
+      */
     Management *management;
 
+    /**
+      * @var nameSuggestor A list of name suggestions
+      */
     QCompleter *nameSuggestor;
+
+    /**
+      * @var ipSuggestor A list of ip suggestions
+      */
     QCompleter *ipSuggestor;
 };
 

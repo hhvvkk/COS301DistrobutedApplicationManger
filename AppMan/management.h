@@ -218,6 +218,10 @@ public:
 
     void slaveBuildSize(QString buildNo, QString buildMD5Value, QString slaveIp);
 private:
+    /**
+     * \fn void clearMachines();
+     * @brief A function to clear all machines
+     */
     void clearMachines();
 
 private:

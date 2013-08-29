@@ -5,12 +5,29 @@
 
 class ProtoCopyOver : public Protocol
 {
-    Q_OBJECT
 public:
-    explicit ProtoCopyOver(QObject *parent = 0);
+    /**
+     * \fn ProtoCopyOver(QObject *parent = 0);
+     * @brief the constructor
+     */
+    ProtoCopyOver(QObject *parent = 0);
 
+    /**
+     * \fn void handle(QString data, Management *man, QTcpSocket *slaveSocket);
+     * @brief The function that will handle all the ConnectProtocol functions
+     * @param data the data to be parsed
+     * @param man the management to perform functions on
+     * @param slaveSocket the socket if it is needed to write to it
+     */
     void handle(QString data, Management *man, QTcpSocket *slaveSocket);
 
+    /**
+     * \fn void copyBuildOver(int buildId, QString buildName, QTcpSocket *slaveSocket);
+     * @brief The function that execute a copy over so that the slave is notified of new build
+     * @param buildId the Id of the build to copy over
+     * @param buildName the Name of the build to copy over
+     * @param slaveSocket the socket of client to notify with the new build
+     */
     void copyBuildOver(int buildId, QString buildName, QTcpSocket *slaveSocket);
 signals:
 
@@ -24,6 +41,12 @@ private:
      */
     void GotABuild(QString data, Management *man, QTcpSocket *slaveSocket);
 
+    /**
+     * \fn void sizeCheckCertainBuild(QString buildNo, QTcpSocket *slaveSocket);
+     * @brief The function which will enable the size check of only one build
+     * @param buildNo the Id of the build to copy over
+     * @param slaveSocket the socket of client to size check on the buildNo
+     */
     void sizeCheckCertainBuild(QString buildNo, QTcpSocket *slaveSocket);
 
 };

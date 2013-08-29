@@ -75,11 +75,13 @@ private slots:
 
 
     /**
+     * @fn void connectClick();
      * @brief connectClick The function called when the user clicks Connect
      */
     void connectClick();
 
     /**
+     * @fn void disconnectClick();
      * @brief disconnectClick The function called when the user clicks Disconnect
      */    
     void disconnectClick();
@@ -101,6 +103,7 @@ private slots:
      * @brief on_pushButton_clicked the click function of the button
      */
     void on_pushButton_clicked();
+
     /**
      * @fn void on_pushButton_@_clicked();
      * @brief on_pushButton_@_clicked the click function of the button
@@ -108,8 +111,16 @@ private slots:
     void on_pushButton_2_clicked();
 
 private:
+    /**
+     * @fn void showConnectedWidgets();
+     * @brief A function to display all the widgets for a connected state
+     */
     void showConnectedWidgets();
 
+    /**
+     * @fn void showDisconnectedWidgets();
+     * @brief A function to display all the widgets for a disconnected state
+     */
     void showDisconnectedWidgets();
 
 private:

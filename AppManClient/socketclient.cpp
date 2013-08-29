@@ -10,7 +10,6 @@ SocketClient::SocketClient(ProtocolHandler * protoHandler, QTcpSocket * newSocke
 }
 
 SocketClient::~SocketClient(){
-    qDebug()<<"CALLING SocketClient Delete";
     socket->deleteLater();
 }
 

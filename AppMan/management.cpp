@@ -153,6 +153,7 @@ void Management::clearMachines(){
     //NB Lock hierin gaan deadlock(BY setPort) dus los dit vir nou
     //anyways die setPort disconnect anyways almal
     //allMachines.clear();
+    qDebug()<<"calling clear machines??--line 156(round about) what must it do";
 }
 
 
@@ -273,7 +274,6 @@ void Management::slaveBuildSize(QString buildNo, QString buildMD5Value, QString 
         && !theBuild.getBuildName().compare("NULL")
         && theBuild.getBuildID() == 0){
         //this point the build does not exist
-        //qDebug()<<"Build does not exist"<<buildNo;
         return;
     }
     else{

@@ -25,6 +25,7 @@ class ServerThread : public QThread
     Q_OBJECT
 public:
     /**
+     * \fn ServerThread(int ID, Management *man, QObject *parent = 0);
      * @brief ServerThread The constructor for the Server thread
      * @param ID The unique socket id that will be linked to a new connecting client on Server inside incommingConnection(socketiD)
      * @param parent The parent of the QThread object
@@ -32,33 +33,51 @@ public:
     explicit ServerThread(int ID, Management *man, QObject *parent = 0);
 
     /**
+     * \fn run();
      * @brief run Function that will run once thread is started
      */
     void run();
 
+
+    /**
+     * \fn QTcpSocket *getSocket();
+     * @brief Function that returns the socket
+     * @return The socket of this class which will be the clients socket
+     */
     QTcpSocket *getSocket();
 
 public slots:
     /**
-     * @brief readyReadFunction A function that will be run each time the thread obtains new data from client
+     * \fn void readyReadFunction();
+     * @brief A function that will be run each time the thread obtains new data from client
      */
     void readyReadFunction();
 
     /**
-     * @brief disconnectedFunction The function that will be called once the client disconnects
+     * \fn void disconnectedFunction();
+     * @brief The function that will be called once the client disconnects
      */
     void disconnectedFunction();
 
 private:
+
     /**
-     * @brief socket
-     * @brief socketID
+     * @var socket
+     * @brief The client socket
      */
     QTcpSocket *socket;
-    int socketID;
-   // bool firstTalk;
-    //Build* recheckBuilds;
 
+
+    /**
+     * @var protocolHandler
+     * @brief The id of the socket that was made
+     */
+    int socketID;
+
+    /**
+     * @var protocolHandler
+     * @brief The protocol handler that will be used to invoke protocols
+     */
     ProtocolHandler *protocolHandler;
 };
 

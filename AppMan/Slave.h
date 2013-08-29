@@ -84,7 +84,11 @@ public:
         */
         void addBuild(Build buildToAdd);
 
-
+        /**
+        * \fn void setProtocolHandler(ProtocolHandler *handler);
+        * @brief The function to set the protocolHandler for a machine
+        * @param handler The ProtocolHandler to set
+        */
         void setProtocolHandler(ProtocolHandler *handler);
 
         /**

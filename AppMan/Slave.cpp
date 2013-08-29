@@ -1,5 +1,6 @@
 #include "Slave.h"
 
+
 Slave::Slave(int id, QString ip){
         if(id <= 0){
 		return;
@@ -22,9 +23,8 @@ Slave::Slave(){
     buildCount = 0;
 }
 
-Slave::Slave(Slave &toCopy){
-    this->machineID = toCopy.machineID;
-    this->machineIP = toCopy.machineIP;
+Slave::Slave(Slave &toCopy)
+    :Machine(toCopy.machineID, toCopy.machineIP){
     this->buildCount = toCopy.buildCount;
     this->slaveBuilds = toCopy.slaveBuilds;
 }
