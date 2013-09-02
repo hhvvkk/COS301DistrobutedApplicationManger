@@ -1,8 +1,6 @@
 #include "mainform.h"
 #include "ui_mainform.h"
 
-
-
 MainForm::MainForm(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainForm)
@@ -20,7 +18,6 @@ MainForm::MainForm(QWidget *parent) :
 
     masterBuilds = new MasterBuilds();
     masterBuilds->setHeaderHidden(true);
-
 
     /*
      * This part initializes the masterBuilds and adds it to mainform
