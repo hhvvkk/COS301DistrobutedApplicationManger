@@ -39,7 +39,8 @@ SOURCES += main.cpp\
     protogetsysinfo.cpp \
     protosendbuild.cpp \
     copysenderserver.cpp \
-    moreinfo.cpp
+    moreinfo.cpp\
+    compression.cpp
 
 HEADERS  += mainform.h \
     aboutversion.h \
@@ -66,7 +67,8 @@ HEADERS  += mainform.h \
     protogetsysinfo.h \
     protosendbuild.h \
     copysenderserver.h \
-    moreinfo.h
+    moreinfo.h\
+    compression.h
 
 FORMS    += mainform.ui \
     aboutversion.ui \
