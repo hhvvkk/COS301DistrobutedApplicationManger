@@ -1,10 +1,9 @@
 #include "addbuild.h"
 #include "ui_addbuild.h"
 
-AddBuild::AddBuild(Management *man, QString directory, QWidget *parent) :
+AddBuild::AddBuild(QString directory, QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::AddBuild),
-    management(man)
+    ui(new Ui::AddBuild)
 {
     ui->setupUi(this);
     ui->lineEditDirectory->setText(directory);
@@ -14,6 +13,7 @@ AddBuild::AddBuild(Management *man, QString directory, QWidget *parent) :
 AddBuild::~AddBuild()
 {
     delete ui;
+    delete theXMLWriter;
 }
 
 void AddBuild::cancelClick(){

@@ -84,7 +84,8 @@ MainForm::~MainForm()
 
 MainForm::MasterBuilds::MasterBuilds(QWidget *parent)
     :QTreeWidget(parent){
-
+    setColumnCount(2);
+    hideColumn(1);
 }
 
 MainForm::BuildInfo::BuildInfo(QWidget *parent)
@@ -248,7 +249,8 @@ void MainForm::dropBuildToSlave(QString fromBuild){
 }
 
 void MainForm::dropNewBuildAdd(QString newBuildDirectory){
-    AddBuild *newBuild = new AddBuild(management, newBuildDirectory);
+    AddBuild *newBuild = new AddBuild(newBuildDirectory);
+    connect(newBuild,SIGNAL(initiateAddBuild(Build)),this,SLOT(initiateAddBuild(Build)));
     newBuild->show();
 }
 
@@ -317,19 +319,14 @@ void MainForm::slaveDisconnected(int index){
 
 void MainForm::initiateAddBuild(Build b){
     management->addBuild(b);
-    qDebug()<<"Build added";
     displayBuilds();
 }
 
 void MainForm::displayBuilds(){
-    qDebug()<<"here to display";
     masterBuilds->clear();
-    masterBuilds->setColumnCount(2);
-    masterBuilds->hideColumn(1);
     Build* myBuilds = management->getAllBuilds();
     int len = management->getBuildCount();
-    qDebug()<<len;
-    QTreeWidgetItem *boola;
+    QTreeWidgetItem *newWidgetItem;
     QString buildName = "";
     QString strNum;
     int buildNum = -1;
@@ -338,11 +335,12 @@ void MainForm::displayBuilds(){
         buildName = myBuilds[i].getBuildName();
         buildNum = myBuilds[i].getBuildID();
         strNum = QString::number(buildNum);
-        boola = new QTreeWidgetItem();
+        newWidgetItem = new QTreeWidgetItem();
         // The build no in column 1, which is hidden
-        boola->setText(0,buildName);
-        boola->setText(1,strNum);
-        masterBuilds->addTopLevelItem(boola);
+        newWidgetItem->setText(0,buildName);
+        newWidgetItem->setText(1,strNum);
+        newWidgetItem->setToolTip(0,strNum);
+        masterBuilds->addTopLevelItem(newWidgetItem);
     }
 }
 
@@ -454,7 +452,7 @@ void MainForm::populateTreeWidgetInfo(Build retr){
 }
 
 void MainForm::on_actionAdd_Build_triggered(){
-    AddBuild *newBuild = new AddBuild(management);
+    AddBuild *newBuild = new AddBuild();
     connect(newBuild,SIGNAL(initiateAddBuild(Build)),this,SLOT(initiateAddBuild(Build)));
     newBuild->show();
 }

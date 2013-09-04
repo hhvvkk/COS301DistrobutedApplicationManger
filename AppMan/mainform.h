@@ -322,7 +322,7 @@ private:
 
     /**
      * @class SlaveStats
-     * @brief The SlaveStats class will be used to display information related to selected builds
+     * @brief The SlaveStats class will be used to display information related to selected slaves
      */
     class SlaveStats: public QTreeWidget{
     public:

@@ -44,9 +44,8 @@ public:
      * @brief AddBuild This will construct the graphical user interface of the AppMan application AddBuild fuctionality
      * @param parent The parent that will be set for the application
      * @param directory The directory that will be set for the application
-     * @param man The Management link that will be set for the application
      */
-    explicit AddBuild(Management *man, QString directory = "", QWidget *parent = 0);
+    explicit AddBuild(QString directory = "", QWidget *parent = 0);
 
 	/**
 	 * @fn ~AddBuild();
@@ -105,11 +104,6 @@ private:
 	 * @brief the user interface to add a build
 	 */
     Ui::AddBuild *ui;
-	/**
-	 * @var management
-	 * @brief the managemennt link...
-	 */
-    Management *management;
 	/**
 	 * @var theXMLWriter
 	 * @brief the xmlWriter object
