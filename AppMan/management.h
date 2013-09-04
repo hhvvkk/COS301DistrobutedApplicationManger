@@ -219,6 +219,14 @@ public:
     void slaveBuildSize(QString buildNo, QString buildMD5Value, QString slaveIp);
 
     void setSlaveBuildIsSame(bool isSame, QString slaveIp, int buildID);
+
+    QString getMinStats(){return minStats;}
+
+    void setMinStats(QString stats);
+
+    QString getDetStats(){return detStats;}
+
+    void setDetStats(QString stats);
 private:
     /**
      * \fn void clearMachines();
@@ -263,6 +271,9 @@ private:
      */
     QMutex *lock;
 
+
+    QString minStats;
+    QString detStats;
 };
 
 #endif // MANAGEMENT_H

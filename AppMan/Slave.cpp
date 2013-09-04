@@ -130,3 +130,11 @@ void Slave::setBuildSame(bool isSame, int buildID){
             builds[i].setIsSame(isSame);
     }
 }
+
+void Slave::getMinStats(){
+    protocolHandler->getMinStats();
+}
+
+void Slave::getDetStats(){
+    protocolHandler->getDetStats();
+}

@@ -39,7 +39,7 @@ SOURCES += main.cpp\
     protogetsysinfo.cpp \
     protosendbuild.cpp \
     copysenderserver.cpp \
-    compression.cpp
+    moreinfo.cpp
 
 HEADERS  += mainform.h \
     aboutversion.h \
@@ -66,14 +66,15 @@ HEADERS  += mainform.h \
     protogetsysinfo.h \
     protosendbuild.h \
     copysenderserver.h \
-    compression.h
+    moreinfo.h
 
 FORMS    += mainform.ui \
     aboutversion.ui \
     abouthelp.ui \
     inputdialogue.ui \
     addbuild.ui \
-    copybuildover.ui
+    copybuildover.ui \
+    moreinfo.ui
 
 RESOURCES += \
     images.qrc

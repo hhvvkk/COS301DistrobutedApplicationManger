@@ -72,6 +72,17 @@ public:
      */
     void disconnectMachine();
 
+    /**
+     * \fn void disconnectMachine();
+     * @brief The disconnect function that will call the Connect Protocol disconnect
+     */
+    void getMinStats();
+    /**
+     * \fn void disconnectMachine();
+     * @brief The disconnect function that will call the Connect Protocol disconnect
+     */
+    void getDetStats();
+
 
 private:
     /**
@@ -108,7 +119,7 @@ private:
     Protocol *getSysInfo;
 
     /**
-     * @var getSysInfo The protocol SendBuild
+     * @var SendBuild The protocol SendBuild
      */
     Protocol *sendBuild;
 

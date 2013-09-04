@@ -73,7 +73,10 @@ void ProtocolHandler::requestHandler(QString data){
     if(data.contains("SizeCheckABuild:#"))
         sizeCheckBuilds->handle(data, management, masterSocket);
 
-    if(data.compare("GetAllSysInfo"))
+    if(data.compare("GetDetailedSysInfo"))
+        getSysInfo->handle(data, management, masterSocket);
+
+    if(data.compare("GetMinimalSysInfo"))
         getSysInfo->handle(data, management, masterSocket);
 }
 

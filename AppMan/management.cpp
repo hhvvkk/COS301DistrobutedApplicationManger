@@ -295,3 +295,10 @@ void Management::setSlaveBuildIsSame(bool isSame, QString slaveIp, int buildID){
 
     slave->setBuildSame(isSame, buildID);
 }
+
+void Management::setDetStats(QString stats){
+    detStats = stats;
+}
+void Management::setMinStats(QString stats){
+    minStats = stats;
+}

@@ -130,3 +130,11 @@ void Management::setConnected(bool connectionValue){
     emit signalConnected(connectionValue);
 }
 
+QString Management::getDetSysInfo(){
+
+    return systeminfo.getDetailedStats();
+}
+
+QString Management::getMinSysInfo(){
+    return systeminfo.getMinimalStats();
+}

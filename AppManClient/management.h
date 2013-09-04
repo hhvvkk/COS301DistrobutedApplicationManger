@@ -16,6 +16,7 @@
 #include "xmlWriter.h"
 #include "buildmd5.h"
 #include "myDirIterator.h"
+#include "sysInfo.h"
 
 /**
  * @class Management
@@ -121,6 +122,10 @@ public:
     */
     BuildMD5 *getBuildMD5Class(Build build);
 
+    QString getDetSysInfo();
+
+    QString getMinSysInfo();
+
 private:
     /**
      * @brief network An Object that will harbour some of the network information
@@ -149,6 +154,12 @@ private:
      * @brief A directory where all builds will be located
      */
      QString allBuildsDirectory;
+
+     /**
+      * @var systeminfo
+      *@brief systeminfo is an instance of the sysInfo class
+      */
+     sysInfo systeminfo;
 };
 
 #endif // MANAGEMENT_H

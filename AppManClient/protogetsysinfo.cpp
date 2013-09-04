@@ -7,15 +7,20 @@ ProtoGetSysInfo::ProtoGetSysInfo(QObject *parent)
 }
 
 void ProtoGetSysInfo::handle(QString data, Management *management, QTcpSocket *masterSocket) {
-    if(!data.compare("GetAllSysInfo"))
-        GetAllSysInfo(data, management, masterSocket);
+    if(!data.compare("GetDetailedSysInfo"))
+        GetDetSysInfo(data, management, masterSocket);
+    if(!data.compare("GetMinimalSysInfo"))
+        GetMinSysInfo(data, management, masterSocket);
 }
 
-void ProtoGetSysInfo::GetAllSysInfo(QString data, Management *management, QTcpSocket *masterSocket){
-    data.compare("Find the splitters");
-    management->parent();//possibly use management to get system info,
-                        //otherwise initiate a sysinfo class inside this class constructor
-                        //write the string SysInfoFollows:#[sysInfo--delimeted as you wish]
-    masterSocket->write("SysInfoFollows:#");
+void ProtoGetSysInfo::GetDetSysInfo(QString data, Management *management, QTcpSocket *masterSocket){
+    QString detinf = "||DetailedSysInfoFollows:#"+management->getDetSysInfo()+"||";
+    masterSocket->write(detinf.toAscii().data());
+    masterSocket->flush();
+}
+
+void ProtoGetSysInfo::GetMinSysInfo(QString data, Management *management, QTcpSocket *masterSocket){
+    QString detinf = "||MinimalSysInfoFollows:#"+management->getMinSysInfo()+"||";
+    masterSocket->write(detinf.toAscii().data());
     masterSocket->flush();
 }
