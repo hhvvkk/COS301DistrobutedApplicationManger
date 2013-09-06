@@ -1,8 +1,6 @@
 #include "mainform.h"
 #include "ui_mainform.h"
 
-
-
 MainForm::MainForm(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainForm)
@@ -19,8 +17,7 @@ MainForm::MainForm(QWidget *parent) :
     connect(management, SIGNAL(slaveBuildSizeSame(QString,QString,bool)), this, SLOT(slaveBuildSizeSame(QString,QString,bool)));
 
     masterBuilds = new MasterBuilds();
-    masterBuilds->setHeaderHidden(true);
-
+    masterBuilds->setHeaderHidden(true);    
 
     /*
      * This part initializes the masterBuilds and adds it to mainform

@@ -2,35 +2,43 @@
 #include <QString>
 #include <QProcess>
 
-compression::compression(Build* b)
-{
-    build = b;
+compression::compression() {
 }
 
-void compression::compress(){
-    //Currently compresses <BuildDirectory> and stores <BuildName>.7z file in local directory.
-    //Requires 7z.exe in local directory
-    //Only works in Windows (so far)
-
+void compression::compress(QStringList dirs, QString toDir, QString name){
     QString s("7z");
     QStringList args;
     args.append("a");
-    args.append(build->getBuildName() + ".7z");
-    args.append(build->getBuildDirectory());
+    args.append(toDir + name + ".7z"); //make sure <toDir> contains a path that ends with <\> else this line has to be modified to:  args.append(toDir + "\\" + name + ".7z")
+    args.append(dirs);
     QProcess* p = new QProcess();
-    p->start(s,args);
+    p->start(s,args);    
 }
 
-void compression::decompress(){
-    //Currently decompresses local <BuildName>.7z file and extracts in local directory.
-    //Requires 7z.exe in local directory
-    //Only works in Windows (so far)
-
+void compression::decompress(QString fromDir, QString toDir, QString name){
     QString s("7z");
     QStringList args;
     args.append("x");
-    args.append(build->getBuildName() + ".7z");
+    args.append(fromDir + name + ".7z"); //make sure <fromDir> contains a path that ends with <\> else this line has to be modified to:  args.append(fromDir + "\\" + name + ".7z")
     args.append("-y");
+    args.append("-o" + toDir);
     QProcess* p = new QProcess();
     p->start(s,args);
 }
+
+
+/* SAMPLE USAGE:
+ *
+ *  compression* c = new compression();
+ *
+ *  QStringList dirList;
+ *
+ *  dirList.append("somepath\\somefile1.txt");
+ *  dirList.append("somepath2\\somefile2.txt");
+ *  dirList.append("somepath3\\somedirectory");
+ *
+ *  c->compress(dirList,"path\\ToDir\\","compressedFileName");
+ *
+ *  c->decompress("path\\fromDir\\","path\\new\\ToDir\\","decompressedDirName");
+ *
+ **/
