@@ -22,6 +22,68 @@
  */
 class sysInfo{
 private:
+    //THE MINIMAL STATS
+    /**
+     * @fn void cpuUsage();
+     * @brief cpuUsage sets the CPU usage % variable
+     */
+    void cpuUsage();
+    /**
+     * @fn void memPerc();
+     * @brief memPerc reads memory (ram) and calculates percentage used
+     */
+    void memPerc();
+    /**
+     * @fn void netStat();
+     * @brief netStat sets the bytes transmitted and received variables
+     * @bug Packets received stays 0 in windows
+     */
+    void netStat();
+
+    //THE DETAILED STATS
+    /**
+     * @fn void osVersion();
+     * @brief osVersion sets the Operating System version variable
+     */
+    void osVersion();
+    /**
+    * @fn void cpuStats();
+    * @brief cpuStats gets more statistics from the CPU
+    */
+    void cpuStats();
+    /**
+     * @fn void getDiskDetails();
+     * @brief getDiskDetails initializes diskSize and freeOnDisk
+     */
+    void getDiskDetails();
+    /**
+     * @fn void listProcesses();
+     * @brief listProcesses populates the processes QStringList
+     */
+    void listProcesses();
+
+    //INTERNAL EXTRA FUNCTIONS
+    /**
+     * @fn void popHDDList(QString driveLabel);
+     * @brief popHDDList populates the list of filesystems on windows
+     * @param driveLabel the label of the hdd to check
+     */
+    void popHDDList(QString driveLabel);
+     /**
+     * @fn QString getSizeUnit(QString inval);
+     * @brief getSizeUnit analyses the input and returns it in a simpler unit (B/KB/MB/GB)
+     * @param inval the string passed through
+     * @return the new string with the measurement unit (B/KB/MB/GB)
+     */
+    QString getSizeUnit(QString inval);
+    /**
+     * @fn QString recrun(QString in);
+     * @brief recrun is a recursive function to run
+     * @param in the QString input
+     * @return the QString containing the stripped line
+     */
+    QString recrun(QString in);
+    //VARIABLES
 #ifdef WIN32
     /**
      * @var status
@@ -53,7 +115,7 @@ private:
      * @var procNum
      * @brief procNum is a QString for the number of processors
      */
-    QString procNum;
+    QString _cpuCount;
     /**
      * @var diskSize
      * @brief diskSize is a QString for the total size of the disk
@@ -145,101 +207,20 @@ public:
      * @brief ~sysInfo is the destructor
      */
     ~sysInfo();
-    /**
-     * @fn QStringList getAllSystemMemoryInfo();
-     * @brief getAllSystemMemoryInfo returns a QStringList of all the values stored
-     * @return QSringList
-     */
-    QStringList getAllSystemMemoryInfo();
-    /**
-     * @fn QString getMemoryLoad();
-     * @brief accessor for memoryLoad
-     * @return memoryLoad
-     */
-    QString getMemoryLoad() {return memoryLoad;}
-    /**
-     * @fn QString getPhysMem();
-     * @brief accessor for physMem
-     * @return physMem
-     */
-    QString getPhysMem() {return physMem;}
-    /**
-     * @fn QString getFreePhysMem();
-     * @brief accessor for freePhysMem
-     * @return freePhysMem
-     */
-    QString getFreePhysMem() {return freePhysMem;}
-    /**
-     * @fn QString getProcNum();
-     * @brief accessor for procNum
-     * @return procNum
-     */
-    QString getProcNum() {return procNum;}
-    /**
-     * @fn QString getDiskSize();
-     * @brief accessor for diskSize
-     * @return diskSize
-     */
-    QString getDiskSize() {return diskSize;}
-    /**
-     * @fn QString getFreeOnDisk();
-     * @brief accessor for freeOnDisk
-     * @return freeOnDisk
-     */
-    QString getFreeOnDisk() {return freeOnDisk;}
 
-
+    //FUNCTIONS TO BE CALLED
     /**
-     * @fn void netStat();
-     * @brief netStat sets the bytes transmitted and received variables
-     * @bug Packets received stays 0 in windows
+     * @fn QString getMinimalStats();
+     * @brief getMinimalStats returns the stats for the main GUI
+     * @return a QString delimited with # between types and , between name/value pairs
      */
-    void netStat();
+    QString getMinimalStats();
     /**
-     * @fn QString recrun(QString in);
-     * @brief recrun is a recursive function to run
-     * @param in the QString input
-     * @return the QString containing the stripped line
+     * @fn QString getDetailedStats();
+     * @brief getDetailedStats returns the stats for the dialog requesting more info
+     * @return a QString delimited with # between types and , between name/value pairs
      */
-    QString recrun(QString in);
-    /**
-     * @fn void memPerc();
-     * @brief memPerc reads memory (ram) and calculates percentage used
-     */
-    void memPerc();
-    /**
-     * @fn void getDiskDetails();
-     * @brief getDiskDetails initializes diskSize and freeOnDisk
-     */
-    void getDiskDetails();
-    /**
-     * @fn void osVersion();
-     * @brief osVersion sets the Operating System version variable
-     */
-    void osVersion();
-    /**
-     * @fn void cpuUsage();
-     * @brief cpuUsage sets the CPU usage % variable
-     */
-    void cpuUsage();
-    
-    /**
-     * @fn void cpuStats();
-     * @brief cpuStats gets more statistics from the CPU
-     */
-     void cpuStats();
-     
-     /**
-      * @fn void listProcesses();
-      * @brief listProcesses populates the processes QStringList
-      */
-     void listProcesses();
-     /**
-      * @fn void popHDDList(QString driveLabel);
-      * @brief popHDDList populates the list of filesystems on windows
-      * @param driveLabel the label of the hdd to check
-      */
-     void popHDDList(QString driveLabel);
+    QString getDetailedStats();
 };
 
 #endif // SYSINFO_H

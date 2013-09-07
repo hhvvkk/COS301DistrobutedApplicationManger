@@ -39,6 +39,7 @@
 #include "myDirIterator.h"
 #include "server.h"
 #include "xmlReader.h"
+#include "moreinfo.h"
 
 
 namespace Ui {
@@ -103,11 +104,17 @@ protected:
     virtual void dragMoveEvent ( QDragMoveEvent *event );
 
 private slots:
+
+//    void getDetStats(QString stats);
+
+  //  void getMinStats(QString stats);
+
     /**
      * \fn void quitTheApplication();
      * @brief A function emitting a signal called quitApplication which will then end application
      */
     void quitTheApplication();
+
 
     /**
      * \fn void showOrHideTrayClick();
@@ -166,6 +173,10 @@ private slots:
      * @param index the index that is clicked on main form
      */
     void masterBuildsClicked(QModelIndex index);
+
+    void slaveStatsClicked(QModelIndex index);
+
+    void clearWidget();
 	
     /**
      * @fn void on_actionAdd_Build_triggered();
@@ -205,7 +216,11 @@ private slots:
 
     void slaveBuildSizeSame(QString name, QString slaveIp, bool isTheSame);
 
+
     void slaveBuildSynched(QString,double);
+    
+    void on_treeWidgetSlaves_clicked(const QModelIndex &index);
+
 private:
     /**
      * \fn dropBuildToSlave(QString from);
@@ -308,6 +323,24 @@ private:
      * @brief The pointer to a BuildInfo object
      */
     BuildInfo *buildInfo;
+
+    /**
+     * @class SlaveStats
+     * @brief The SlaveStats class will be used to display information related to selected slaves
+     */
+    class SlaveStats: public QTreeWidget{
+    public:
+        SlaveStats(QWidget *parent = 0, QString ip = "", QString input = "");
+    };
+
+    /**
+     * @var slaveStats
+     * @brief The pointer to a SlaveStats object
+     */
+    SlaveStats *slaveStats;
+
+
+
 };
 
 

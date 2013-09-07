@@ -132,6 +132,10 @@ public:
         virtual int getBuildCount() = 0;
 
         virtual void setBuildSame(bool isSame, int buildID) = 0;
+
+        virtual void getDetStats() = 0;
+
+        virtual void getMinStats() = 0;
 };
 
 #endif // MACHINE_H

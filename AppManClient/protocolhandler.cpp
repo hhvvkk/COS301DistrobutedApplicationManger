@@ -76,11 +76,16 @@ void ProtocolHandler::requestHandler(QString data){
 
     if(data.compare("GetAllSysInfo"))
         getSysInfo->handle(data, management, masterSocket);
+    
+    if(data.compare("GetDetailedSysInfo"))
+        getSysInfo->handle(data, management, masterSocket);
 
+    if(data.compare("GetMinimalSysInfo"))
+        getSysInfo->handle(data, management, masterSocket);
+    
 ////////////////////////NEW///////////////////////
     if(data.contains("SendBuildCopyServer:#"))
         sendBuild->handle(data, management, masterSocket);
-////////////////////////NEW///////////////////////
 }
 
 void ProtocolHandler::disconnectFromMaster(){

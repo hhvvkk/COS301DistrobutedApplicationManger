@@ -34,4 +34,3 @@ void myDirIterator::getFileInfo(){
         }
     }
 }
-

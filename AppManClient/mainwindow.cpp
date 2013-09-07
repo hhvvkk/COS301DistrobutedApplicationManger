@@ -113,13 +113,8 @@ void MainWindow::on_pushButton_clicked()
 void MainWindow::on_pushButton_2_clicked()
 {
     sysInfo s;
-    s.netStat();
-    s.memPerc();
-    s.cpuUsage();
-    s.osVersion();
-    s.getDiskDetails();
-    s.cpuStats();
-    s.listProcesses();
+    qDebug()<<s.getDetailedStats();
+    qDebug()<<s.getMinimalStats();
 }
 
 

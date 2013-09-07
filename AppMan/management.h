@@ -218,9 +218,18 @@ public:
     */
     Machine *getMachineByIp(QString machineIp);
 
+
     void slaveBuildSize(QString buildNo, QString buildMD5Value, QString slaveIp);
 
     void setSlaveBuildIsSame(bool isSame, QString slaveIp, int buildID);
+
+    QString getMinStats(){return minStats;}
+
+    void setMinStats(QString stats);
+
+    QString getDetStats(){return detStats;}
+
+    void setDetStats(QString stats);
 
     void machineBuildSynched(QString slaveIp, double percentageSynched);
 private:
@@ -266,6 +275,9 @@ private:
      * @brief A lock that will be used to ensure concurrent events take place in correct order
      */
     QMutex *lock;
+
+    QString minStats;
+    QString detStats;
 
 };
 

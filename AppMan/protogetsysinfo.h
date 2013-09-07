@@ -21,8 +21,15 @@ public:
      */
     void handle(QString data, Management *man, QTcpSocket *slaveSocket);
 
+    void getMinimal(QTcpSocket *slaveSocket);
+    void getDetailed(QTcpSocket *slaveSocket);
+
 private:
-    void SysInfoFollows(QString data, Management *management);
+    void detSysInfoFollows(QString data, Management *management);
+    void minSysInfoFollows(QString data, Management *management);
+signals:
+    //void setDetStats(QString stats);
+    //void setMinStats(QString stats);
 };
 
 #endif // PROTOGETSYSINFO_H

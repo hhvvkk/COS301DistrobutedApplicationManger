@@ -1,8 +1,6 @@
 #include "mainform.h"
 #include "ui_mainform.h"
 
-
-
 MainForm::MainForm(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainForm)
@@ -21,8 +19,7 @@ MainForm::MainForm(QWidget *parent) :
     connect(management, SIGNAL(slaveBuildSynched(QString,double)), this, SLOT(slaveBuildSynched(QString,double)));
 
     masterBuilds = new MasterBuilds();
-    masterBuilds->setHeaderHidden(true);
-
+    masterBuilds->setHeaderHidden(true);    
 
     /*
      * This part initializes the masterBuilds and adds it to mainform
@@ -36,7 +33,6 @@ MainForm::MainForm(QWidget *parent) :
      **/
     QVBoxLayout *topDocWidgetLayout = new QVBoxLayout();
     buildInfo = new BuildInfo();
-
     topDocWidgetLayout->addWidget(buildInfo);
    // ui->dockWidgetProperty->layout()->addWidget(buildInfo);
 
@@ -87,7 +83,8 @@ MainForm::~MainForm()
 
 MainForm::MasterBuilds::MasterBuilds(QWidget *parent)
     :QTreeWidget(parent){
-
+    setColumnCount(2);
+    hideColumn(1);
 }
 
 MainForm::BuildInfo::BuildInfo(QWidget *parent)
@@ -251,7 +248,8 @@ void MainForm::dropBuildToSlave(QString fromBuild){
 }
 
 void MainForm::dropNewBuildAdd(QString newBuildDirectory){
-    AddBuild *newBuild = new AddBuild(management, newBuildDirectory);
+    AddBuild *newBuild = new AddBuild(newBuildDirectory);
+    connect(newBuild,SIGNAL(initiateAddBuild(Build)),this,SLOT(initiateAddBuild(Build)));
     newBuild->show();
 }
 
@@ -321,19 +319,14 @@ void MainForm::slaveDisconnected(int index){
 
 void MainForm::initiateAddBuild(Build b){
     management->addBuild(b);
-    qDebug()<<"Build added";
     displayBuilds();
 }
 
 void MainForm::displayBuilds(){
-    qDebug()<<"here to display";
     masterBuilds->clear();
-    masterBuilds->setColumnCount(2);
-    masterBuilds->hideColumn(1);
     Build* myBuilds = management->getAllBuilds();
     int len = management->getBuildCount();
-    qDebug()<<len;
-    QTreeWidgetItem *boola;
+    QTreeWidgetItem *newWidgetItem;
     QString buildName = "";
     QString strNum;
     int buildNum = -1;
@@ -342,11 +335,12 @@ void MainForm::displayBuilds(){
         buildName = myBuilds[i].getBuildName();
         buildNum = myBuilds[i].getBuildID();
         strNum = QString::number(buildNum);
-        boola = new QTreeWidgetItem();
+        newWidgetItem = new QTreeWidgetItem();
         // The build no in column 1, which is hidden
-        boola->setText(0,buildName);
-        boola->setText(1,strNum);
-        masterBuilds->addTopLevelItem(boola);
+        newWidgetItem->setText(0,buildName);
+        newWidgetItem->setText(1,strNum);
+        newWidgetItem->setToolTip(0,strNum);
+        masterBuilds->addTopLevelItem(newWidgetItem);
     }
 }
 
@@ -378,6 +372,9 @@ void MainForm::masterBuildsClicked(QModelIndex index){
     qDebug()<<"selBuild:  "<<selBuild;
     int num = selBuild.toInt();
     Build retr = management->getBuildByID(num);
+    clearWidget();
+    buildInfo = new BuildInfo();
+    ui->dockWidgetContents->layout()->addWidget(buildInfo);
     populateBuildInfo(retr);
     populateTreeWidgetInfo(retr);
 }
@@ -421,7 +418,6 @@ void MainForm::populateTreeWidgetInfo(Build retr){
     /*
      *NOTA: Hierdie funksie is vir as mens sou die TreeWidgetInfo met files en hulle mod dates populate
      */
-
     ui->treeWidgetInfoBox->clear();
     ui->treeWidgetInfoBox->setColumnCount(2);
     QStringList headers;
@@ -456,30 +452,25 @@ void MainForm::populateTreeWidgetInfo(Build retr){
 }
 
 void MainForm::on_actionAdd_Build_triggered(){
-    AddBuild *newBuild = new AddBuild(management);
+    AddBuild *newBuild = new AddBuild();
     connect(newBuild,SIGNAL(initiateAddBuild(Build)),this,SLOT(initiateAddBuild(Build)));
     newBuild->show();
 }
 
 void MainForm::on_actionCopy_Build_Over_triggered() {
-
     QStringList nameListSuggest;
-    for(int i = 0; i < masterBuilds->topLevelItemCount(); i++)
+    for(int i = 0; i < masterBuilds->topLevelItemCount(); i++){
         nameListSuggest<<masterBuilds->topLevelItem(i)->text(0);
-
+    }
     QStringList ipListSuggest;
-
-
     QTreeWidgetItem *safetyItem;//so that if that item is retrieved, but does not exist(concurrency)
     for(int i = 0; i < ui->treeWidgetSlaves->topLevelItemCount(); i++){
         safetyItem = ui->treeWidgetSlaves->topLevelItem(i);
         if(safetyItem != 0)
             ipListSuggest<< safetyItem->text(0);
     }
-
     CopyBuildOver *copyBuild = new CopyBuildOver(management, nameListSuggest, ipListSuggest);
     copyBuild->show();
-
     connect(copyBuild, SIGNAL(copyBuildOver(QString,QString)), this, SLOT(initiateCopyBuildOver(QString,QString)));
 }
 
@@ -489,12 +480,10 @@ void MainForm::initiateCopyBuildOver(QString ipAddress, QString buildName){
 
 void MainForm::slaveGotBuild(Machine*m, QString buildId, bool buildExist){
     QTreeWidgetItem *machineT = getSlaveTreeItemByIp(m->getMachineIP());
-
-    if(machineT == 0)
+    if(machineT == 0){
         return;
-
+    }
     QTreeWidgetItem *newBuildForSlave = new QTreeWidgetItem();
-
     if(buildExist == false){
         //show the background colour as red as well as display that buildId
         newBuildForSlave->setBackgroundColor(0, Qt::red);
@@ -519,24 +508,21 @@ QTreeWidgetItem* MainForm::getSlaveTreeItemByIp(QString ip){
             if(!safetyItem->text(0).compare(ip))
                 machineTreeItem = ui->treeWidgetSlaves->topLevelItem(i);
     }
-
     return machineTreeItem;
 }
 
 void MainForm::slaveBuildSizeSame(QString buildName, QString slaveIp, bool isTheSame){
     QTreeWidgetItem * slaveTreeWidgetItem = getSlaveTreeItemByIp(slaveIp);
     QTreeWidgetItem * buildItem = 0;
-
     for(int i = 0; i < slaveTreeWidgetItem->childCount(); i++){
         if(!slaveTreeWidgetItem->child(i)->text(0).compare(buildName)){
             buildItem = slaveTreeWidgetItem->child(i);
             break;
         }
     }
-
-    if(buildItem == 0)
+    if(buildItem == 0){
         return;
-
+    }
     if(isTheSame){
         buildItem->setBackgroundColor(0, Qt::green);
     }
@@ -545,6 +531,97 @@ void MainForm::slaveBuildSizeSame(QString buildName, QString slaveIp, bool isThe
     }
 }
 
+
 void MainForm::slaveBuildSynched(QString slaveIp, double percentage){
     qDebug()<<"slaveSynched["<< slaveIp <<"] = "<<percentage;
 }
+
+
+MainForm::SlaveStats::SlaveStats(QWidget *parent, QString ip, QString input)
+    :QTreeWidget(parent){
+    QString labelHeader1 = "Property";
+    QString labelHeader2 = "Value";
+    QStringList labelHeaders;
+    labelHeaders << labelHeader1<<labelHeader2;
+    QTreeWidget::setColumnCount(3);
+    QTreeWidget::setHeaderLabels(labelHeaders);
+    QStringList lists = input.split("#");
+    QTreeWidgetItem *newItem;
+    this->hideColumn(2);
+
+    newItem = new QTreeWidgetItem();
+    newItem->setText(0,"CPU usage %");
+    newItem->setText(1,lists.at(0));
+    newItem->setText(2,ip);
+    this->addTopLevelItem(newItem);
+
+    newItem = new QTreeWidgetItem();
+    newItem->setText(0,"RAM usage %");
+    newItem->setText(1,lists.at(1));
+    newItem->setText(2,ip);
+    this->addTopLevelItem(newItem);
+
+
+    newItem = new QTreeWidgetItem();
+    newItem->setText(0,"Data Transmitted");
+    newItem->setText(1,lists.at(2));
+    newItem->setText(2,ip);
+    this->addTopLevelItem(newItem);
+
+
+    newItem = new QTreeWidgetItem();
+    newItem->setText(0,"Data Received");
+    newItem->setText(1,lists.at(3));
+    newItem->setText(2,ip);
+    this->addTopLevelItem(newItem);
+
+    newItem = new QTreeWidgetItem();
+    newItem->setText(0,"Click for more");
+    newItem->setText(1,"More");
+    newItem->setText(2,ip);
+    this->addTopLevelItem(newItem);
+}
+
+void MainForm::on_treeWidgetSlaves_clicked(const QModelIndex &index)
+{
+    //Get the ip of the selected build
+    QString ip = index.data().toString();
+    //Ensure the data is an IP
+    int count = 0;
+    for(int i = 0; i < ip.length(); i++){
+        if(ip.at(i) == '.'){
+            count++;
+        }
+    }
+    //If it is an IP
+    if(count == 3){
+        Machine * selected = management->getMachineByIp(ip);
+        qDebug()<<ip;
+
+        selected->getMinStats();
+        QString inp = "16%#46%#2.39695MB#5.375KB" ;
+        buildInfo->hide();
+        slaveStats = new SlaveStats(this,ip,inp);
+        connect(slaveStats, SIGNAL(clicked(QModelIndex)), this, SLOT(slaveStatsClicked(QModelIndex)));
+        clearWidget();
+        ui->dockWidgetContents->layout()->addWidget(slaveStats);
+    }
+}
+
+void MainForm::clearWidget(){
+    int cnt = ui->dockWidgetContents->layout()->count();
+    for(int i = 0; i < cnt; i++){
+        QWidget *w = ui->dockWidgetContents->layout()->itemAt(i)->widget();
+        ui->dockWidgetContents->layout()->removeWidget(w);
+    }
+}
+
+void MainForm::slaveStatsClicked(QModelIndex index){
+    QString ip = index.sibling(index.row(),2).data().toString();
+    Machine * selected = management->getMachineByIp(ip);
+    selected->getDetStats();
+    QString unParsed = "";
+    moreInfo * mi = new moreInfo();
+    mi->show();
+}
+

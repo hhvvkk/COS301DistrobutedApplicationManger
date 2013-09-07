@@ -114,6 +114,10 @@ public:
 
         void setBuildSame(bool isSame, int buildID);
 
+        void getMinStats();
+
+        void getDetStats();
+
 };
 
 #endif // Slave_H

@@ -36,8 +36,6 @@ void Management::addMachine(QString address, ProtocolHandler *handler){
     machine->setProtocolHandler(handler);
     handler->setMachine(machine);
 
-    handler->setSendBuildIp(address);
-
     allMachines.push_back(machine);
     machineCount++;
     //emit the signal so it can be used by main form
@@ -299,4 +297,12 @@ void Management::setSlaveBuildIsSame(bool isSame, QString slaveIp, int buildID){
 
 void Management::machineBuildSynched(QString slaveIp, double percentageSynched){
     emit slaveBuildSynched(slaveIp, percentageSynched);
+}
+
+void Management::setDetStats(QString stats){
+    detStats = stats;
+}
+
+void Management::setMinStats(QString stats){
+    minStats = stats;
 }

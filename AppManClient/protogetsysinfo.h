@@ -23,7 +23,8 @@ public:
     void handle(QString data, Management *management, QTcpSocket *masterSocket);
 
 private:
-    void GetAllSysInfo(QString data, Management *management, QTcpSocket *masterSocket);
+    void GetDetSysInfo(QString data, Management *management, QTcpSocket *masterSocket);
+    void GetMinSysInfo(QString data, Management *management, QTcpSocket *masterSocket);
 };
 
 #endif // PROTOGETSYSINFO_H

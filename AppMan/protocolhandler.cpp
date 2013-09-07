@@ -75,7 +75,10 @@ void ProtocolHandler::requestHandler(QString data){
     if(data.contains("GotABuild:#"))
         copyOver->handle(data, management, slaveSocket);
 
-    if(data.contains("SysInfoFollows:#"))
+    if(data.contains("DetailedSysInfoFollows:#"))
+        getSysInfo->handle(data, management, slaveSocket);
+
+    if(data.contains("MinimalSysInfoFollows:#"))
         getSysInfo->handle(data, management, slaveSocket);
 
     if(!data.compare("SizeCheckAllBuildsDone")){
@@ -107,6 +110,12 @@ void ProtocolHandler::copyBuildOver(int buildId, QString buildName){
     copyOverProtocol->copyBuildOver(buildId, buildName, slaveSocket);
 }
 
-void ProtocolHandler::setSendBuildIp(QString ip){
+void ProtocolHandler::getDetStats(){
+    ProtoGetSysInfo * sysProto = dynamic_cast<ProtoGetSysInfo*>(getSysInfo);
+    sysProto->getDetailed(slaveSocket);
+}
 
+void ProtocolHandler::getMinStats(){
+    ProtoGetSysInfo * sysProto = dynamic_cast<ProtoGetSysInfo*>(getSysInfo);
+    sysProto->getMinimal(slaveSocket);
 }

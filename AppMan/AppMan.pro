@@ -42,7 +42,9 @@ SOURCES += main.cpp\
     copysenderserver.cpp \
     json.cpp \
     buildmd5.cpp \
-    copyqueue.cpp
+    copyqueue.cpp\
+    moreinfo.cpp\
+    compression.cpp
 
 HEADERS  += mainform.h \
     aboutversion.h \
@@ -71,14 +73,17 @@ HEADERS  += mainform.h \
     copysenderserver.h \
     json.h \
     buildmd5.h \
-    copyqueue.h
+    copyqueue.h\
+    moreinfo.h\
+    compression.h
 
 FORMS    += mainform.ui \
     aboutversion.ui \
     abouthelp.ui \
     inputdialogue.ui \
     addbuild.ui \
-    copybuildover.ui
+    copybuildover.ui\
+    moreinfo.ui
 
 RESOURCES += \
     images.qrc

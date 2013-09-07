@@ -72,8 +72,17 @@ public:
      */
     void disconnectMachine();
 
+    /**
+     * \fn void disconnectMachine();
+     * @brief The disconnect function that will call the Connect Protocol disconnect
+     */
+    void getMinStats();
+    /**
+     * \fn void disconnectMachine();
+     * @brief The disconnect function that will call the Connect Protocol disconnect
+     */
+    void getDetStats();
 
-    void setSendBuildIp(QString ip);
 private:
     /**
      * \fn void requestHandler(QString data);
@@ -132,8 +141,6 @@ private:
      * @var slaveSocket The slave machine socket
      */
     QTcpSocket *slaveSocket;
-
-    QString ipAddress;
 
 };
 

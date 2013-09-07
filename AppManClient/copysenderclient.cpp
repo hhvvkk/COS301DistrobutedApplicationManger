@@ -209,7 +209,9 @@ void CopySenderClient::DeleteFilesList(const QVariantMap jsonObject){
 
         if(indexOfLastSlash != -1){//if it was -1 it means it is root in that build
             //check to see if the directory where file is removed from is empty, if so delete the directory as well
-            if(QDir(deleteFilePath.left(indexOfLastSlash)).entryInfoList(QDir::NoDotAndDotDot|QDir::AllEntries).count() == 0){
+            qDebug()<<"Asd"<<deleteFilePath.left(indexOfLastSlash);
+            qDebug()<<"---"<<buildNo.toString();
+            if(QDir(directoryWhereDeleted).entryInfoList(QDir::NoDotAndDotDot|QDir::AllEntries).count() == 0 & !directoryWhereDeleted.compare(buildNo.toString())){
                 QDir().rmdir(directoryWhereDeleted);
             }
         }
