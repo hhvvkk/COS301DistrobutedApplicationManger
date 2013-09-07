@@ -5,24 +5,27 @@ ProtoSendBuild::ProtoSendBuild(QObject *parent)
 {
 }
 
-void ProtoSendBuild::handle(QString data, Management *management, QTcpSocket *masterSocket){
+void ProtoSendBuild::handle(QString data, Management *management, QTcpSocket *masterSocket){    
     if(data.contains("SendBuildCopyServer:#"))
-        SendBuildCopyServer(data, management, masterSocket);
+        SendBuildCopyServer(data, masterSocket);
 }
 
-void ProtoSendBuild::SendBuildCopyServer(QString data, Management *management, QTcpSocket *masterSocket){
+void ProtoSendBuild::SendBuildCopyServer(QString data, QTcpSocket *masterSocket){
     qDebug()<<"PROTOSENDHANDLE--PROTOCLAss";
 
     //E.g SendBuildCopyServer:#121.110.222.212#4412
     QString mostLeft = "SendBuildCopyServer:#";
 
-    QString rightSide = data.right((data.size()-mostLeft.length()));
-    //E.g. RIGHT SIDE= "121.110.222.212#4412"
+    QString hostPort = data.right((data.size()-mostLeft.length()));
+    //E.g. RIGHT SIDE= "4412"
 
-    QString hostAddress = rightSide.left(rightSide.indexOf("#"));
-    QString hostPort = rightSide.right(rightSide.length() - rightSide.indexOf("#")-1);
+    QHostAddress theHostAddress = masterSocket->peerAddress();
+    if(theHostAddress.isNull())
+        return;
+    //QString hostPort = rightSide.left(rightSide.indexOf("#"));
 
-    qDebug()<<"HOSTAd"<<hostAddress;
+
+    qDebug()<<"HOSTAd"<<theHostAddress.toString();
     qDebug()<<"HOSTPor"<<hostPort;
 
     //check to see if port is actually valid
@@ -32,7 +35,7 @@ void ProtoSendBuild::SendBuildCopyServer(QString data, Management *management, Q
     if(!ok)
         return;
 
-    CopySenderClient *senderClient = new CopySenderClient(hostAddress, port);
+    CopySenderClient *senderClient = new CopySenderClient(theHostAddress, port);
 
     bool connected = senderClient->connectToHost();
 

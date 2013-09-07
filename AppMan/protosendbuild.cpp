@@ -52,7 +52,7 @@ void ProtoSendBuild::SizeCheckAllBuildsDone(QTcpSocket *slaveSocket, Management 
         qDebug()<<"IP ADDRESS is empty(ProtoSendBuild .cpp -- line 52+";
     }
 
-    CopySenderServer * newSender = new CopySenderServer(differentBuildDirectories, differentBuildNos, management, ipAddress);
+    CopySenderServer * newSender = new CopySenderServer(differentBuildDirectories, differentBuildNos, management);
 
     //get the port on which new server will run
     int port = newSender->startServer();
@@ -62,13 +62,7 @@ void ProtoSendBuild::SizeCheckAllBuildsDone(QTcpSocket *slaveSocket, Management 
         return;
     }
 
-    QString ipAddress = newSender->getIpAddress();
-    if(!ipAddress.compare("")){
-        newSender->deleteLater();
-        return;
-    }
-
-    QString message = "||SendBuildCopyServer:#"+ipAddress+"#"+QString::number(port)+"||";
+    QString message = "||SendBuildCopyServer:#"+QString::number(port)+"||";
 
     slaveSocket->write(message.toAscii().data());
     slaveSocket->flush();

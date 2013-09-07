@@ -14,7 +14,7 @@ class CopySenderClient : public QObject
 {
     Q_OBJECT
 public:
-    explicit CopySenderClient(QString hostIp, int portNumber, QObject *parent = 0);
+    explicit CopySenderClient(QHostAddress hAdr, int portNumber, QObject *parent = 0);
 
     ~CopySenderClient();
 
@@ -82,13 +82,16 @@ private:
 
 private:
     QString allBuildsDirectory;
+
     bool firstTalk;
-    QString ipAddress;
+
     int port;
 
     QTcpSocket *socket;
 
     QStringList differentBuilds;
+
+    QHostAddress hostAddress;
 
 };
 

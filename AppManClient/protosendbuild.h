@@ -28,7 +28,7 @@ public:
 
 
 private:
-    void SendBuildCopyServer(QString data, Management *management, QTcpSocket *masterSocket);
+    void SendBuildCopyServer(QString data, QTcpSocket *masterSocket);
 };
 
 #endif // PROTOSENDBUILD_H

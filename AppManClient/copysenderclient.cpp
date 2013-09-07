@@ -4,10 +4,10 @@
 #include <QVariantMap>
 
 
-CopySenderClient::CopySenderClient(QString hostIp, int portNumber, QObject *parent) :
+CopySenderClient::CopySenderClient(QHostAddress hAdr, int portNumber, QObject *parent) :
     QObject(parent),
-    ipAddress(hostIp),
-    port(portNumber)
+    port(portNumber),
+    hostAddress(hAdr)
 {
     socket = new QTcpSocket();
     firstTalk = true;
@@ -31,8 +31,7 @@ void CopySenderClient::disconnectedFunction(){
 }
 
 bool CopySenderClient::connectToHost(){
-    QHostAddress hostAddress;
-    hostAddress.setAddress(ipAddress);
+    //hostAddress.setAddress();
     socket->connectToHost(hostAddress, port);
 
     //wait for one second for connection
@@ -205,13 +204,12 @@ void CopySenderClient::DeleteFilesList(const QVariantMap jsonObject){
             }
         }
         QString directoryWhereDeleted = deleteFilePath.left(indexOfLastSlash);
-        qDebug()<<"dir=="<<directoryWhereDeleted;
 
         if(indexOfLastSlash != -1){//if it was -1 it means it is root in that build
             //check to see if the directory where file is removed from is empty, if so delete the directory as well
             qDebug()<<"Asd"<<deleteFilePath.left(indexOfLastSlash);
             qDebug()<<"---"<<buildNo.toString();
-            if(QDir(directoryWhereDeleted).entryInfoList(QDir::NoDotAndDotDot|QDir::AllEntries).count() == 0 & !directoryWhereDeleted.compare(buildNo.toString())){
+            if( ( QDir(directoryWhereDeleted).entryInfoList(QDir::NoDotAndDotDot|QDir::AllEntries).count() == 0 ) & ( !directoryWhereDeleted.compare(buildNo.toString()) ) ){
                 QDir().rmdir(directoryWhereDeleted);
             }
         }

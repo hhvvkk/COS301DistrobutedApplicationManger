@@ -114,13 +114,6 @@ public:
     */
     QString getBuildMD5(Build build);
 
-    /**
-    * \fn BuildMD5 *getBuildMD5Class(Build build);
-    * @brief This function will calculate the MD5 of each of the files inside a build
-    * @param build The build on which the MD5 file values will be calculated
-    * @return Returns a BuildMD5 Class containing MD5 values for each and every file inside a build
-    */
-    BuildMD5 *getBuildMD5Class(Build build);
 
     QString getDetSysInfo();
 

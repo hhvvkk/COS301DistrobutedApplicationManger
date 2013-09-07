@@ -1,32 +1,17 @@
 #include "copysenderserver.h"
 
-CopySenderServer::CopySenderServer( QStringList &differentB, QStringList &differentBNos, Management *man, QString ip, QObject *parent) :
+CopySenderServer::CopySenderServer( QStringList &differentB, QStringList &differentBNos, Management *man, QObject *parent) :
     QTcpServer(parent)
 {
     differentBuildDirectories = differentB;
     differentBuildNos = differentBNos;
     management = man;
-    ipAddress = ip;
-
-    ipAddress = "";
 
     qDebug()<<"All the different Builds follows::in CopySenderServer";
     for(int i = 0; i < differentBuildDirectories.size(); i++){
         qDebug()<<"DifferentBuild="<<differentBuildDirectories.at(i);
     }
 
-    QList<QHostAddress> ipAddressesList = QNetworkInterface::allAddresses();
-    // use the first non-localhost IPv4 address
-    for (int i = 0; i < ipAddressesList.size(); ++i) {
-        if (ipAddressesList.at(i) != QHostAddress::LocalHost &&
-            ipAddressesList.at(i).toIPv4Address()) {
-            ipAddress = ipAddressesList.at(i).toString();
-            break;
-        }
-    }
-    // if we did not find one, use IPv4 localhost
-    if (ipAddress.isEmpty())
-        ipAddress = QHostAddress(QHostAddress::LocalHost).toString();
     firstTalk = true;
 }
 
@@ -36,12 +21,8 @@ CopySenderServer::~CopySenderServer(){
         socket->deleteLater();
 }
 
-QString CopySenderServer::getIpAddress(){
-    return ipAddress;
-}
-
 int CopySenderServer::startServer(){
-    if(!this->listen()){
+    if(!this->listen(QHostAddress::Any)){
         qDebug() << "Could not start server";
     }
     else
