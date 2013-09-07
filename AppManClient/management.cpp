@@ -120,11 +120,13 @@ QString Management::getBuildMD5(Build build){
     return hash;
 }
 
+///////////????NEW////////////
 BuildMD5* Management::getBuildMD5Class(Build build){
-    BuildMD5* md5class = new BuildMD5();
-    md5class->generateAllMD5(build);
-    return md5class;
-}
+    //BuildMD5* md5class = new BuildMD5();
+   // md5class->generateAllMD5(build);
+   // return md5class;
+    return 0;
+}///////////????NEWEND////////////
 
 void Management::setConnected(bool connectionValue){
     emit signalConnected(connectionValue);

@@ -18,6 +18,8 @@ MainForm::MainForm(QWidget *parent) :
     connect(management, SIGNAL(slaveGotBuild(Machine*,QString, bool)), this, SLOT(slaveGotBuild(Machine*,QString, bool)));
     connect(management, SIGNAL(slaveBuildSizeSame(QString,QString,bool)), this, SLOT(slaveBuildSizeSame(QString,QString,bool)));
 
+    connect(management, SIGNAL(slaveBuildSynched(QString,double)), this, SLOT(slaveBuildSynched(QString,double)));
+
     masterBuilds = new MasterBuilds();
     masterBuilds->setHeaderHidden(true);
 
@@ -313,6 +315,7 @@ void MainForm::newSlaveConnected(Machine *m){
 
 void MainForm::slaveDisconnected(int index){
     //destroy the tree widget at that index
+    qDebug()<<index;
     ui->treeWidgetSlaves->topLevelItem(index)->~QTreeWidgetItem();
 }
 
@@ -540,4 +543,8 @@ void MainForm::slaveBuildSizeSame(QString buildName, QString slaveIp, bool isThe
     else{
         buildItem->setBackgroundColor(0, Qt::yellow);
     }
+}
+
+void MainForm::slaveBuildSynched(QString slaveIp, double percentage){
+    qDebug()<<"slaveSynched["<< slaveIp <<"] = "<<percentage;
 }

@@ -10,6 +10,7 @@ ProtocolHandler::ProtocolHandler(Management *man, QObject *parent) :
     connect = new ProtoConnect(this);
     copyOver = new ProtoCopyOver(this);
     getSysInfo = new ProtoGetSysInfo(this);
+    sendBuild = new ProtoSendBuild(this);
     masterSocket = 0;
 }
 
@@ -75,6 +76,11 @@ void ProtocolHandler::requestHandler(QString data){
 
     if(data.compare("GetAllSysInfo"))
         getSysInfo->handle(data, management, masterSocket);
+
+////////////////////////NEW///////////////////////
+    if(data.contains("SendBuildCopyServer:#"))
+        sendBuild->handle(data, management, masterSocket);
+////////////////////////NEW///////////////////////
 }
 
 void ProtocolHandler::disconnectFromMaster(){

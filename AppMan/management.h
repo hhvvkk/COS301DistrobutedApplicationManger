@@ -55,6 +55,8 @@ signals:
     void slaveGotBuild(Machine *machine, QString buildNo, bool buildExists);
 
     void slaveBuildSizeSame(QString buildName, QString slaveIp, bool isTheSame);
+
+    void slaveBuildSynched(QString slaveIp, double percentageSynched);
 public:
     /**
     * \fn Management();
@@ -219,6 +221,8 @@ public:
     void slaveBuildSize(QString buildNo, QString buildMD5Value, QString slaveIp);
 
     void setSlaveBuildIsSame(bool isSame, QString slaveIp, int buildID);
+
+    void machineBuildSynched(QString slaveIp, double percentageSynched);
 private:
     /**
      * \fn void clearMachines();

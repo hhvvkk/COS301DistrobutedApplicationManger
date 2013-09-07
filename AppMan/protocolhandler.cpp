@@ -106,3 +106,7 @@ void ProtocolHandler::copyBuildOver(int buildId, QString buildName){
     ProtoCopyOver *copyOverProtocol = dynamic_cast<ProtoCopyOver*>(copyOver);
     copyOverProtocol->copyBuildOver(buildId, buildName, slaveSocket);
 }
+
+void ProtocolHandler::setSendBuildIp(QString ip){
+
+}

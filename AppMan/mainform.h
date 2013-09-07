@@ -204,6 +204,8 @@ private slots:
 
 
     void slaveBuildSizeSame(QString name, QString slaveIp, bool isTheSame);
+
+    void slaveBuildSynched(QString,double);
 private:
     /**
      * \fn dropBuildToSlave(QString from);

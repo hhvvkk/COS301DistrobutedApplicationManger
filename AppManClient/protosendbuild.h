@@ -2,6 +2,7 @@
 #define PROTOSENDBUILD_H
 
 #include "protocol.h"
+#include "copysenderclient.h"
 
 /**
   * @class ProtoSendBuild
@@ -25,6 +26,9 @@ public:
      */
     void handle(QString data, Management *management, QTcpSocket *masterSocket);
 
+
+private:
+    void SendBuildCopyServer(QString data, Management *management, QTcpSocket *masterSocket);
 };
 
 #endif // PROTOSENDBUILD_H

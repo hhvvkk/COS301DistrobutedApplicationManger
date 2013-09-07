@@ -36,6 +36,8 @@ void Management::addMachine(QString address, ProtocolHandler *handler){
     machine->setProtocolHandler(handler);
     handler->setMachine(machine);
 
+    handler->setSendBuildIp(address);
+
     allMachines.push_back(machine);
     machineCount++;
     //emit the signal so it can be used by main form
@@ -52,7 +54,6 @@ void Management::removeMachine(Machine *m){
 
     int index = -1;
     if(allMachines.size() == 0){
-        qDebug()<<"size = 0";
         return;
     }
     for(unsigned int i = 0; i < allMachines.size(); i++)
@@ -294,4 +295,8 @@ void Management::setSlaveBuildIsSame(bool isSame, QString slaveIp, int buildID){
     Machine * slave = getMachineByIp(slaveIp);
 
     slave->setBuildSame(isSame, buildID);
+}
+
+void Management::machineBuildSynched(QString slaveIp, double percentageSynched){
+    emit slaveBuildSynched(slaveIp, percentageSynched);
 }

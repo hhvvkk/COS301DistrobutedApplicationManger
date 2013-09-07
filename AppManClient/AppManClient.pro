@@ -6,6 +6,7 @@
 
 QT       += core gui
 QT       += network
+QT       += script
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -33,7 +34,9 @@ SOURCES += main.cpp\
     protoconnect.cpp \
     protocopyover.cpp \
     protogetsysinfo.cpp \
-    protosendbuild.cpp
+    protosendbuild.cpp \
+    copysenderclient.cpp \
+    json.cpp
 
 HEADERS  += mainwindow.h \
     socketclient.h \
@@ -54,7 +57,9 @@ HEADERS  += mainwindow.h \
     protoconnect.h \
     protocopyover.h \
     protogetsysinfo.h \
-    protosendbuild.h
+    protosendbuild.h \
+    copysenderclient.h \
+    json.h
 
 FORMS    += mainwindow.ui \
     viewbuilds.ui \

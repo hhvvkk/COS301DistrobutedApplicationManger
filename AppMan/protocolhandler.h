@@ -73,6 +73,7 @@ public:
     void disconnectMachine();
 
 
+    void setSendBuildIp(QString ip);
 private:
     /**
      * \fn void requestHandler(QString data);
@@ -131,6 +132,8 @@ private:
      * @var slaveSocket The slave machine socket
      */
     QTcpSocket *slaveSocket;
+
+    QString ipAddress;
 
 };
 

@@ -24,11 +24,13 @@ void myDirIterator::getFileInfo(){
         QFileInfo fileInfo = it->fileInfo();
         QDateTime date = fileInfo.lastModified();
         QString strDate = date.toString();
-        cnt++;
-        if(cnt>2){
+
+        if(it->fileName().compare("..") && it->fileName().compare(".")) {
+            //if the file names are not . or .. continue
             fileMods.push_back(strDate);
             fileNames.push_back(it->fileName());
             filePaths.push_back(it->filePath());
+            cnt++;
         }
     }
 }

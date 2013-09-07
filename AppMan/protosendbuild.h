@@ -31,7 +31,13 @@ public:
      * @brief This function will be invoked once SizeCheckAllBuilds has completed and will resynchronize the builds
      * @param slaveSocket The socket if it is needed to write to it
      */
-    void SizeCheckAllBuildsDone(QTcpSocket *slaveSocket);
+    void SizeCheckAllBuildsDone(QTcpSocket *slaveSocket,  Management *management);
+
+    void sizeCheckCertainBuildDone();
+
+    void setSendBuildIp(QString ip);
+private:
+    QString ipAddress;
 };
 
 #endif // PROTOSENDBUILD_H
