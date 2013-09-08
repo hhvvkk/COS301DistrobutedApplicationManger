@@ -2,8 +2,9 @@
 #include "Machine.h"
 #include "management.h"
 
-ServerThread::ServerThread(int ID, Management *man, QObject *parent) :
-    QThread(parent)
+ServerThread::ServerThread(int ID, Management *man, QObject *parent)
+    //:
+    //QThread(parent)
 {
     this->socketID = ID;
     socket = 0;
@@ -14,7 +15,7 @@ ServerThread::ServerThread(int ID, Management *man, QObject *parent) :
 }
 
 //thread starts here
-void ServerThread::run(){
+void ServerThread::startThread(){
     socket = new QTcpSocket();
 
     protocolHandler->setSocket(socket);
@@ -31,7 +32,7 @@ void ServerThread::run(){
 
     //NB exec() is needed!!!
     //this execute keeps the thread running in a loop thus it won't exit once it is done
-    exec();
+    //exec();
 }
 
 QTcpSocket *ServerThread::getSocket(){
@@ -55,5 +56,5 @@ void ServerThread::disconnectedFunction(){
     protocolHandler->deleteLater();
 
     //this exit shows that the thread is done and don't have to be on loop
-    exit(0);
+    //exit(0);
 }

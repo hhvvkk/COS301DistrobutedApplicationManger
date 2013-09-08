@@ -13,6 +13,7 @@
 #include <QMessageBox>
 #include <QDebug>
 #include <QWidget>
+#include <QSettings>
 
 namespace Ui {
     class InputDialogue;

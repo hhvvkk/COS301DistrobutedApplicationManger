@@ -53,7 +53,6 @@ void CopySenderClient::readyReadFunction(){
         return;
     QByteArray Data = socket->readAll();
     QString data = Data;
-    qDebug()<<"COPYread::"<<data;
     handle(data);
 }
 

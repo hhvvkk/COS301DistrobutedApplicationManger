@@ -17,6 +17,15 @@ ProtocolHandler::ProtocolHandler( Management *man, QObject *parent) :
     firstTalk = true;
 }
 
+ProtocolHandler::~ProtocolHandler(){
+    slaveCurrentBuilds->deleteLater();
+    copyOver->deleteLater();
+    connect->deleteLater();
+    sizeCheckBuilds->deleteLater();
+    getSysInfo->deleteLater();
+    sendBuild->deleteLater();
+}
+
 void ProtocolHandler::handle(QString data){
     QStringList protocolRequests;
 

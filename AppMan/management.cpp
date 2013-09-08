@@ -197,7 +197,7 @@ void Management::addBuildToSlave(int machineId, int buildNo, QString buildName){
     }
     else{
         machine->addBuild(buildToAdd);
-        emit slaveGotBuild(machine, buildNo, buildToAdd.getBuildName(), true);
+        emit slaveGotBuild(machine, buildNo, buildName, true);
     }
 
 }
@@ -247,10 +247,8 @@ Machine *Management::getMachineById(int machineId){
 
     Machine *machine = 0;
     for(int i = 0; i < machineCount; i++){
-        qDebug()<<"machineCount: "<<machineCount<<">"<<i;
         if(allMachines.at(i)->getMachineID() == machineId){
             machine = allMachines.at(i);
-            qDebug()<<"YES";
             break;
         }
     }

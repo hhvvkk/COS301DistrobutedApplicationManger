@@ -56,7 +56,6 @@ void CopySenderServer::incomingConnection(int socketID){
 }
 
 void CopySenderServer::destroyServer(){
-    qDebug()<<"DESTROYING SERVER";
     this->deleteLater();
 }
 

@@ -9,7 +9,7 @@
 #include <QDebug>
 #include <QHostAddress>
 #include <QTcpSocket>
-#include <QThread>
+//#include <QThread>
 
 
 #include "protocolhandler.h"
@@ -20,7 +20,7 @@ class Management;
  * @class ServerThread
  * @brief The ServerThread class will be constructed each time a client application will connects to harbour separate communication for all clients connecting
  */
-class ServerThread : public QThread
+class ServerThread : QObject//QThread
 {
     Q_OBJECT
 public:
@@ -34,9 +34,9 @@ public:
 
     /**
      * \fn run();
-     * @brief run Function that will run once thread is started
+     * @brief run Function that start the thread for a client
      */
-    void run();
+    void startThread();
 
 
     /**

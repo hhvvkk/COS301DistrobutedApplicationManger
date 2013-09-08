@@ -14,6 +14,7 @@
 #include <QMapIterator>
 #include <QDebug>
 #include <QMessageBox>
+#include <QSettings>
 //#include "windows.h"
 
 #include "sysInfo.h"
@@ -122,6 +123,10 @@ private:
      * @brief A function to display all the widgets for a disconnected state
      */
     void showDisconnectedWidgets();
+
+    bool validateIpAddress(const QString &ipAddress);
+
+    void showMessage(QString message, QString flag = "");
 
 private:
     /**

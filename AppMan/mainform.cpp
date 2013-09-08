@@ -602,11 +602,10 @@ MainForm::SlaveStats::SlaveStats(QWidget *parent, QString ip, QString input)
 
 void MainForm::on_treeWidgetSlaves_clicked(const QModelIndex &index)
 {
-    //Get the ip of the selected build
-    QString iD = index.data().toString();
+    QTreeWidgetItem *item = ui->treeWidgetSlaves->selectedItems().at(0);
 
     bool *ok = new bool();
-    int machineId = iD.toInt(ok);
+    int machineID = item->text(1).toInt();
 
     if(!ok){
         delete ok;
@@ -614,12 +613,14 @@ void MainForm::on_treeWidgetSlaves_clicked(const QModelIndex &index)
     }
     delete ok;
 
-    Machine * selected = management->getMachineById(machineId);
+    Machine * selected = management->getMachineById(machineID);
 
+    if(selected == 0)
+        return;
     selected->getMinStats();
     QString inp = "16%#46%#2.39695MB#5.375KB" ;
     buildInfo->hide();
-    slaveStats = new SlaveStats(this,selected->getMachineIP(),inp);
+    slaveStats = new SlaveStats(this,selected->getMachineIP(), inp);
     connect(slaveStats, SIGNAL(clicked(QModelIndex)), this, SLOT(slaveStatsClicked(QModelIndex)));
     clearWidget();
     ui->dockWidgetContents->layout()->addWidget(slaveStats);

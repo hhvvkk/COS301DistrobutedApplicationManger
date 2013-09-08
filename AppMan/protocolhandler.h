@@ -23,7 +23,7 @@ public:
     ////////////////////REQUESTS BY OTHER INTERVENTION////////////////
     explicit ProtocolHandler(Management *man, QObject *parent = 0);
 
-
+    ~ProtocolHandler();
 
     /**
      * \fn void setSocket(QTcpSocket *socket);

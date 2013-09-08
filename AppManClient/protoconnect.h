@@ -2,6 +2,7 @@
 #define PROTOCONNECT_H
 
 #include "protocol.h"
+#include <QSettings>
 
 //forward declaration for use
 class ProtocolHandler;
@@ -54,6 +55,13 @@ private:
      * @param masterSocket The socket to which this function can write to to initiate SlaveCurrentBuilds
      */
     void initiateSlaveCurrentBuilds(QTcpSocket *masterSocket);
+
+private:
+    /**
+      * @var machineID
+      * @brief The machine Id stored inside the ini file
+      */
+    int machineID;
 };
 
 #endif // PROTOCONNECT_H

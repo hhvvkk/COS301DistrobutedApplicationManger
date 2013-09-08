@@ -7,6 +7,9 @@
 
 #include <QDebug>
 #include <QTcpServer>
+#include <QSettings>
+#include <QMessageBox>
+#include <QIcon>
 
 #include "management.h"
 #include "serverthread.h"
@@ -56,6 +59,8 @@ protected:
      * @param socketID A unique value that is linked to a socket through QT
      */
     void incomingConnection(int socketID);
+
+    void showMessage(QString message, QString flag = "");
 
 private:
     /**

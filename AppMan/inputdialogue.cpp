@@ -24,7 +24,7 @@ void InputDialogue::okClicked(){
         bool parsed = false;
         //try parse port
         try{
-            parsed = testInput(1200,65000);
+            parsed = testInput(1024,65000);
         }catch(ErrorClass ec){
             showErrorMessage(ec.message, "error");
             return;
@@ -33,7 +33,16 @@ void InputDialogue::okClicked(){
         if(!parsed){
             QString message = "Incorrect input for port. Port must be between 1200 and 65000";
             showErrorMessage(message, "error");
+            return;
         }
+
+        QSettings setting("settings.ini",QSettings::IniFormat);
+        //grouping the settings
+        setting.beginGroup("Connection");
+
+        setting.setValue("port", ui->lineEdit->text().toInt());
+
+        setting.endGroup();
         management->setPort(ui->lineEdit->text().toInt());
         this->close();
     }

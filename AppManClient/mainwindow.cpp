@@ -34,6 +34,48 @@ MainWindow::MainWindow(QWidget *parent) :
     /*
      *Create the tray(END)
      **/
+
+    //LOAD connection settings from previous connect
+
+    QSettings setting("settings.ini",QSettings::IniFormat);
+    //grouping the settings
+    setting.beginGroup("Connection");
+
+    //default settings values
+    QVariant port;
+    QVariant ipAddress;
+    port.setValue(4450);
+    QString defaultIpAddress = "127.0.0.1";
+    ipAddress.setValue(defaultIpAddress);
+
+    //send in the default values in case it does not exist...
+    QString loadedPort = setting.value("port", port).toString();
+    QString loadedIpAddress = setting.value("ipAddress", ipAddress).toString();
+
+    setting.endGroup();
+
+    bool validatedIp = validateIpAddress(loadedIpAddress);
+
+    if(!validatedIp){
+        showMessage("The ip address that was loaded is invalid, reverting to default(127.0.0.1)");
+    }else{
+        ui->lineEditIPAddress->setText(loadedIpAddress);
+    }
+
+
+    bool validPort;
+    int aPort = loadedPort.toInt(&validPort);
+
+    if(!validPort){
+        showMessage("The loaded port a valid number(1024-65000), reverting to default(4450)", "error");
+    }else{
+        if(aPort >= 1024 && aPort <= 65000)
+            ui->lineEditPort->setText(loadedPort);
+        else{
+            showMessage("The loaded port was not within range(1024-65000), reverting to default(4450)", "error");
+            ui->lineEditPort->setText("4450");
+        }
+    }
 }
 
 
@@ -69,15 +111,36 @@ void MainWindow::connectClick()
     port = ui->lineEditPort->text().toInt(&ok);
 
 
-    if(!ok || port <= 1024 || port >= 65000){
-        QMessageBox *msb = new QMessageBox();
-        msb->setText("invalid port number assigned");
-        msb->show();
+    if(!ok){
+        showMessage("The port is not a valid number between 1024 and 65000", "error");
+        return;
+    }
+    if(port <= 1024 || port >= 65000){
+        showMessage("The port is not a valid number between 1024 and 65000", "error");
         return;
     }
 
+    bool validIp = validateIpAddress(ui->lineEditIPAddress->text());
+    if(!validIp){
+        //SHOW AN ERROR
+        showMessage("The ip address is not a valid ip address", "error");
+        return;
+    }
+
+    //else it is valid
+    //...and continue
+
+    QSettings setting("settings.ini",QSettings::IniFormat);
+    //grouping the settings
+    setting.beginGroup("Connection");
+
+    setting.setValue("port", port);
+    setting.setValue("ipAddress", ui->lineEditIPAddress->text());
+
+    setting.endGroup();
     management->connectToServer(ui->lineEditIPAddress->text(), port);
 }
+
 
 void MainWindow::disconnectClick(){
     management->disconnectFromServer();
@@ -145,4 +208,28 @@ void MainWindow::showDisconnectedWidgets(){
     ui->pushButtonConnect->setVisible(true);
     ui->pushButtonDisconnect->setVisible(false);
     ui->label_BuildCount->setText(QString::number(management->getBuildCount()));
+}
+
+void MainWindow::showMessage(QString message, QString flag){
+
+    QMessageBox *msb = new QMessageBox();
+
+    if(!flag.compare("error"))
+         msb->setIcon(QMessageBox::Critical);
+    else
+         msb->setIcon(QMessageBox::Information);
+
+    QPixmap pic(":/images/images/ALogoClient.png");
+    msb->setWindowIcon(QIcon(pic));
+    msb->setText(message);
+    msb->show();
+}
+
+bool MainWindow::validateIpAddress(const QString &ipAddress){
+    QHostAddress address(ipAddress);
+    if (QAbstractSocket::IPv4Protocol == address.protocol()){
+          return true;
+    }
+
+    return false;
 }

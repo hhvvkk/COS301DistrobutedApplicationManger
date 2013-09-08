@@ -5,6 +5,31 @@
 ProtoConnect::ProtoConnect(QObject *parent)
     :Protocol(parent)
 {
+    QSettings setting("settings.ini",QSettings::IniFormat);
+    //grouping the settings
+    setting.beginGroup("Connection");
+
+    //default settings values
+    QVariant defaultMachineId;
+    defaultMachineId.setValue(-1);
+
+    //send in the default values in case it does not exist...
+    QString loadedPort = setting.value("machineID", defaultMachineId).toString();
+
+    setting.endGroup();
+
+    bool validID;
+    int theLoadedId = loadedPort.toInt(&validID);
+
+    if(!validID){
+        machineID = -1;
+    }else{
+        if(theLoadedId >= 0)
+            machineID = theLoadedId;
+        else{
+            machineID = -1;
+        }
+    }
 }
 
 void ProtoConnect::handle(QString data, Management *management, QTcpSocket *masterSocket){
