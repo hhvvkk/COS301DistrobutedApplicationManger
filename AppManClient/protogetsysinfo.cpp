@@ -6,21 +6,31 @@ ProtoGetSysInfo::ProtoGetSysInfo(QObject *parent)
 {
 }
 
-void ProtoGetSysInfo::handle(QString data, Management *management, QTcpSocket *masterSocket) {
-    if(!data.compare("GetDetailedSysInfo"))
-        GetDetSysInfo(data, management, masterSocket);
-    if(!data.compare("GetMinimalSysInfo"))
-        GetMinSysInfo(data, management, masterSocket);
+void ProtoGetSysInfo::handle(QVariantMap jsonObject, Management *management, QTcpSocket *masterSocket) {
+    if(!jsonObject.value("subHandler").toString().compare("GetDetailedSysInfo"))
+        GetDetSysInfo(management, masterSocket);
+    if(!jsonObject.value("subHandler").toString().compare("GetMinimalSysInfo"))
+        GetMinSysInfo(management, masterSocket);
 }
 
-void ProtoGetSysInfo::GetDetSysInfo(QString data, Management *management, QTcpSocket *masterSocket){
-    QString detinf = "||DetailedSysInfoFollows:#"+management->getDetSysInfo()+"||";
-    masterSocket->write(detinf.toAscii().data());
+void ProtoGetSysInfo::GetDetSysInfo(Management *management, QTcpSocket *masterSocket){
+    QString jsonMessage = startJSONMessage();
+    appendJSONValue(jsonMessage,"handler","ProtoGetSysInfo",true);
+    appendJSONValue(jsonMessage,"subHandler","DetailedSysInfoFollows",true);
+    appendJSONValue(jsonMessage, "data", management->getDetSysInfo(),false);
+    endJSONMessage(jsonMessage);
+
+    masterSocket->write(jsonMessage.toAscii().data());
     masterSocket->flush();
 }
 
-void ProtoGetSysInfo::GetMinSysInfo(QString data, Management *management, QTcpSocket *masterSocket){
-    QString detinf = "||MinimalSysInfoFollows:#"+management->getMinSysInfo()+"||";
-    masterSocket->write(detinf.toAscii().data());
+void ProtoGetSysInfo::GetMinSysInfo(Management *management, QTcpSocket *masterSocket){
+    QString jsonMessage = startJSONMessage();
+    appendJSONValue(jsonMessage,"handler","ProtoGetSysInfo",true);
+    appendJSONValue(jsonMessage,"subHandler","MinimalSysInfoFollows",true);
+    appendJSONValue(jsonMessage, "data", management->getMinSysInfo(),false);
+    endJSONMessage(jsonMessage);
+
+    masterSocket->write(jsonMessage.toAscii().data());
     masterSocket->flush();
 }

@@ -14,17 +14,17 @@ public:
     ProtoGetSysInfo(QObject *parent = 0);
 
     /**
-     * \fn void handle(QString data, Management *man, QTcpSocket *slaveSocket);
+     * \fn void handle(QVariantMap jsonObject, Management *man, QTcpSocket *slaveSocket);
      * @brief The function that will handle all the GetSysInfo protocol functions
-     * @param data the data to be parsed
+     * @param jsonObject A QVariantMap which contains values
      * @param man the management to perform functions on
      * @param slaveSocket the socket if it is needed to write to it
      */
-    void handle(QString data, Management *management, QTcpSocket *masterSocket);
+    void handle(QVariantMap jsonObject, Management *management, QTcpSocket *masterSocket);
 
 private:
-    void GetDetSysInfo(QString data, Management *management, QTcpSocket *masterSocket);
-    void GetMinSysInfo(QString data, Management *management, QTcpSocket *masterSocket);
+    void GetDetSysInfo(Management *management, QTcpSocket *masterSocket);
+    void GetMinSysInfo(Management *management, QTcpSocket *masterSocket);
 };
 
 #endif // PROTOGETSYSINFO_H

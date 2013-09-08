@@ -32,8 +32,11 @@ ProtoConnect::ProtoConnect(QObject *parent)
     }
 }
 
-void ProtoConnect::handle(QString data, Management *management, QTcpSocket *masterSocket){
-    if(!data.compare("Hello AppManClient")){
+void ProtoConnect::handle(QVariantMap jsonObject, Management *management, QTcpSocket *masterSocket){
+
+    QVariant subHandler = jsonObject.value("subHandler");
+
+    if(!subHandler.toString().compare("Hello AppManClient")){
         //means a connection was established
         initiateSlaveCurrentBuilds(masterSocket);
         management->setConnected(true);
@@ -51,7 +54,12 @@ void ProtoConnect::disconnectFromMaster(Management *management, QTcpSocket *sock
 
 void ProtoConnect::initiateSlaveCurrentBuilds(QTcpSocket *masterSocket){
     //to get an acknowledgement that the builds can be rechecked
-    masterSocket->write("||RecheckBuilds||");
+    QString jsonMessage = startJSONMessage();
+    appendJSONValue(jsonMessage, "handler", "ProtoSlaveCurrentBuilds", true);
+    appendJSONValue(jsonMessage, "subHandler", "RecheckBuilds", false);
+    endJSONMessage(jsonMessage);
+
+    masterSocket->write(jsonMessage.toAscii().data());
     masterSocket->flush();
 }
 
@@ -77,9 +85,27 @@ void ProtoConnect::connectToMaster(QString ipAddress, int serverPort, ProtocolHa
     connect(socket, SIGNAL(disconnected()), socketClient, SLOT(disconnected()));
 
     //write to the server to connect
-    socket->write("||Hello AppMan||");
+    QString jsonMessage = startJSONMessage();
+    appendJSONValue(jsonMessage, "handler", "ProtoConnect", true);
+    appendJSONValue(jsonMessage, "subHandler", "Hello AppMan", true);
+    appendJSONValue(jsonMessage, "machineID", QString::number(machineID), false);
+    endJSONMessage(jsonMessage);
+
+    qDebug()<<"CONNECT::"<<jsonMessage;
+    socket->write(jsonMessage.toAscii().data());
     socket->flush();
 
     //finally set the socket so that the network can use it
     protocolHandler->setSocket(socket);
+}
+
+void ProtoConnect::SetMachineID(int newMachineID){
+
+    QSettings setting("settings.ini",QSettings::IniFormat);
+    //grouping the settings
+    setting.beginGroup("Connection");
+
+    setting.setValue("machineID", newMachineID);
+
+    setting.endGroup();
 }

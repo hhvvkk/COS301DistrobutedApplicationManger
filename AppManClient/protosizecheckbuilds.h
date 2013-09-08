@@ -16,13 +16,13 @@ public:
     ProtoSizeCheckBuilds(QObject *parent = 0);
 
     /**
-     * \fn void handle(QString data, Management *man, QTcpSocket *slaveSocket);
+     * \fn void handle(QVariantMap jsonObject, Management *man, QTcpSocket *slaveSocket);
      * @brief The function that will handle all the SizeCheckBuild protocol functions
-     * @param data the data to be parsed
+     * @param jsonObject A QVariantMap which contains values
      * @param man the management to perform functions on
      * @param masterSocket the socket if it is needed to write to it
      */
-    void handle(QString data, Management *management, QTcpSocket *masterSocket);
+    void handle(QVariantMap jsonObject, Management *management, QTcpSocket *masterSocket);
 
     /**
      * \fn void sendCurrentBuildMD5(Management *management, QTcpSocket *masterSocket);
@@ -36,11 +36,11 @@ public:
     /**
      * \fn void sendABuildMD5(QString data, Management *management, QTcpSocket *masterSocket);
      * @brief A function similar to sendCurrentBuildMD5 but with a difference - it only sends the buildMD5Sum of the specified build
-     * @param data the data to be parsed
+     * @param jsonObject The QVariantMap containing data
      * @param man the management to perform functions on
      * @param masterSocket the socket if it is needed to write to it
      */
-    void sendABuildMD5(QString data, Management *management, QTcpSocket *masterSocket);
+    void SizeCheckABuild(QVariantMap jsonObject, Management *management, QTcpSocket *masterSocket);
 
 private:
     /**

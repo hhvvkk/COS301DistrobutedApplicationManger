@@ -13,13 +13,13 @@ public:
     ProtoCopyOver(QObject *parent = 0);
 
     /**
-     * \fn void handle(QString data, Management *man, QTcpSocket *slaveSocket);
+     * \fn void handle(QVariantMap jsonObject, Management *man, QTcpSocket *slaveSocket);
      * @brief The function that will handle all the ConnectProtocol functions
-     * @param data the data to be parsed
+     * @param jsonObject A QVariantMap which contains values
      * @param man the management to perform functions on
      * @param slaveSocket the socket if it is needed to write to it
      */
-    void handle(QString data, Management *man, QTcpSocket *slaveSocket);
+    void handle(QVariantMap jsonObject, Management *man, QTcpSocket *slaveSocket);
 
     /**
      * \fn void copyBuildOver(int buildId, QString buildName, QTcpSocket *slaveSocket);
@@ -39,7 +39,7 @@ private:
      * @brief A function invoked when the ReadyRead observes 'GotABuild' in the data string and parses it
      * @param data The data to be parsed by this function
      */
-    void GotABuild(QString data, Management *man, QTcpSocket *slaveSocket);
+    void GotABuild(QVariantMap jsonObject, Management *man, QTcpSocket *slaveSocket);
 
     /**
      * \fn void sizeCheckCertainBuild(QString buildNo, QTcpSocket *slaveSocket);

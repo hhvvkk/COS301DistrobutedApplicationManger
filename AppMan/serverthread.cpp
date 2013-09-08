@@ -42,7 +42,6 @@ QTcpSocket *ServerThread::getSocket(){
 void ServerThread::readyReadFunction(){
     QByteArray Data = socket->readAll();
     QString data = Data;
-    qDebug()<<"read:::"<<data;
 
     //Send the data to the requestHandler to handle
     protocolHandler->handle(data);

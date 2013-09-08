@@ -5,19 +5,14 @@ ProtoSendBuild::ProtoSendBuild(QObject *parent)
 {
 }
 
-void ProtoSendBuild::handle(QString data, Management *management, QTcpSocket *masterSocket){    
-    if(data.contains("SendBuildCopyServer:#"))
-        SendBuildCopyServer(data, masterSocket);
+void ProtoSendBuild::handle(QVariantMap jsonObject, Management *management, QTcpSocket *masterSocket){
+    if(!jsonObject.value("subHandler").toString().compare("SendBuildCopyServer"))
+        SendBuildCopyServer(jsonObject, masterSocket);
 }
 
-void ProtoSendBuild::SendBuildCopyServer(QString data, QTcpSocket *masterSocket){
-    qDebug()<<"PROTOSENDHANDLE--PROTOCLAss";
+void ProtoSendBuild::SendBuildCopyServer(QVariantMap jsonObject, QTcpSocket *masterSocket){
 
-    //E.g SendBuildCopyServer:#121.110.222.212#4412
-    QString mostLeft = "SendBuildCopyServer:#";
-
-    QString hostPort = data.right((data.size()-mostLeft.length()));
-    //E.g. RIGHT SIDE= "4412"
+    QString hostPort = jsonObject.value("hostPort").toString();
 
     QHostAddress theHostAddress = masterSocket->peerAddress();
     if(theHostAddress.isNull())

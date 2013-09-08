@@ -5,36 +5,41 @@ ProtoGetSysInfo::ProtoGetSysInfo(QObject *parent)
 {
 }
 
-void ProtoGetSysInfo::handle(QString data, Management *management, QTcpSocket *slaveSocket){
-    if(data.contains("DetailedSysInfoFollows:#"))
-        detSysInfoFollows(data, management);
-    if(data.contains("MinimalSysInfoFollows:#"))
-        minSysInfoFollows(data, management);
+void ProtoGetSysInfo::handle(QVariantMap jsonObject, Management *management, QTcpSocket *slaveSocket){
+    if(!jsonObject.value("subHandler").toString().compare("DetailedSysInfoFollows"))
+        DetailedSysInfoFollows(jsonObject, management);
+    if(!jsonObject.value("subHandler").toString().compare("MinimalSysInfoFollows"))
+        MinimalSysInfoFollows(jsonObject, management);
 }
 
-void ProtoGetSysInfo::detSysInfoFollows(QString data, Management * management){
-    QString stripped = data;
-    stripped = stripped.right(data.length()-24);
-    qDebug()<<'\n'<<'\n';
-    qDebug()<<stripped;
+void ProtoGetSysInfo::DetailedSysInfoFollows(QVariantMap jsonObject, Management * management){
+    QString data = jsonObject.value("data").toString();
     //emit setDetStats(stripped);
 }
 
-void ProtoGetSysInfo::minSysInfoFollows(QString data, Management *management){
-
-    QString stripped = data;
-    stripped = stripped.right(data.length()-22);
-    qDebug()<<'\n'<<'\n';
-    qDebug()<<stripped;
+void ProtoGetSysInfo::MinimalSysInfoFollows(QVariantMap jsonObject, Management *management){
+    QString data = jsonObject.value("data").toString();
     //emit setMinStats(stripped);
 }
 
 void ProtoGetSysInfo::getDetailed(QTcpSocket *slaveSocket){
-    slaveSocket->write("||GetDetailedSysInfo||");
+    QString jsonMessage = startJSONMessage();
+    appendJSONValue(jsonMessage,"handler","ProtoGetSysInfo",true);
+    appendJSONValue(jsonMessage,"subHandler","GetDetailedSysInfo",false);
+    endJSONMessage(jsonMessage);
+
+
+    slaveSocket->write(jsonMessage.toAscii().data());
     slaveSocket->flush();
 }
 
 void ProtoGetSysInfo::getMinimal(QTcpSocket *slaveSocket){
-    slaveSocket->write("||GetMinimalSysInfo||");
+    QString jsonMessage = startJSONMessage();
+    appendJSONValue(jsonMessage,"handler","ProtoGetSysInfo",true);
+    appendJSONValue(jsonMessage,"subHandler","GetMinimalSysInfo",false);
+    endJSONMessage(jsonMessage);
+
+
+    slaveSocket->write(jsonMessage.toAscii().data());
     slaveSocket->flush();
 }

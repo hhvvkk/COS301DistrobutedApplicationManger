@@ -57,35 +57,38 @@ void ProtocolHandler::handle(QString data){
 }
 
 void ProtocolHandler::requestHandler(QString data){
-    if(!data.compare("SizeCheckAllBuilds")){
-        //which means execute sizeCheckAllBuilds protocol
-        sizeCheckBuilds->handle(data, management, masterSocket);
+
+    const QVariantMap jsonObject = JSON::instance().parse(data);
+    QVariant handler = jsonObject.value("handler");
+
+    if(!handler.toString().compare("QVariant(, )")){
+        qDebug()<< "invalid JSON String::"<<data;
+        return;
     }
-    if(!data.compare("RecheckCopy")){
-        slaveCurrentBuilds->handle(data, management, masterSocket);
-    }
 
-    if(!data.compare("Hello AppManClient"))
-        connect->handle(data, management, masterSocket);
+    if(!handler.toString().compare("ProtoConnect"))
+        connect->handle(jsonObject, management, masterSocket);
+    else
 
-    if(data.contains("CopyBuildOver:#"))
-        copyOver->handle(data, management, masterSocket);
+    if(!handler.toString().compare("ProtoSlaveCurrentBuilds"))
+        slaveCurrentBuilds->handle(jsonObject, management, masterSocket);
+    else
 
-    if(data.contains("SizeCheckABuild:#"))
-        sizeCheckBuilds->handle(data, management, masterSocket);
+    if(!handler.toString().compare("ProtoGetSysInfo"))
+        getSysInfo->handle(jsonObject, management, masterSocket);
+    else
 
-    if(data.compare("GetAllSysInfo"))
-        getSysInfo->handle(data, management, masterSocket);
-    
-    if(data.compare("GetDetailedSysInfo"))
-        getSysInfo->handle(data, management, masterSocket);
+    if(!handler.toString().compare("ProtoSizeCheckBuilds"))
+        sizeCheckBuilds->handle(jsonObject, management, masterSocket);
+    else
 
-    if(data.compare("GetMinimalSysInfo"))
-        getSysInfo->handle(data, management, masterSocket);
-    
-////////////////////////NEW///////////////////////
-    if(data.contains("SendBuildCopyServer:#"))
-        sendBuild->handle(data, management, masterSocket);
+    if(!handler.toString().compare("ProtoSendBuild"))
+        sendBuild->handle(jsonObject, management, masterSocket);
+    else
+
+    if(!handler.toString().compare("ProtoCopyOver"))
+        copyOver->handle(jsonObject, management, masterSocket);
+
 }
 
 void ProtocolHandler::disconnectFromMaster(){

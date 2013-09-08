@@ -4,6 +4,10 @@
 #include <QObject>
 #include <QDebug>
 #include <QTcpSocket>
+#include <QVariantMap>
+#include <QVariant>
+
+#include "json.h"
 
 #include "protoslavecurrentbuilds.h"
 #include "protocopyover.h"

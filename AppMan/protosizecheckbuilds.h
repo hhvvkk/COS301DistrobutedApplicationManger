@@ -13,24 +13,24 @@ public:
     ProtoSizeCheckBuilds(QObject *parent = 0);
 
     /**
-     * \fn void handle(QString data, Management *man, QTcpSocket *slaveSocket);
+     * \fn void handle(QVariantMap jsonObject, Management *man, QTcpSocket *slaveSocket);
      * @brief The function that will handle all the ConnectProtocol functions
-     * @param data the data to be parsed
+     * @param jsonObject A QVariantMap which contains values
      * @param man the management to perform functions on
      * @param slaveSocket the socket if it is needed to write to it
      */
-    void handle(QString data, Management *man, QTcpSocket *slaveSocket);
+    void handle(QVariantMap jsonObject, Management *man, QTcpSocket *slaveSocket);
 
 private:
 
     /**
-     * \fn void BuildMD5(QString data, Management *management, QTcpSocket *slaveSocket);
+     * \fn void BuildMD5(QVariantMap jsonObject, Management *management, QTcpSocket *slaveSocket);
      * @brief The function to invoke once "BuildMD5" has been observed
-     * @param data the data to be parsed
+     * @param jsonObject A QVariantMap object containing build information to be parsed
      * @param man the management to perform functions on
      * @param slaveSocket the socket if it is needed to write to it
      */
-    void BuildMD5(QString data, Management *management, QTcpSocket *slaveSocket);
+    void BuildMD5(QVariantMap jsonObject, Management *management, QTcpSocket *slaveSocket);
 };
 
 #endif // PROTOSIZECHECKBUILDS_H

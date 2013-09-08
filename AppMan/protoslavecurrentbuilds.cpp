@@ -8,14 +8,19 @@ ProtoSlaveCurrentBuilds::ProtoSlaveCurrentBuilds(QObject *parent)
 {
 }
 
-void ProtoSlaveCurrentBuilds::handle(QString data, Management *management, QTcpSocket *slaveSocket){
-    if(!data.compare("RecheckDone")){
+void ProtoSlaveCurrentBuilds::handle(QVariantMap jsonObject, Management *management, QTcpSocket *slaveSocket){
+
+    QVariant subHandler = jsonObject.value("subHandler");
+
+    if(!subHandler.toString().compare("RecheckDone")){
         RecheckDone(slaveSocket);
     }
-    if(data.contains("Rechecker")){
-        Rechecker(data, management, slaveSocket);
+
+    if(!subHandler.toString().compare("Rechecker")){
+        Rechecker(jsonObject, management, slaveSocket);
     }
-    if(!data.compare("RecheckBuilds")){
+
+    if(!subHandler.toString().compare("RecheckBuilds")){
         RecheckBuilds(slaveSocket);
     }
 }
@@ -28,23 +33,20 @@ void ProtoSlaveCurrentBuilds::RecheckDone(QTcpSocket *slaveSocket){
 
 
 void ProtoSlaveCurrentBuilds::SizeCheckAllBuilds(QTcpSocket *slaveSocket){
-    slaveSocket->write("||SizeCheckAllBuilds||");
+    QString jsonMessage = startJSONMessage();
+    appendJSONValue(jsonMessage, "handler", "ProtoSizeCheckBuilds", true);
+    appendJSONValue(jsonMessage, "subHandler", "SizeCheckAllBuilds", false);
+    endJSONMessage(jsonMessage);
+
+    slaveSocket->write(jsonMessage.toAscii().data());
     slaveSocket->flush();
 }
 
-void ProtoSlaveCurrentBuilds::Rechecker(QString data, Management *management, QTcpSocket *socket){
-    //this means it is build information that is following.
-    //E.g Rechecker:#1#NameBlah
-    QString mostLeft = "Rechecker:#";
+void ProtoSlaveCurrentBuilds::Rechecker(QVariantMap jsonObject, Management *management, QTcpSocket *socket){
 
-    QString rightSide = data.right((data.size()-mostLeft.length()));
-    //E.g. RIGHT SIDE= "1#NameBlah"
-    //REASONING behind this method(THE INDEX COUNTING)
-    //is that once you have for instance multiple # in name...
-    //this prevents problems from occurring
-    QString buildNo = rightSide.left(rightSide.indexOf("#"));
+    QString buildNo = jsonObject.value("buildNo").toString();
 
-    QString buildName = rightSide.right(rightSide.length() - (buildNo.length()+1));
+    QString buildName = jsonObject.value("buildName").toString();
 
     int buildNoId = buildNo.toInt();
 
@@ -56,12 +58,23 @@ void ProtoSlaveCurrentBuilds::Rechecker(QString data, Management *management, QT
 
     management->addBuildToSlave(handler->getMachine()->getMachineID(), buildNoId, buildName);
 
-    socket->write("||RecheckCopy||");
+    QString jsonMessage = startJSONMessage();
+    appendJSONValue(jsonMessage, "handler", "ProtoSlaveCurrentBuilds", true);
+    appendJSONValue(jsonMessage, "subHandler", "Rechecker", false);
+    endJSONMessage(jsonMessage);
+
+    socket->write(jsonMessage.toAscii().data());
     socket->flush();
 }
 
 void ProtoSlaveCurrentBuilds::RecheckBuilds(QTcpSocket *slaveSocket){
     //this is just to acknowledge that the client can recheck all builds
-    slaveSocket->write("||RecheckCopy||");
+
+    QString jsonMessage = startJSONMessage();
+    appendJSONValue(jsonMessage, "handler", "ProtoSlaveCurrentBuilds", true);
+    appendJSONValue(jsonMessage, "subHandler", "Rechecker", false);
+    endJSONMessage(jsonMessage);
+
+    slaveSocket->write(jsonMessage.toAscii().data());
     slaveSocket->flush();
 }

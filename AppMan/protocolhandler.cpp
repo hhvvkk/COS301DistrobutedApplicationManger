@@ -63,36 +63,43 @@ void ProtocolHandler::handle(QString data){
 }
 
 void ProtocolHandler::requestHandler(QString data){
+    const QVariantMap jsonObject = JSON::instance().parse(data);
+    QVariant handler = jsonObject.value("handler");
+
     if(firstTalk == true){
-        connect->handle(data, management, slaveSocket);
+        connect->handle(jsonObject, management, slaveSocket);
         firstTalk = false;
         return;
     }
 
-    if(!data.compare("RecheckDone"))
-        slaveCurrentBuilds->handle(data, management, slaveSocket);
-    else if(!data.compare("RecheckBuilds")){
-        slaveCurrentBuilds->handle(data, management, slaveSocket);
-    }
-    else if(data.contains("Rechecker:#")){
-        slaveCurrentBuilds->handle(data, management, slaveSocket);
+    if(!handler.toString().compare("QVariant(, )")){
+        qDebug()<< "invalid JSON String::"<<data;
+        return;
     }
 
-    if(data.contains("BuildMD5:#"))
-        sizeCheckBuilds->handle(data, management, slaveSocket);
+    if(!handler.toString().compare("ProtoConnect"))
+        connect->handle(jsonObject, management, slaveSocket);
+    else
 
-    if(data.contains("GotABuild:#"))
-        copyOver->handle(data, management, slaveSocket);
+    if(!handler.toString().compare("ProtoSlaveCurrentBuilds"))
+        slaveCurrentBuilds->handle(jsonObject, management, slaveSocket);
+    else
 
-    if(data.contains("DetailedSysInfoFollows:#"))
-        getSysInfo->handle(data, management, slaveSocket);
+    if(!handler.toString().compare("ProtoGetSysInfo"))
+        getSysInfo->handle(jsonObject, management, slaveSocket);
+    else
 
-    if(data.contains("MinimalSysInfoFollows:#"))
-        getSysInfo->handle(data, management, slaveSocket);
+    if(!handler.toString().compare("ProtoSizeCheckBuilds"))
+       sizeCheckBuilds->handle(jsonObject, management, slaveSocket);
+    else
 
-    if(!data.compare("SizeCheckAllBuildsDone")){
-        sendBuild->handle(data, management, slaveSocket);
-    }
+    if(!handler.toString().compare("ProtoSendBuild"))
+        sendBuild->handle(jsonObject, management, slaveSocket);
+    else
+
+    if(!handler.toString().compare("ProtoCopyOver"))
+        copyOver->handle(jsonObject, management, slaveSocket);
+
 }
 
 

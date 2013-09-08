@@ -7,19 +7,14 @@ ProtoCopyOver::ProtoCopyOver(QObject *parent) :
 {
 }
 
-void ProtoCopyOver::handle(QString data, Management *management, QTcpSocket *slaveSocket){
-    if(data.contains("GotABuild:#"))
-        GotABuild(data, management, slaveSocket);
+void ProtoCopyOver::handle(QVariantMap jsonObject, Management *management, QTcpSocket *slaveSocket){
+    if(!jsonObject.value("subHandler").toString().compare("GotABuild"))
+        GotABuild(jsonObject, management, slaveSocket);
 }
 
-void ProtoCopyOver::GotABuild(QString data, Management *management, QTcpSocket *slaveSocket){
-    //at this point of time in communication, a build has just been added
-    //because 1. it was already there or 2. it has just been added
-    //"GotABuild:#"+buildNo;
+void ProtoCopyOver::GotABuild(QVariantMap jsonObject, Management *management, QTcpSocket *slaveSocket){
 
-    QString leftSide = data.left(data.indexOf("#"));
-    QString buildNo = data.right(data.length() - (leftSide.length()+1));
-
+    QString buildNo = jsonObject.value("buildNo").toString();
 
     int buildNoId = buildNo.toInt();
     QString buildName = management->getBuildByID(buildNoId).getBuildName();
@@ -39,13 +34,25 @@ void ProtoCopyOver::GotABuild(QString data, Management *management, QTcpSocket *
 
 void ProtoCopyOver::copyBuildOver(int buildId, QString buildName, QTcpSocket *slaveSocket){
     QString buildIdString = QString::number(buildId);
-    QString writeBuildMessage = "||CopyBuildOver:#"+ buildIdString +"#"+buildName+"||";
-    slaveSocket->write(writeBuildMessage.toAscii().data());
+
+    QString jsonMessage = startJSONMessage();
+    appendJSONValue(jsonMessage,"handler","ProtoCopyOver",true);
+    appendJSONValue(jsonMessage,"subHandler","CopyBuildOver",true);
+    appendJSONValue(jsonMessage, "buildNo", buildIdString,true);
+    appendJSONValue(jsonMessage, "buildName", buildName,false);
+    endJSONMessage(jsonMessage);
+
+    slaveSocket->write(jsonMessage.toAscii().data());
     slaveSocket->flush();//write all that should be written
 }
 
 void ProtoCopyOver::sizeCheckCertainBuild(QString buildNo, QTcpSocket *slaveSocket){
-    QString sizeCheckMessage = "||SizeCheckABuild:#" + buildNo +"||";
-    slaveSocket->write(sizeCheckMessage.toAscii().data());
+    QString jsonMessage = startJSONMessage();
+    appendJSONValue(jsonMessage,"handler","ProtoSizeCheckBuilds",true);
+    appendJSONValue(jsonMessage,"subHandler","SizeCheckABuild",true);
+    appendJSONValue(jsonMessage, "buildNo", buildNo,false);
+    endJSONMessage(jsonMessage);
+
+    slaveSocket->write(jsonMessage.toAscii().data());
     slaveSocket->flush();
 }

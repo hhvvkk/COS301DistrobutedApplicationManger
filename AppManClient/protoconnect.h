@@ -22,13 +22,13 @@ public:
     ProtoConnect(QObject *parent = 0);
 
     /**
-     * \fn void handle(QString data, Management *man, QTcpSocket *slaveSocket);
+     * \fn void handle(QVariantMap jsonObject, Management *man, QTcpSocket *slaveSocket);
      * @brief The function that will handle all the Connect protocol functions
-     * @param data the data to be parsed
+     * @param jsonObject A QVariantMap which contains values
      * @param man the management to perform functions on
      * @param masterSocket the socket if it is needed to write to it
      */
-    void handle(QString data, Management *management, QTcpSocket *masterSocket);
+    void handle(QVariantMap jsonObject, Management *management, QTcpSocket *masterSocket);
 
     /**
      * \fn void disconnectFromMaster(Management *management, QTcpSocket *socket);
@@ -55,6 +55,20 @@ private:
      * @param masterSocket The socket to which this function can write to to initiate SlaveCurrentBuilds
      */
     void initiateSlaveCurrentBuilds(QTcpSocket *masterSocket);
+
+    /**
+     * \fn void initiateSlaveCurrentBuilds(QTcpSocket *masterSocket);
+     * @brief This function will be initiated once it is successfully connected to the master to invoke SlaveCurrentBuilds protocol
+     * @return Returns this machines ID or returns -1 if invalid or non existant, further will replace current id if it is invalid
+     */
+    QString getThisIDBySettings();
+
+    /**
+     * \fn void SetMachineID(int newMachineID);
+     * @brief This function will save the machineID value into the settings file for this machine
+     * @param newMachineID The new Machine ID for this machine
+     */
+    void SetMachineID(int newMachineID);
 
 private:
     /**

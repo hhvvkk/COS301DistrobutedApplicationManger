@@ -24,10 +24,10 @@ CopySenderServer::~CopySenderServer(){
 
 int CopySenderServer::startServer(){
     if(!this->listen(QHostAddress::Any)){
-        qDebug() << "Could not start server";
+        //qDebug() << "Could not start server";
     }
-    else
-        qDebug() << "SenderServerListening...";
+//    else
+//        qDebug() << "SenderServerListening...";
 
     //returns a zero if it is not listening otherwise a server port
     return this->serverPort();
@@ -44,7 +44,7 @@ void CopySenderServer::incomingConnection(int socketID){
     //set the socket descriptor to that client which connected
     socket->setSocketDescriptor(socketID);
 
-    qDebug()<<"CopyreceiverConnected="<<socket->peerAddress().toString();
+
     if(!socket){
         qDebug()<<"Unable to send files";
         destroyServer();
@@ -119,7 +119,6 @@ void CopySenderServer::requestHandler(QString data){
     }
 
     if(firstTalk){
-        qDebug()<<"firsttalk"<<data;
         if(!data.compare("HelloCopySender")){
             firstTalk = false;
             //stop the server since you don't want to allow any other connections

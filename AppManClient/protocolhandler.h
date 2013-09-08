@@ -3,12 +3,18 @@
 
 #include <QObject>
 #include <QTcpSocket>
+#include <QVariantMap>
+#include <QVariant>
+
 #include "protosizecheckbuilds.h"
 #include "protoslavecurrentbuilds.h"
 #include "protoconnect.h"
 #include "protocopyover.h"
 #include "protogetsysinfo.h"
 #include "protosendbuild.h"
+
+#include "json.h"
+
 
 class Management;
 

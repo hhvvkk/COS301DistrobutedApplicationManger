@@ -10,8 +10,8 @@ ProtoSendBuild::ProtoSendBuild(QObject *parent)
 {
 }
 
-void ProtoSendBuild::handle(QString data, Management *management, QTcpSocket *slaveSocket){
-    if(!data.compare("SizeCheckAllBuildsDone"))
+void ProtoSendBuild::handle(QVariantMap jsonObject, Management *management, QTcpSocket *slaveSocket){
+    if(!jsonObject.value("subHandler").toString().compare("SizeCheckAllBuildsDone"))
         SizeCheckAllBuildsDone(slaveSocket, management);
 }
 
@@ -57,9 +57,13 @@ void ProtoSendBuild::SizeCheckAllBuildsDone(QTcpSocket *slaveSocket, Management 
         return;
     }
 
-    QString message = "||SendBuildCopyServer:#"+QString::number(port)+"||";
+    QString jsonMessage = startJSONMessage();
+    appendJSONValue(jsonMessage, "handler", "ProtoSendBuild", true);
+    appendJSONValue(jsonMessage, "subHandler", "SendBuildCopyServer", true);
+    appendJSONValue(jsonMessage, "hostPort", QString::number(port), false);
+    endJSONMessage(jsonMessage);
 
-    slaveSocket->write(message.toAscii().data());
+    slaveSocket->write(jsonMessage.toAscii().data());
     slaveSocket->flush();
 }
 

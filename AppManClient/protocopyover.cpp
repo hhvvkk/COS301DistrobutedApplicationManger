@@ -8,25 +8,15 @@ ProtoCopyOver::ProtoCopyOver(QObject *parent)
 {
 }
 
-void ProtoCopyOver::handle(QString data, Management *management, QTcpSocket *masterSocket) {
-    if(data.contains("CopyBuildOver:#"))
-        CopyBuildOver(data, management, masterSocket);
+void ProtoCopyOver::handle(QVariantMap jsonObject, Management *management, QTcpSocket *masterSocket) {
+    if(!jsonObject.value("subHandler").toString().compare("CopyBuildOver"))
+        CopyBuildOver(jsonObject, management, masterSocket);
 }
 
-void ProtoCopyOver::CopyBuildOver(QString data, Management *management, QTcpSocket *masterSocket){
-    //E.g CopyBuildOver:#1#NameBlah
-    //15 = size of 'CopyBuildOver:#'
+void ProtoCopyOver::CopyBuildOver(QVariantMap jsonObject, Management *management, QTcpSocket *masterSocket){
 
-    QString rightSide = data.right((data.size()-15));
-    //E.g. RIGHT SIDE= "1#NameBlah"
-
-
-    //REASONING behind this method(THE INDEX COUNTING)
-    //is that once you have for instance multiple # in name...
-    //this prevents problems from occurring
-    QString buildNo = rightSide.left(rightSide.indexOf("#"));
-    // +1 to account for # as well
-    QString buildName = rightSide.right(rightSide.length() - (buildNo.length()+1));
+    QString buildNo = jsonObject.value("buildNo").toString();
+    QString buildName = jsonObject.value("buildName").toString();
     Build newBuild = Build(buildNo.toInt() , buildName,"", "");
 
     xmlWriter xWrite;
@@ -35,7 +25,12 @@ void ProtoCopyOver::CopyBuildOver(QString data, Management *management, QTcpSock
     xWrite.CreateXMLFile();
     management->addBuild(buildToAdd);
 
-    QString buildAddedMessage = "||GotABuild:#"+buildNo+"||";
-    masterSocket->write(buildAddedMessage.toAscii().data());
+    QString jsonMessage = startJSONMessage();
+    appendJSONValue(jsonMessage,"handler","ProtoCopyOver",true);
+    appendJSONValue(jsonMessage,"subHandler","GotABuild",true);
+    appendJSONValue(jsonMessage, "buildNo", buildNo,false);
+    endJSONMessage(jsonMessage);
+
+    masterSocket->write(jsonMessage.toAscii().data());
     masterSocket->flush();//write all that should be written
 }
