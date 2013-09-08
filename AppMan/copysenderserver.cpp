@@ -1,11 +1,12 @@
 #include "copysenderserver.h"
 
-CopySenderServer::CopySenderServer( QStringList &differentB, QStringList &differentBNos, Management *man, QObject *parent) :
+CopySenderServer::CopySenderServer( QStringList &differentB, QStringList &differentBNos, Management *man, int mashId, QObject *parent) :
     QTcpServer(parent)
 {
     differentBuildDirectories = differentB;
     differentBuildNos = differentBNos;
     management = man;
+    machineId = mashId;
 
     qDebug()<<"All the different Builds follows::in CopySenderServer";
     for(int i = 0; i < differentBuildDirectories.size(); i++){
@@ -155,7 +156,6 @@ void CopySenderServer::SendDifferences(){
 
 void CopySenderServer::getDifferences(const QVariantMap jsonObject){
 
-
     QVariant allMD5s = jsonObject.value("BuildToMD5");
     QVariant buildNo = jsonObject.value("buildNo");
 
@@ -192,7 +192,8 @@ void CopySenderServer::getDifferences(const QVariantMap jsonObject){
     }
 
     //do something with that
-    management->machineBuildSynched(ipAddress, copyCompareForBuild->percentageSynched());
+    //     void machineBuildSynched(int machineId, int buildId, double percentageSynched);
+    management->machineBuildSynched(machineId, buildNo.toInt(),copyCompareForBuild->percentageSynched());
     delete copyCompareForBuild;
 }
 

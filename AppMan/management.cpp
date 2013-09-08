@@ -29,10 +29,15 @@ Management::~Management(){
     delete lock;
 }
 
-void Management::addMachine(QString address, ProtocolHandler *handler){
+void Management::addMachine(int uniqueID, QString address, ProtocolHandler *handler){
     lock->lock();//lock the critical sections
 
-    Machine *machine = new Slave(1, address);
+    if(uniqueID <= 0){
+        //thus generate a unique id
+        uniqueID = generateUniqueId();
+    }
+
+    Machine *machine = new Slave(uniqueID, address);
     machine->setProtocolHandler(handler);
     handler->setMachine(machine);
 
@@ -66,8 +71,8 @@ void Management::removeMachine(Machine *m){
     machineCount--;
 
     //delete the machine
+    emit slaveDisconnected(m->getMachineID());
     m->~Machine();
-    emit slaveDisconnected(index);
     lock->unlock();
 }
 
@@ -111,7 +116,6 @@ void Management::stopServer(){
 
 void Management::setPort(int newPort){
     server->setPort(newPort);
-    clearMachines();
 }
 
 Build Management::getBuildByID(int id){
@@ -146,16 +150,7 @@ bool Management::machineExistWithIp(QString ip){
     return false;
 }
 
-
-void Management::clearMachines(){
-
-    //NB Lock hierin gaan deadlock(BY setPort) dus los dit vir nou
-    //anyways die setPort disconnect anyways almal
-    //allMachines.clear();
-}
-
-
-void Management::copyBuildOver(QString ipAddress, QString buildName){
+void Management::copyBuildOver(int machineId, QString buildName){
 
     Build build = getBuildByName(buildName);
 
@@ -163,8 +158,10 @@ void Management::copyBuildOver(QString ipAddress, QString buildName){
 
     Machine *machine = 0;
     for(int i = 0; i < machineCount; i++){
-        if(!getMachineAt(i)->getMachineIP().compare(ipAddress))
+        if(!getMachineAt(i)->getMachineID() == machineId){
             machine = getMachineAt(i);
+            break;
+        }
     }
 
     lock->unlock();
@@ -181,32 +178,28 @@ Build Management::getBuildByName(QString name){
     return Build(0, "NULL", "NULL", "NULL");
 }
 
-void Management::addBuildToSlave(QString slaveIp, QString buildNo){
-    lock->lock();
+void Management::addBuildToSlave(int machineId, int buildNo, QString buildName){
 
-    Machine *machine = 0;
-    for(int i = 0; i < machineCount; i++){
-        if(!allMachines.at(i)->getMachineIP().compare(slaveIp)){
-            machine = allMachines.at(i);
-            break;
-        }
-    }
+    Machine *machine = getMachineById(machineId);
 
-    Build buildToAdd = getBuildByID(buildNo.toInt());
+    qDebug()<<(machine==NULL);
+    if(machine==NULL)
+        return;
+
+    Build buildToAdd = getBuildByID(buildNo);
 
     if(!buildToAdd.getBuildDescription().compare("NULL")
         && !buildToAdd.getBuildDirectory().compare("NULL")
         && !buildToAdd.getBuildName().compare("NULL")
         && buildToAdd.getBuildID() == 0){
         //this point the build does not exist
-        emit slaveGotBuild(machine, buildNo, false);
+        emit slaveGotBuild(machine, buildNo, buildName, false);
     }
     else{
         machine->addBuild(buildToAdd);
-        emit slaveGotBuild(machine, buildNo, true);
+        emit slaveGotBuild(machine, buildNo, buildToAdd.getBuildName(), true);
     }
 
-    lock->unlock();
 }
 
 QString Management::getBuildMD5(Build* build){
@@ -249,13 +242,15 @@ QString Management::getBuildMD5(Build* build){
 }
 
 
-Machine *Management::getMachineByIp(QString machineIp){
+Machine *Management::getMachineById(int machineId){
     lock->lock();
 
     Machine *machine = 0;
     for(int i = 0; i < machineCount; i++){
-        if(!allMachines.at(i)->getMachineIP().compare(machineIp)){
+        qDebug()<<"machineCount: "<<machineCount<<">"<<i;
+        if(allMachines.at(i)->getMachineID() == machineId){
             machine = allMachines.at(i);
+            qDebug()<<"YES";
             break;
         }
     }
@@ -264,8 +259,8 @@ Machine *Management::getMachineByIp(QString machineIp){
     return machine;
 }
 
-void Management::slaveBuildSize(QString buildNo, QString buildMD5Value, QString slaveIp){
-    Build theBuild = getBuildByID(buildNo.toInt());
+void Management::slaveBuildSize(int buildNo, QString buildMD5Value, int slaveId){
+    Build theBuild = getBuildByID(buildNo);
 
     if(!theBuild.getBuildDescription().compare("NULL")
         && !theBuild.getBuildDirectory().compare("NULL")
@@ -279,24 +274,26 @@ void Management::slaveBuildSize(QString buildNo, QString buildMD5Value, QString 
     }
 
     if(!buildMD5Value.compare(getBuildMD5(&theBuild))){
-        setSlaveBuildIsSame(true, slaveIp, theBuild.getBuildID());
-        emit slaveBuildSizeSame(theBuild.getBuildName(), slaveIp, true);
+        setSlaveBuildIsSame(true, slaveId, theBuild.getBuildID());
+        //void slaveBuildSizeSame(int buildId, int slaveId, bool isTheSame);
+        emit slaveBuildSizeSame(theBuild.getBuildID(), slaveId, true);
     }
     else{
-        setSlaveBuildIsSame(false, slaveIp, theBuild.getBuildID());
-        emit slaveBuildSizeSame(theBuild.getBuildName(), slaveIp, false);
+        setSlaveBuildIsSame(false, slaveId, theBuild.getBuildID());
+        emit slaveBuildSizeSame(theBuild.getBuildID(), slaveId, false);
     }
 }
 
 
-void Management::setSlaveBuildIsSame(bool isSame, QString slaveIp, int buildID){
-    Machine * slave = getMachineByIp(slaveIp);
+void Management::setSlaveBuildIsSame(bool isSame, int machineId, int buildID){
+    Machine * slave = getMachineById(machineId);
 
     slave->setBuildSame(isSame, buildID);
 }
 
-void Management::machineBuildSynched(QString slaveIp, double percentageSynched){
-    emit slaveBuildSynched(slaveIp, percentageSynched);
+// void slaveBuildSynched(int machineId, int buildId, double percentageSynched);
+void Management::machineBuildSynched(int machineId, int buildId, double percentageSynched){
+    emit slaveBuildSynched(machineId, buildId, percentageSynched);
 }
 
 void Management::setDetStats(QString stats){
@@ -305,4 +302,8 @@ void Management::setDetStats(QString stats){
 
 void Management::setMinStats(QString stats){
     minStats = stats;
+}
+
+int Management::generateUniqueId(){
+    return 1;
 }

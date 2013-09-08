@@ -34,10 +34,6 @@ public:
     void SizeCheckAllBuildsDone(QTcpSocket *slaveSocket,  Management *management);
 
     void sizeCheckCertainBuildDone();
-
-    void setSendBuildIp(QString ip);
-private:
-    QString ipAddress;
 };
 
 #endif // PROTOSENDBUILD_H

@@ -197,27 +197,28 @@ private slots:
     void on_actionCopy_Build_Over_triggered();
 
     /**
-     * @fn void initiateCopyBuildOver(QString ipAddress, QString buildName);
+     * @fn void initiateCopyBuildOver(int uniqueId, QString buildName);
      * @brief Function that initiates a copy over from master machine
-     * @param ipAddress The ip address of the machine to which it will copy
+     * @param uniqueId The unique Id of the machine to which it will copy
      * @param buildName the build name which it will copy it over to
      */
-    void initiateCopyBuildOver(QString ipAddress, QString buildName);
+    void initiateCopyBuildOver(int uniqueId, QString buildName);
 
     /**
-     * @fn void slaveGotBuild(Machine*m, QString buildId, bool buildExist);
+     * @fn void slaveGotBuild(Machine*m, int buildId, bool buildExist);
      * @brief A function that is invoked once a machine successfully acknowledges a new build is added to their side
      * @param m The machine which acknowledges the new build
      * @param buildId the build id that the machine received
+     * @param slaveBuildName the name that is saved on the slave side
      * @param buildExist A parameter indicating whether or not a build exist on master
      */
-    void slaveGotBuild(Machine*m, QString buildId, bool buildExist);
+    void slaveGotBuild(Machine*m, int buildId,  QString slaveBuildName, bool buildExist);
 
 
-    void slaveBuildSizeSame(QString name, QString slaveIp, bool isTheSame);
+    void slaveBuildSizeSame(int buildId, int machineId, bool isTheSame);
 
 
-    void slaveBuildSynched(QString,double);
+    void slaveBuildSynched(int machineId, int buildId,double percentageSynched);
     
     void on_treeWidgetSlaves_clicked(const QModelIndex &index);
 
@@ -260,12 +261,12 @@ private:
     void populateTreeWidgetInfo(Build retr);
 
     /**
-     * QTreeWidgetItem* getSlaveTreeItemByIp(QString ip);
+     * QTreeWidgetItem* getSlaveTreeItemById(int uniqueId);
      * @brief Finds and returns the QTreeWidgetItem of the machine which has an IP adddress
-     * @param The Ip address of the machine
+     * @param uniqueId The unique Id of the machine
      * @return Returns the QTreeWidgetItem for a machine
      */
-    QTreeWidgetItem* getSlaveTreeItemByIp(QString ip);
+    QTreeWidgetItem* getSlaveTreeItemById(int uniqueId);
 
 private:
     /**

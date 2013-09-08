@@ -13,10 +13,10 @@ MainForm::MainForm(QWidget *parent) :
     ///connect slots for backward signalling
     connect(management, SIGNAL(newSlaveConnected(Machine*)),this,SLOT(newSlaveConnected(Machine*)));
     connect(management, SIGNAL(slaveDisconnected(int)),this,SLOT(slaveDisconnected(int)));
-    connect(management, SIGNAL(slaveGotBuild(Machine*,QString, bool)), this, SLOT(slaveGotBuild(Machine*,QString, bool)));
-    connect(management, SIGNAL(slaveBuildSizeSame(QString,QString,bool)), this, SLOT(slaveBuildSizeSame(QString,QString,bool)));
+    connect(management, SIGNAL(slaveGotBuild(Machine*,int, QString,bool)), this, SLOT(slaveGotBuild(Machine*,int, QString,bool)));
+    connect(management, SIGNAL(slaveBuildSizeSame(int,int,bool)), this, SLOT(slaveBuildSizeSame(int,int,bool)));
 
-    connect(management, SIGNAL(slaveBuildSynched(QString,double)), this, SLOT(slaveBuildSynched(QString,double)));
+    connect(management, SIGNAL(slaveBuildSynched(int,int,double)), this, SLOT(slaveBuildSynched(int,int,double)));
 
     masterBuilds = new MasterBuilds();
     masterBuilds->setHeaderHidden(true);    
@@ -308,13 +308,25 @@ void MainForm::newSlaveConnected(Machine *m){
     //now go find slave and show it if needed
     QTreeWidgetItem *slaveItem = new QTreeWidgetItem();
     slaveItem->setText(0, m->getMachineIP());
+    slaveItem->setText(1, QString::number(m->getMachineID()));
     ui->treeWidgetSlaves->addTopLevelItem(slaveItem);
 }
 
-void MainForm::slaveDisconnected(int index){
+void MainForm::slaveDisconnected(int uId){
     //destroy the tree widget at that index
-    qDebug()<<index;
-    ui->treeWidgetSlaves->topLevelItem(index)->~QTreeWidgetItem();
+    QString uniqueId = QString::number(uId);
+    qDebug()<< "UniqueID:" << uniqueId;
+
+    for(int i = 0; i < ui->treeWidgetSlaves->topLevelItemCount(); i++){
+        QTreeWidgetItem *item = 0;
+        item = ui->treeWidgetSlaves->topLevelItem(i);
+        if(item != 0){
+            if(!item->text(1).compare(uniqueId)){
+                item->~QTreeWidgetItem();
+                break;
+            }
+        }
+    }
 }
 
 void MainForm::initiateAddBuild(Build b){
@@ -369,7 +381,6 @@ void MainForm::loadXMLBuilds(){
 
 void MainForm::masterBuildsClicked(QModelIndex index){
     QString selBuild = index.sibling(index.row(),1).data().toString();
-    qDebug()<<"selBuild:  "<<selBuild;
     int num = selBuild.toInt();
     Build retr = management->getBuildByID(num);
     clearWidget();
@@ -474,48 +485,55 @@ void MainForm::on_actionCopy_Build_Over_triggered() {
     connect(copyBuild, SIGNAL(copyBuildOver(QString,QString)), this, SLOT(initiateCopyBuildOver(QString,QString)));
 }
 
-void MainForm::initiateCopyBuildOver(QString ipAddress, QString buildName){
-    management->copyBuildOver(ipAddress, buildName);
+void MainForm::initiateCopyBuildOver(int uniqueId, QString buildName){
+    management->copyBuildOver(uniqueId, buildName);
 }
 
-void MainForm::slaveGotBuild(Machine*m, QString buildId, bool buildExist){
-    QTreeWidgetItem *machineT = getSlaveTreeItemByIp(m->getMachineIP());
+void MainForm::slaveGotBuild(Machine*m, int buildId,  QString slaveBuildName, bool buildExist){
+    QTreeWidgetItem *machineT = getSlaveTreeItemById(m->getMachineID());
     if(machineT == 0){
         return;
     }
+    QString slaveBuildId = QString::number(buildId);
     QTreeWidgetItem *newBuildForSlave = new QTreeWidgetItem();
     if(buildExist == false){
         //show the background colour as red as well as display that buildId
         newBuildForSlave->setBackgroundColor(0, Qt::red);
-        QString buildName = buildId + "[N/A]";
-        newBuildForSlave->setText(0, buildName );
+        newBuildForSlave->setText(0, slaveBuildName );
+        newBuildForSlave->setText(1,slaveBuildId);
     }
     else{
-        QString buildName = management->getBuildByID(buildId.toInt()).getBuildName();
-        newBuildForSlave->setText(0, buildName);
+        newBuildForSlave->setText(0, slaveBuildName);
+        newBuildForSlave->setText(1,slaveBuildId);
     }
     machineT->addChild(newBuildForSlave);
 }
 
 
-QTreeWidgetItem* MainForm::getSlaveTreeItemByIp(QString ip){
-    ////NB GAAAN DALK `n LOCK HIERIN SIT a.g.v. concurrency
+QTreeWidgetItem* MainForm::getSlaveTreeItemById(int uniqueId){
     QTreeWidgetItem * machineTreeItem = 0;
     QTreeWidgetItem *safetyItem;//so that if that item is retrieved, but does not exist(concurrency)
     for(int i = 0; i < ui->treeWidgetSlaves->topLevelItemCount(); i++){
         safetyItem = ui->treeWidgetSlaves->topLevelItem(i);
         if(safetyItem != 0)
-            if(!safetyItem->text(0).compare(ip))
+            if(!safetyItem->text(1).compare(QString::number(uniqueId))){
                 machineTreeItem = ui->treeWidgetSlaves->topLevelItem(i);
+                break;
+            }
     }
     return machineTreeItem;
 }
 
-void MainForm::slaveBuildSizeSame(QString buildName, QString slaveIp, bool isTheSame){
-    QTreeWidgetItem * slaveTreeWidgetItem = getSlaveTreeItemByIp(slaveIp);
+void MainForm::slaveBuildSizeSame(int buildId, int machineId, bool isTheSame){
+    QTreeWidgetItem * slaveTreeWidgetItem = getSlaveTreeItemById(machineId);
     QTreeWidgetItem * buildItem = 0;
+
+    QString theBuildId = QString::number(buildId);
+    if(slaveTreeWidgetItem == 0)
+        return;
+
     for(int i = 0; i < slaveTreeWidgetItem->childCount(); i++){
-        if(!slaveTreeWidgetItem->child(i)->text(0).compare(buildName)){
+        if(!slaveTreeWidgetItem->child(i)->text(1).compare(theBuildId)){
             buildItem = slaveTreeWidgetItem->child(i);
             break;
         }
@@ -532,8 +550,8 @@ void MainForm::slaveBuildSizeSame(QString buildName, QString slaveIp, bool isThe
 }
 
 
-void MainForm::slaveBuildSynched(QString slaveIp, double percentage){
-    qDebug()<<"slaveSynched["<< slaveIp <<"] = "<<percentage;
+void MainForm::slaveBuildSynched(int machineId, int buildId, double percentage){
+    qDebug()<<"slaveSynched[ID = "<< machineId <<"] = "<<percentage;
 }
 
 
@@ -585,27 +603,26 @@ MainForm::SlaveStats::SlaveStats(QWidget *parent, QString ip, QString input)
 void MainForm::on_treeWidgetSlaves_clicked(const QModelIndex &index)
 {
     //Get the ip of the selected build
-    QString ip = index.data().toString();
-    //Ensure the data is an IP
-    int count = 0;
-    for(int i = 0; i < ip.length(); i++){
-        if(ip.at(i) == '.'){
-            count++;
-        }
-    }
-    //If it is an IP
-    if(count == 3){
-        Machine * selected = management->getMachineByIp(ip);
-        qDebug()<<ip;
+    QString iD = index.data().toString();
 
-        selected->getMinStats();
-        QString inp = "16%#46%#2.39695MB#5.375KB" ;
-        buildInfo->hide();
-        slaveStats = new SlaveStats(this,ip,inp);
-        connect(slaveStats, SIGNAL(clicked(QModelIndex)), this, SLOT(slaveStatsClicked(QModelIndex)));
-        clearWidget();
-        ui->dockWidgetContents->layout()->addWidget(slaveStats);
+    bool *ok = new bool();
+    int machineId = iD.toInt(ok);
+
+    if(!ok){
+        delete ok;
+        return;
     }
+    delete ok;
+
+    Machine * selected = management->getMachineById(machineId);
+
+    selected->getMinStats();
+    QString inp = "16%#46%#2.39695MB#5.375KB" ;
+    buildInfo->hide();
+    slaveStats = new SlaveStats(this,selected->getMachineIP(),inp);
+    connect(slaveStats, SIGNAL(clicked(QModelIndex)), this, SLOT(slaveStatsClicked(QModelIndex)));
+    clearWidget();
+    ui->dockWidgetContents->layout()->addWidget(slaveStats);
 }
 
 void MainForm::clearWidget(){
@@ -617,11 +634,23 @@ void MainForm::clearWidget(){
 }
 
 void MainForm::slaveStatsClicked(QModelIndex index){
-    QString ip = index.sibling(index.row(),2).data().toString();
-    Machine * selected = management->getMachineByIp(ip);
+    QTreeWidgetItem *item = ui->treeWidgetSlaves->selectedItems().at(0);
+
+
+    bool *ok = new bool();
+    int machineID = item->text(1).toInt();
+
+    if(!ok){
+        delete ok;
+        return;
+    }
+    delete ok;
+
+
+    Machine * selected = management->getMachineById(machineID);
     selected->getDetStats();
-    QString unParsed = "";
     moreInfo * mi = new moreInfo();
     mi->show();
+
 }
 

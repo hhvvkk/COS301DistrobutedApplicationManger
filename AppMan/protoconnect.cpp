@@ -28,8 +28,19 @@ void ProtoConnect::handle(QString data, Management *management, QTcpSocket *slav
             return;
         }
 
-        management->addMachine(slaveAddressIp, handler);
+        QString uniqueId = "";
 
+
+        if(uniqueId.compare("")){
+            management->addMachine(-1, slaveAddressIp, handler);
+            Machine *myMachineObject = handler->getMachine();
+            //The machine does not have a unique id, thus will go get it and write uid to slave
+        }
+        else{
+            int thUId = uniqueId.toInt();
+            management->addMachine(thUId, slaveAddressIp, handler);
+        }
+        ///DO SOMETHING WITH Unique ID........
         slaveSocket->write("||Hello AppManClient||");
         slaveSocket->flush();
     }

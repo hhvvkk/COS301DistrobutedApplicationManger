@@ -8,7 +8,6 @@
 ProtoSendBuild::ProtoSendBuild(QObject *parent)
     :Protocol(parent)
 {
-    ipAddress = "";
 }
 
 void ProtoSendBuild::handle(QString data, Management *management, QTcpSocket *slaveSocket){
@@ -46,13 +45,9 @@ void ProtoSendBuild::SizeCheckAllBuildsDone(QTcpSocket *slaveSocket, Management 
         }
     }
 
+    int machineId = handler->getMachine()->getMachineID();
 
-    //here on  out this will create a class that will synchronize the folders
-    if(!ipAddress.compare("")){
-        qDebug()<<"IP ADDRESS is empty(ProtoSendBuild .cpp -- line 52+";
-    }
-
-    CopySenderServer * newSender = new CopySenderServer(differentBuildDirectories, differentBuildNos, management);
+    CopySenderServer * newSender = new CopySenderServer(differentBuildDirectories, differentBuildNos, management, machineId);
 
     //get the port on which new server will run
     int port = newSender->startServer();
@@ -70,8 +65,4 @@ void ProtoSendBuild::SizeCheckAllBuildsDone(QTcpSocket *slaveSocket, Management 
 
 void ProtoSendBuild::sizeCheckCertainBuildDone(){
     //////if you copy over a build
-}
-
-void ProtoSendBuild::setSendBuildIp(QString ip){
-    ipAddress = ip;
 }

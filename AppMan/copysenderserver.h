@@ -19,7 +19,7 @@ class CopySenderServer : public QTcpServer
 {
     Q_OBJECT
 public:
-    explicit CopySenderServer(QStringList &diffBuilds, QStringList &diffBuildNos, Management *man, QObject *parent = 0);
+    explicit CopySenderServer(QStringList &diffBuilds, QStringList &diffBuildNos, Management *man, int mashId, QObject *parent = 0);
 
     ~CopySenderServer();
 
@@ -98,6 +98,8 @@ private:
     bool firstTalk;
 
     Management *management;
+
+    int machineId;
 };
 
 #endif // COPYSENDERSERVER_H

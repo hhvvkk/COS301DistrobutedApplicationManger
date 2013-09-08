@@ -26,9 +26,19 @@ void ProtoSizeCheckBuilds::BuildMD5(QString data, Management *management, QTcpSo
 
     QString buildMD5Value = rightSide.right(rightSide.length() - (buildNo.length()+1));
 
-    QString slaveIp = slaveSocket->peerAddress().toString();
+    QObject *myParent = this->parent();
+    if(myParent == 0)
+        return;
 
-    management->slaveBuildSize(buildNo, buildMD5Value, slaveIp);
+    ProtocolHandler *handler = dynamic_cast<ProtocolHandler*>(myParent);
+
+    if(handler == 0){
+        slaveSocket->disconnectFromHost();
+        return;
+    }
+
+
+    management->slaveBuildSize(buildNo.toInt(), buildMD5Value, handler->getMachine()->getMachineID());
 
 }
 

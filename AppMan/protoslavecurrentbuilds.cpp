@@ -44,12 +44,17 @@ void ProtoSlaveCurrentBuilds::Rechecker(QString data, Management *management, QT
     //this prevents problems from occurring
     QString buildNo = rightSide.left(rightSide.indexOf("#"));
 
-    //QString buildName = rightSide.right(rightSide.length() - (buildNo.length()+1));
+    QString buildName = rightSide.right(rightSide.length() - (buildNo.length()+1));
 
-    QHostAddress adr = socket->peerAddress();
-    QString slaveIp = adr.toString();
+    int buildNoId = buildNo.toInt();
 
-    management->addBuildToSlave(slaveIp, buildNo);
+    QObject *myParent = this->parent();
+    if(myParent == 0)
+        return;
+
+    ProtocolHandler *handler = dynamic_cast<ProtocolHandler*>(myParent);
+
+    management->addBuildToSlave(handler->getMachine()->getMachineID(), buildNoId, buildName);
 
     socket->write("||RecheckCopy||");
     socket->flush();

@@ -46,17 +46,18 @@ signals:
     void slaveDisconnected(int index);
 
     /**
-     * \fn void slaveGotBuild(Machine *machine, QString buildNo, bool buildExists);
+     * \fn void slaveGotBuild(Machine *machine, int buildNo, QString buildName, bool buildExists);
      * @brief A signal that will invoke a function on the mainform to add the build to the view
      * @param machine The machine on which the build must be displayed
      * @param buildNo The number of the build that must be added
      * @param buildExists A boolean value indicating whether the build on slave exist on master
+     * @param buildName The build name that is on the slave machine side
      */
-    void slaveGotBuild(Machine *machine, QString buildNo, bool buildExists);
+    void slaveGotBuild(Machine *machine, int buildNo,  QString buildName, bool buildExists);
 
-    void slaveBuildSizeSame(QString buildName, QString slaveIp, bool isTheSame);
+    void slaveBuildSizeSame(int buildId, int slaveId, bool isTheSame);
 
-    void slaveBuildSynched(QString slaveIp, double percentageSynched);
+    void slaveBuildSynched(int machineId, int buildId, double percentageSynched);
 public:
     /**
     * \fn Management();
@@ -119,7 +120,7 @@ public:
      * @param address The machine Ip address to add
      * @param handler the Protocol handler to allow communication to the machine
      */
-    void addMachine(QString address, ProtocolHandler *handler);
+    void addMachine(int uniqueID, QString address, ProtocolHandler *handler);
 
     /**
      * \fn void removeMachine(Machine *m);
@@ -189,18 +190,18 @@ public:
     /**
      * \fn void copyBuildOver(QString ipAddress, QString buildName);
      * @brief Will initiate a copy build over from master to slave
-     * @param ipAddress The ip of the machine
+     * @param machineId The uniqueId of the machine
      * @param buildName The buildName to copy over
      */
-    void copyBuildOver(QString ipAddress, QString buildName);
+    void copyBuildOver(int machineId, QString buildName);
 
     /**
-     * \fn void addBuildToSlave(QString slaveIp, QString buildNo);
+     * \fn void addBuildToSlave(int machineId, QString buildNo);
      * @brief This function will be called once the build has been added to the slave machine. This emits a slaveGotBuild signal
-     * @param slaveIp The ip of the machine
+     * @param machineId The unique Id of the machine
      * @param buildNo The buildName to copy over
      */
-    void addBuildToSlave(QString slaveIp, QString buildNo);
+    void addBuildToSlave(int machineId, int buildNo, QString buildName);
 
     /**
     * \fn QString getBuildMD5(Build b);
@@ -211,17 +212,17 @@ public:
     QString getBuildMD5(Build* build);
 
     /**
-    * \fn Machine *getMachineByIp(QString machineIp);
+    * \fn Machine *getMachineById(int machineId);
     * @brief This function will run through the machines and find the machine with a certain IP address
     * @param machineIp The IP of the machine to return
     * @return Returns the pointer to a machine with an ip or returns 0 if that machine does not exist anymore
     */
-    Machine *getMachineByIp(QString machineIp);
+    Machine *getMachineById(int machineId);
 
 
-    void slaveBuildSize(QString buildNo, QString buildMD5Value, QString slaveIp);
+    void slaveBuildSize(int buildNo, QString buildMD5Value, int slaveId);
 
-    void setSlaveBuildIsSame(bool isSame, QString slaveIp, int buildID);
+    void setSlaveBuildIsSame(bool isSame, int machineId, int buildID);
 
     QString getMinStats(){return minStats;}
 
@@ -231,13 +232,14 @@ public:
 
     void setDetStats(QString stats);
 
-    void machineBuildSynched(QString slaveIp, double percentageSynched);
+    void machineBuildSynched(int machineId, int buildId, double percentageSynched);
 private:
     /**
      * \fn void clearMachines();
-     * @brief A function to clear all machines
+     * @brief A function to generate a unique id for a new connecting machine
+     * @return Returns a new unique Id for a new connecting machine
      */
-    void clearMachines();
+    int generateUniqueId();
 
 private:
     /**

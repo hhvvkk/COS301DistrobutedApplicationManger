@@ -16,12 +16,21 @@ void ProtoCopyOver::GotABuild(QString data, Management *management, QTcpSocket *
     //at this point of time in communication, a build has just been added
     //because 1. it was already there or 2. it has just been added
     //"GotABuild:#"+buildNo;
-    QHostAddress adr = slaveSocket->peerAddress();
 
     QString leftSide = data.left(data.indexOf("#"));
     QString buildNo = data.right(data.length() - (leftSide.length()+1));
-    QString slaveIp = adr.toString();
-    management->addBuildToSlave(slaveIp, buildNo);
+
+
+    int buildNoId = buildNo.toInt();
+    QString buildName = management->getBuildByID(buildNoId).getBuildName();
+
+    QObject *myParent = this->parent();
+    if(myParent == 0)
+        return;
+
+    ProtocolHandler *handler = dynamic_cast<ProtocolHandler*>(myParent);
+
+    management->addBuildToSlave(handler->getMachine()->getMachineID(), buildNoId, buildName);
 
     //finally call size check on that build
     sizeCheckCertainBuild(buildNo, slaveSocket);
