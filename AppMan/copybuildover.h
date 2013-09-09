@@ -57,12 +57,12 @@ private slots:
 
 signals:
     /**
-     * @fn void copyBuildOver(QString ipAddress, QString buildName);
+     * @fn void copyBuildOver(int machineID, QString buildName);
      * @brief signal to copy the build from master to slave machine
-     * @param ipAddress The ip Address of the machine to copy to
+     * @param machineID The unique machine Id to which the build will be copied
      * @param buildName The name of the build to copy over
      */
-    void copyBuildOver(QString ipAddress, QString buildName);
+    void copyBuildOver(int machineID, QString buildName);
 
 private:
     /**

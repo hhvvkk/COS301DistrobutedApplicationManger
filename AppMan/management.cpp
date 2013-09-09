@@ -151,20 +151,22 @@ bool Management::machineExistWithIp(QString ip){
 }
 
 void Management::copyBuildOver(int machineId, QString buildName){
-
     Build build = getBuildByName(buildName);
 
     lock->lock();
 
     Machine *machine = 0;
     for(int i = 0; i < machineCount; i++){
-        if(!getMachineAt(i)->getMachineID() == machineId){
+        qDebug()<<"machineID=";
+        qDebug()<<"getMachineID=";
+        if(getMachineAt(i)->getMachineID() == machineId){
             machine = getMachineAt(i);
             break;
         }
     }
 
     lock->unlock();
+
     machine->copyBuildOver(build);
 
 }

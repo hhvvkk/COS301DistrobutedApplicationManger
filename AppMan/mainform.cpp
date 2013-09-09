@@ -243,7 +243,7 @@ void MainForm::dropBuildToSlave(QString fromBuild){
 
     //send the lists as parameters to the new dialogue
     CopyBuildOver *copyBuild = new CopyBuildOver(management, nameListSuggest, ipListSuggest,buildname);
-    connect(copyBuild, SIGNAL(copyBuildOver(QString,QString)), this, SLOT(initiateCopyBuildOver(QString,QString)));
+    connect(copyBuild, SIGNAL(copyBuildOver(int,QString)), this, SLOT(initiateCopyBuildOver(int,QString)));
     copyBuild->show();
 }
 
@@ -482,7 +482,7 @@ void MainForm::on_actionCopy_Build_Over_triggered() {
     }
     CopyBuildOver *copyBuild = new CopyBuildOver(management, nameListSuggest, ipListSuggest);
     copyBuild->show();
-    connect(copyBuild, SIGNAL(copyBuildOver(QString,QString)), this, SLOT(initiateCopyBuildOver(QString,QString)));
+    connect(copyBuild, SIGNAL(copyBuildOver(int,QString)), this, SLOT(initiateCopyBuildOver(int,QString)));
 }
 
 void MainForm::initiateCopyBuildOver(int uniqueId, QString buildName){

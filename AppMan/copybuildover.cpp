@@ -29,7 +29,21 @@ void CopyBuildOver::cancelClick(){
 void CopyBuildOver::okClick(){
     if(!validateInput())
         return;
-    emit copyBuildOver(ui->lineEditMachineIP->text(), ui->lineEditBuildName->text());
+
+    int machineId = -1;
+
+    for(int i = 0; i < management->getMachineCount(); i++){
+        Machine *machine = management->getMachineAt(i);
+        if(machine != 0){
+            if(!machine->getMachineIP().compare(ui->lineEditMachineIP->text()))
+                machineId = machine->getMachineID();
+        }
+    }
+
+    if(machineId <= -1)
+        return;
+
+    emit copyBuildOver(machineId, ui->lineEditBuildName->text());
     this->close();
 }
 

@@ -57,9 +57,9 @@ void Server::incomingConnection(int socketID){
 
     ServerThread *serverThread = new ServerThread(socketID, management, this);
 
-    //connect(serverThread, SIGNAL(finished()), serverThread, SLOT(deleteLater()));
+    connect(serverThread, SIGNAL(finished()), serverThread, SLOT(deleteLater()));
 
-    serverThread->startThread();
+    serverThread->start();
 }
 
 
