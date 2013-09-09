@@ -37,7 +37,6 @@ void ProtoConnect::handle(QVariantMap jsonObject, Management *management, QTcpSo
             return;
         }
 
-
         QString uniqueId = jsonObject.value("machineID").toString();
 
         if(!uniqueId.compare("QVariant(, )")){

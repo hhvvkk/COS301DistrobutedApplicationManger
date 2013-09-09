@@ -4,7 +4,13 @@
 #include <QObject>
 #include <QTcpSocket>
 #include <QHostAddress>
+#include <QVariant>
+#include <QVariantMap>
+#include <QSettings>
+
+
 #include "buildmd5.h"
+#include "json.h"
 
 /**
   * @class CopySenderClient
@@ -40,6 +46,15 @@ private slots:
     void readyReadFunction();
 
 private:
+    QString startJSONMessage();
+
+    void appendJSONValue(QString &currentString, QString newKey, QString newValue, bool addComma);
+
+    void endJSONMessage(QString &currentString);
+
+    QString getMachineID();
+
+
     /**
      * \fn void handle(QString data);
      * @brief A function which strips the slashes from data and splits various requests that may be together into separate requests and calls requestHandler(theData)
@@ -59,7 +74,7 @@ private:
      * @brief A function which executes every time Build Different has been read in the request of requestHandler
      * @param data The data on which further parsing will be done
      */
-    void BuildDifferent(QString data);
+    void BuildDifferent(QVariantMap jsonObject);
 
     /**
      * \fn void EndAllDifferences();
@@ -79,6 +94,7 @@ private:
     void SendBuildMD5Class(BuildMD5 *md5Class, int i);
 
     void DeleteFilesList(const QVariantMap jsonObject);
+
 
 private:
     QString allBuildsDirectory;

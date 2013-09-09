@@ -26,8 +26,58 @@ CopySenderClient::~CopySenderClient(){
     differentBuilds.clear();
 }
 
+QString CopySenderClient::startJSONMessage(){
+    return QString("{");
+}
+
+void CopySenderClient::appendJSONValue(QString &currentString, QString newKey, QString newValue, bool addComma){
+    QString appendThis = "\""+newKey+"\" : \""+newValue+"\"";
+    if(addComma)
+        appendThis.append(",");
+    currentString.append(appendThis);
+}
+
+
+void CopySenderClient::endJSONMessage(QString &currentString){
+    currentString.prepend("||");
+    currentString.append("}");
+    currentString.append("||");
+}
+
 void CopySenderClient::disconnectedFunction(){
     this->deleteLater();
+}
+
+QString CopySenderClient::getMachineID(){
+    int machineID = -1;
+    QSettings setting("settings.ini",QSettings::IniFormat);
+    //grouping the settings
+    setting.beginGroup("Connection");
+
+    //default settings values
+    QVariant defaultMachineId;
+    defaultMachineId.setValue(-1);
+
+    //send in the default values in case it does not exist...
+    QString loadedPort = setting.value("machineID", defaultMachineId).toString();
+
+    setting.endGroup();
+
+    bool validID;
+    int theLoadedId = loadedPort.toInt(&validID);
+
+    if(!validID){
+        machineID = -1;
+    }else{
+        if(theLoadedId >= 0)
+            machineID = theLoadedId;
+        else{
+            machineID = -1;
+        }
+    }
+
+    qDebug()<<"MACHINEID::"<<machineID;
+    return QString::number(machineID);
 }
 
 bool CopySenderClient::connectToHost(){
@@ -41,8 +91,14 @@ bool CopySenderClient::connectToHost(){
         return false;
     }
 
-    QString helloMessageCopySender = "||HelloCopySender||";
-    socket->write(helloMessageCopySender.toAscii().data());
+    QString machineID = getMachineID();
+
+    QString jsonMessage = startJSONMessage();
+    appendJSONValue(jsonMessage, "handler", "HelloCopySender", true);
+    appendJSONValue(jsonMessage, "machineID", machineID, false);
+    endJSONMessage(jsonMessage);
+
+    socket->write(jsonMessage.toAscii().data());
     socket->flush();
 
     return true;
@@ -92,44 +148,53 @@ void CopySenderClient::handle(QString data){
 
 
 void CopySenderClient::requestHandler(QString data){
-    if(data.at(0) == '{'){
-        const QVariantMap jsonObject = JSON::instance().parse(data);
 
-        QVariant handler = jsonObject.value("handler");
-        if(!handler.toString().compare("DeleteFilesList"))
-            DeleteFilesList(jsonObject);
+    qDebug()<<"copuRead::"<<data;
+    const QVariantMap jsonObject = JSON::instance().parse(data);
+    QVariant handler = jsonObject.value("handler");
+
+    if(!handler.toString().compare("QVariant(, )")){
+        qDebug()<< "invalid JSON String::"<<data;
+        return;
     }
 
     if(firstTalk){
-        if(!data.compare("HelloCopyReceiver")){
+        if(!handler.toString().compare("HelloCopyReceiver")){
             firstTalk = false;
         }else{
             socket->disconnectFromHost();
             return;
         }
-        socket->write("||SendDifferences||");
+
+        QString jsonMessage = startJSONMessage();
+        appendJSONValue(jsonMessage, "handler", "SendDifferences",false);
+        endJSONMessage(jsonMessage);
+
+
+        qDebug()<<jsonMessage;
+        socket->write(jsonMessage.toAscii().data());
         socket->flush();
         return;
     }
 
-    //else it is not the first time communicating
-    if(data.contains("BuildDifferent:#")){
-        BuildDifferent(data);
-    }
 
-    if(!data.compare("EndAllDifferences")){
-        //this means go and create all the Md5Classes
+    //else it is not the first time communicating...
+    if(!handler.toString().compare("BuildDifferent"))
+        BuildDifferent(jsonObject);
+    else
+
+    if(!handler.toString().compare("EndAllDifferences"))
         EndAllDifferences();
-    }
+    else
+
+    if(!handler.toString().compare("DeleteFilesList"))
+        DeleteFilesList(jsonObject);
 
 }
 
-void CopySenderClient::BuildDifferent(QString data){
-    //E.g SendBuildCopyServer:#121.110.222.212#4412
-    QString mostLeft = "BuildDifferent:#";
+void CopySenderClient::BuildDifferent(QVariantMap jsonObject){
 
-    QString differentBuildNo = data.right((data.size()-mostLeft.length()));
-    //E.g. differentBuildNo= "4"
+    QString differentBuildNo =  jsonObject.value("differentBuildNo").toString();
 
     differentBuilds.append(differentBuildNo);
 
@@ -145,7 +210,13 @@ void CopySenderClient::EndAllDifferences(){
         md5Class = 0;
     }
 
-    socket->write("||DoneMD5AllFiles||");
+
+    QString jsonMessage = startJSONMessage();
+    appendJSONValue(jsonMessage,"handler", "DoneMD5AllFiles", false);
+    endJSONMessage(jsonMessage);
+
+
+    socket->write(jsonMessage.toAscii().data());
     socket->flush();
 }
 
@@ -157,6 +228,24 @@ BuildMD5* CopySenderClient::getBuildMD5Class(QString directory){
 
 
 void CopySenderClient::SendBuildMD5Class(BuildMD5 *md5Class, int i){
+
+    //What this function does is create a json string in the following format
+    //and writes it to the socket:
+    /*
+
+     {
+        "handler":"BuildFileSumMD5",
+        "buildNo":"[No of the build]",
+        "BuildToMD5": {
+                        { "[FilePath1]" : "[FileMD5Value1]" },
+                        { "[FilePath2]" : "[FileMD5Value1]" },
+                        ...........(n Times),
+                        { "[FilePathn]" : "[FileMD5Value1]" }
+                       }
+     }
+
+     where n = the number of
+     */
 
     QString jsonString = "{";
     jsonString.append("\"handler\" : \"BuildFileSumMD5\", \"buildNo\" : \""+differentBuilds.at(i)+"\", \"BuildToMD5\" : {");

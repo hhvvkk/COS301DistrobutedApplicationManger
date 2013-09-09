@@ -6,6 +6,9 @@
 #include <QStringList>
 #include <QHostAddress>
 #include <QNetworkInterface>
+#include <QVariant>
+#include <QVariantMap>
+
 #include "buildmd5.h"
 #include "json.h"
 #include "copycompare.h"
@@ -51,6 +54,13 @@ private slots:
 
 
 private:
+    QString startJSONMessage();
+
+    void appendJSONValue(QString &currentString, QString newKey, QString newValue, bool addComma);
+
+    void endJSONMessage(QString &currentString);
+
+
     /**
      * \fn void handle(QString data);
      * @brief A function which strips the slashes from data and splits various requests that may be together into separate requests and calls requestHandler(theData)

@@ -22,6 +22,27 @@ CopySenderServer::~CopySenderServer(){
         socket->deleteLater();
 }
 
+
+QString CopySenderServer::startJSONMessage(){
+    return QString("{");
+}
+
+void CopySenderServer::appendJSONValue(QString &currentString, QString newKey, QString newValue, bool addComma){
+    QString appendThis = "\""+newKey+"\" : \""+newValue+"\"";
+    if(addComma)
+        appendThis.append(",");
+    currentString.append(appendThis);
+}
+
+
+
+void CopySenderServer::endJSONMessage(QString &currentString){
+    currentString.prepend("||");
+    currentString.append("}");
+    currentString.append("||");
+}
+
+
 int CopySenderServer::startServer(){
     if(!this->listen(QHostAddress::Any)){
         //qDebug() << "Could not start server";
@@ -68,6 +89,7 @@ void CopySenderServer::readyReadFunction(){
 
 void CopySenderServer::handle(QString data){
 
+    qDebug()<<data;
     if(socket == 0){
         qDebug()<<"socket = 0(handle--CopySenderServer)";
         return;
@@ -108,33 +130,51 @@ void CopySenderServer::handle(QString data){
 
 
 void CopySenderServer::requestHandler(QString data){
-    if(data.at(0) == '{'){
-        const QVariantMap jsonObject = JSON::instance().parse(data);
+    const QVariantMap jsonObject = JSON::instance().parse(data);
+    QVariant handler = jsonObject.value("handler");
 
-        QVariant handler = jsonObject.value("handler");
-        if(!handler.toString().compare("BuildFileSumMD5"))
-            getDifferences(jsonObject);
-       // else if(!handler.toString().compare("BuildFileSumMD5"))
-
+    if(!handler.toString().compare("QVariant(, )")){
+        qDebug()<< "invalid JSON String::"<<data;
+        return;
     }
 
     if(firstTalk){
-        if(!data.compare("HelloCopySender")){
-            firstTalk = false;
-            //stop the server since you don't want to allow any other connections
-            stopServer();
+        if(!handler.toString().compare("HelloCopySender")){
+            //check whether the machine is the right machine that should connect to it...
+            if(jsonObject.value("machineID").toString().compare(QString::number(machineId))){
+               socket->disconnectFromHost();
+               qDebug()<<"YES"<<jsonObject.value("machineID").toString().compare(QString::number(machineId));
+               return;
+            }else{
+                //if it is the right machine continue
+                firstTalk = false;
+                //stop the server since you don't want to allow any other connections
+                stopServer();
+            }
         }else{
             socket->disconnectFromHost();
             return;
         }
-        socket->write("||HelloCopyReceiver||");
+
+
+        QString jsonMessage = startJSONMessage();
+        appendJSONValue(jsonMessage, "handler", "HelloCopyReceiver", false);
+        endJSONMessage(jsonMessage);
+
+
+        socket->write(jsonMessage.toAscii().data());
         socket->flush();
         return;
     }
 
-    if(!data.compare("SendDifferences")){
+
+    if(!handler.toString().compare("SendDifferences"))
         SendDifferences();
-    }
+    else
+
+    if(!handler.toString().compare("BuildFileSumMD5"))
+            getDifferences(jsonObject);
+
 }
 
 
@@ -144,11 +184,20 @@ void CopySenderServer::SendDifferences(){
     for(int i = 0; i < differentBuildNos.size(); i++){
         //if it is the first time it is connected write to the client which builds
         //should generate the MD5classes for
-        QString differentBuildMessage = "||BuildDifferent:#"+differentBuildNos.at(i)+"||";
-        socket->write(differentBuildMessage.toAscii().data());
+        QString jsonMessage = startJSONMessage();
+        appendJSONValue(jsonMessage, "handler", "BuildDifferent", true);
+        appendJSONValue(jsonMessage, "differentBuildNo",differentBuildNos.at(i),false);
+        endJSONMessage(jsonMessage);
+
+        socket->write(jsonMessage.toAscii().data());
         socket->flush();
     }
-    socket->write("||EndAllDifferences||");
+
+    QString jsonMessage = startJSONMessage();
+    appendJSONValue(jsonMessage, "handler", "EndAllDifferences", false);
+    endJSONMessage(jsonMessage);
+
+    socket->write(jsonMessage.toAscii().data());
     socket->flush();
 }
 
