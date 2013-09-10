@@ -93,7 +93,7 @@ void Management::addBuild(Build buildToAdd){
         allBuilds[buildCount] = buildToAdd;
     }
     buildCount++;
-    qDebug("added build to management");
+    //qDebug("added build to management");
 }
 
 Machine* Management::getMachineAt(int i){
@@ -157,8 +157,6 @@ void Management::copyBuildOver(int machineId, QString buildName){
 
     Machine *machine = 0;
     for(int i = 0; i < machineCount; i++){
-        qDebug()<<"machineID=";
-        qDebug()<<"getMachineID=";
         if(getMachineAt(i)->getMachineID() == machineId){
             machine = getMachineAt(i);
             break;
@@ -184,7 +182,6 @@ void Management::addBuildToSlave(int machineId, int buildNo, QString buildName){
 
     Machine *machine = getMachineById(machineId);
 
-    qDebug()<<(machine==NULL);
     if(machine==NULL)
         return;
 

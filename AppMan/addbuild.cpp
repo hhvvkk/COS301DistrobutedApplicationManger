@@ -47,7 +47,7 @@ void AddBuild::okClick(){
     //If all is fine, continue
     int buildID = buildNo.toInt();
     Build buildToAdd(buildID,buildName,buildDescription,buildDirectory);
-    qDebug()<<"about to emit";
+    //qDebug()<<"about to emit";
     addToXML(buildID,buildName,buildDescription,buildDirectory);
 
     //clean up for next add

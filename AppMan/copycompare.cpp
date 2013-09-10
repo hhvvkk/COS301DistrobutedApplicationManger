@@ -29,9 +29,9 @@ void CopyCompare::createFile(QString aPath){
 
 double CopyCompare::percentageSynched(){
     double percentageComplete = 0;
-    qDebug()<<"numNotCopied:"<<numFilesNotCopied;
-    qDebug()<<"filesToCopy:"<<filePaths->size();
-    qDebug()<<"filesToDelete:"<<deleteFilePaths->size();
+//    qDebug()<<"numNotCopied:"<<numFilesNotCopied;
+//    qDebug()<<"filesToCopy:"<<filePaths->size();
+//    qDebug()<<"filesToDelete:"<<deleteFilePaths->size();
     return percentageComplete;
 }
 

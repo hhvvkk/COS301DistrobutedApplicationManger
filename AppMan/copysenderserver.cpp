@@ -8,11 +8,6 @@ CopySenderServer::CopySenderServer( QStringList &differentB, QStringList &differ
     management = man;
     machineId = mashId;
 
-    qDebug()<<"All the different Builds follows::in CopySenderServer";
-    for(int i = 0; i < differentBuildDirectories.size(); i++){
-        qDebug()<<"DifferentBuild="<<differentBuildDirectories.at(i);
-    }
-
     firstTalk = true;
 }
 
@@ -88,8 +83,6 @@ void CopySenderServer::readyReadFunction(){
 }
 
 void CopySenderServer::handle(QString data){
-
-    qDebug()<<data;
     if(socket == 0){
         qDebug()<<"socket = 0(handle--CopySenderServer)";
         return;
@@ -143,7 +136,6 @@ void CopySenderServer::requestHandler(QString data){
             //check whether the machine is the right machine that should connect to it...
             if(jsonObject.value("machineID").toString().compare(QString::number(machineId))){
                socket->disconnectFromHost();
-               qDebug()<<"YES"<<jsonObject.value("machineID").toString().compare(QString::number(machineId));
                return;
             }else{
                 //if it is the right machine continue

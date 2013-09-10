@@ -113,6 +113,7 @@ private slots:
      * \fn void quitTheApplication();
      * @brief A function emitting a signal called quitApplication which will then end application
      */
+    void on_treeWidgetActiveSimulations_activated(QModelIndex index);
     void quitTheApplication();
 
 

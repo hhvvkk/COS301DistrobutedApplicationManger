@@ -310,16 +310,34 @@ void MainForm::newSlaveConnected(Machine *m){
     slaveItem->setText(0, m->getMachineIP());
     slaveItem->setText(1, QString::number(m->getMachineID()));
     ui->treeWidgetSlaves->addTopLevelItem(slaveItem);
+
+    QTreeWidgetItem *activeSimulationItem = new QTreeWidgetItem();
+    activeSimulationItem->setText(0, m->getMachineIP());
+    activeSimulationItem->setText(1, QString::number(m->getMachineID()));
+    ui->treeWidgetActiveSimulations->addTopLevelItem(activeSimulationItem);
 }
 
 void MainForm::slaveDisconnected(int uId){
-    //destroy the tree widget at that index
+
+    //destroy the build treewidget item for a slave
     QString uniqueId = QString::number(uId);
     qDebug()<< "UniqueID:" << uniqueId;
 
     for(int i = 0; i < ui->treeWidgetSlaves->topLevelItemCount(); i++){
         QTreeWidgetItem *item = 0;
         item = ui->treeWidgetSlaves->topLevelItem(i);
+        if(item != 0){
+            if(!item->text(1).compare(uniqueId)){
+                item->~QTreeWidgetItem();
+                break;
+            }
+        }
+    }
+
+    //remove the simulations class for a slave
+    for(int i = 0; i < ui->treeWidgetActiveSimulations->topLevelItemCount(); i++){
+        QTreeWidgetItem *item = 0;
+        item = ui->treeWidgetActiveSimulations->topLevelItem(i);
         if(item != 0){
             if(!item->text(1).compare(uniqueId)){
                 item->~QTreeWidgetItem();
@@ -343,7 +361,7 @@ void MainForm::displayBuilds(){
     QString strNum;
     int buildNum = -1;
     for(int i = 0; i < len; i++){
-        qDebug()<<"looping through builds";
+        //qDebug()<<"looping through builds";
         buildName = myBuilds[i].getBuildName();
         buildNum = myBuilds[i].getBuildID();
         strNum = QString::number(buildNum);
@@ -551,7 +569,7 @@ void MainForm::slaveBuildSizeSame(int buildId, int machineId, bool isTheSame){
 
 
 void MainForm::slaveBuildSynched(int machineId, int buildId, double percentage){
-    qDebug()<<"slaveSynched[ID = "<< machineId <<"] = "<<percentage;
+    qDebug()<<"slaveSynched[machineID = "<< machineId <<"|| buildID = "<< buildId <<"] = "<<percentage;
 }
 
 
@@ -655,3 +673,29 @@ void MainForm::slaveStatsClicked(QModelIndex index){
 
 }
 
+
+void MainForm::on_treeWidgetActiveSimulations_activated(QModelIndex index)
+{
+    QTreeWidgetItem *item = ui->treeWidgetSlaves->selectedItems().at(0);
+
+    bool *ok = new bool();
+    int machineID = item->text(1).toInt();
+
+    if(!ok){
+        delete ok;
+        return;
+    }
+    delete ok;
+
+    Machine * selected = management->getMachineById(machineID);
+
+    if(selected == 0)
+        return;
+    selected->getMinStats();
+    QString inp = "16%#46%#2.39695MB#5.375KB" ;
+    buildInfo->hide();
+    slaveStats = new SlaveStats(this,selected->getMachineIP(), inp);
+    connect(slaveStats, SIGNAL(clicked(QModelIndex)), this, SLOT(slaveStatsClicked(QModelIndex)));
+    clearWidget();
+    ui->dockWidgetContents->layout()->addWidget(slaveStats);
+}
