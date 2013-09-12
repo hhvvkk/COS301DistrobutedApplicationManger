@@ -1,0 +1,13 @@
+\contentsline {section}{\numberline {1}Overview}{1}
+\contentsline {subsection}{\numberline {1.1}Background}{1}
+\contentsline {subsection}{\numberline {1.2}Business opportunity}{1}
+\contentsline {section}{\numberline {2}Software development process}{1}
+\contentsline {section}{\numberline {3}Member Profiles}{2}
+\contentsline {subsection}{\numberline {3.1}Francois Germishuizen}{2}
+\contentsline {subsection}{\numberline {3.2}Jaco Swanepoel}{3}
+\contentsline {subsection}{\numberline {3.3}Henko van Koesveld}{4}
+\contentsline {section}{\numberline {4}Issue Management}{6}
+\contentsline {subsection}{\numberline {4.1}Priorities}{6}
+\contentsline {subsection}{\numberline {4.2}Tools}{6}
+\contentsline {section}{\numberline {5}Burndown Chart}{7}
+\contentsline {section}{\numberline {6}Outstanding tasks / risks}{7}

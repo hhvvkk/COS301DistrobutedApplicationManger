@@ -154,13 +154,13 @@ Below are the various channels we will be using:
 \begin{itemize}
 \item Connector/C++ 1.1.3 is available to connect to MySql for both Windows and Linux. It lets you develop C++ applications that connect to the MySQL Server.
 \item XML parsing and handling will be done with the QXMLReader and QXMLWriter libraries used in our own classes for our needs.
-\item QTcpSockets and c++ sockets from <sys/socket.h> are used to make a reliable connection between the Master and Slaves.
+\item QTcpSockets and c++ sockets from sys/socket.h are used to make a reliable connection between the Master and Slaves.
 \end{itemize}
-
+%pdflatex Architectural\ Requirements\ Document.tex
 \newpage
 \section{Architectural Constraints}
 Overall constraints include the use of QT 4.8.4 with C++ throughout the project, as explicitly specified by the client.\\\textbf{\\}
-The use of other technologies are allowed if need be such as 7zip for zipping and/or unzipping of files, however it would be advisable to use QT API's such as the file handling API to do so.\\\textbf{\\}
+The use of other technologies are allowed if need be such as 7zip for zipping and/or unzipping of files, however QT API's such as the file handling API must preferrably be used due to cross platform compiling.\\\textbf{\\}
 Furthermore the project must be deployable on Windows and Linux and be capable of working on each of them.\\\textbf{\\}
 For phase 2 in the project, the project must be capable of running applications on the slave computers that have been distributed from a master computer to a slave.\\\textbf{\\}
 The configuration for the application to be run should also be used when running the program so that different environments can be selected. This is done with the creation of simulations.
@@ -197,9 +197,10 @@ QT 4.8.4 contains file API's such as QFile and QFileSystemWatcher and QDirIterat
 \vspace{6pt}\newline
 QT also contains an extensive API for networking that we can make use of when implementing the project. This will allow the slave and master computers to communicate and transfer files from one computer to the other. The applications can be run on multiple slaves by making use of QT networking capabilities. Examples of those networking API's are QUdpSocket and QTcpSocket that can be used to create connections between computers. The QNetworkInterface class can be used to obtain information on networking interfaces that a computer has if the need arises.
 
+\newpage
 \section{Component Diagram}
 \begin{center}
-\includegraphics[scale=0.55]{ComponentDiag.png}
+\includegraphics[angle = 90, scale=0.7]{ComponentDiag.png}
 \end{center}
 
 
