@@ -1,0 +1,175 @@
+\documentclass[a4paper,12pt,final]{article}
+
+
+\usepackage{graphicx}
+\title{
+\begin{center}
+  	\includegraphics[scale=0.3]{101Logo.png} 
+  \end{center}
+  \textbf{\\}
+CSIR - Distributed Application Manager\\
+Test Document\\
+}
+\author{101 Solutions}
+
+\begin{document}
+\maketitle
+\begin{center}
+Version 0.1
+\end{center}
+\textbf{\\}
+\textbf{\\}
+\textbf{\\}
+\textbf{\\}
+\textbf{\\}
+\textbf{\\}
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+Francois Germishuizen & 11093618\\
+\hline
+Jaco Swanepoel & 11016354\\
+\hline
+Henko van Koesveld & 11009315\\
+\hline
+\end{tabular}
+\end{center}
+\thispagestyle{empty}
+\newpage
+\thispagestyle{empty}
+\textbf{\large{Change Log}}
+\vspace{6pt}\newline
+\begin{tabular}{|l|l|l|}
+\hline
+Date & Version & Description\\
+\hline
+12 Sept & Version 0.1 & Document Created\\
+\hline
+\end{tabular}
+\newpage
+\tableofcontents
+\thispagestyle{empty}
+\newpage
+
+\pagenumbering{arabic}
+\section{Overview}
+\subsection{Background}
+The CSIR is actively developing a distributed simulation framework that ties
+in with various other real systems and is used to exchange information
+between them. The client has a number of configurations of this system
+depending on the requirements of the client which can involve various
+external applications as well.\\
+\textbf{\\}
+One of the issues the client has is to quickly distribute the latest build or
+configuration files of their software over various computers that are needed
+for an experiment. In some cases the same computers may be used for other
+experiments which mean each of the computers may need to have various
+builds and configuration options.\\
+\textbf{\\}
+Another issue they experience is the running, stopping and restarting of
+the complete simulation. During a simulation it may be determined that
+certain configuration options may need to be changed and distributed to the
+affected machines, in which case either all or some components will need to
+be restarted which can become tedious and time consuming.
+\subsection{Business opportunity}
+The goal of our project is to develop an application which is able to maintain
+various build versions of the simulation framework and distribute these builds
+to certain designated machines that may be required for an experiment. The
+application will monitor system statistics of the various machines attached
+to an experiment and will have the ability to execute applications on those
+machines which will have different configuration options.\\
+\textbf{\\}
+The application will consist of a master and slave component where the
+master is used to control the distribution of slaves. From the master one will
+be able to start an experiment which will run the relevant applications on all
+the necessary machines.
+
+
+
+\newpage
+\section{Unit Testing}
+This document provides an outline of the approach followed when doing unit testing. Different units will be tested and mock testing will be used in order to display that the classes behave as they should.\\
+\textbf{\\}
+We are making use of QT unit tests which allow for cross platform unit testing. This allows us to test the applicaiton for both Windows and Linux.\\
+\textbf{\\}
+Unit testing is used in order to test across levels of granularity. This is done in order to test whether the individual modules or units behave as expected.
+\subsection{Contract testing}
+Within unit testing that are done there are testing done to determine if contracts are met. 
+\begin{itemize}
+\item If preconditions are met
+\begin{itemize}
+\item Service is provided
+\item All post conditions hold true after service was provided
+\end{itemize}
+\item Any other units not directly tested will be mocked in order to simulate the unit requesting the service
+\end{itemize}
+
+
+
+\subsection{Testing the JSON class}
+\subsubsection{Why test it}
+Within both the AppMan and AppManClient applications there is a class JSON which converts any JSON value into QVariantMap and QVariant maps in order to make use of json for communication.
+\subsubsection{Methodology}
+There are two areas with regards to JSON that are tested. Firstly the JSON class which parses the JSON string, and secondly the functions generating the JSON strings in order to communicate. Both of these classes and functions are mirrored on both the AppMan and AppManClient applications.
+\begin{itemize}
+\item JSON
+
+\begin{itemize}
+\item AppMan - JSON class is tested in order to see if it generates the required classes from a JSON string
+\item AppManClient - JSON class is tested in order to see if it generates the required classes from a JSON string
+\end{itemize}
+
+\item JSON communication
+\begin{itemize}
+\item AppMan - JSON generating functions which will generate the JSON strings and prepend and append the required strings
+\item AppManClient - JSON generating functions which will generate the JSON strings and prepend and append the required strings
+\end{itemize}
+
+\end{itemize}
+
+
+
+
+
+
+
+\section{Integration Testing}
+This section is a stub and will continuously be improved
+\subsection{Integration Testing AppMan}
+\subsubsection{Communication}
+
+\subsubsection{Management Class}
+\begin{itemize}
+\item Signal Testing : Signals are tested in order to determine whether they exibit their required behavior when the management class should emit them.
+\begin{itemize}
+\item A signal emitted when a new machine connects successfully
+\item A signal emitted if a machine updates its md5sum value in order to determine which builds are not synched yet
+\end{itemize}
+\end{itemize}
+
+
+
+
+
+
+
+\subsection{Integration Testing AppManClient}
+
+\subsubsection{Communication}
+
+\subsubsection{Management Class}
+\begin{itemize}
+\item Signal Testing : Signals are tested in order to determine whether they exibit their required behavior when the management class should emit them.
+\end{itemize}
+
+
+\section{Non-functional Testing}
+This section is a stub and will continuously be improved
+\begin{itemize}
+\item We have conducted minor scalability tests in the Informatorium labs with 3 pc's so far
+\item We will be testing on various versions of Windows and Linux at home and in the labs
+\item We have 3 volunteers for usability testing.
+\end{itemize}
+
+
+\end{document}
