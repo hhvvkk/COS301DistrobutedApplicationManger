@@ -17,12 +17,7 @@ Functional Requirements and Design Document\\
 \begin{center}
 Version 0.9
 \end{center}
-\textbf{\\}
-\textbf{\\}
-\textbf{\\}
-\textbf{\\}
-\textbf{\\}
-\textbf{\\}
+\vfill
 \begin{center}
 \begin{tabular}{|l|l|}
 \hline
@@ -60,6 +55,8 @@ Date & Version & Description\\
 13 Sept & Version 0.8 & Added Class diagrams\\
 \hline
 13 Sept & Version 0.9 & Added AddBuild via network usecase\\
+\hline
+13 Sept & Version 1.0 & Added description of communication diagrams\\
 \hline
 \end{tabular}
 \newpage
@@ -285,8 +282,95 @@ This section is for the Activity diagrams based on current progress of AppMan an
 
 \newpage
 \section{Communication Protocol}
+\subsection{Overview}
+The communication between AppMan and AppManClient takes place 
+by using JSON objects. The JSON objects are structured such that the 
+content of the JSON message govern where the message will be handled. 
+The communication protocol inside the application is set in a strategy design pattern
+whereby the context is passed on from the protocol handler to the class that will 
+handle the data. This strategy design pattern is mirrored on the master and the slave
+machine to link each strategy to its partner on the other application(i.e. master to slave).
+The concrete strategies are the classes that handle all the data as JSON objects.\\
+\textbf{\\}
+The JSON for normal communication are in the following format:
+\begin{verbatim}
+{
+	"handler" : "[  The Handler ] ",
+	"subHandler" : "[ The SubHandler  ]"
+	"data" :  "[ Field values ]"
+}
+\end{verbatim}
+The ProtocolHandler will firstly look at the handler and based on that it will decide to
+which concrete strategy it should be passed on. The handler will be a string that contains
+the name of the concrete strategy to handle the request. After the handler has been 
+dentified the data and all other applicable data are passed on to the concrete strategy.\\
+\textbf{\\}
+After it has arrived at one of the concrete strategies, the function will look at what
+the subHandler are. Based on the value of the subHandler, it calls the function labeled
+to that subhandler by passing the data on to that subHandler.\\
+\textbf{\\}
+The data in the JSON object can be a variety of variables ranging from build number
+to machine ID. This is set in the JSON object and is retrieved by the handler depending
+on when they need to use it.\\
+\textbf{\\}
 
+\subsection{Strategies}
+The strategy design pattern is easy to adapt and add new classes in order to include
+new strategies for other application communications to take place. The current concrete
+strategies are:
+\begin{itemize}
+\item ProtoConnect
+\item ProtoSlaveCurrentBuilds
+\item ProtoSizeCheckBuilds
+\item ProtoCopyOver
+\item ProtoSendBuild
+\end{itemize}
 
+ProtoConnect: This strategy will be used in the event that a new client tries to connect. If 
+the correct protocol is not followed in the event of a connection, the socket will be disconnected.
+If the client successfully connects the strategy will create a new machine and allow the user to
+interact with that machine. After a machine connected this protocol will invoke the ProtoSlaveCurrentBuilds
+which will update what builds are currently on the slave machine.
+\\
+\textbf{\\}
+ProtoSlaveCurrentBuilds: This strategy will be invoked each time the slave machine 
+acknowledges a new build that they now have. This can be invoked by the ProtoConnect or
+ProtoCopyOver. In the event of the ProtoConnect all the builds that are on the slave machine are
+communicated to the master machine. In the event of ProtoCopyOver, only the new build that
+has been copied over are communicated.
+\\
+\textbf{\\}
+ProtoSizeCheckBuilds: This strategy is used to find the md5 sum values of the whole 
+directory in which the builds are located. The md5 sum values are calculated for the whole
+build directory whereby it checks whether the md5 sum values of the master and slave for the
+same build are the same. It then updates the interface to show whether the build is the right size. 
+This strategy can be invoked by the ProtoCurrentBuilds right after the current builds has been
+updated on the master machine, in which case each and every build md5 are generated. In the case
+of ProtoCopyOver invoking this strategy, only the new build that are to be copied over will have the md5
+generated for it.
+\\
+\textbf{\\}
+ProtoCopyOver: This strategy is used to communicate a new bulid that should be copied over
+from the master to the slave machine. The strategy will update on the master only when the
+slave machine had confirmed the presence of a new build that should be on it. 
+\\
+\textbf{\\}
+ProtoSendBuild: This strategy will communicate when there needs to be a new build that
+must be copied over the network from the master to the slave machine. The master machine will
+create another server by which the slave build connects to.
+\\
+\textbf{\\}
+Future expansion will include the following
+\begin{itemize}
+\item ProtoSimulations
+\item ProtoUpdate
+\end{itemize}
+
+ProtoSimulations: This protocol will be used to run simulations on the slave machine by running
+applications with the application configuration.\\
+\textbf{\\}
+ProtoUpdate: This is a communication protocol which will be used in order to update build
+information or other information on the slave machines.
 
 
 
@@ -299,6 +383,9 @@ This section is for the Activity diagrams based on current progress of AppMan an
 \item{Server - A machine waiting on the network for connections from other machines.}
 \item{GUI - Graphical User Interface with which a user can control the project.}
 \item{Project - This project. The distributed application manager.}
+\item{ Build number -  A build number that uniquely identifies a build.}
+\item{ Machine ID -  A number that uniquely identifies a machine.}
+\item{Simulation - An application that is run on the slave machine.}
 \item{Application Configuration - Environment variables that are specified when running an application.}
 \end{itemize}
 

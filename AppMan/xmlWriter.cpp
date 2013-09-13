@@ -54,10 +54,10 @@ xmlWriter::~xmlWriter()
 }
 
 void xmlWriter::receiveBuild(QString num,QString name,QString descript, QString direc){
-    qDebug()<<"receiving build";
+    //qDebug()<<"receiving build";
     buildNumber.insertMulti("buildNumber",num);
     buildName.insertMulti("buildName",name);
     buildDescription.insertMulti("buildDescription",descript);
     buildDirectory.insertMulti("buildDirectory",direc);
-    qDebug()<<"done receiving build";
+    //qDebug()<<"done receiving build";
 }

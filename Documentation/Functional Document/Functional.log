@@ -1,15 +1,14 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012/Debian) (format=pdflatex 2012.10.25)  13 SEP 2013 13:50
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2013.2.23)  13 SEP 2013 15:43
 entering extended mode
- restricted \write18 enabled.
  %&-line parsing enabled.
 **Functional.tex
 (./Functional.tex
-LaTeX2e <2011/06/27>
-Babel <v3.8m> and hyphenation patterns for english, dumylang, nohyphenation, lo
-aded.
-(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
+LaTeX2e <2009/09/24>
+Babel <v3.8l> and hyphenation patterns for english, usenglishmax, dumylang, noh
+yphenation, loaded.
+(/usr/share/texmf-texlive/tex/latex/base/article.cls
 Document Class: article 2007/10/19 v1.4h Standard LaTeX document class
-(/usr/share/texlive/texmf-dist/tex/latex/base/size12.clo
+(/usr/share/texmf-texlive/tex/latex/base/size12.clo
 File: size12.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
 )
 \c@part=\count79
@@ -24,23 +23,20 @@ File: size12.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
 \belowcaptionskip=\skip42
 \bibindent=\dimen102
 )
-(/usr/share/texlive/texmf-dist/tex/latex/geometry/geometry.sty
-Package: geometry 2010/09/12 v5.6 Page Geometry
+(/usr/share/texmf-texlive/tex/latex/geometry/geometry.sty
+Package: geometry 2008/12/21 v4.2 Page Geometry
 
-(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty
+(/usr/share/texmf-texlive/tex/latex/graphics/keyval.sty
 Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
 \KV@toks@=\toks14
 )
-(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ifpdf.sty
-Package: ifpdf 2011/01/30 v2.3 Provides the ifpdf switch (HO)
-Package ifpdf Info: pdfTeX in PDF mode is detected.
+(/usr/share/texmf-texlive/tex/generic/oberdiek/ifpdf.sty
+Package: ifpdf 2009/04/10 v2.0 Provides the ifpdf switch (HO)
+Package ifpdf Info: pdfTeX in pdf mode detected.
 )
-(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ifvtex.sty
-Package: ifvtex 2010/03/01 v1.5 Detect VTeX and its facilities (HO)
+(/usr/share/texmf-texlive/tex/generic/oberdiek/ifvtex.sty
+Package: ifvtex 2008/11/04 v1.4 Switches for detecting VTeX and its modes (HO)
 Package ifvtex Info: VTeX not detected.
-)
-(/usr/share/texlive/texmf-dist/tex/generic/ifxetex/ifxetex.sty
-Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
 )
 \Gm@cnth=\count87
 \Gm@cntv=\count88
@@ -49,41 +45,30 @@ Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
 \Gm@wd@mp=\dimen104
 \Gm@odd@mp=\dimen105
 \Gm@even@mp=\dimen106
-\Gm@layoutwidth=\dimen107
-\Gm@layoutheight=\dimen108
-\Gm@layouthoffset=\dimen109
-\Gm@layoutvoffset=\dimen110
 \Gm@dimlist=\toks15
-)
-(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+
+(/usr/share/texmf-texlive/tex/xelatex/xetexconfig/geometry.cfg))
+(/usr/share/texmf-texlive/tex/latex/graphics/graphicx.sty
 Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
 
-(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+(/usr/share/texmf-texlive/tex/latex/graphics/graphics.sty
 Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
 
-(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty
+(/usr/share/texmf-texlive/tex/latex/graphics/trig.sty
 Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
 )
-(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/graphics.cfg
-File: graphics.cfg 2010/04/23 v1.9 graphics configuration of TeX Live
+(/etc/texmf/tex/latex/config/graphics.cfg
+File: graphics.cfg 2009/08/28 v1.8 graphics configuration of TeX Live
 )
 Package graphics Info: Driver file: pdftex.def on input line 91.
 
-(/usr/share/texlive/texmf-dist/tex/latex/pdftex-def/pdftex.def
-File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
-
-(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/infwarerr.sty
-Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
-)
-(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
-Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
-)
+(/usr/share/texmf-texlive/tex/latex/pdftex-def/pdftex.def
+File: pdftex.def 2009/08/25 v0.04m Graphics/color for pdfTeX
 \Gread@gobject=\count90
 ))
-\Gin@req@height=\dimen111
-\Gin@req@width=\dimen112
-)
-No file Functional.aux.
+\Gin@req@height=\dimen107
+\Gin@req@width=\dimen108
+) (./Functional.aux)
 \openout1 = `Functional.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 15.
@@ -98,483 +83,390 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 15.
 LaTeX Font Info:    ... okay on input line 15.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 15.
 LaTeX Font Info:    ... okay on input line 15.
-*geometry* driver: auto-detecting
-*geometry* detected driver: pdftex
-*geometry* verbose mode - [ preamble ] result:
-* driver: pdftex
-* paper: a4paper
-* layout: <same size as paper>
-* layoutoffset:(h,v)=(0.0pt,0.0pt)
-* modes: 
-* h-part:(L,W,R)=(72.26999pt, 452.9679pt, 72.26999pt)
-* v-part:(T,H,B)=(72.26999pt, 700.50687pt, 72.26999pt)
-* \paperwidth=597.50787pt
-* \paperheight=845.04684pt
-* \textwidth=452.9679pt
-* \textheight=700.50687pt
-* \oddsidemargin=0.0pt
-* \evensidemargin=0.0pt
-* \topmargin=-37.0pt
-* \headheight=12.0pt
-* \headsep=25.0pt
-* \topskip=12.0pt
-* \footskip=30.0pt
-* \marginparwidth=35.0pt
-* \marginparsep=10.0pt
-* \columnsep=10.0pt
-* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
-* \hoffset=0.0pt
-* \voffset=0.0pt
-* \mag=1000
-* \@twocolumnfalse
-* \@twosidefalse
-* \@mparswitchfalse
-* \@reversemarginfalse
-* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+*geometry auto-detecting driver*
+*geometry detected driver: pdftex*
+-------------------- Geometry parameters
+paper: a4paper
+landscape: --
+twocolumn: --
+twoside: --
+asymmetric: --
+h-parts: 72.26999pt, 452.9679pt, 72.26999pt
+v-parts: 72.26999pt, 700.50687pt, 72.26999pt
+hmarginratio: --
+vmarginratio: --
+lines: --
+heightrounded: --
+bindingoffset: 0.0pt
+truedimen: --
+includehead: --
+includefoot: --
+includemp: --
+driver: pdftex
+-------------------- Page layout dimensions and switches
+\paperwidth  597.50787pt
+\paperheight 845.04684pt
+\textwidth  452.9679pt
+\textheight 700.50687pt
+\oddsidemargin  0.0pt
+\evensidemargin 0.0pt
+\topmargin  -37.0pt
+\headheight 12.0pt
+\headsep    25.0pt
+\footskip   30.0pt
+\marginparwidth 35.0pt
+\marginparsep   10.0pt
+\columnsep  10.0pt
+\skip\footins  10.8pt plus 4.0pt minus 2.0pt
+\hoffset 0.0pt
+\voffset 0.0pt
+\mag 1000
 
-(/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
+(1in=72.27pt, 1cm=28.45pt)
+-----------------------
+(/usr/share/texmf/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count91
-\scratchdimen=\dimen113
+\scratchdimen=\dimen109
 \scratchbox=\box26
 \nofMPsegments=\count92
 \nofMParguments=\count93
 \everyMPshowfont=\toks16
 \MPscratchCnt=\count94
-\MPscratchDim=\dimen114
+\MPscratchDim=\dimen110
 \MPnumerator=\count95
-\makeMPintoPDFobject=\count96
 \everyMPtoPDFconversion=\toks17
-) (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
-Package: pdftexcmds 2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO
-)
-
-(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ifluatex.sty
-Package: ifluatex 2010/03/01 v1.3 Provides the ifluatex switch (HO)
-Package ifluatex Info: LuaTeX not detected.
-)
-Package pdftexcmds Info: LuaTeX not detected.
-Package pdftexcmds Info: \pdf@primitive is available.
-Package pdftexcmds Info: \pdf@ifprimitive is available.
-Package pdftexcmds Info: \pdfdraftmode found.
-)
-(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
-Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
-
-(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/grfext.sty
-Package: grfext 2010/08/19 v1.1 Manage graphics extensions (HO)
-
-(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/kvdefinekeys.sty
-Package: kvdefinekeys 2011/04/07 v1.3 Define keys (HO)
-))
-(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/kvoptions.sty
-Package: kvoptions 2011/06/30 v3.11 Key value format for package options (HO)
-
-(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/kvsetkeys.sty
-Package: kvsetkeys 2012/04/25 v1.16 Key value parser (HO)
-
-(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/etexcmds.sty
-Package: etexcmds 2011/02/16 v1.5 Avoid name clashes with e-TeX commands (HO)
-Package etexcmds Info: Could not find \expanded.
-(etexcmds)             That can mean that you are not using pdfTeX 1.50 or
-(etexcmds)             that some package has redefined \expanded.
-(etexcmds)             In the latter case, load this package earlier.
-)))
-Package grfext Info: Graphics extension search list:
-(grfext)             [.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPE
-G,.JBIG2,.JB2,.eps]
-(grfext)             \AppendGraphicsExtensions on input line 452.
-
-(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
-File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
-e
-))
-<101Logo.png, id=1, 1101.11375pt x 248.93pt>
+) <101Logo.png, id=1, 1101.11375pt x 248.93pt>
 File: 101Logo.png Graphic file (type png)
  <use 101Logo.png>
-Package pdftex.def Info: 101Logo.png used on input line 16.
-(pdftex.def)             Requested size: 330.33669pt x 74.67957pt.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <14.4> on input line 16.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <7> on input line 16.
-
-Underfull \hbox (badness 10000) in paragraph at lines 20--26
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 20--26
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 20--26
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 20--26
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 20--26
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 20--26
-
- []
-
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 27.
+(Font)              <12> on input line 22.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 27.
+(Font)              <8> on input line 22.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 27.
-[1
+(Font)              <6> on input line 22.
+ [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./101Logo.png>] [2]
-No file Functional.toc.
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./101Logo.png>] [2] (./Fun
+ctional.toc)
 \tf@toc=\write3
 \openout3 = `Functional.toc'.
 
 [3]
-Underfull \hbox (badness 10000) in paragraph at lines 73--90
+Underfull \hbox (badness 10000) in paragraph at lines 70--87
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 73--90
+Underfull \hbox (badness 10000) in paragraph at lines 70--87
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 91--102
+Underfull \hbox (badness 10000) in paragraph at lines 88--99
 
  []
 
 [1]
-Underfull \hbox (badness 10000) in paragraph at lines 108--111
+Underfull \hbox (badness 10000) in paragraph at lines 105--108
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 108--111
+Underfull \hbox (badness 10000) in paragraph at lines 105--108
 
  []
 
-<UseCaseAppMan.png, id=21, 475.02469pt x 410.2828pt>
+<UseCaseAppMan.png, id=20, 475.02469pt x 410.2828pt>
 File: UseCaseAppMan.png Graphic file (type png)
  <use UseCaseAppMan.png>
-Package pdftex.def Info: UseCaseAppMan.png used on input line 112.
-(pdftex.def)             Requested size: 380.02025pt x 328.22668pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 114--115
+Underfull \hbox (badness 10000) in paragraph at lines 111--112
 
  []
 
-<UseCaseAppManClient.png, id=22, 414.04688pt x 257.46187pt>
+<UseCaseAppManClient.png, id=21, 414.04688pt x 257.46187pt>
 File: UseCaseAppManClient.png Graphic file (type png)
 
 <use UseCaseAppManClient.png>
-Package pdftex.def Info: UseCaseAppManClient.png used on input line 116.
-(pdftex.def)             Requested size: 289.83083pt x 180.22206pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 121--123
+Underfull \hbox (badness 10000) in paragraph at lines 118--120
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 121--123
+Underfull \hbox (badness 10000) in paragraph at lines 118--120
 
  []
 
 [2 <./UseCaseAppMan.png (PNG copy)> <./UseCaseAppManClient.png (PNG copy)>]
-<AddBuildActivity.png, id=26, 557.83406pt x 693.34032pt>
+<AddBuildActivity.png, id=25, 557.83406pt x 693.34032pt>
 File: AddBuildActivity.png Graphic file (type png)
 
 <use AddBuildActivity.png>
-Package pdftex.def Info: AddBuildActivity.png used on input line 124.
-(pdftex.def)             Requested size: 446.26784pt x 554.673pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 129--131
+Underfull \hbox (badness 10000) in paragraph at lines 126--128
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 129--131
+Underfull \hbox (badness 10000) in paragraph at lines 126--128
 
  []
 
-[3 <./AddBuildActivity.png>]
-<GetSystemInfoActivityMASTER.png, id=30, 254.45062pt x 662.475pt>
+[3 <./AddBuildActivity.png (PNG copy)>]
+<GetSystemInfoActivityMASTER.png, id=29, 254.45062pt x 662.475pt>
 File: GetSystemInfoActivityMASTER.png Graphic file (type png)
 
 <use GetSystemInfoActivityMASTER.png>
-Package pdftex.def Info: GetSystemInfoActivityMASTER.png used on input line 132
-.
-(pdftex.def)             Requested size: 241.72672pt x 629.34769pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 137--139
+Underfull \hbox (badness 10000) in paragraph at lines 134--136
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 137--139
+Underfull \hbox (badness 10000) in paragraph at lines 134--136
 
  []
 
-[4 <./GetSystemInfoActivityMASTER.png>]
-<GetSystemInfoActivitySLAVE.png, id=35, 454.69875pt x 602.25pt>
+[4 <./GetSystemInfoActivityMASTER.png (PNG copy)>]
+<GetSystemInfoActivitySLAVE.png, id=34, 454.69875pt x 602.25pt>
 File: GetSystemInfoActivitySLAVE.png Graphic file (type png)
 
 <use GetSystemInfoActivitySLAVE.png>
-Package pdftex.def Info: GetSystemInfoActivitySLAVE.png used on input line 140.
-
-(pdftex.def)             Requested size: 454.69763pt x 602.24852pt.
-
-Overfull \hbox (1.72974pt too wide) in paragraph at lines 140--141
+Overfull \hbox (1.72974pt too wide) in paragraph at lines 137--138
  [] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 147--149
+Underfull \hbox (badness 10000) in paragraph at lines 144--146
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 147--149
+Underfull \hbox (badness 10000) in paragraph at lines 144--146
 
  []
 
 [5 <./GetSystemInfoActivitySLAVE.png (PNG copy)>]
-<AddSlaveActivity.png, id=39, 334.24875pt x 517.935pt>
+<AddSlaveActivity.png, id=38, 334.24875pt x 517.935pt>
 File: AddSlaveActivity.png Graphic file (type png)
 
-<use AddSlaveActivity.png>
-Package pdftex.def Info: AddSlaveActivity.png used on input line 150.
-(pdftex.def)             Requested size: 334.24792pt x 517.93372pt.
- [6 <./AddSlaveActivity.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 157--159
+<use AddSlaveActivity.png> [6 <./AddSlaveActivity.png (PNG copy)>]
+Underfull \hbox (badness 10000) in paragraph at lines 154--156
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 157--159
+Underfull \hbox (badness 10000) in paragraph at lines 154--156
 
  []
 
-<AddBuildSlaveActivity.png, id=43, 465.99094pt x 400.49625pt>
+<AddBuildSlaveActivity.png, id=42, 465.99094pt x 400.49625pt>
 File: AddBuildSlaveActivity.png Graphic file (type png)
 
 <use AddBuildSlaveActivity.png>
-Package pdftex.def Info: AddBuildSlaveActivity.png used on input line 160.
-(pdftex.def)             Requested size: 465.98979pt x 400.49527pt.
-
-Overfull \hbox (13.0219pt too wide) in paragraph at lines 160--161
+Overfull \hbox (13.0219pt too wide) in paragraph at lines 157--158
  [] 
  []
 
-[7 <./AddBuildSlaveActivity.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 167--169
+[7 <./AddBuildSlaveActivity.png (PNG copy)>]
+Underfull \hbox (badness 10000) in paragraph at lines 164--166
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 167--169
+Underfull \hbox (badness 10000) in paragraph at lines 164--166
 
  []
 
-<StartServer.png, id=47, 371.88937pt x 743.02594pt>
+<StartServer.png, id=46, 371.88937pt x 743.02594pt>
 File: StartServer.png Graphic file (type png)
  <use StartServer.png>
-Package pdftex.def Info: StartServer.png used on input line 170.
-(pdftex.def)             Requested size: 297.51189pt x 594.42155pt.
-
-[8 <./StartServer.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 178--180
+[8 <./StartServer.png (PNG copy)>]
+Underfull \hbox (badness 10000) in paragraph at lines 175--177
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 178--180
+Underfull \hbox (badness 10000) in paragraph at lines 175--177
 
  []
 
-<SetPort.png, id=51, 319.1925pt x 499.11469pt>
+<SetPort.png, id=50, 319.1925pt x 499.11469pt>
 File: SetPort.png Graphic file (type png)
- <use SetPort.png>
-Package pdftex.def Info: SetPort.png used on input line 181.
-(pdftex.def)             Requested size: 319.19171pt x 499.11345pt.
- [9 <./SetPort.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 189--191
+ <use SetPort.png> [9 <./SetPort.png (PNG copy)>]
+Underfull \hbox (badness 10000) in paragraph at lines 186--188
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 189--191
+Underfull \hbox (badness 10000) in paragraph at lines 186--188
 
  []
 
-<StopServer.png, id=55, 193.47281pt x 289.08pt>
+<StopServer.png, id=54, 193.47281pt x 289.08pt>
 File: StopServer.png Graphic file (type png)
- <use StopServer.png>
-Package pdftex.def Info: StopServer.png used on input line 192.
-(pdftex.def)             Requested size: 193.47234pt x 289.07928pt.
- [10 <./StopServer.png>] <AddSimulationActivity.png, id=60, 352.31625pt x 563.8
-5657pt>
+ <use StopServer.png> [10 <./StopServer.png (PNG copy)>]
+<AddSimulationActivity.png, id=59, 352.31625pt x 563.85657pt>
 File: AddSimulationActivity.png Graphic file (type png)
 
-<use AddSimulationActivity.png>
-Package pdftex.def Info: AddSimulationActivity.png used on input line 215.
-(pdftex.def)             Requested size: 317.08168pt x 507.46623pt.
- [11 <./AddSimulationActivity.png (PNG copy)>]
-<RunningASimOnAppMan.png, id=64, 422.32782pt x 790.45313pt>
+<use AddSimulationActivity.png> [11 <./AddSimulationActivity.png (PNG copy)>]
+<RunningASimOnAppMan.png, id=63, 422.32782pt x 790.45313pt>
 File: RunningASimOnAppMan.png Graphic file (type png)
 
-<use RunningASimOnAppMan.png>
-Package pdftex.def Info: RunningASimOnAppMan.png used on input line 221.
-(pdftex.def)             Requested size: 337.8627pt x 632.36336pt.
- [12 <./RunningASimOnAppMan.png (PNG copy)>]
-<RunningASimOnAppManClient.png, id=68, 502.87875pt x 391.4625pt>
+<use RunningASimOnAppMan.png> [12 <./RunningASimOnAppMan.png (PNG copy)>]
+<RunningASimOnAppManClient.png, id=67, 502.87875pt x 391.4625pt>
 File: RunningASimOnAppManClient.png Graphic file (type png)
 
-<use RunningASimOnAppManClient.png>
-Package pdftex.def Info: RunningASimOnAppManClient.png used on input line 227.
-(pdftex.def)             Requested size: 452.58669pt x 352.31299pt.
- [13 <./RunningASimOnAppManClient.png (PNG copy)>]
-Underfull \hbox (badness 10000) in paragraph at lines 235--236
+<use RunningASimOnAppManClient.png> [13 <./RunningASimOnAppManClient.png (PNG c
+opy)>]
+Underfull \hbox (badness 10000) in paragraph at lines 232--233
 
  []
 
-<MainformNew.jpg, id=72, 1393.205pt x 895.345pt>
+<MainformNew.jpg, id=71, 1393.205pt x 895.345pt>
 File: MainformNew.jpg Graphic file (type jpg)
  <use MainformNew.jpg>
-Package pdftex.def Info: MainformNew.jpg used on input line 237.
-(pdftex.def)             Requested size: 1393.20161pt x 895.34282pt.
-
-<Mainformnew2.jpg, id=73, 1088.065pt x 994.71625pt>
+<Mainformnew2.jpg, id=72, 1088.065pt x 994.71625pt>
 File: Mainformnew2.jpg Graphic file (type jpg)
  <use Mainformnew2.jpg>
-Package pdftex.def Info: Mainformnew2.jpg used on input line 240.
-(pdftex.def)             Requested size: 1088.06236pt x 994.71382pt.
-
-Overfull \hbox (44.389pt too wide) in paragraph at lines 240--241
+Overfull \hbox (44.389pt too wide) in paragraph at lines 237--238
  [] 
  []
 
-[14 <./MainformNew.jpg>] <Server.jpg, id=77, 1547.7825pt x 897.3525pt>
+[14 <./MainformNew.jpg>] <Server.jpg, id=76, 1547.7825pt x 897.3525pt>
 File: Server.jpg Graphic file (type jpg)
 
-<use Server.jpg>
-Package pdftex.def Info: Server.jpg used on input line 243.
-(pdftex.def)             Requested size: 1547.77875pt x 897.3503pt.
- [15 <./Mainformnew2.jpg>]
-<Protocols.jpg, id=81, 1629.08624pt x 767.86874pt>
+<use Server.jpg> [15 <./Mainformnew2.jpg>]
+<Protocols.jpg, id=80, 1629.08624pt x 767.86874pt>
 File: Protocols.jpg Graphic file (type jpg)
- <use Protocols.jpg>
-Package pdftex.def Info: Protocols.jpg used on input line 246.
-(pdftex.def)             Requested size: 1629.08228pt x 767.86687pt.
- [16 <./Server.jpg>]
+ <use Protocols.jpg> [16 <./Server.jpg>]
 Overfull \vbox (32.57518pt too high) has occurred while \output is active []
 
 
-[17 <./Protocols.jpg>] <BuildCopy.jpg, id=89, 1039.885pt x 747.79375pt>
+[17 <./Protocols.jpg>] <BuildCopy.jpg, id=88, 1039.885pt x 747.79375pt>
 File: BuildCopy.jpg Graphic file (type jpg)
 
 <use BuildCopy.jpg>
-Package pdftex.def Info: BuildCopy.jpg used on input line 249.
-(pdftex.def)             Requested size: 1039.88246pt x 747.79192pt.
-
-Overfull \hbox (33.09229pt too wide) in paragraph at lines 249--250
+Overfull \hbox (33.09229pt too wide) in paragraph at lines 246--247
  [] 
  []
 
-<Slave.jpg, id=90, 1319.93124pt x 1036.87375pt>
+<Slave.jpg, id=89, 1319.93124pt x 1036.87375pt>
 File: Slave.jpg Graphic file (type jpg)
  <use Slave.jpg>
-Package pdftex.def Info: Slave.jpg used on input line 252.
-(pdftex.def)             Requested size: 1319.92802pt x 1036.87122pt.
-
-Overfull \hbox (34.36284pt too wide) in paragraph at lines 252--253
+Overfull \hbox (34.36284pt too wide) in paragraph at lines 249--250
  [] 
  []
 
 [18 <./BuildCopy.jpg>] [19 <./Slave.jpg>]
-Underfull \hbox (badness 10000) in paragraph at lines 256--257
+Underfull \hbox (badness 10000) in paragraph at lines 253--254
 
  []
 
-<Part1.jpg, id=97, 1344.02126pt x 638.385pt>
+<Part1.jpg, id=96, 1344.02126pt x 638.385pt>
 File: Part1.jpg Graphic file (type jpg)
  <use Part1.jpg>
-Package pdftex.def Info: Part1.jpg used on input line 258.
-(pdftex.def)             Requested size: 1344.01797pt x 638.38342pt.
-
-<Part1_1.jpg, id=98, 1410.26875pt x 716.6775pt>
+<Part1_1.jpg, id=97, 1410.26875pt x 716.6775pt>
 File: Part1_1.jpg Graphic file (type jpg)
- <use Part1_1.jpg>
-Package pdftex.def Info: Part1_1.jpg used on input line 261.
-(pdftex.def)             Requested size: 1410.26532pt x 716.67577pt.
- [20 <./Part1.jpg>] <Part2.jpg, id=102, 1796.7125pt x 635.37375pt>
+ <use Part1_1.jpg> [20 <./Part1.jpg>] <Part2.jpg, id=101, 1796.7125pt x 635.373
+75pt>
 File: Part2.jpg Graphic file (type jpg)
- <use Part2.jpg>
-Package pdftex.def Info: Part2.jpg used on input line 264.
-(pdftex.def)             Requested size: 1796.70813pt x 635.3722pt.
- [21 <./Part1_1.jpg>]
+ <use Part2.jpg> [21 <./Part1_1.jpg>]
 Overfull \vbox (18.1654pt too high) has occurred while \output is active []
 
 
-[22 <./Part2.jpg>] <Part3.jpg, id=110, 825.0825pt x 559.08875pt>
+[22 <./Part2.jpg>] <Part3.jpg, id=109, 825.0825pt x 559.08875pt>
 File: Part3.jpg Graphic file (type jpg)
 
-<use Part3.jpg>
-Package pdftex.def Info: Part3.jpg used on input line 267.
-(pdftex.def)             Requested size: 825.08049pt x 559.08737pt.
- [23 <./Part3.jpg>]
-<MasterMainActivity.png, id=114, 840.13875pt x 375.65344pt>
+<use Part3.jpg> [23 <./Part3.jpg>]
+<MasterMainActivity.png, id=113, 840.13875pt x 375.65344pt>
 File: MasterMainActivity.png Graphic file (type png)
 
-<use MasterMainActivity.png>
-Package pdftex.def Info: MasterMainActivity.png used on input line 276.
-(pdftex.def)             Requested size: 840.1367pt x 375.65251pt.
- [24 <./MasterMainActivity.png (PNG copy)>]
-<SlaveMainActivity.png, id=118, 637.63219pt x 406.51875pt>
+<use MasterMainActivity.png> [24 <./MasterMainActivity.png (PNG copy)>]
+<SlaveMainActivity.png, id=117, 637.63219pt x 406.51875pt>
 File: SlaveMainActivity.png Graphic file (type png)
 
-<use SlaveMainActivity.png>
-Package pdftex.def Info: SlaveMainActivity.png used on input line 281.
-(pdftex.def)             Requested size: 637.63063pt x 406.51775pt.
- [25 <./SlaveMainActivity.png (PNG copy)>] [26]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 296.
+<use SlaveMainActivity.png> [25 <./SlaveMainActivity.png (PNG copy)>]
+Underfull \hbox (badness 10000) in paragraph at lines 286--296
+
+ []
 
 
-(/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
+Underfull \hbox (badness 10000) in paragraph at lines 303--316
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 303--316
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 303--316
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 303--316
+
+ []
+
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 322.
+
+(/usr/share/texmf-texlive/tex/latex/base/omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 296.
- [27] (./Functional.aux) ) 
-Here is how much of TeX's memory you used:
- 2117 strings out of 495059
- 31315 string characters out of 3182029
- 88211 words of memory out of 3000000
- 5272 multiletter control sequences out of 15000+200000
- 9115 words of font info for 32 fonts, out of 3000000 for 9000
- 14 hyphenation exceptions out of 8191
- 37i,7n,32p,236b,267s stack positions out of 5000i,500n,10000p,200000b,50000s
-</usr/share/texlive/texmf-dist/fonts/type1/public/ams
-fonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/
-cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr1
-7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 322.
 
-Output written on Functional.pdf (30 pages, 2774519 bytes).
+Underfull \hbox (badness 10000) in paragraph at lines 329--364
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 329--364
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 329--364
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 329--364
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 329--364
+
+ []
+
+[26]
+Underfull \hbox (badness 10000) in paragraph at lines 369--374
+
+ []
+
+[27] [28] (./Functional.aux) ) 
+Here is how much of TeX's memory you used:
+ 1455 strings out of 495061
+ 20316 string characters out of 1182621
+ 75145 words of memory out of 3000000
+ 4633 multiletter control sequences out of 15000+50000
+ 9284 words of font info for 33 fonts, out of 3000000 for 9000
+ 28 hyphenation exceptions out of 8191
+ 25i,7n,32p,194b,255s stack positions out of 5000i,500n,10000p,200000b,50000s
+</usr/share/texmf-texlive/fonts/type1/public/amsf
+onts/cm/cmbx12.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr
+12.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr
+/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texm
+f-texlive/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
+Output written on Functional.pdf (31 pages, 2856112 bytes).
 PDF statistics:
- 144 PDF objects out of 1000 (max. 8388607)
- 80 compressed objects within 1 object stream
+ 150 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  131 words of extra memory for PDF output out of 10000 (max. 10000000)
 
