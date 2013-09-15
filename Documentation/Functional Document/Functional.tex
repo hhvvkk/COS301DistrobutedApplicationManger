@@ -15,7 +15,7 @@ Functional Requirements and Design Document\\
 \begin{document}
 \maketitle
 \begin{center}
-Version 0.9
+Version 1.1
 \end{center}
 \textbf{\\}
 \textbf{\\}
@@ -62,6 +62,8 @@ Date & Version & Description\\
 13 Sept & Version 0.9 & Added AddBuild via network usecase\\
 \hline
 13 Sept & Version 1.0 & Added description of communication diagrams\\
+\hline
+15 Sept & Version 1.1 & Final grammar check\\
 \hline
 \end{tabular}
 \newpage
@@ -297,7 +299,7 @@ handle the data. This strategy design pattern is mirrored on the master and the 
 machine to link each strategy to its partner on the other application(i.e. master to slave).
 The concrete strategies are the classes that handle all the data as JSON objects.\\
 \textbf{\\}
-The JSON for normal communication are in the following format:
+The JSON for normal communication is in the following format:
 \begin{verbatim}
 {
 	"handler" : "[  The Handler ] ",
@@ -308,10 +310,10 @@ The JSON for normal communication are in the following format:
 The ProtocolHandler will firstly look at the handler and based on that it will decide to
 which concrete strategy it should be passed on. The handler will be a string that contains
 the name of the concrete strategy to handle the request. After the handler has been 
-dentified the data and all other applicable data are passed on to the concrete strategy.\\
+identified the data and all other applicable data are passed on to the concrete strategy.\\
 \textbf{\\}
 After it has arrived at one of the concrete strategies, the function will look at what
-the subHandler are. Based on the value of the subHandler, it calls the function labeled
+the subHandler is. Based on the value of the subHandler, it calls the function labeled
 to that subhandler by passing the data on to that subHandler.\\
 \textbf{\\}
 The data in the JSON object can be a variety of variables ranging from build number
@@ -342,7 +344,7 @@ ProtoSlaveCurrentBuilds: This strategy will be invoked each time the slave machi
 acknowledges a new build that they now have. This can be invoked by the ProtoConnect or
 ProtoCopyOver. In the event of the ProtoConnect all the builds that are on the slave machine are
 communicated to the master machine. In the event of ProtoCopyOver, only the new build that
-has been copied over are communicated.
+has been copied over is communicated.
 \\
 \textbf{\\}
 ProtoSizeCheckBuilds: This strategy is used to find the md5 sum values of the whole 
@@ -350,14 +352,14 @@ directory in which the builds are located. The md5 sum values are calculated for
 build directory whereby it checks whether the md5 sum values of the master and slave for the
 same build are the same. It then updates the interface to show whether the build is the right size. 
 This strategy can be invoked by the ProtoCurrentBuilds right after the current builds has been
-updated on the master machine, in which case each and every build md5 are generated. In the case
-of ProtoCopyOver invoking this strategy, only the new build that are to be copied over will have the md5
+updated on the master machine, in which case each and every build md5 is generated. In the case
+of ProtoCopyOver invoking this strategy, only the new build that is to be copied over will have the md5
 generated for it.
 \\
 \textbf{\\}
 ProtoCopyOver: This strategy is used to communicate a new bulid that should be copied over
 from the master to the slave machine. The strategy will update on the master only when the
-slave machine had confirmed the presence of a new build that should be on it. 
+slave machine has confirmed the presence of a new build that should be on it. 
 \\
 \textbf{\\}
 ProtoSendBuild: This strategy will communicate when there needs to be a new build that

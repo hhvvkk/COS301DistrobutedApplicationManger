@@ -15,7 +15,7 @@ Test Document\\
 \begin{document}
 \maketitle
 \begin{center}
-Version 0.1
+Version 0.2
 \end{center}
 \textbf{\\}
 \textbf{\\}
@@ -44,6 +44,8 @@ Henko van Koesveld & 11009315\\
 Date & Version & Description\\
 \hline
 12 Sept & Version 0.1 & Document Created\\
+\hline
+13 Sept & Version 0.2 & Merged old test docs into one\\
 \hline
 \end{tabular}
 \newpage
@@ -108,7 +110,7 @@ Within unit testing that are done there are testing done to determine if contrac
 
 \subsection{Testing the JSON class}
 \subsubsection{Why test it}
-Within both the AppMan and AppManClient applications there is a class JSON which converts any JSON value into QVariantMap and QVariant maps in order to make use of json for communication.
+Within both the AppMan and AppManClient applications there is a class JSON which converts any JSON value into QVariantMap and QVariant maps in order to make use of JSON for communication.
 \subsubsection{Methodology}
 There are two areas with regards to JSON that are tested. Firstly the JSON class which parses the JSON string, and secondly the functions generating the JSON strings in order to communicate. Both of these classes and functions are mirrored on both the AppMan and AppManClient applications.
 \begin{itemize}
@@ -162,7 +164,7 @@ This section is a stub and will continuously be improved
 \item Signal Testing : Signals are tested in order to determine whether they exibit their required behavior when the management class should emit them.
 \end{itemize}
 
-
+\newpage
 \section{Non-functional Testing}
 This section is a stub and will continuously be improved
 \begin{itemize}
