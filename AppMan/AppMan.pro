@@ -44,7 +44,9 @@ SOURCES += main.cpp\
     buildmd5.cpp \
     copyqueue.cpp\
     moreinfo.cpp\
-    compression.cpp
+    compression.cpp \
+    md5generator.cpp \
+    md5thread.cpp
 
 HEADERS  += mainform.h \
     aboutversion.h \
@@ -75,7 +77,9 @@ HEADERS  += mainform.h \
     buildmd5.h \
     copyqueue.h\
     moreinfo.h\
-    compression.h
+    compression.h \
+    md5generator.h \
+    md5thread.h
 
 FORMS    += mainform.ui \
     aboutversion.ui \
