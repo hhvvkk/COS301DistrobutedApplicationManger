@@ -1,0 +1,27 @@
+\contentsline {section}{\numberline {1}Overview}{1}
+\contentsline {subsection}{\numberline {1.1}Background}{1}
+\contentsline {subsection}{\numberline {1.2}Business opportunity}{1}
+\contentsline {section}{\numberline {2}Use Cases}{2}
+\contentsline {subsection}{\numberline {2.1}AddBuild usecase}{3}
+\contentsline {subsection}{\numberline {2.2}RequestSysInfo usecase}{4}
+\contentsline {subsection}{\numberline {2.3}GetSysInfo usecase}{5}
+\contentsline {subsection}{\numberline {2.4}AddSlave usecase}{6}
+\contentsline {subsection}{\numberline {2.5}AddBuild via network usecase}{7}
+\contentsline {subsection}{\numberline {2.6}StartServer usecase}{8}
+\contentsline {subsection}{\numberline {2.7}SetPort usecase}{9}
+\contentsline {subsection}{\numberline {2.8}StopServer usecase}{10}
+\contentsline {section}{\numberline {3}Upcoming usecases}{11}
+\contentsline {subsection}{\numberline {3.1}Simulations}{11}
+\contentsline {subsubsection}{\numberline {3.1.1}AddSimulation}{11}
+\contentsline {subsubsection}{\numberline {3.1.2}RunSimulation AppMan}{12}
+\contentsline {subsubsection}{\numberline {3.1.3}RunSimulation AppManClient}{13}
+\contentsline {section}{\numberline {4}Class diagrams}{14}
+\contentsline {subsection}{\numberline {4.1}AppMan Class Diagram}{14}
+\contentsline {subsection}{\numberline {4.2}AppManClient Class Diagram}{20}
+\contentsline {section}{\numberline {5}Overall Processes}{24}
+\contentsline {subsection}{\numberline {5.1}AppMan}{24}
+\contentsline {subsection}{\numberline {5.2}AppManClient}{25}
+\contentsline {section}{\numberline {6}Communication Protocol}{26}
+\contentsline {subsection}{\numberline {6.1}Overview}{26}
+\contentsline {subsection}{\numberline {6.2}Strategies}{26}
+\contentsline {section}{\numberline {7}Glossary}{28}

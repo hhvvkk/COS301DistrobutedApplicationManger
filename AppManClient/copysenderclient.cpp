@@ -21,10 +21,15 @@ CopySenderClient::~CopySenderClient(){
     qDebug()<<"DELETING(CopySenderClient)";
 
     CopierPhysicalClient* cpPhy;
-    while((cpPhy = copyList->first()) != 0){
-        copyList->removeFirst();
-        cpPhy->deleteLater();
+    if(copyList != 0){
+        if(copyList->size() != 0){
+            while((cpPhy = copyList->first()) != 0){
+                copyList->removeFirst();
+                cpPhy->deleteLater();
+            }
+        }
     }
+
 
     if(socket != 0){
         socket->disconnectFromHost();

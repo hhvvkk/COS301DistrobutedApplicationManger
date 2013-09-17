@@ -15,7 +15,7 @@ Architectural Requirements Document\\
 \begin{document}
 \maketitle
 \begin{center}
-Version 1.1
+Version 1.3
 \end{center}
 \textbf{\\}
 \textbf{\\}
@@ -64,6 +64,10 @@ Date & Version & Description\\
 28 Jun & Version 1.0 & Final grammar and spelling check\\
 \hline
 11 Sep & Version 1.1 & Added changes as specified\\
+\hline
+12 Sep & Version 1.2 & Added few changes\\
+\hline
+15 Sep & Version 1.3 & Final grammar and spelling check\\
 \hline
 \end{tabular}
 \newpage
@@ -116,7 +120,7 @@ the necessary machines.
 \section{Architectural Scope/Responsibilities}
 \begin{itemize}
 \item Persistence is required when we add builds, slaves and simulations.
-\item Integration will be done in a message based manner by passing JSON string between the Masters and Slaves.
+\item Integration will be done in a message based manner by passing JSON strings between the Masters and Slaves.
 \end{itemize}
 %Use the Architectural Scope section to discuss the architectural responsibilities of your system. These architectural responsibilities will later be assigned to the dierent architectural components. Examples of architectural responsibilities for your software system include persistence, integrate with DB, integrate with web user
 
@@ -145,7 +149,7 @@ Below is a screenshot the Master GUI. The different slave builds will each have 
  \end{center}
  \newpage
  \subsection{Slave GUI}
-Below is a screenshot the Slave GUI. Builds can be viewed, added client side, system info can be requested and one can connect or disconnect from the master at the specified port.
+Below is a screenshot of the Slave GUI. Builds can be viewed, added client side, system info can be requested and one can connect or disconnect from the master at the specified port.
 \begin{center}
   	\includegraphics[scale=0.6]{AppManClientGui.png}
   \end{center} 
@@ -166,9 +170,9 @@ For phase 2 in the project, the project must be capable of running applications 
 The configuration for the application to be run should also be used when running the program so that different environments can be selected. This is done with the creation of simulations.
 
 \section{Patterns}
-The project will make use of a Component based system combined with a Client server architecture. This is because project needs the division of functionality for copying files, network, database and more.
+The project will make use of a Component based system combined with a Client server architecture. This is because the project needs the division of functionality for copying files, network, database and more.
 \subsection{Component based system}
-A Component based system is suitable as we have various concerns/components, such as a Gui to link to the management facade, a Server component, Slave component, Build component and Simulation component. The components fit together as follows:
+A Component based system is suitable as we have various concerns/components, such as a GUI to link to the management facade, a Server component, Slave component, Build component and Simulation component. The components fit together as follows:
 \begin{center}
   \includegraphics[scale=1]{ArchComponentDiag.png}
 \end{center}
@@ -182,7 +186,7 @@ Client can in this case be the Master Computer or the Slave Computer. The server
 \section{Architectural tactics or strategies}
 \begin{itemize}
 \item \textbf{Installability} - Using the QT framework, which allows source code to be built for various platforms, the software should be able to install on those platforms.
-\item \textbf{Portability} - Using the QT framework, which allows source code to be built for various platforms, the software should be able to work on those both Windows and Linux. Through use of "\#ifdef" statements in the source code we can alse split Windows and Linux specific implementations.
+\item \textbf{Portability} - Using the QT framework, which allows source code to be built for various platforms, the software should be able to work on both Windows and Linux. Through use of "\#ifdef" statements in the source code we can also split Windows and Linux specific implementations.
 \item \textbf{Performance} - Compiling and copying larger files will be quicker than copying a lot of small files. Using 7zip to compress small files will increase performance.
 \item \textbf{Usability} - Using simple design and tooltips will allow for easy understanding of how the software is supposed to be used. A quick help section will also enhance understanding and usability.
 \item \textbf{Look and feel} - Usabilty should also be enhanced by a visual intuitive layout that makes sense, is very simple and does not require typing. A simple drag and drop feature will be used to achieve this.
@@ -190,6 +194,7 @@ Client can in this case be the Master Computer or the Slave Computer. The server
 \item \textbf{Reliability} - Using coding protocols that will check that a message was successfully sent and received, such as TCP, will ensure a reliable connection.
 \end{itemize}
 
+\newpage
 \section{Use of reference architectures and\\ frameworks}
 QT is a framework much the same as Java and their motto stated "Code Less. Create More. Deploy Everywhere." which means the framework allows cross platform development and deployment. This project will make use of QT 4.8.4 framework with C++ that will enable the project to be used on multiple platforms. We will strive to make use of the QT API's to provide a project with capabilities of compiling and running on multiple platforms.
 \vspace{6pt}\newline
