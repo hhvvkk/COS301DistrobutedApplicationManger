@@ -1,7 +1,4 @@
 #include "copysenderclient.h"
-#include <json.h>
-#include <QVariant>
-#include <QVariantMap>
 
 
 CopySenderClient::CopySenderClient(QHostAddress hAdr, int portNumber, QObject *parent) :
@@ -15,10 +12,20 @@ CopySenderClient::CopySenderClient(QHostAddress hAdr, int portNumber, QObject *p
     connect(socket, SIGNAL(readyRead()), this, SLOT(readyReadFunction()));
     connect(socket, SIGNAL(disconnected()), this, SLOT(disconnectedFunction()));
     allBuildsDirectory = "builds";
+
+    copyList = new QList<CopierPhysicalClient*>();
+
 }
 
 CopySenderClient::~CopySenderClient(){
     qDebug()<<"DELETING(CopySenderClient)";
+
+    CopierPhysicalClient* cpPhy;
+    while((cpPhy = copyList->first()) != 0){
+        copyList->removeFirst();
+        cpPhy->deleteLater();
+    }
+
     if(socket != 0){
         socket->disconnectFromHost();
         socket->deleteLater();
@@ -148,8 +155,6 @@ void CopySenderClient::handle(QString data){
 
 
 void CopySenderClient::requestHandler(QString data){
-
-    qDebug()<<"copuRead::"<<data;
     const QVariantMap jsonObject = JSON::instance().parse(data);
     QVariant handler = jsonObject.value("handler");
 
@@ -189,6 +194,14 @@ void CopySenderClient::requestHandler(QString data){
 
     if(!handler.toString().compare("DeleteFilesList"))
         DeleteFilesList(jsonObject);
+    else
+
+    if(!handler.toString().compare("ConnectPhysicalServer"))
+        ConnectPhysicalServer(jsonObject);
+    else
+
+    if(!handler.toString().compare("PhysicalServerDone"))
+        PhysicalServerDone(jsonObject);
 
 }
 
@@ -209,7 +222,6 @@ void CopySenderClient::EndAllDifferences(){
         SendBuildMD5Class(md5Class, i);
         md5Class = 0;
     }
-
 
     QString jsonMessage = startJSONMessage();
     appendJSONValue(jsonMessage,"handler", "DoneMD5AllFiles", false);
@@ -301,4 +313,104 @@ void CopySenderClient::DeleteFilesList(const QVariantMap jsonObject){
             }
         }
     }
+}
+
+void CopySenderClient::ConnectPhysicalServer(const QVariantMap jsonObject){
+    int port = jsonObject.value("port").toInt();
+    if(port <= 0){
+        return;
+    }
+    int buildNo = jsonObject.value("buildNo").toInt();
+
+    //connect to that server...
+    CopierPhysicalClient * physicalClient = new CopierPhysicalClient(hostAddress, port, buildNo);
+    connect(physicalClient, SIGNAL(doneWritingToFile(int, bool)), this, SLOT(doneWritingToFile(int, bool)) );
+
+    bool connected = physicalClient->connectToHost();
+
+    if(!connected){
+        physicalClient->deleteLater();
+    }//else let it delete itself after it is done...
+
+
+    copyList->append(physicalClient);
+}
+
+void CopySenderClient::PhysicalServerDone(const QVariantMap jsonObject){
+    bool ok;
+    int buildNo = jsonObject.value("buildNo").toInt(&ok);
+
+    if(!ok)
+        return;
+
+
+    lock.lock();
+    CopierPhysicalClient *cpPhysical = 0;
+    //find the copier that is done
+    for(int i = 0; i < copyList->size(); i++){
+        if(copyList->at(i)->getBuildNo() == buildNo){
+            cpPhysical = copyList->at(i);
+            break;
+        }
+    }
+    lock.unlock();
+
+    if(cpPhysical == 0){
+        qDebug()<<"not found...";
+        return;
+    }
+
+    //let the copier write to the file it is supposed to write to...
+    cpPhysical->writeToFile();
+
+}
+
+
+void CopySenderClient::doneWritingToFile(int buildNo, bool success){
+    //this time it is done writing all the necessary information to the zip file
+
+    //find the copierPhysicalClient which emitted the signal
+    lock.lock();
+    CopierPhysicalClient *cpPhysical = 0;
+    for(int i = 0; i < copyList->size(); i++){
+        if(copyList->at(i)->getBuildNo() == buildNo){
+            cpPhysical = copyList->at(i);
+            break;
+        }
+    }
+    lock.unlock();
+
+
+    if(cpPhysical == 0){
+        qDebug()<<"not found...";
+        return;
+    }
+
+    if(!success){
+        //if it was not successful...create another request to send that build...(inside notify)
+        cpPhysical->removeZipFile();
+    }
+
+    //if the zip file was sucessfully sent across, only remove...
+    bool successfulRemove = copyList->removeOne(cpPhysical);
+    if(!successfulRemove){
+        qDebug()<<"not successful remove--copysenderlclient--line386";
+    }
+
+    //delete the physical copier
+    cpPhysical->deleteLater();
+
+    //notify if it has been a success or not...
+    notifyServerSuccess(buildNo, success);
+}
+
+void CopySenderClient::notifyServerSuccess(int buildNo, bool success){
+    QString jsonMessage = startJSONMessage();
+    appendJSONValue(jsonMessage, "handler", "NotifyCopySuccess", true);
+    appendJSONValue(jsonMessage, "buildNo", QString::number(buildNo), true);
+    appendJSONValue(jsonMessage, "success", QString::number(success), false);
+    endJSONMessage(jsonMessage);
+
+    socket->write(jsonMessage.toAscii().data());
+    socket->flush();
 }

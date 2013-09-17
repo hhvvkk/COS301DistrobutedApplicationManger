@@ -6,8 +6,14 @@ AddBuild::AddBuild(QString directory, QWidget *parent) :
     ui(new Ui::AddBuild)
 {
     ui->setupUi(this);
-    ui->lineEditDirectory->setText(directory);
+    #ifdef WIN32
+        ui->lineEditDirectory->setText(directory);
+    #else
+        ui->lineEditDirectory->setText("/"+directory);
+    #endif
+
     theXMLWriter = new xmlWriter();
+
 }
 
 AddBuild::~AddBuild()
@@ -33,7 +39,7 @@ void AddBuild::okClick(){
     QString buildDescription = ui->lineEditDescription->text();
 
     //Exit if a field is empty
-    if(buildNo.compare("") == 0|| buildName.compare("") == 0 || buildDescription.compare("") == 0){
+    if(buildNo.compare("") == 0|| buildName.compare("") == 0){
         showError("All fields are required","error");
         return;
     }

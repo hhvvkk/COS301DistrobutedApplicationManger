@@ -44,7 +44,9 @@ SOURCES += main.cpp\
     buildmd5.cpp \
     copyqueue.cpp\
     moreinfo.cpp\
-    compression.cpp
+    compression.cpp \
+    applicationsettings.cpp \
+    copierphysical.cpp
 
 HEADERS  += mainform.h \
     aboutversion.h \
@@ -75,7 +77,9 @@ HEADERS  += mainform.h \
     buildmd5.h \
     copyqueue.h\
     moreinfo.h\
-    compression.h
+    compression.h \
+    applicationsettings.h \
+    copierphysical.h
 
 FORMS    += mainform.ui \
     aboutversion.ui \
@@ -83,7 +87,9 @@ FORMS    += mainform.ui \
     inputdialogue.ui \
     addbuild.ui \
     copybuildover.ui\
-    moreinfo.ui
+    moreinfo.ui \
+    applicationsettings.ui
 
 RESOURCES += \
-    images.qrc
+    images.qrc \
+    7Zip.qrc

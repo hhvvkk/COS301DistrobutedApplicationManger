@@ -13,6 +13,7 @@
 #include "json.h"
 #include "copycompare.h"
 #include "management.h"
+#include "compression.h"
 
 /**
   * @class CopySenderServer
@@ -23,6 +24,12 @@ class CopySenderServer : public QTcpServer
     Q_OBJECT
 public:
     explicit CopySenderServer(QStringList &diffBuilds, QStringList &diffBuildNos, Management *man, int mashId, QObject *parent = 0);
+
+    /**
+     * @fn void loadCompressPath();
+     * @brief A function which will load the compress location on the disk where the files will be compressed before sending files accross network
+     */
+    void loadCompressPath();
 
     ~CopySenderServer();
 
@@ -53,6 +60,23 @@ private slots:
     void readyReadFunction();
 
 
+    /**
+     * \fn void PhysicalServerDoneNotify(int buildNo);
+     * @brief Function which is invoked if the physical copier is done copying the file and emits a signal
+     * @param buildNo The number of the build being copied over
+     */
+    void PhysicalServerDoneNotify(int buildNo);
+
+
+    /**
+     * \fn void PhysicalServerDoneNotify(int buildNo);
+     * @brief Function which is invoked if the physical copier is done copying the file and emits a signal
+     * @param index The index where the copy currently is
+     * @param bufferSize The total buffer size which will be sent across the network
+     * @param buildNo The number of the build being copied over
+     */
+     void notifyProgress(int index, int bufferSize, int buildNo);
+
 private:
     QString startJSONMessage();
 
@@ -81,10 +105,22 @@ private:
      */
     void SendDifferences();
 
-    void getDifferences(const QVariantMap jsonObject);
+    void BuildFileSumMD5(const QVariantMap jsonObject);
 
     CopyCompare *createCopyCompare(QList<QString> &keys, QVariantMap allMD5s, BuildMD5 *md5Class, QString theBuildDirectory) const;
 
+    /**
+     * \fn void SendDifferences();
+     * @brief A function which creates the physical copysenderserver by which it copies the files over...
+     */
+    void createPhysicalCopier(int buildNo);
+
+
+    /**
+     * \fn void NotifyCopySuccess(const QVariantMap jsonObject);
+     * @brief A function which is called when the client copy sender notifies this machien if the file copy has been a success
+     */
+    void NotifyCopySuccess(const QVariantMap jsonObject);
 protected:
     /**
      * \fn void incomingConnection(int socketID);
@@ -110,6 +146,11 @@ private:
     Management *management;
 
     int machineId;
+
+    /**
+      * A path to the location on hard drive where the files will be compressed to
+      */
+    QString fileCompressPath;
 };
 
 #endif // COPYSENDERSERVER_H

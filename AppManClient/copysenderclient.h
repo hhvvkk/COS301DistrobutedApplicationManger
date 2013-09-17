@@ -7,11 +7,13 @@
 #include <QVariant>
 #include <QVariantMap>
 #include <QSettings>
+#include <QList>
+#include <QMutex>
 
 
 #include "buildmd5.h"
 #include "json.h"
-
+#include "copierphysicalclient.h"
 /**
   * @class CopySenderClient
   * @brief This is a class that will be used to communcate information regarding the builds that will be copied over such as the build file MD5 values
@@ -44,6 +46,11 @@ private slots:
       * @brief The function called if there are data ready to be read
       */
     void readyReadFunction();
+
+    /**
+      * @brief A function called when it has written everything to the file
+      */
+    void doneWritingToFile(int buildNo,  bool success);
 
 private:
     QString startJSONMessage();
@@ -95,7 +102,24 @@ private:
 
     void DeleteFilesList(const QVariantMap jsonObject);
 
+    /**
+     * \fn BuildMD5 *getBuildMD5Class(Build build);
+     * @brief This is a function connecting the physical copy client to the physical copy server to copy the build files over
+     */
+    void ConnectPhysicalServer(const QVariantMap jsonObject);
 
+    /**
+     * \fn void PhysicalServerDone(const QVariantMap jsonObject);
+     * @brief A function which will be called indicating that the server is done sending the file
+     */
+    void PhysicalServerDone(const QVariantMap jsonObject);
+
+    /**
+     * \fn void notifyServerSuccess(int buildNo, bool success);
+     * @brief A function which notifies the server which sent the build on whether it was successfull or not. This will invoke another creation of a physical copier if it was not successful
+     * @param buildNo the Build number of the physical copier which invoked the notify
+     */
+    void notifyServerSuccess(int buildNo, bool success);
 private:
     QString allBuildsDirectory;
 
@@ -108,6 +132,13 @@ private:
     QStringList differentBuilds;
 
     QHostAddress hostAddress;
+
+    /**
+      * An arrayList containing all the current physical copy build list
+      */
+    QList <CopierPhysicalClient*> *copyList;
+
+    QMutex lock;
 
 };
 

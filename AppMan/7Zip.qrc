@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/SevenZip">
+        <file>7zip/Win32/7z.exe</file>
+        <file>7zip/Win32/7z.dll</file>
+        <file>7zip/Unix/7za</file>
+    </qresource>
+</RCC>

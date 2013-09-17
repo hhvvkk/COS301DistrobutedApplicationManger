@@ -17,6 +17,8 @@ public:
 
     ~CopyCompare();
 
+    QStringList getFilepaths();
+
     void compareMD5(const QString *masterMD5Value, const QString *masterFilePath, QString slaveMd5Value);
 
     void createFile(QString fileDirectory);

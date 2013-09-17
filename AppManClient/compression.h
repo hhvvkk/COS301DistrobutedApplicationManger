@@ -43,7 +43,7 @@ public:
     */
     void decompress(QString zipPath, QString toDir);
 
-
+    bool zipInTact(QString directoryOfZip);
 private:
     /**
       * @var partitionSize A variable that will determine how many files will be placed inside the archive at a given time

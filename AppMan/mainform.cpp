@@ -569,7 +569,7 @@ void MainForm::slaveBuildSizeSame(int buildId, int machineId, bool isTheSame){
 
 
 void MainForm::slaveBuildSynched(int machineId, int buildId, double percentage){
-    qDebug()<<"slaveSynched[machineID = "<< machineId <<"|| buildID = "<< buildId <<"] = "<<percentage;
+   // qDebug()<<"slaveSynched[machineID = "<< machineId <<"|| buildID = "<< buildId <<"] = "<<percentage;
 }
 
 

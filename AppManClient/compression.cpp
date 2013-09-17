@@ -192,9 +192,36 @@ void Compression::decompress(QString zipPath, QString toDir){
     p->start(s,args);
     p->waitForFinished(40000);
     p->kill();
-    p->deleteLater();
 }
 
+
+bool Compression::zipInTact(QString directoryOfZip){
+    QFile zipFile(directoryOfZip);
+
+    //firstly check if file is there
+    if(!zipFile.exists())
+        return false;
+
+    //use the test function of 7zip [t]
+    QString s("7zip/Unix/7za");
+    QStringList args;
+    args.append("t");
+    args.append(directoryOfZip);
+    QProcess* p = new QProcess();
+
+    p->start(s, args);
+    p->waitForFinished(-1);
+
+    //QString p_stdout = p->readAllStandardOutput();
+    QByteArray allOutput = p->readAll();
+
+    if(allOutput.contains("Everything is Ok"))
+        return true;
+    else
+        return false;
+}
+
+// ** make sure <fromDir> contains a path that ends with </> else this line has to be modified to:  args.append(fromDir + "/" + name + ".7z")
 
 /* SAMPLE USAGE:
  *

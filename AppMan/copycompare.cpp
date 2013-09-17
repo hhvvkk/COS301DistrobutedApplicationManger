@@ -13,6 +13,11 @@ CopyCompare::~CopyCompare(){
     delete deleteFilePaths;
 }
 
+
+QStringList CopyCompare::getFilepaths(){
+    return *filePaths;
+}
+
 void CopyCompare::compareMD5(const QString *masterMD5Value, const QString *masterFilePath, QString slaveMd5Value){
     //Will now compare whether or not the file should be included in the build
     if(masterMD5Value->compare(slaveMd5Value)){//if it is the same, it should not be included in copy over
@@ -29,9 +34,13 @@ void CopyCompare::createFile(QString aPath){
 
 double CopyCompare::percentageSynched(){
     double percentageComplete = 0;
-//    qDebug()<<"numNotCopied:"<<numFilesNotCopied;
-//    qDebug()<<"filesToCopy:"<<filePaths->size();
-//    qDebug()<<"filesToDelete:"<<deleteFilePaths->size();
+//   qDebug()<<"numNotCopied:"<<numFilesNotCopied;
+//   qDebug()<<"filesToCopy:"<<filePaths->size();
+//   qDebug()<<"filesToDelete:"<<deleteFilePaths->size();
+
+    int total = numFilesNotCopied + filePaths->size();
+
+    percentageComplete = 100.00 - filePaths->size()*100/total;
     return percentageComplete;
 }
 

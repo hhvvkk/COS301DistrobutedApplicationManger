@@ -36,7 +36,9 @@ SOURCES += main.cpp\
     protogetsysinfo.cpp \
     protosendbuild.cpp \
     copysenderclient.cpp \
-    json.cpp
+    json.cpp \
+    copierphysicalclient.cpp \
+    compression.cpp
 
 HEADERS  += mainwindow.h \
     socketclient.h \
@@ -59,7 +61,9 @@ HEADERS  += mainwindow.h \
     protogetsysinfo.h \
     protosendbuild.h \
     copysenderclient.h \
-    json.h
+    json.h \
+    copierphysicalclient.h \
+    compression.h
 
 
 FORMS    += mainwindow.ui \
@@ -67,4 +71,5 @@ FORMS    += mainwindow.ui \
     addbuildfortest.ui
 
 RESOURCES += \
-    images.qrc
+    images.qrc \
+    7Zip.qrc
