@@ -117,7 +117,7 @@ void CopierPhysical::initiateCopyOver(){
         //QByteArray  mid ( int pos, int len = -1 ) const
         QByteArray midToWrite = buffer.mid(i, maxPerSize);
         qint64 written = socket->write(midToWrite);
-        socket->flush();
+        socket->waitForBytesWritten(-1);
         //change the speed at which it writes...
         i = i + written;
     }

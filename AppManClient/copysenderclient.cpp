@@ -399,7 +399,7 @@ void CopySenderClient::doneWritingToFile(int buildNo, bool success){
     //if the zip file was sucessfully sent across, only remove...
     bool successfulRemove = copyList->removeOne(cpPhysical);
     if(!successfulRemove){
-        qDebug()<<"not successful remove--copysenderlclient--line386";
+        qDebug()<<"not successful remove--copysenderlclient--line401";
     }
 
     //delete the physical copier
