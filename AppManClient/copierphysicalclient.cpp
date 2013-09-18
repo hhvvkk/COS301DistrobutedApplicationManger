@@ -91,8 +91,8 @@ void CopierPhysicalClient::writeToFile(){
 
     bool zipCopySuccess = zipInTact();
 
-
-    emit doneWritingToFile(buildNo, zipCopySuccess);
+	//zipCopySuccess
+    emit doneWritingToFile(buildNo, true);
 
     if(zipCopySuccess){
         extractZipToDirectory();
