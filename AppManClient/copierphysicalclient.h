@@ -109,7 +109,7 @@ private:
 
     int amountRead;
 
-    QByteArray *fileBuffer;
+    QByteArray fileBuffer;
 
 };
 

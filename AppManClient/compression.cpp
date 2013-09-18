@@ -11,9 +11,6 @@
 Compression::Compression(QObject *parent)
     :QObject(parent){
 
-    //which means 15 files maximum will be copied per try
-    partitionSize = 15;
-
     //What this constructor does is create all the folders for 7zip
     //if it does not exist and copies the 7zip from the resource file
     //into that folder
@@ -64,11 +61,15 @@ void Compression::compress(QStringList dirs, QString toDir, QString buildDirecto
         QString directoryToCopy = dirs.at(i);
         directoryToCopy.remove(0, buildDirectorySize);
         QString whereToCopy = toDir + directoryToCopy;
-        createFolderPaths(whereToCopy);
+
+        QDir().mkpath(whereToCopy.left(whereToCopy.lastIndexOf("/")));
+
         //delete file first if there already exist such a one...
-        bool copied = QFile().copy(dirs.at(i), whereToCopy);
+        QFile copyFile(dirs.at(i));
+        bool copied = copyFile.copy(whereToCopy);
+        copyFile.waitForBytesWritten(-1);
         if(!copied){
-            //qDebug()<<"did not copy "<<dirs.at(i)<<" to "<<whereToCopy;
+
         }
     }
 
@@ -95,84 +96,15 @@ void Compression::compress(QStringList dirs, QString toDir, QString buildDirecto
     QProcess* p = new QProcess();
     //connect(p, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(endProcess(int, QProcess::ExitStatus)));
     p->start(s,args);
-    p->waitForFinished(40000);
+    p->waitForFinished(-1);
     p->kill();
     p->deleteLater();
 
-
-//    int counter = 0;
-//    int finalCounter = 0;
-//    while(counter < dirs.size()){
-
-//        QStringList args;
-//        args.append("a");
-//        args.append("-bd");
-//        args.append("-mmt");
-//        args.append(compressDirectory);
-//        args.append("dir\blah");
-
-//        int i = counter;
-//        for(; i < (counter + partitionSize) && (i < dirs.size()); i++){
-//            args.append(dirs.at(i));
-//        }
-//        finalCounter = i;
-//        qDebug()<<args;
-
-//        QProcess* p = new QProcess();
-//        //connect(p, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(endProcess(int, QProcess::ExitStatus)));
-
-//        p->start(s,args);
-
-//        p->waitForFinished(4000);
-//        p->kill();
-//        p->deleteLater();
-//        counter += partitionSize;
-//        finalCounter += partitionSize;
-//    }
-
-//    int counterForLast = finalCounter - partitionSize;
-//    QStringList args;
-//    args.append("a");
-//    args.append("-bd");
-//    args.append("-mmt");
-//    args.append(compressDirectory);
-//    args.append("dir\blah");
-//    qDebug()<<"size= "<< dirs.size() <<"-- -Counter was "<<counter<<"STILL TO DO:" <<counterForLast << "--to--"<<dirs.size();
-//    for(int i = counterForLast; i < dirs.size(); i++){
-//        args.append(dirs.at(i));
-//    }
-//    QProcess* p = new QProcess();
-//    //connect(p, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(endProcess(int, QProcess::ExitStatus)));
-//    p->start(s,args);
-
-//    p->waitForFinished(4000);
-//    p->kill();
-//    p->deleteLater();
-    //finally compress the last few files..
-}
-
-void Compression::createFolderPaths(QString folderPath){
-    bool firstDone = false;
-    QString currentFolder = "";
-    while(folderPath.contains("/")){
-        if(folderPath.contains("/")){
-            QString folder = folderPath.left(folderPath.indexOf("/"));
-            QDir existFolder(folder);
-            if(!existFolder.exists()){
-                if(!firstDone)
-                    QDir().mkdir(folder);
-                else
-                    QDir().mkdir(currentFolder+"/"+folder);
-            }
-            if(!firstDone){
-                currentFolder.append(folder);
-                firstDone = true;
-            }
-            else
-                currentFolder.append("/"+folder);
-            folderPath.remove(0, (folderPath.indexOf("/")+1));
-        }
+    if(!zipInTact(compressDirectory)){
+        qDebug()<<"ZIP NOT IN TACT";
+        compress(dirs, toDir, buildDirectory);
     }
+
 }
 
 void Compression::decompress(QString zipPath, QString toDir){
@@ -190,8 +122,9 @@ void Compression::decompress(QString zipPath, QString toDir){
 
     QProcess* p = new QProcess();
     p->start(s,args);
-    p->waitForFinished(40000);
+    p->waitForFinished(-1);
     p->kill();
+    p->deleteLater();
 }
 
 
@@ -203,7 +136,12 @@ bool Compression::zipInTact(QString directoryOfZip){
         return false;
 
     //use the test function of 7zip [t]
-    QString s("7zip/Unix/7za");
+    #ifdef WIN32
+        QString s("7zip/Win32/7z.exe");
+    #else
+        QString s("7zip/Unix/7za");
+    #endif
+
     QStringList args;
     args.append("t");
     args.append(directoryOfZip);
@@ -221,20 +159,3 @@ bool Compression::zipInTact(QString directoryOfZip){
         return false;
 }
 
-// ** make sure <fromDir> contains a path that ends with </> else this line has to be modified to:  args.append(fromDir + "/" + name + ".7z")
-
-/* SAMPLE USAGE:
- *
- *  Compression* c = new Compression();
- *
- *  QStringList dirList;
- *
- *  dirList.append("somepath/somefile1.txt");
- *  dirList.append("somepath2/somefile2.txt");
- *  dirList.append("somepath3/somedirectory");
- *
- *  c->compress(dirList,"path/ToDir/","compressedFileName");
- *
- *  c->decompress("path/fromDir/","path/new/ToDir/","decompressedDirName");
- *
- **/

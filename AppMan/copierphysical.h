@@ -76,6 +76,8 @@ private slots:
      */
     void signalNotifyProgress();
 
+    void readyReadFunction();
+
 private:
     /**
      * \fn void destroyServer();

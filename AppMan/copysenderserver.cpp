@@ -37,7 +37,6 @@ void CopySenderServer::loadCompressPath(){
 }
 
 CopySenderServer::~CopySenderServer(){
-    qDebug()<<"DELETING";
     if(socket != 0)
         socket->deleteLater();
 }

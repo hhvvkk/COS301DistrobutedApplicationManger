@@ -91,7 +91,6 @@ void ProtoConnect::connectToMaster(QString ipAddress, int serverPort, ProtocolHa
     appendJSONValue(jsonMessage, "machineID", QString::number(machineID), false);
     endJSONMessage(jsonMessage);
 
-    qDebug()<<"CONNECT::"<<jsonMessage;
     socket->write(jsonMessage.toAscii().data());
     socket->flush();
 

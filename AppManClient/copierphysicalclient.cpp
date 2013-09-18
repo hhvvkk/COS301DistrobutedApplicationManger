@@ -28,16 +28,11 @@ CopierPhysicalClient::CopierPhysicalClient(QHostAddress hAdr, int portNumber, in
     if(!allEDir.exists())
         QDir().mkdir(extractDirectory);
 
-    fileBuffer = new QByteArray();
     amountRead = 0;
 }
 
 CopierPhysicalClient::~CopierPhysicalClient(){
     qDebug()<<"deleting copierphysical client";
-    if(fileBuffer != 0){
-        fileBuffer->clear();
-        delete fileBuffer;
-    }
 }
 
 
@@ -47,7 +42,6 @@ int CopierPhysicalClient::getBuildNo(){
 
 bool CopierPhysicalClient::connectToHost(){
     //hostAddress.setAddress();
-    qDebug()<<"CONNECTING TO :: "<<hostAddress.toString()<<"--"<<port;
     socket->connectToHost(hostAddress, port);
 
     //wait for one second for connection
@@ -56,6 +50,9 @@ bool CopierPhysicalClient::connectToHost(){
         qDebug()<<"Error when connecting";
         return false;
     }
+
+    socket->write("HelloPhysicalSender");
+    socket->flush();
 
     return true;
 }
@@ -71,7 +68,7 @@ void CopierPhysicalClient::readyReadFunction(){
     QByteArray Data = socket->readAll();
 
     //write to the file buffer the data that was read
-    fileBuffer->append(Data);
+    fileBuffer.append(Data);
 }
 
 void CopierPhysicalClient::writeToFile(){
@@ -89,7 +86,7 @@ void CopierPhysicalClient::writeToFile(){
     }
 
     //write all the data from the file buffer that was read previously
-    zipFile.write(*fileBuffer);
+    zipFile.write(fileBuffer);
     zipFile.close();
 
     bool zipCopySuccess = zipInTact();
@@ -107,7 +104,6 @@ void CopierPhysicalClient::writeToFile(){
 
 
 void CopierPhysicalClient::removeZipFile(){
-    qDebug()<<"removing the zip file...";
     QFile zipFile(compressDirectory+"/"+QString::number(buildNo)+".7z");
 
     if(zipFile.exists()){
@@ -130,8 +126,8 @@ bool CopierPhysicalClient::zipInTact(){
 
 void CopierPhysicalClient::extractZipToDirectory(){
     QString zipPath(compressDirectory+"/"+QString::number(buildNo)+".7z");
-
     QString extractPath(extractDirectory+"/"+QString::number(buildNo));
+
     QDir eDir(extractPath);
     if(!eDir.exists()){
         QDir().mkpath(extractPath);

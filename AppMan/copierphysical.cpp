@@ -54,9 +54,9 @@ void CopierPhysical::incomingConnection(int socketID){
     }
 
     connect(socket, SIGNAL(disconnected()), this, SLOT(destroyServer()));
+    connect(socket, SIGNAL(readyRead()), this, SLOT(readyReadFunction()));
     stopServer();
 
-    initiateCopyOver();
 }
 
 
@@ -104,7 +104,6 @@ void CopierPhysical::initiateCopyOver(){
 
     QFile zipFile(zipPath);
     if(!zipFile.exists()){
-        qDebug()<<"DOES not exist--::"<<zipPath;
         return;
     }
     if(!zipFile.open(QFile::ReadOnly)){
@@ -118,13 +117,8 @@ void CopierPhysical::initiateCopyOver(){
         //QByteArray  mid ( int pos, int len = -1 ) const
         QByteArray midToWrite = buffer.mid(i, maxPerSize);
         qint64 written = socket->write(midToWrite);
-
+        socket->flush();
         //change the speed at which it writes...
-        if(written == maxPerSize)
-            maxPerSize += 100;
-        else
-            maxPerSize = written;
-
         i = i + written;
     }
 
@@ -257,10 +251,6 @@ void CopierPhysical::initiateCopyOver(){
 
     //    QTextStream os(socket);
     //    //os.setAutoDetectUnicode(true);
-    ////    os << "HTTP/1.0 200 Ok\r\n"
-    ////    "Content-Type: audio/mpeg; charset=\"utf-8\"\r\n"
-    ////    "\r\n";
-    ////    os.flush();
 
     //    // Streaming the file
     //    QByteArray block = zipFile.readAll();
@@ -299,4 +289,11 @@ void CopierPhysical::initiateCopyOver(){
 void CopierPhysical::signalNotifyProgress(){
     emit notifyProgress(i, buffer.size(), buildNo);
     notifyTimer.start();
+}
+
+void CopierPhysical::readyReadFunction(){
+    QString data = socket->readAll();
+    if(!data.compare("HelloPhysicalSender"))
+        initiateCopyOver();
+    qDebug()<<"STarting the copy...";
 }

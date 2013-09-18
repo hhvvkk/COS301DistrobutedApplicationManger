@@ -4,12 +4,6 @@
 #include <Build.h>
 #include <QObject>
 
-/*
- *   Current issues:
- *      * Location of 7zip console application (7z)
- *      * Testing Linux code
- *
- */
 
 /**
 * @class Compression
@@ -32,8 +26,6 @@ public:
     */
     void compress(QStringList dirs, QString toDir, QString buildDirectory);
 
-    void createFolderPaths(QString folderPath);
-
     /**
     * \fn decompress(QString fromDir, QString toDir, QString name)
     * @brief decompress a 7z file located at <fromDir> with name <name> using 7zip and extracts at location <toDir>
@@ -44,11 +36,6 @@ public:
     void decompress(QString zipPath, QString toDir);
 
     bool zipInTact(QString directoryOfZip);
-private:
-    /**
-      * @var partitionSize A variable that will determine how many files will be placed inside the archive at a given time
-      */
-    int partitionSize;
 
 };
 

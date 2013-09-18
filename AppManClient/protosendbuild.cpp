@@ -19,10 +19,6 @@ void ProtoSendBuild::SendBuildCopyServer(QVariantMap jsonObject, QTcpSocket *mas
         return;
     //QString hostPort = rightSide.left(rightSide.indexOf("#"));
 
-
-    qDebug()<<"HOSTAd"<<theHostAddress.toString();
-    qDebug()<<"HOSTPor"<<hostPort;
-
     //check to see if port is actually valid
     bool ok;
     int port = hostPort.toInt(&ok);
