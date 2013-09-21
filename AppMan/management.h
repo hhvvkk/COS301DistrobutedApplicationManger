@@ -222,6 +222,8 @@ public:
 
     void slaveBuildSize(int buildNo, QString buildMD5Value, int slaveId);
 
+    void slaveABuildSize(int buildNo, QString buildMD5Value, int slaveId);
+
     void setSlaveBuildIsSame(bool isSame, int machineId, int buildID);
 
     QString getMinStats(){return minStats;}

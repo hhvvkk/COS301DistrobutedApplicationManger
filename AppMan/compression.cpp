@@ -1,12 +1,4 @@
 #include "compression.h"
-#include <QString>
-#include <QProcess>
-
-#include <QDir>
-
-#include <QFile>
-
-#include <QDebug>
 
 Compression::Compression(QObject *parent)
     :QObject(parent){
@@ -57,6 +49,11 @@ void Compression::compress(QStringList dirs, QString toDir, QString buildDirecto
     //copy all files into the directories(in order to keep the directory structures
     //7zip does not have commands to force the directories to be kept
     int buildDirectorySize = buildDirectory.size();
+
+    int maximumBytes = 1500000000;//maximum for byteArray is //2147483647
+
+    int currentBytes = 0;
+
     for(int i = 0; i < dirs.length(); i++){
         QString directoryToCopy = dirs.at(i);
         directoryToCopy.remove(0, buildDirectorySize);
@@ -66,6 +63,13 @@ void Compression::compress(QStringList dirs, QString toDir, QString buildDirecto
 
         //delete file first if there already exist such a one...
         QFile copyFile(dirs.at(i));
+
+        currentBytes += copyFile.size();
+
+        //limit the amount to send if it goes over it...
+        if(currentBytes >= maximumBytes)
+            break;
+
         bool copied = copyFile.copy(whereToCopy);
         copyFile.waitForBytesWritten(-1);
         if(!copied){
@@ -104,8 +108,17 @@ void Compression::compress(QStringList dirs, QString toDir, QString buildDirecto
         qDebug()<<"ZIP NOT IN TACT";
         compress(dirs, toDir, buildDirectory);
     }
+    deleteAllFiles(toDir);
 
 }
+
+void Compression::deleteAllFiles(QString compressDirectory){
+    DirectoryHandler dirHandler;
+    qDebug()<<"Deleting"<<compressDirectory;
+    bool successful = dirHandler.removeDir(compressDirectory);
+    qDebug()<<successful;
+}
+
 
 void Compression::decompress(QString zipPath, QString toDir){
     #ifdef WIN32

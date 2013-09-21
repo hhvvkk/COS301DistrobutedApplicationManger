@@ -8,12 +8,16 @@
 #include <QNetworkInterface>
 #include <QVariant>
 #include <QVariantMap>
+#include <QMutex>
 
 #include "buildmd5.h"
 #include "json.h"
 #include "copycompare.h"
 #include "management.h"
 #include "compression.h"
+#include "copierphysical.h"
+#include "copyqueue.h"
+
 
 /**
   * @class CopySenderServer
@@ -22,8 +26,15 @@
 class CopySenderServer : public QTcpServer
 {
     Q_OBJECT
+signals:
+    /**
+      * \fn void copySenderServerDone(CopySenderServer* thsServer);
+      * @brief This signal is emitted once the copySenderServer is done sending the build files
+      */
+    void copySenderServerDone(CopySenderServer* thsServer);
+
 public:
-    explicit CopySenderServer(QStringList &diffBuilds, QStringList &diffBuildNos, Management *man, int mashId, QObject *parent = 0);
+    explicit CopySenderServer(QStringList *diffBuilds, QStringList *diffBuildNos, Management *man, int mashId, QObject *parent = 0);
 
     /**
      * @fn void loadCompressPath();
@@ -35,7 +46,7 @@ public:
 
     /**
      * \fn void startServer();
-     * @brief startServer A function that will start the server and return the port on which it started
+     * @brief A function that will start the server and return the port on which it started
      * @return Returns the port on which the server ha started
      */
     int startServer();
@@ -46,6 +57,13 @@ public:
      */
     void stopServer();
 
+
+    /**
+     * \fn bool isBusyDeleting();
+     * @brief A function that can be queried to find out if there are still files being deleted such as the zip file
+     * @return Returns true if there are files still being deleted
+     */
+    bool isBusyDeleting();
 private slots:
     /**
      * \fn void destroyServer();
@@ -76,6 +94,22 @@ private slots:
      * @param buildNo The number of the build being copied over
      */
      void notifyProgress(int index, int bufferSize, int buildNo);
+
+
+     /**
+      * \fn void nextInQueue(int port);
+      * @brief A function connected to the nextInQueue of the copyQueue which will emit the port that the client should connect to
+      * @param port The port on which the next in queue is waiting on
+      * @param buildNo The build number for which the next in queue is meant for
+      */
+     void nextInQueue(int port, int buildNo);
+
+     /**
+      * \fn void queueFinished();
+      * @brief The function connected to a queue signal which indicates that it is empty
+      * @param theCopyQueue The queue which was finished copying
+      */
+     void queueFinished(CopyQueue * theCopyQueue);
 
 private:
     QString startJSONMessage();
@@ -112,9 +146,16 @@ private:
     /**
      * \fn void SendDifferences();
      * @brief A function which creates the physical copysenderserver by which it copies the files over...
+     * @param buildNo The build number for which the physical copying will be created
      */
     void createPhysicalCopier(int buildNo);
 
+    /**
+     * \fn void addToQueue(CopierPhysical *physicalCopier);
+     * @brief A function to add the newly created physical copier to the current queue or a newly created queue
+     * @param physicalCopier The physical copier which will be copied over
+     */
+    void addToQueue(CopierPhysical *physicalCopier);
 
     /**
      * \fn void NotifyCopySuccess(const QVariantMap jsonObject);
@@ -134,8 +175,8 @@ private:
     //so that can let the mainform know who has what percentage
     //of builds
     QString ipAddress;
-    QStringList differentBuildDirectories;
-    QStringList differentBuildNos;
+    QStringList *differentBuildDirectories;
+    QStringList *differentBuildNos;
     QTcpSocket *socket;
 
     /**
@@ -151,6 +192,16 @@ private:
       * A path to the location on hard drive where the files will be compressed to
       */
     QString fileCompressPath;
+
+    CopyQueue *copierQueue;
+
+    QMutex lock;
+
+    /**
+      * @brief a boolean indicatin if there are still files left to delete which the server is most likely busy deleting
+      *
+      */
+    bool zipFilesToDelete;
 };
 
 #endif // COPYSENDERSERVER_H

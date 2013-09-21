@@ -135,3 +135,8 @@ void ProtocolHandler::getMinStats(){
     ProtoGetSysInfo * sysProto = dynamic_cast<ProtoGetSysInfo*>(getSysInfo);
     sysProto->getMinimal(slaveSocket);
 }
+
+void ProtocolHandler::slaveABuildSizeDone(int buildID){
+    ProtoSendBuild * sendBuild = dynamic_cast<ProtoSendBuild*>(sendBuild);
+    sendBuild->sizeCheckCertainBuildDone(/*buildID, machine, management,*/ slaveSocket);
+}

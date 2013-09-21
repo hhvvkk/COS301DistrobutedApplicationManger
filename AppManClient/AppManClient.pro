@@ -38,7 +38,8 @@ SOURCES += main.cpp\
     copysenderclient.cpp \
     json.cpp \
     copierphysicalclient.cpp \
-    compression.cpp
+    compression.cpp \
+    directoryhandler.cpp
 
 HEADERS  += mainwindow.h \
     socketclient.h \
@@ -63,7 +64,8 @@ HEADERS  += mainwindow.h \
     copysenderclient.h \
     json.h \
     copierphysicalclient.h \
-    compression.h
+    compression.h \
+    directoryhandler.h
 
 
 FORMS    += mainwindow.ui \

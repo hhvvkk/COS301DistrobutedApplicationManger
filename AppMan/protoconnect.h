@@ -7,6 +7,7 @@ class Machine;
 
 class ProtoConnect : public Protocol
 {
+    Q_OBJECT
 public:
     /**
      * \fn ProtoConnect(QObject *parent = 0);

@@ -18,8 +18,6 @@ CopySenderClient::CopySenderClient(QHostAddress hAdr, int portNumber, QObject *p
 }
 
 CopySenderClient::~CopySenderClient(){
-    qDebug()<<"DELETING(CopySenderClient)";
-
     CopierPhysicalClient* cpPhy;
     if(copyList != 0){
         if(copyList->size() != 0){
@@ -87,8 +85,6 @@ QString CopySenderClient::getMachineID(){
             machineID = -1;
         }
     }
-
-    qDebug()<<"MACHINEID::"<<machineID;
     return QString::number(machineID);
 }
 
@@ -181,7 +177,6 @@ void CopySenderClient::requestHandler(QString data){
         endJSONMessage(jsonMessage);
 
 
-        qDebug()<<jsonMessage;
         socket->write(jsonMessage.toAscii().data());
         socket->flush();
         return;
@@ -352,6 +347,7 @@ void CopySenderClient::PhysicalServerDone(const QVariantMap jsonObject){
     lock.lock();
     CopierPhysicalClient *cpPhysical = 0;
     //find the copier that is done
+
     for(int i = 0; i < copyList->size(); i++){
         if(copyList->at(i)->getBuildNo() == buildNo){
             cpPhysical = copyList->at(i);
@@ -415,6 +411,8 @@ void CopySenderClient::notifyServerSuccess(int buildNo, bool success){
     appendJSONValue(jsonMessage, "buildNo", QString::number(buildNo), true);
     appendJSONValue(jsonMessage, "success", QString::number(success), false);
     endJSONMessage(jsonMessage);
+
+    qDebug()<<"NOTIFYCOPY::"<<jsonMessage;
 
     socket->write(jsonMessage.toAscii().data());
     socket->flush();

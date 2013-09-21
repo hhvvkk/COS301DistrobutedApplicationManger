@@ -1,4 +1,5 @@
 #include "copierphysicalclient.h"
+#include "directoryhandler.h"
 
 CopierPhysicalClient::CopierPhysicalClient(QHostAddress hAdr, int portNumber, int bNumber,  QObject *parent) :
     QObject(parent),
@@ -32,7 +33,10 @@ CopierPhysicalClient::CopierPhysicalClient(QHostAddress hAdr, int portNumber, in
 }
 
 CopierPhysicalClient::~CopierPhysicalClient(){
-    qDebug()<<"deleting copierphysical client";
+    if(socket != 0){
+        socket->disconnectFromHost();
+        socket->deleteLater();
+    }
 }
 
 
@@ -59,8 +63,7 @@ bool CopierPhysicalClient::connectToHost(){
 
 
 void CopierPhysicalClient::disconnectedFunction(){
-    qDebug()<<"Disconnected called";
-   // this->deleteLater();
+    //Do not delete it, it is deleted at the copySenderServer!!!
 }
 
 void CopierPhysicalClient::readyReadFunction(){
@@ -127,6 +130,7 @@ bool CopierPhysicalClient::zipInTact(){
 void CopierPhysicalClient::extractZipToDirectory(){
     QString zipPath(compressDirectory+"/"+QString::number(buildNo)+".7z");
     QString extractPath(extractDirectory+"/"+QString::number(buildNo));
+    QString buildPath(allBuildsDirectory + "/" + QString::number(buildNo));
 
     QDir eDir(extractPath);
     if(!eDir.exists()){
@@ -140,5 +144,10 @@ void CopierPhysicalClient::extractZipToDirectory(){
     if(zipDelete.exists())
         zipDelete.remove();
 
+    DirectoryHandler dHandler;
 
+    QStringList listOfPaths;
+    dHandler.recurseAddDir(eDir, listOfPaths);
+
+    dHandler.copyOverFromList(3, listOfPaths, buildPath, extractPath);
 }

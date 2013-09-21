@@ -3,13 +3,12 @@
 
 #include <Build.h>
 #include <QObject>
+#include <QProcess>
+#include <QDir>
+#include <QFile>
+#include <QDebug>
 
-/*
- *   Current issues:
- *      * Location of 7zip console application (7z)
- *      * Testing Linux code
- *
- */
+#include "directoryhandler.h"
 
 /**
 * @class Compression
@@ -42,6 +41,10 @@ public:
     void decompress(QString zipPath, QString toDir);
 
     bool zipInTact(QString directoryOfZip);
+
+private:
+    void deleteAllFiles(QString compressDirectory);
+
 
 };
 

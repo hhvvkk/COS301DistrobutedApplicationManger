@@ -282,6 +282,35 @@ void Management::slaveBuildSize(int buildNo, QString buildMD5Value, int slaveId)
 }
 
 
+void Management::slaveABuildSize(int buildNo, QString buildMD5Value, int slaveId){
+    Build theBuild = getBuildByID(buildNo);
+
+    if(!theBuild.getBuildDescription().compare("NULL")
+        && !theBuild.getBuildDirectory().compare("NULL")
+        && !theBuild.getBuildName().compare("NULL")
+        && theBuild.getBuildID() == 0){
+        //this point the build does not exist
+        return;
+    }
+    else{
+        //qDebug()<<"EXISTS::"<<buildNo;
+    }
+
+    if(!buildMD5Value.compare(getBuildMD5(&theBuild))){
+        setSlaveBuildIsSame(true, slaveId, theBuild.getBuildID());
+        //void slaveBuildSizeSame(int buildId, int slaveId, bool isTheSame);
+        emit slaveBuildSizeSame(theBuild.getBuildID(), slaveId, true);
+    }
+    else{
+        setSlaveBuildIsSame(false, slaveId, theBuild.getBuildID());
+        emit slaveBuildSizeSame(theBuild.getBuildID(), slaveId, false);
+    }
+
+    Machine * m = getMachineById(slaveId);
+    m->slaveABuildSizeDone(theBuild.getBuildID());
+}
+
+
 void Management::setSlaveBuildIsSame(bool isSame, int machineId, int buildID){
     Machine * slave = getMachineById(machineId);
 

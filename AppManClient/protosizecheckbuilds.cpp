@@ -59,7 +59,8 @@ void ProtoSizeCheckBuilds::SizeCheckABuild(QVariantMap jsonObject, Management *m
     appendJSONValue(jsonMessage, "subHandler", "BuildMD5", true);
     QString buildNoString = QString::number(theBuild.getBuildID());
     appendJSONValue(jsonMessage, "buildNo", buildNoString, true);
-    appendJSONValue(jsonMessage, "md5Sum", management->getBuildMD5(theBuild), false);
+    appendJSONValue(jsonMessage, "md5Sum", management->getBuildMD5(theBuild), true);
+    appendJSONValue(jsonMessage, "OneBuildOnly", "true", false);
     endJSONMessage(jsonMessage);
 
     masterSocket->write(jsonMessage.toAscii().data());

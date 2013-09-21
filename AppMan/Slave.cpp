@@ -138,3 +138,7 @@ void Slave::getMinStats(){
 void Slave::getDetStats(){
     protocolHandler->getDetStats();
 }
+
+void Slave::slaveABuildSizeDone(int buildID){
+    protocolHandler->slaveABuildSizeDone(buildID);
+}

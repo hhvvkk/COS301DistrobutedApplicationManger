@@ -2,6 +2,11 @@
 #define PROTOSENDBUILD_H
 
 #include "protocol.h"
+#include <QMutex>
+
+class CopySenderServer;
+
+class Machine;
 
 /**
   * @class ProtoSendBuild
@@ -9,12 +14,19 @@
   */
 class ProtoSendBuild : public Protocol
 {
+    Q_OBJECT
 public:
     /**
      * \fn ProtoSendBuild(QObject *parent = 0);
      * @brief The constructor
      */
     ProtoSendBuild(QObject *parent = 0);
+
+    /**
+      * \fn ~ProtoSendBuild();
+      * @brief The destructor for the protocol
+      */
+    ~ProtoSendBuild();
 
     /**
      * \fn void handle(QVariantMap jsonObject, Management *man, QTcpSocket *slaveSocket);
@@ -33,7 +45,21 @@ public:
      */
     void SizeCheckAllBuildsDone(QTcpSocket *slaveSocket,  Management *management);
 
-    void sizeCheckCertainBuildDone();
+    void sizeCheckCertainBuildDone(/*int buildID, Machine *machine, Management *management,*/ QTcpSocket *slaveSocket);
+
+private slots:
+    void copySenderServerDone(CopySenderServer * deleteCopySender);
+
+private:
+    /**
+      * A lock to prevent multiple CopySenderServers from being created and prevent
+      * CopySenderServers which are being deleted from being used
+      */
+    QMutex *lock;
+
+    QList <CopySenderServer*>sendList;
+
+    ProtoSendBuild *thisPointer;
 };
 
 #endif // PROTOSENDBUILD_H

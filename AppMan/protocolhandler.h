@@ -87,6 +87,13 @@ public:
      */
     void getDetStats();
 
+    /**
+    * \fn void slaveABuildSizeDone(int buildID);
+    * @brief A function to check for file differences of a changed build
+    * @param buildID the build id for which the slave build size are done checking
+    */
+    void slaveABuildSizeDone(int buildID);
+
 private:
     /**
      * \fn void requestHandler(QString data);

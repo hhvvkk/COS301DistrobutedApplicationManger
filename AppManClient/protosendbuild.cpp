@@ -11,7 +11,6 @@ void ProtoSendBuild::handle(QVariantMap jsonObject, Management *management, QTcp
 }
 
 void ProtoSendBuild::SendBuildCopyServer(QVariantMap jsonObject, QTcpSocket *masterSocket){
-
     QString hostPort = jsonObject.value("hostPort").toString();
 
     QHostAddress theHostAddress = masterSocket->peerAddress();
@@ -31,7 +30,6 @@ void ProtoSendBuild::SendBuildCopyServer(QVariantMap jsonObject, QTcpSocket *mas
     bool connected = senderClient->connectToHost();
 
     if(!connected){
-        qDebug()<<"NOT CONNECTED";
         senderClient->deleteLater();
     }
     //else if it is successfully connected and should continue on its own

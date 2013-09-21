@@ -53,6 +53,8 @@ public:
      */
     void stopServer();
 
+    int getBuildNo();
+
 protected:
     /**
      * \fn void incomingConnection(int socketID);

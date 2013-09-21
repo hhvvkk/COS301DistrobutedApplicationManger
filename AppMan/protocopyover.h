@@ -5,6 +5,7 @@
 
 class ProtoCopyOver : public Protocol
 {
+    Q_OBJECT
 public:
     /**
      * \fn ProtoCopyOver(QObject *parent = 0);

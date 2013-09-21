@@ -136,6 +136,14 @@ public:
         virtual void getDetStats() = 0;
 
         virtual void getMinStats() = 0;
+
+
+        /**
+        * \fn void slaveABuildSizeDone(int buildID) = 0;
+        * @brief The pure virtual function that will be overridden by the Slave to notify its protocolHandler on a changed build
+        * @param buildID the build id for which the slave build size are done checking
+        */
+        virtual void slaveABuildSizeDone(int buildID) = 0;
 };
 
 #endif // MACHINE_H

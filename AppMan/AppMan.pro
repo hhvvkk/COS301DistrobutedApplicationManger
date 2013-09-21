@@ -46,7 +46,8 @@ SOURCES += main.cpp\
     moreinfo.cpp\
     compression.cpp \
     applicationsettings.cpp \
-    copierphysical.cpp
+    copierphysical.cpp \
+    directoryhandler.cpp
 
 HEADERS  += mainform.h \
     aboutversion.h \
@@ -79,7 +80,8 @@ HEADERS  += mainform.h \
     moreinfo.h\
     compression.h \
     applicationsettings.h \
-    copierphysical.h
+    copierphysical.h \
+    directoryhandler.h
 
 FORMS    += mainform.ui \
     aboutversion.ui \

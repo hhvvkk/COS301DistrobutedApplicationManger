@@ -1,7 +1,6 @@
 #include "copysenderserver.h"
-#include "copierphysical.h"
 
-CopySenderServer::CopySenderServer( QStringList &differentB, QStringList &differentBNos, Management *man, int mashId, QObject *parent) :
+CopySenderServer::CopySenderServer( QStringList *differentB, QStringList *differentBNos, Management *man, int mashId, QObject *parent) :
     QTcpServer(parent)
 {
     differentBuildDirectories = differentB;
@@ -11,6 +10,28 @@ CopySenderServer::CopySenderServer( QStringList &differentB, QStringList &differ
 
     firstTalk = true;
     loadCompressPath();
+
+    //the copier queue will be created at another location
+    copierQueue = 0;
+    socket = 0;
+    zipFilesToDelete = false;
+}
+
+CopySenderServer::~CopySenderServer(){
+    if(socket != 0){
+        socket->disconnectFromHost();
+        socket->deleteLater();
+    }
+    if(copierQueue != 0)
+        copierQueue->deleteLater();
+    if(differentBuildDirectories != 0){
+        differentBuildDirectories->clear();
+        delete differentBuildDirectories;
+    }
+    if(differentBuildNos != 0){
+        differentBuildNos->clear();
+        delete differentBuildNos;
+    }
 }
 
 void CopySenderServer::loadCompressPath(){
@@ -29,17 +50,19 @@ void CopySenderServer::loadCompressPath(){
     setting.endGroup();
 
     if(!QDir(loadedFileCompressPath).exists()){
-        fileCompressPath = "buildCompressed";
+        //firstly try and create that directory...
+        bool successCreate = QDir().mkdir(loadedFileCompressPath);
+        //...if it fails, revert to default
+        if(!successCreate){
+            fileCompressPath = "buildCompressed";
+            QDir().mkdir(fileCompressPath);
+        }
     }
     else{
         fileCompressPath = loadedFileCompressPath;
     }
 }
 
-CopySenderServer::~CopySenderServer(){
-    if(socket != 0)
-        socket->deleteLater();
-}
 
 
 QString CopySenderServer::startJSONMessage(){
@@ -63,9 +86,11 @@ void CopySenderServer::endJSONMessage(QString &currentString){
 
 
 int CopySenderServer::startServer(){
+    qDebug()<<"about to start server";
     if(!this->listen(QHostAddress::Any)){
-        //qDebug() << "Could not start server";
+        qDebug() << "Could not start server";
     }
+
 //    else
 //        qDebug() << "SenderServerListening...";
 
@@ -76,6 +101,11 @@ int CopySenderServer::startServer(){
 
 void CopySenderServer::stopServer(){
     this->close();
+}
+
+
+bool CopySenderServer::isBusyDeleting(){
+    return zipFilesToDelete;
 }
 
 void CopySenderServer::incomingConnection(int socketID){
@@ -201,12 +231,12 @@ void CopySenderServer::requestHandler(QString data){
 void CopySenderServer::SendDifferences(){
     //loop through all the directories in order to state which is different
     //on the client
-    for(int i = 0; i < differentBuildNos.size(); i++){
+    for(int i = 0; i < differentBuildNos->size(); i++){
         //if it is the first time it is connected write to the client which builds
         //should generate the MD5classes for
         QString jsonMessage = startJSONMessage();
         appendJSONValue(jsonMessage, "handler", "BuildDifferent", true);
-        appendJSONValue(jsonMessage, "differentBuildNo",differentBuildNos.at(i),false);
+        appendJSONValue(jsonMessage, "differentBuildNo",differentBuildNos->at(i),false);
         endJSONMessage(jsonMessage);
 
         socket->write(jsonMessage.toAscii().data());
@@ -222,15 +252,14 @@ void CopySenderServer::SendDifferences(){
 }
 
 void CopySenderServer::BuildFileSumMD5(const QVariantMap jsonObject){
-
     QVariant allMD5s = jsonObject.value("BuildToMD5");
     QVariant buildNo = jsonObject.value("buildNo");
 
     //generate the build md5 class for that build
     QString theBuildDirectory = "";
-    for(int i = 0; i < differentBuildDirectories.size(); i++){
-        if(!buildNo.toString().compare(differentBuildNos.at(i))){
-            theBuildDirectory = differentBuildDirectories.at(i);
+    for(int i = 0; i < differentBuildDirectories->size(); i++){
+        if(!buildNo.toString().compare(differentBuildNos->at(i))){
+            theBuildDirectory = differentBuildDirectories->at(i);
             break;
         }
     }
@@ -265,7 +294,6 @@ void CopySenderServer::BuildFileSumMD5(const QVariantMap jsonObject){
 
     Compression c;
     c.compress(copyCompareForBuild->getFilepaths(), fileCompressPath+ "/" + QString::number(machineId) + "/"+buildNo.toString(), theBuildDirectory);
-
 
     int intBuildNo = buildNo.toInt();
     createPhysicalCopier(intBuildNo);
@@ -332,24 +360,43 @@ void CopySenderServer::createPhysicalCopier(int buildNo){
 
     CopierPhysical *physicalCopier = new CopierPhysical(machineId, buildNo, zipDirectory);
 
-    int port = physicalCopier->startServer();
-
     //connect the signal to be able to notify the physical copier when the copying has been completed
     connect(physicalCopier, SIGNAL(copierPhysicalDone(int)), this, SLOT(PhysicalServerDoneNotify(int)));
     connect(physicalCopier, SIGNAL(notifyProgress(int,int,int)), this, SLOT(notifyProgress(int,int,int)));
 
-    QString jsonMessage = startJSONMessage();
-    appendJSONValue(jsonMessage, "handler","ConnectPhysicalServer",true);
-    appendJSONValue(jsonMessage, "buildNo", QString::number(buildNo), true);
-    appendJSONValue(jsonMessage, "port", QString::number(port), false);
-    endJSONMessage(jsonMessage);
+    addToQueue(physicalCopier);
+}
 
-    socket->write(jsonMessage.toAscii().data());
-    socket->flush();
+void CopySenderServer::addToQueue(CopierPhysical *physicalCopier){
+    //this lock is to prevent the event of a copyQueue that is NULL
+    lock.lock();
+    //firstly check if the queue is ready to accept a new physicalCopier(if not it is deleting)
+    //firstly check for NULL
+    if(copierQueue == 0){
+        copierQueue = new CopyQueue();
+        connect(copierQueue, SIGNAL(queueFinished(CopyQueue*)), this, SLOT(queueFinished(CopyQueue*)));
+        connect(copierQueue, SIGNAL(nextInQueue(int,int)), this, SLOT(nextInQueue(int,int)));
+    }
+
+    //if it is ready, attempt to add to the queue
+    bool successfulAdd = copierQueue->append(physicalCopier);
+
+    //if it is unsuccessfull it means that the queue is about to delete,
+    //and it is required to add a new copyQueue. The reference will go and delete
+    //itself at the queueFinished(copyQ*) function
+    if(!successfulAdd){
+        copierQueue = new CopyQueue();
+        copierQueue->append(physicalCopier);
+        connect(copierQueue, SIGNAL(queueFinished(CopyQueue*)), this, SLOT(queueFinished(CopyQueue*)));
+        connect(copierQueue, SIGNAL(nextInQueue(int,int)), this, SLOT(nextInQueue(int,int)));
+    }
+
+    copierQueue->startCopying();
+
+    lock.unlock();
 }
 
 void CopySenderServer::NotifyCopySuccess(const QVariantMap jsonObject){
-
     //appendJSONValue(jsonMessage, "buildNo", QString::number(buildNo), true);
     //appendJSONValue(jsonMessage, "success", QString::number(success), false);
 
@@ -359,9 +406,13 @@ void CopySenderServer::NotifyCopySuccess(const QVariantMap jsonObject){
 
     //if it was a success just delete the zip(it is done copying it over...)
     if(success){
-        QString zipDirectory = fileCompressPath + "/" + QString::number(buildNo) + ".7z";
+        zipFilesToDelete = true;
+        QString zipDirectory = fileCompressPath + "/"+ QString::number(machineId) + "/" + QString::number(buildNo) + ".7z";
         QFile zipFile(zipDirectory);
         zipFile.remove();
+        zipFile.waitForBytesWritten(-1);
+        qDebug()<<"Deleted::"<<zipDirectory;
+        zipFilesToDelete = false;
     }
     //otherwise recreate a physical copier to resend the zip file
     else{
@@ -374,4 +425,34 @@ void CopySenderServer::notifyProgress(int index, int bufferSize, int buildNo){
     //Management::machineBuildSynched(int machineId, int buildId, double percentageSynched)
     //double progress =
     qDebug()<<"int index = "<<index;
+}
+
+
+void CopySenderServer::nextInQueue(int port, int buildNo){
+    //this will go and notify the copysenderclient about a new server awaiting a connection
+    QString jsonMessage = startJSONMessage();
+    appendJSONValue(jsonMessage, "handler","ConnectPhysicalServer",true);
+    appendJSONValue(jsonMessage, "buildNo", QString::number(buildNo), true);
+    appendJSONValue(jsonMessage, "port", QString::number(port), false);
+    endJSONMessage(jsonMessage);
+
+    socket->write(jsonMessage.toAscii().data());
+    socket->flush();
+}
+
+void CopySenderServer::queueFinished(CopyQueue * theCopyQueue){
+    //this lock is to prevent the event of a copyQueue that is not empty and want to delete
+    lock.lock();
+    if(theCopyQueue == copierQueue){
+        theCopyQueue->deleteLater();
+        //remove dangling pointer for other calls
+        copierQueue = 0;
+        emit copySenderServerDone(this);
+    }
+    else{
+        //in this instance the copierQueue has already been changed at
+        //the addToQueue function
+        theCopyQueue->deleteLater();
+    }
+    lock.unlock();
 }

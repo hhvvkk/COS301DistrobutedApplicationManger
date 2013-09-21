@@ -5,6 +5,7 @@
 
 class ProtoGetSysInfo : public Protocol
 {
+    Q_OBJECT
 public:
     /**
      * \fn ProtoSlaveCurrentBuilds(QObject *parent = 0);
