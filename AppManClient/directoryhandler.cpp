@@ -27,14 +27,14 @@ void DirectoryHandler::recurseAddDir(QDir d, QStringList & list) {
 
 void DirectoryHandler::copyOverFromList(int depth, QStringList &list, QString whereTo, QString pathOfRoot){
     if(whereTo.at(whereTo.size()-1) != '/'){
-        whereTo.append("/");
+        whereTo.append(QDir::separator());
     }
 
     for(int i = 0; i < list.size(); i++){
         //:::  /root/Desktop/ProjectFolder/AppManClient-build-desktop/extract/1/buildCompressed/42/dir/file.txt
         //:::  /root/Desktop/ProjectFolder/AppManClient-build-desktop/extract/1/buildCompressed/42/file2.txt
         QString fullPath = list.at(i);
-        QString fileName = fullPath.right(fullPath.size() - (fullPath.lastIndexOf("/")+1));
+        QString fileName = fullPath.right(fullPath.size() - (fullPath.lastIndexOf(QDir::separator())+1));
 
         //whereTo consist of...
         //[rootPath/] >    [/1/buildCompressed/42]    /[/last few names]
@@ -45,13 +45,12 @@ void DirectoryHandler::copyOverFromList(int depth, QStringList &list, QString wh
         for(int de = 0; de< depth; de++){
             //remove the slashes for directories and the directories until it has
             //only the directory path structure of the file itself
-            directoryTo.remove(0,directoryTo.indexOf("/")+1);
+            directoryTo.remove(0,directoryTo.indexOf(QDir::separator())+1);
         }
 
 
         directoryTo.prepend(whereTo);
         copyFile(fullPath, directoryTo, fileName);
-
     }
 
 
@@ -61,11 +60,19 @@ void DirectoryHandler::copyFile(QString filePath, QString directoryTo, QString f
     //firstly check if that file already exist
     //if so delete it...
     QFile fileExist(directoryTo);
+    QDir directoryOfIt(directoryTo);
+
+    //firstly look if there exist a directory with that path
+    if(directoryOfIt.exists()){
+        QDir().remove(directoryTo);
+    }
+    else //look if there exist a file with that name and directory
     if(fileExist.exists()){
         //remove if that file exists
-        if(!fileExist.remove())
-            qDebug()<<" not removed ";
+        if(!fileExist.remove());
+            //qDebug()<<" not removed== "<<directoryTo;
     }
+
 
     //create the path to where the file must be located
     QDir().mkpath(directoryTo.mid(0, (directoryTo.size()-fileName.size())));

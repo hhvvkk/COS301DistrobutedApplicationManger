@@ -86,7 +86,6 @@ void CopySenderServer::endJSONMessage(QString &currentString){
 
 
 int CopySenderServer::startServer(){
-    qDebug()<<"about to start server";
     if(!this->listen(QHostAddress::Any)){
         qDebug() << "Could not start server";
     }
@@ -411,7 +410,6 @@ void CopySenderServer::NotifyCopySuccess(const QVariantMap jsonObject){
         QFile zipFile(zipDirectory);
         zipFile.remove();
         zipFile.waitForBytesWritten(-1);
-        qDebug()<<"Deleted::"<<zipDirectory;
         zipFilesToDelete = false;
     }
     //otherwise recreate a physical copier to resend the zip file
@@ -424,7 +422,7 @@ void CopySenderServer::NotifyCopySuccess(const QVariantMap jsonObject){
 void CopySenderServer::notifyProgress(int index, int bufferSize, int buildNo){
     //Management::machineBuildSynched(int machineId, int buildId, double percentageSynched)
     //double progress =
-    qDebug()<<"int index = "<<index;
+   // qDebug()<<"int index = "<<index;
 }
 
 

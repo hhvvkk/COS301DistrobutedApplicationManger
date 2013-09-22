@@ -61,10 +61,17 @@ void DirectoryHandler::copyFile(QString filePath, QString directoryTo, QString f
     //firstly check if that file already exist
     //if so delete it...
     QFile fileExist(directoryTo);
+    QDir directoryOfIt(directoryTo);
+
+    //firstly look if there exist a directory with that path
+    if(directoryOfIt.exists()){
+        QDir().remove(directoryTo);
+    }
+    else //look if there exist a file with that name and directory
     if(fileExist.exists()){
         //remove if that file exists
-        if(!fileExist.remove())
-            qDebug()<<" not removed ";
+        if(!fileExist.remove());
+            //qDebug()<<" not removed== "<<directoryTo;
     }
 
     //create the path to where the file must be located
