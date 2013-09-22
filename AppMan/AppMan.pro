@@ -7,6 +7,7 @@
 QT       += core gui
 QT       += network
 QT       += script
+QT       += sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -47,7 +48,8 @@ SOURCES += main.cpp\
     compression.cpp \
     applicationsettings.cpp \
     copierphysical.cpp \
-    directoryhandler.cpp
+    directoryhandler.cpp \
+    database.cpp
 
 HEADERS  += mainform.h \
     aboutversion.h \
@@ -81,7 +83,8 @@ HEADERS  += mainform.h \
     compression.h \
     applicationsettings.h \
     copierphysical.h \
-    directoryhandler.h
+    directoryhandler.h \
+    database.h
 
 FORMS    += mainform.ui \
     aboutversion.ui \
