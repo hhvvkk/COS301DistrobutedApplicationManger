@@ -70,7 +70,7 @@ void DirectoryHandler::copyFile(QString filePath, QString directoryTo, QString f
     else //look if there exist a file with that name and directory
     if(fileExist.exists()){
         //remove if that file exists
-        if(!fileExist.remove());
+        if(!fileExist.remove()){};
             //qDebug()<<" not removed== "<<directoryTo;
     }
 

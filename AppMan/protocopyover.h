@@ -3,6 +3,10 @@
 
 #include "protocol.h"
 
+/**
+  * @class ProtoCopyOver
+  * @brief This class is the protocol class handling the logical copy over from master to slave
+  */
 class ProtoCopyOver : public Protocol
 {
     Q_OBJECT
@@ -13,9 +17,16 @@ public:
      */
     ProtoCopyOver(QObject *parent = 0);
 
+
+    /**
+     * \fn ~ProtoCopyOver();
+     * @brief The destructor for the protocol
+     */
+    ~ProtoCopyOver();
+
     /**
      * \fn void handle(QVariantMap jsonObject, Management *man, QTcpSocket *slaveSocket);
-     * @brief The function that will handle all the ConnectProtocol functions
+     * @brief The function that will handle all the Copy over functions
      * @param jsonObject A QVariantMap which contains values
      * @param man the management to perform functions on
      * @param slaveSocket the socket if it is needed to write to it

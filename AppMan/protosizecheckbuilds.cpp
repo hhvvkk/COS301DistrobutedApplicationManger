@@ -6,6 +6,10 @@ ProtoSizeCheckBuilds::ProtoSizeCheckBuilds(QObject *parent):
 {
 }
 
+ProtoSizeCheckBuilds::~ProtoSizeCheckBuilds(){
+
+}
+
 void ProtoSizeCheckBuilds::handle(QVariantMap jsonObject, Management *management, QTcpSocket *slaveSocket){
     if(!jsonObject.value("subHandler").toString().compare("BuildMD5")){
         BuildMD5(jsonObject, management, slaveSocket);

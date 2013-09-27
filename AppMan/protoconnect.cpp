@@ -8,6 +8,10 @@ ProtoConnect::ProtoConnect(QObject *parent)
 {
 }
 
+ProtoConnect::~ProtoConnect(){
+
+}
+
 void ProtoConnect::handle(QVariantMap jsonObject, Management *management, QTcpSocket *slaveSocket){
 
     QVariant handler = jsonObject.value("handler");

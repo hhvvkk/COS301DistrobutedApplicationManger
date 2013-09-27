@@ -17,6 +17,12 @@ public:
      */
     explicit Protocol(QObject *parent = 0);
 
+
+    /**
+      *
+      */
+    virtual ~Protocol();
+
     /**
      * \fn void handle(QString data, Management *man, QTcpSocket *slaveSocket) = 0;
      * @brief A virtual function to provide an interface for different protocols

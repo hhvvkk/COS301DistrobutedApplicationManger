@@ -5,6 +5,10 @@
 
 class Machine;
 
+/**
+  * @class ProtoCopyOver
+  * @brief This class is the protocol class handling connect and disconnect of machines with the master machine
+  */
 class ProtoConnect : public Protocol
 {
     Q_OBJECT
@@ -14,6 +18,13 @@ public:
      * @brief The constructor
      */
     explicit ProtoConnect(QObject *parent = 0);
+
+
+    /**
+     * \fn ~ProtoConnect();
+     * @brief The destructor for the protocol
+     */
+    ~ProtoConnect();
 
     /**
      * \fn void handle(QVariantMap jsonObject, Management *man, QTcpSocket *slaveSocket);

@@ -14,6 +14,12 @@ public:
     ProtoGetSysInfo(QObject *parent = 0);
 
     /**
+     * \fn ~ProtoGetSysInfo();
+     * @brief The destructor for the protocol
+     */
+    ~ProtoGetSysInfo();
+
+    /**
      * \fn void handle(QVariantMap jsonObject, Management *man, QTcpSocket *slaveSocket);
      * @brief The function that will handle all the ConnectProtocol functions
      * @param jsonObject A QVariantMap which contains values

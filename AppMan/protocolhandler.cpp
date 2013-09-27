@@ -14,6 +14,7 @@ ProtocolHandler::ProtocolHandler( Management *man, QObject *parent) :
     sizeCheckBuilds = new ProtoSizeCheckBuilds(this);
     getSysInfo = new ProtoGetSysInfo(this);
     sendBuild = new ProtoSendBuild(this);
+    updateBuildInfo = new ProtoUpdateBuildInfo(this);
     firstTalk = true;
 }
 
@@ -137,6 +138,6 @@ void ProtocolHandler::getMinStats(){
 }
 
 void ProtocolHandler::slaveABuildSizeDone(int buildID){
-    ProtoSendBuild * sendBuild = dynamic_cast<ProtoSendBuild*>(sendBuild);
-    sendBuild->sizeCheckCertainBuildDone(/*buildID, machine, management,*/ slaveSocket);
+    ProtoSendBuild * theSendBuild = dynamic_cast<ProtoSendBuild*>(sendBuild);
+    theSendBuild->sizeCheckCertainBuildDone(/*buildID, machine, management,*/ slaveSocket);
 }

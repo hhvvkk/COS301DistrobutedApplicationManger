@@ -15,6 +15,7 @@
 #include "protoconnect.h"
 #include "protogetsysinfo.h"
 #include "protosendbuild.h"
+#include "protoupdatebuildinfo.h"
 
 
 class Management;
@@ -132,6 +133,13 @@ private:
      * @var getSysInfo The protocol SendBuild
      */
     Protocol *sendBuild;
+
+
+    /**
+     * @var updateBuildInfo The protocol UpdateBuildInfo
+     */
+    Protocol *updateBuildInfo;
+
 
     /**
      * @var management A management pointer so that it may be used directly

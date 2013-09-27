@@ -14,6 +14,12 @@ public:
     ProtoSizeCheckBuilds(QObject *parent = 0);
 
     /**
+     * \fn ~ProtoSizeCheckBuilds();
+     * @brief The destructor for the protocol
+     */
+    ~ProtoSizeCheckBuilds();
+
+    /**
      * \fn void handle(QVariantMap jsonObject, Management *man, QTcpSocket *slaveSocket);
      * @brief The function that will handle all the ConnectProtocol functions
      * @param jsonObject A QVariantMap which contains values

@@ -5,6 +5,10 @@ ProtoGetSysInfo::ProtoGetSysInfo(QObject *parent)
 {
 }
 
+ProtoGetSysInfo::~ProtoGetSysInfo(){
+
+}
+
 void ProtoGetSysInfo::handle(QVariantMap jsonObject, Management *management, QTcpSocket *slaveSocket){
     if(!jsonObject.value("subHandler").toString().compare("DetailedSysInfoFollows"))
         DetailedSysInfoFollows(jsonObject, management);

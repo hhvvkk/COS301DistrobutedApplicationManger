@@ -49,7 +49,8 @@ SOURCES += main.cpp\
     applicationsettings.cpp \
     copierphysical.cpp \
     directoryhandler.cpp \
-    database.cpp
+    database.cpp \
+    protoupdatebuildinfo.cpp
 
 HEADERS  += mainform.h \
     aboutversion.h \
@@ -84,7 +85,8 @@ HEADERS  += mainform.h \
     applicationsettings.h \
     copierphysical.h \
     directoryhandler.h \
-    database.h
+    database.h \
+    protoupdatebuildinfo.h
 
 FORMS    += mainform.ui \
     aboutversion.ui \

@@ -5,6 +5,10 @@ Protocol::Protocol(QObject *parent) :
 {
 }
 
+Protocol::~Protocol(){
+
+}
+
 QString Protocol::startJSONMessage(){
     return QString("{");
 }

@@ -7,6 +7,11 @@ ProtoCopyOver::ProtoCopyOver(QObject *parent) :
 {
 }
 
+
+ProtoCopyOver::~ProtoCopyOver(){
+
+}
+
 void ProtoCopyOver::handle(QVariantMap jsonObject, Management *management, QTcpSocket *slaveSocket){
     if(!jsonObject.value("subHandler").toString().compare("GotABuild"))
         GotABuild(jsonObject, management, slaveSocket);
