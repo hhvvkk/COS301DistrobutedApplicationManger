@@ -307,12 +307,17 @@ void Management::slaveABuildSize(int buildNo, QString buildMD5Value, int slaveId
     }
 
     Machine * m = getMachineById(slaveId);
-    m->slaveABuildSizeDone(theBuild.getBuildID());
+    if(m == 0)
+        return;
+    m->slaveABuildSizeDone();
 }
 
 
 void Management::setSlaveBuildIsSame(bool isSame, int machineId, int buildID){
     Machine * slave = getMachineById(machineId);
+
+    if(slave == 0)
+        return;
 
     slave->setBuildSame(isSame, buildID);
 }

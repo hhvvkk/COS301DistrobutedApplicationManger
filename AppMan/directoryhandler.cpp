@@ -87,24 +87,46 @@ void DirectoryHandler::copyFile(QString filePath, QString directoryTo, QString f
 
 
 bool DirectoryHandler::removeDir(const QString &dirName){
+
     bool result = true;
-        QDir dir(dirName);
+    QDir dir(dirName);
 
-        if (dir.exists(dirName)) {
-            Q_FOREACH(QFileInfo info, dir.entryInfoList(QDir::NoDotAndDotDot | QDir::System | QDir::Hidden  | QDir::AllDirs | QDir::Files, QDir::DirsFirst)) {
-                if (info.isDir()) {
-                    result = removeDir(info.absoluteFilePath());
-                }
-                else {
-                    result = QFile::remove(info.absoluteFilePath());
-                }
+    QStringList entries = dir.entryList(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot);
 
-                if (!result) {
-                    return result;
-                }
-            }
-            result = dir.rmdir(dirName);
+    foreach (QString entry, entries){
+        QFileInfo fileInfo(dirName + "/" + entry);
+        if (fileInfo.isFile() && !QFile::remove(fileInfo.filePath())) {
+            return false;
         }
+        else if(fileInfo.isDir())
+            removeDir(fileInfo.filePath());
+    }
+    if(!dir.rmdir(dir.absolutePath()))
+        result = false;
 
-        return result;
+    return result;
+
+    //    bool result = true;
+    //    QDir dir(dirName);
+    //    if (dir.exists(dirName)) {
+    //        Q_FOREACH(QFileInfo info, dir.entryInfoList(QDir::NoDotAndDotDot | QDir::System | QDir::Hidden  | QDir::AllDirs | QDir::Files, QDir::DirsFirst)) {
+    //            if (info.isDir()) {
+    //                result = removeDir(info.absoluteFilePath());
+    //            }
+    //            else {
+    //                result = QFile::remove(info.absoluteFilePath());
+    //            }
+
+    //            if (!result) {
+    //                return result;
+    //            }
+    //        }
+    //        result = dir.rmdir(dirName);
+    //    }
+
+    //    if(result == true)
+    //        result = clearEmptyFolders(dirName);
+
+    //    return result;
+
 }

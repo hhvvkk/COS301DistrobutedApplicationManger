@@ -47,6 +47,11 @@ public:
 
     void sizeCheckCertainBuildDone(/*int buildID, Machine *machine, Management *management,*/ QTcpSocket *slaveSocket);
 
+    /**
+      * \fn void SizeCheckAllBuilds();
+      * @brief The following invokes the checkinf of all build sizes and is used to create a loop to continually update the build until the information is updated.
+      */
+    void SizeCheckAllBuilds();
 private slots:
     void copySenderServerDone(CopySenderServer * deleteCopySender);
 

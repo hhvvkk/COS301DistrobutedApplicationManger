@@ -91,9 +91,16 @@ public:
     /**
     * \fn void slaveABuildSizeDone(int buildID);
     * @brief A function to check for file differences of a changed build
-    * @param buildID the build id for which the slave build size are done checking
     */
-    void slaveABuildSizeDone(int buildID);
+    void slaveABuildSizeDone();
+
+
+
+    /**
+    * \fn void recheckAllSizes();
+    * @brief A function executing each time the master machine loops through the builds that are different. This happens by calling this function from ProtoSendBuild
+    */
+    void recheckAllSizes();
 
 private:
     /**

@@ -90,6 +90,18 @@ void ProtoSendBuild::SizeCheckAllBuildsDone(QTcpSocket *slaveSocket, Management 
 }
 
 void ProtoSendBuild::sizeCheckCertainBuildDone(/*int buildID, Machine *machine, Management *management,*/ QTcpSocket *slaveSocket){
+    /*
+     * If it happens that newSender is not null, you dont want to recheck the build information yet.
+     * Thus check if it is currently busy checking. if there is a newSender currently checking
+     * return...
+     *
+     */
+    if(sendList.size() >= 1){
+        return;
+        //the reason for returning is that it will recheck all builds after the current are done...
+        //thus it is not needed to add another
+    }
+
     QString jsonMessage = startJSONMessage();
     appendJSONValue(jsonMessage, "handler", "ProtoSizeCheckBuilds", true);
     appendJSONValue(jsonMessage, "subHandler", "SizeCheckAllBuilds", false);
@@ -97,52 +109,6 @@ void ProtoSendBuild::sizeCheckCertainBuildDone(/*int buildID, Machine *machine, 
 
     slaveSocket->write(jsonMessage.toAscii().data());
     slaveSocket->flush();
-
-//    QStringList *differentBuildDirectories = new QStringList();
-//    QStringList *differentBuildNos = new QStringList();;
-
-//    Build *slaveBuilds = machine->getBuilds();
-
-//    for(int i = 0; i < machine->getBuildCount(); i++){
-//        Build aBuild = slaveBuilds[i];
-//        if(buildID == aBuild.getBuildID()){
-//            differentBuildNos->append(QString::number(aBuild.getBuildID()));
-//            differentBuildDirectories->append(aBuild.getBuildDirectory());
-//            break;
-//        }
-//    }
-
-//    if(slaveSocket == 0){
-//        return;
-//    }
-
-//    int machineId = machine->getMachineID();
-
-
-//    CopySenderServer *newSender = 0;
-//    if(newSender == 0){
-//        newSender = new CopySenderServer(differentBuildDirectories, differentBuildNos, management, machineId);
-//        sendList.append(newSender);
-//        qDebug()<<newSender->isListening();
-//        connect(newSender, SIGNAL(copySenderServerDone(CopySenderServer*)), thisPointer, SLOT(copySenderServerDone(CopySenderServer*)));
-//    }
-//    //get the port on which new server will run
-//    int port = newSender->startServer();
-
-//    if(port == 0){
-//        newSender->deleteLater();
-//        return;
-//    }
-//    else{
-//        QString jsonMessage = startJSONMessage();
-//        appendJSONValue(jsonMessage, "handler", "ProtoSendBuild", true);
-//        appendJSONValue(jsonMessage, "subHandler", "SendBuildCopyServer", true);
-//        appendJSONValue(jsonMessage, "hostPort", QString::number(port), false);
-//        endJSONMessage(jsonMessage);
-
-//        slaveSocket->write(jsonMessage.toAscii().data());
-//        slaveSocket->flush();
-//    }
 }
 
 
@@ -156,5 +122,28 @@ void ProtoSendBuild::copySenderServerDone(CopySenderServer * deleteCopySender){
     {/*Wait untill it is finished deleting*/}
 
     deleteCopySender->deleteLater();
+    if(sendList.size() == 0){
+        SizeCheckAllBuilds();
+    }
 
+}
+
+void ProtoSendBuild::SizeCheckAllBuilds(){
+    /*The following is to create a loop to continually update
+      the build until the information is updated
+      **The same is done on startup from a slave machine on protoslavecurrentbuilds.cpp
+      */
+    QObject *myParent = this->parent();
+    if(myParent == 0)
+        return;
+
+    ProtocolHandler *handler = dynamic_cast<ProtocolHandler*>(myParent);
+
+    if(handler == 0){
+        qDebug()<<"handler=0";
+        return;
+    }
+
+
+    handler->recheckAllSizes();
 }

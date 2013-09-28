@@ -28,6 +28,14 @@ public:
      */
     void handle(QVariantMap jsonObject, Management *man, QTcpSocket *slaveSocket);
 
+
+    /**
+     * \fn void invokeSizeCheckAll(QTcpSocket *slaveSocket);
+     * @brief The function is there to reinvoke the size check for all builds so that it can enter a loop and ensure the build is fully synched
+     * @param slaveSocket the socket if it is needed to write to it
+     */
+    void invokeSizeCheckAll(QTcpSocket *slaveSocket);
+
 private:
 
     /**

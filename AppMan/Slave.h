@@ -121,9 +121,8 @@ public:
         /**
         * \fn void slaveABuildSizeDone(int buildID);
         * @brief Function to notify its protocolHandler on a changed build
-        * @param buildID the build id for which the slave build size are done checking
         */
-        void slaveABuildSizeDone(int buildID);
+        void slaveABuildSizeDone();
 
 };
 

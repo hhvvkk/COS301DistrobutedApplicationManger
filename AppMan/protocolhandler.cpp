@@ -118,26 +118,41 @@ void ProtocolHandler::setSocket(QTcpSocket *socket){
 }
 
 void ProtocolHandler::disconnectMachine(){
-    ProtoConnect *connectProtocol = dynamic_cast<ProtoConnect*>(connect);
-    connectProtocol->disconnectMachine(machine, management);
+    ProtoConnect *connectProtocolClass = dynamic_cast<ProtoConnect*>(connect);
+    if(connectProtocolClass == 0)
+        return;
+    connectProtocolClass->disconnectMachine(machine, management);
 }
 
 void ProtocolHandler::copyBuildOver(int buildId, QString buildName){
-    ProtoCopyOver *copyOverProtocol = dynamic_cast<ProtoCopyOver*>(copyOver);
-    copyOverProtocol->copyBuildOver(buildId, buildName, slaveSocket);
+    ProtoCopyOver *copyOverProtocolClass = dynamic_cast<ProtoCopyOver*>(copyOver);
+    if(copyOverProtocolClass == 0)
+        return;
+    copyOverProtocolClass->copyBuildOver(buildId, buildName, slaveSocket);
 }
 
 void ProtocolHandler::getDetStats(){
-    ProtoGetSysInfo * sysProto = dynamic_cast<ProtoGetSysInfo*>(getSysInfo);
-    sysProto->getDetailed(slaveSocket);
+    ProtoGetSysInfo * sysProtoClass = dynamic_cast<ProtoGetSysInfo*>(getSysInfo);
+    if(sysProtoClass == 0)
+        return;
+    sysProtoClass->getDetailed(slaveSocket);
 }
 
 void ProtocolHandler::getMinStats(){
-    ProtoGetSysInfo * sysProto = dynamic_cast<ProtoGetSysInfo*>(getSysInfo);
-    sysProto->getMinimal(slaveSocket);
+    ProtoGetSysInfo * sysProtoClass = dynamic_cast<ProtoGetSysInfo*>(getSysInfo);
+    if(sysProtoClass == 0)
+        return;
+    sysProtoClass->getMinimal(slaveSocket);
 }
 
-void ProtocolHandler::slaveABuildSizeDone(int buildID){
+void ProtocolHandler::recheckAllSizes(){
+    ProtoSizeCheckBuilds *sizeCheckerClass = dynamic_cast<ProtoSizeCheckBuilds*>(sizeCheckBuilds);
+    if(sizeCheckerClass == 0)
+        return;
+    sizeCheckerClass->invokeSizeCheckAll(slaveSocket);
+}
+
+void ProtocolHandler::slaveABuildSizeDone(){
     ProtoSendBuild * theSendBuild = dynamic_cast<ProtoSendBuild*>(sendBuild);
     theSendBuild->sizeCheckCertainBuildDone(/*buildID, machine, management,*/ slaveSocket);
 }

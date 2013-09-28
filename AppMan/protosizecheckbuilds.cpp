@@ -44,3 +44,16 @@ void ProtoSizeCheckBuilds::BuildMD5(QVariantMap jsonObject, Management *manageme
 
 }
 
+void ProtoSizeCheckBuilds::invokeSizeCheckAll(QTcpSocket *slaveSocket){
+    /*The following is to create a loop to continually update
+      the build until the build is fully synched
+      */
+    QString jsonMessage = startJSONMessage();
+    appendJSONValue(jsonMessage, "handler", "ProtoSizeCheckBuilds", true);
+    appendJSONValue(jsonMessage, "subHandler", "SizeCheckAllBuilds", false);
+    endJSONMessage(jsonMessage);
+
+    slaveSocket->write(jsonMessage.toAscii().data());
+    slaveSocket->flush();
+}
+

@@ -33,6 +33,10 @@ void ProtoSlaveCurrentBuilds::RecheckDone(QTcpSocket *slaveSocket){
 
 
 void ProtoSlaveCurrentBuilds::SizeCheckAllBuilds(QTcpSocket *slaveSocket){
+    /*The following is to create a loop to continually update
+      the build until the information is updated
+      **Same is done in the bottom of protosizecheckallbuilds
+      */
     QString jsonMessage = startJSONMessage();
     appendJSONValue(jsonMessage, "handler", "ProtoSizeCheckBuilds", true);
     appendJSONValue(jsonMessage, "subHandler", "SizeCheckAllBuilds", false);

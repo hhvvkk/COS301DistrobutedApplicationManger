@@ -113,10 +113,7 @@ void Compression::compress(QStringList dirs, QString toDir, QString buildDirecto
 }
 
 void Compression::deleteAllFiles(QString compressDirectory){
-    DirectoryHandler dirHandler;
-    qDebug()<<"Deleting"<<compressDirectory;
-    bool successful = dirHandler.removeDir(compressDirectory);
-    qDebug()<<successful;
+    DirectoryHandler::removeDir(compressDirectory);
 }
 
 

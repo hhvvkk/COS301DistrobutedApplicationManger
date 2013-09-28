@@ -21,7 +21,7 @@ public:
      * @param d The directory where the list will be populated from
      * @param list The list to which file paths are added
      */
-    void recurseAddDir(QDir d, QStringList & list) ;
+    static void recurseAddDir(QDir d, QStringList & list) ;
 
     /**
      * @brief A function to copy all files from the list over to the directory(WhereTo) while removing the necesssary depth of directories and keeping structure
@@ -30,7 +30,7 @@ public:
      * @param whereTo The directory where all the files will be copied to
      * @param pathOfRoot The root path where the files are located to be copied over
      */
-    void copyOverFromList(int depth, QStringList &list, QString whereTo, QString pathOfRoot);
+    static void copyOverFromList(int depth, QStringList &list, QString whereTo, QString pathOfRoot);
 
     /**
      * @brief A function to handle the physical copy of file over from filePath to the specified directory
@@ -38,15 +38,14 @@ public:
      * @param directoryTo The directory where the file will be copied including the name of file
      * @param FileName The name of the file which will be copied
      */
-    void copyFile(QString filePath, QString directoryTo, QString FileName);
+    static void copyFile(QString filePath, QString directoryTo, QString FileName);
 
     /**
      * @brief A function to remove a directory along with all of its contents
      * @param dirName The Directory name that will be removed along all its content
      * @return Return true if it succeeded in removing the directory
      */
-    bool removeDir(const QString &dirName);
-
+    static bool removeDir(const QString &dirName);
 };
 
 #endif // DIRECTORYHANDLER_H

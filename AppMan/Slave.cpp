@@ -139,6 +139,6 @@ void Slave::getDetStats(){
     protocolHandler->getDetStats();
 }
 
-void Slave::slaveABuildSizeDone(int buildID){
-    protocolHandler->slaveABuildSizeDone(buildID);
+void Slave::slaveABuildSizeDone(){
+    protocolHandler->slaveABuildSizeDone();
 }
