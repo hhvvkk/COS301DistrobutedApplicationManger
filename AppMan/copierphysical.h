@@ -30,9 +30,9 @@ signals:
       * @brief A signal that will be emitted when the allotted time of the progress timer has been ended
       * @param currentIndex The current i (index in the buffer)
       * @param bufferSize The full size of the buffer being sent to the client
-      * @param buildNo The number of the build to which the signal reffers to
+      * @param BuildID The number of the build to which the signal reffers to
       */
-    void notifyProgress(int currentIndex, int bufferSize, int buildNo);
+    void notifyProgress(int currentIndex, int bufferSize, int BuildID);
 
 public:
     explicit CopierPhysical(int machID, int buildNumber, QString pathForZip, QObject *parent = 0);
@@ -53,7 +53,7 @@ public:
      */
     void stopServer();
 
-    int getBuildNo();
+    int getBuildID();
 
 protected:
     /**
@@ -97,7 +97,7 @@ private:
       * The build number being copied over
       *
       */
-    int buildNo;
+    int BuildID;
 
     /**
       * A timer used to notify the current progress of the build being copied over

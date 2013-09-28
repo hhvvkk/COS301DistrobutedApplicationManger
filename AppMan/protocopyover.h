@@ -54,12 +54,12 @@ private:
     void GotABuild(QVariantMap jsonObject, Management *man, QTcpSocket *slaveSocket);
 
     /**
-     * \fn void sizeCheckCertainBuild(QString buildNo, QTcpSocket *slaveSocket);
+     * \fn void sizeCheckCertainBuild(QString BuildID, QTcpSocket *slaveSocket);
      * @brief The function which will enable the size check of only one build
-     * @param buildNo the Id of the build to copy over
-     * @param slaveSocket the socket of client to size check on the buildNo
+     * @param BuildID the Id of the build to copy over
+     * @param slaveSocket the socket of client to size check on the BuildID
      */
-    void sizeCheckCertainBuild(QString buildNo, QTcpSocket *slaveSocket);
+    void sizeCheckCertainBuild(QString BuildID, QTcpSocket *slaveSocket);
 
 };
 

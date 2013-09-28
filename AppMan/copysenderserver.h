@@ -34,7 +34,7 @@ signals:
     void copySenderServerDone(CopySenderServer* thsServer);
 
 public:
-    explicit CopySenderServer(QStringList *diffBuilds, QStringList *diffBuildNos, Management *man, int mashId, QObject *parent = 0);
+    explicit CopySenderServer(QStringList *diffBuilds, QStringList *diffBuildIDs, Management *man, int mashId, QObject *parent = 0);
 
     /**
      * @fn void loadCompressPath();
@@ -79,30 +79,30 @@ private slots:
 
 
     /**
-     * \fn void PhysicalServerDoneNotify(int buildNo);
+     * \fn void PhysicalServerDoneNotify(int BuildID);
      * @brief Function which is invoked if the physical copier is done copying the file and emits a signal
-     * @param buildNo The number of the build being copied over
+     * @param BuildID The number of the build being copied over
      */
-    void PhysicalServerDoneNotify(int buildNo);
+    void PhysicalServerDoneNotify(int BuildID);
 
 
     /**
-     * \fn void PhysicalServerDoneNotify(int buildNo);
+     * \fn void PhysicalServerDoneNotify(int BuildID);
      * @brief Function which is invoked if the physical copier is done copying the file and emits a signal
      * @param index The index where the copy currently is
      * @param bufferSize The total buffer size which will be sent across the network
-     * @param buildNo The number of the build being copied over
+     * @param BuildID The number of the build being copied over
      */
-     void notifyProgress(int index, int bufferSize, int buildNo);
+     void notifyProgress(int index, int bufferSize, int BuildID);
 
 
      /**
       * \fn void nextInQueue(int port);
       * @brief A function connected to the nextInQueue of the copyQueue which will emit the port that the client should connect to
       * @param port The port on which the next in queue is waiting on
-      * @param buildNo The build number for which the next in queue is meant for
+      * @param BuildID The build number for which the next in queue is meant for
       */
-     void nextInQueue(int port, int buildNo);
+     void nextInQueue(int port, int BuildID);
 
      /**
       * \fn void queueFinished();
@@ -146,9 +146,9 @@ private:
     /**
      * \fn void SendDifferences();
      * @brief A function which creates the physical copysenderserver by which it copies the files over...
-     * @param buildNo The build number for which the physical copying will be created
+     * @param BuildID The build number for which the physical copying will be created
      */
-    void createPhysicalCopier(int buildNo);
+    void createPhysicalCopier(int BuildID);
 
     /**
      * \fn void addToQueue(CopierPhysical *physicalCopier);
@@ -176,7 +176,7 @@ private:
     //of builds
     QString ipAddress;
     QStringList *differentBuildDirectories;
-    QStringList *differentBuildNos;
+    QStringList *differentBuildIDs;
     QTcpSocket *socket;
 
     /**

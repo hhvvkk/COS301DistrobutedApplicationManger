@@ -92,11 +92,11 @@ private slots:
     void chooseClick();
 
     /**
-     * @brief checkBuildNo looks if the buildnumber is already in the xml
+     * @brief checkBuildID looks if the buildnumber is already in the xml
      * @param buildNum the current build number being passed
      * @return a boolean indication wether the build number is taken
      */
-    bool checkBuildNo(QString buildNum);
+    bool checkBuildID(QString buildNum);
 
 private:
 	/**

@@ -207,9 +207,9 @@ void CopySenderClient::requestHandler(QString data){
 
 void CopySenderClient::BuildDifferent(QVariantMap jsonObject){
 
-    QString differentBuildNo =  jsonObject.value("differentBuildNo").toString();
+    QString differentBuildID =  jsonObject.value("differentBuildID").toString();
 
-    differentBuilds.append(differentBuildNo);
+    differentBuilds.append(differentBuildID);
 
 
 }
@@ -247,7 +247,7 @@ void CopySenderClient::SendBuildMD5Class(BuildMD5 *md5Class, int i){
 
      {
         "handler":"BuildFileSumMD5",
-        "buildNo":"[No of the build]",
+        "BuildID":"[No of the build]",
         "BuildToMD5": {
                         { "[FilePath1]" : "[FileMD5Value1]" },
                         { "[FilePath2]" : "[FileMD5Value1]" },
@@ -260,7 +260,7 @@ void CopySenderClient::SendBuildMD5Class(BuildMD5 *md5Class, int i){
      */
 
     QString jsonString = "{";
-    jsonString.append("\"handler\" : \"BuildFileSumMD5\", \"buildNo\" : \""+differentBuilds.at(i)+"\", \"BuildToMD5\" : {");
+    jsonString.append("\"handler\" : \"BuildFileSumMD5\", \"BuildID\" : \""+differentBuilds.at(i)+"\", \"BuildToMD5\" : {");
 
     while(md5Class->getCurrentIndex() < md5Class->getSize()){
         const QString *buildFileMd5sum = md5Class->getCurrentFileMd5Sum();
@@ -288,14 +288,14 @@ void CopySenderClient::SendBuildMD5Class(BuildMD5 *md5Class, int i){
 void CopySenderClient::DeleteFilesList(const QVariantMap jsonObject){
     QVariant filePaths = jsonObject.value("filePaths");
 
-    QVariant buildNo = jsonObject.value("buildNo");
+    QVariant BuildID = jsonObject.value("BuildID");
 
     QVariantList deleteList = filePaths.toList();
 
     for(int i = 0; i < deleteList.size(); i++){
         QVariantMap mappingToFile = deleteList.at(i).toMap();
         QString deleteFilePath = mappingToFile.value(mappingToFile.keys().at(0)).toString();
-        deleteFilePath = allBuildsDirectory+ "/" + buildNo.toString() + "/" + deleteFilePath;
+        deleteFilePath = allBuildsDirectory+ "/" + BuildID.toString() + "/" + deleteFilePath;
         QFile::remove(deleteFilePath);
 
         int indexOfLastSlash = -1;
@@ -308,7 +308,7 @@ void CopySenderClient::DeleteFilesList(const QVariantMap jsonObject){
 
         if(indexOfLastSlash != -1){//if it was -1 it means it is root in that build
             //check to see if the directory where file is removed from is empty, if so delete the directory as well
-            if( ( QDir(directoryWhereDeleted).entryInfoList(QDir::NoDotAndDotDot|QDir::AllEntries).count() == 0 ) & ( !directoryWhereDeleted.compare(buildNo.toString()) ) ){
+            if( ( QDir(directoryWhereDeleted).entryInfoList(QDir::NoDotAndDotDot|QDir::AllEntries).count() == 0 ) & ( !directoryWhereDeleted.compare(BuildID.toString()) ) ){
                 QDir().rmdir(directoryWhereDeleted);
             }
         }
@@ -320,10 +320,10 @@ void CopySenderClient::ConnectPhysicalServer(const QVariantMap jsonObject){
     if(port <= 0){
         return;
     }
-    int buildNo = jsonObject.value("buildNo").toInt();
+    int BuildID = jsonObject.value("BuildID").toInt();
 
     //connect to that server...
-    CopierPhysicalClient * physicalClient = new CopierPhysicalClient(hostAddress, port, buildNo);
+    CopierPhysicalClient * physicalClient = new CopierPhysicalClient(hostAddress, port, BuildID);
     connect(physicalClient, SIGNAL(doneWritingToFile(int, bool)), this, SLOT(doneWritingToFile(int, bool)) );
 
     bool connected = physicalClient->connectToHost();
@@ -338,7 +338,7 @@ void CopySenderClient::ConnectPhysicalServer(const QVariantMap jsonObject){
 
 void CopySenderClient::PhysicalServerDone(const QVariantMap jsonObject){
     bool ok;
-    int buildNo = jsonObject.value("buildNo").toInt(&ok);
+    int BuildID = jsonObject.value("BuildID").toInt(&ok);
 
     if(!ok)
         return;
@@ -349,7 +349,7 @@ void CopySenderClient::PhysicalServerDone(const QVariantMap jsonObject){
     //find the copier that is done
 
     for(int i = 0; i < copyList->size(); i++){
-        if(copyList->at(i)->getBuildNo() == buildNo){
+        if(copyList->at(i)->getBuildID() == BuildID){
             cpPhysical = copyList->at(i);
             break;
         }
@@ -367,14 +367,14 @@ void CopySenderClient::PhysicalServerDone(const QVariantMap jsonObject){
 }
 
 
-void CopySenderClient::doneWritingToFile(int buildNo, bool success){
+void CopySenderClient::doneWritingToFile(int BuildID, bool success){
     //this time it is done writing all the necessary information to the zip file
 
     //find the copierPhysicalClient which emitted the signal
     lock.lock();
     CopierPhysicalClient *cpPhysical = 0;
     for(int i = 0; i < copyList->size(); i++){
-        if(copyList->at(i)->getBuildNo() == buildNo){
+        if(copyList->at(i)->getBuildID() == BuildID){
             cpPhysical = copyList->at(i);
             break;
         }
@@ -402,17 +402,15 @@ void CopySenderClient::doneWritingToFile(int buildNo, bool success){
     cpPhysical->deleteLater();
 
     //notify if it has been a success or not...
-    notifyServerSuccess(buildNo, success);
+    notifyServerSuccess(BuildID, success);
 }
 
-void CopySenderClient::notifyServerSuccess(int buildNo, bool success){
+void CopySenderClient::notifyServerSuccess(int BuildID, bool success){
     QString jsonMessage = startJSONMessage();
     appendJSONValue(jsonMessage, "handler", "NotifyCopySuccess", true);
-    appendJSONValue(jsonMessage, "buildNo", QString::number(buildNo), true);
+    appendJSONValue(jsonMessage, "BuildID", QString::number(BuildID), true);
     appendJSONValue(jsonMessage, "success", QString::number(success), false);
     endJSONMessage(jsonMessage);
-
-    qDebug()<<"NOTIFYCOPY::"<<jsonMessage;
 
     socket->write(jsonMessage.toAscii().data());
     socket->flush();

@@ -22,7 +22,7 @@ void ProtoSlaveCurrentBuilds::Rechecker(Management *management, QTcpSocket *mast
         QString jsonMessage = startJSONMessage();
         appendJSONValue(jsonMessage, "handler", "ProtoSlaveCurrentBuilds", true);
         appendJSONValue(jsonMessage, "subHandler", "Rechecker", true);
-        appendJSONValue(jsonMessage, "buildNo", QString::number(allBuilds[buildIterator].getBuildID()), true);
+        appendJSONValue(jsonMessage, "BuildID", QString::number(allBuilds[buildIterator].getBuildID()), true);
         appendJSONValue(jsonMessage, "buildName", allBuilds[buildIterator].getBuildName(), false);
         endJSONMessage(jsonMessage);
 

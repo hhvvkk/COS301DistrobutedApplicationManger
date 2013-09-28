@@ -3,7 +3,7 @@
 CopierPhysical::CopierPhysical(int machID, int buildNumber, QString pathForZip, QObject *parent) :
     QTcpServer(parent),
     machineID(machID),
-    buildNo(buildNumber),
+    BuildID(buildNumber),
     zipPath(pathForZip)//,
     //management(man)
 {
@@ -40,8 +40,8 @@ void CopierPhysical::stopServer(){
 }
 
 
-int CopierPhysical::getBuildNo(){
-    return this->buildNo;
+int CopierPhysical::getBuildID(){
+    return this->BuildID;
 }
 
 void CopierPhysical::incomingConnection(int socketID){
@@ -92,14 +92,14 @@ void CopierPhysical::initiateCopyOver(){
     }
 
     //emit that it is done so that the copysenderClient can be notified...
-    emit copierPhysicalDone(this->buildNo);
+    emit copierPhysicalDone(this->BuildID);
     signalNotifyProgress();
     notifyTimer.stop();
 
 }
 
 void CopierPhysical::signalNotifyProgress(){
-    emit notifyProgress(i, buffer.size(), buildNo);
+    emit notifyProgress(i, buffer.size(), BuildID);
     notifyTimer.start();
 }
 

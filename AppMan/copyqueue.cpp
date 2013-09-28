@@ -35,19 +35,19 @@ bool CopyQueue::append(CopierPhysical *physicalCopier){
     return true;
 }
 
-void CopyQueue::popFront(int buildNo){
+void CopyQueue::popFront(int BuildID){
     lock.lock();
     if(!queue->isEmpty()){
         CopierPhysical *cp = queue->dequeue();
-        if(buildNo != cp->getBuildNo())
-            qDebug()<<"DequeueError:(buildNO)"<<buildNo;
+        if(BuildID != cp->getBuildID())
+            qDebug()<<"DequeueError:(BuildID)"<<BuildID;
         cp->deleteLater();
     }
     if(!queue->isEmpty()){
         CopierPhysical *physicalCopier = queue->front();
         int port = physicalCopier->startServer();
-        int buildNo = physicalCopier->getBuildNo();
-        emit nextInQueue(port, buildNo);
+        int BuildID = physicalCopier->getBuildID();
+        emit nextInQueue(port, BuildID);
     }else{
         //else it is empty
         isFinished = true;
@@ -64,8 +64,8 @@ void CopyQueue::startCopying(){
         //start this by starting the first(head) item
         CopierPhysical *physicalCopier = queue->front();
         int port = physicalCopier->startServer();
-        int buildNo = physicalCopier->getBuildNo();
-        emit nextInQueue(port, buildNo);
+        int BuildID = physicalCopier->getBuildID();
+        emit nextInQueue(port, BuildID);
     }
     //else do nothing...it is not needed
     lock.unlock();

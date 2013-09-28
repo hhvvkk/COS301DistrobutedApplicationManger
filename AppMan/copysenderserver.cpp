@@ -4,7 +4,7 @@ CopySenderServer::CopySenderServer( QStringList *differentB, QStringList *differ
     QTcpServer(parent)
 {
     differentBuildDirectories = differentB;
-    differentBuildNos = differentBNos;
+    differentBuildIDs = differentBNos;
     management = man;
     machineId = mashId;
 
@@ -28,9 +28,9 @@ CopySenderServer::~CopySenderServer(){
         differentBuildDirectories->clear();
         delete differentBuildDirectories;
     }
-    if(differentBuildNos != 0){
-        differentBuildNos->clear();
-        delete differentBuildNos;
+    if(differentBuildIDs != 0){
+        differentBuildIDs->clear();
+        delete differentBuildIDs;
     }
 }
 
@@ -230,12 +230,12 @@ void CopySenderServer::requestHandler(QString data){
 void CopySenderServer::SendDifferences(){
     //loop through all the directories in order to state which is different
     //on the client
-    for(int i = 0; i < differentBuildNos->size(); i++){
+    for(int i = 0; i < differentBuildIDs->size(); i++){
         //if it is the first time it is connected write to the client which builds
         //should generate the MD5classes for
         QString jsonMessage = startJSONMessage();
         appendJSONValue(jsonMessage, "handler", "BuildDifferent", true);
-        appendJSONValue(jsonMessage, "differentBuildNo",differentBuildNos->at(i),false);
+        appendJSONValue(jsonMessage, "differentBuildID",differentBuildIDs->at(i),false);
         endJSONMessage(jsonMessage);
 
         socket->write(jsonMessage.toAscii().data());
@@ -252,12 +252,12 @@ void CopySenderServer::SendDifferences(){
 
 void CopySenderServer::BuildFileSumMD5(const QVariantMap jsonObject){
     QVariant allMD5s = jsonObject.value("BuildToMD5");
-    QVariant buildNo = jsonObject.value("buildNo");
+    QVariant BuildID = jsonObject.value("BuildID");
 
     //generate the build md5 class for that build
     QString theBuildDirectory = "";
     for(int i = 0; i < differentBuildDirectories->size(); i++){
-        if(!buildNo.toString().compare(differentBuildNos->at(i))){
+        if(!BuildID.toString().compare(differentBuildIDs->at(i))){
             theBuildDirectory = differentBuildDirectories->at(i);
             break;
         }
@@ -280,7 +280,7 @@ void CopySenderServer::BuildFileSumMD5(const QVariantMap jsonObject){
     buildMD5Class->deleteLater();
     buildMD5Class = 0;
 
-    QString deleteJsonString = copyCompareForBuild->getDeleteJsonString(buildNo.toString());
+    QString deleteJsonString = copyCompareForBuild->getDeleteJsonString(BuildID.toString());
 
     if(!deleteJsonString.isEmpty()){
         socket->write(("||"+deleteJsonString+"||").toAscii().data());
@@ -289,13 +289,13 @@ void CopySenderServer::BuildFileSumMD5(const QVariantMap jsonObject){
 
     //do something with that
     //     void machineBuildSynched(int machineId, int buildId, double percentageSynched);
-    management->machineBuildSynched(machineId, buildNo.toInt(),copyCompareForBuild->percentageSynched());
+    management->machineBuildSynched(machineId, BuildID.toInt(),copyCompareForBuild->percentageSynched());
 
     Compression c;
-    c.compress(copyCompareForBuild->getFilepaths(), fileCompressPath+ "/" + QString::number(machineId) + "/"+buildNo.toString(), theBuildDirectory);
+    c.compress(copyCompareForBuild->getFilepaths(), fileCompressPath+ "/" + QString::number(machineId) + "/"+BuildID.toString(), theBuildDirectory);
 
-    int intBuildNo = buildNo.toInt();
-    createPhysicalCopier(intBuildNo);
+    int intBuildID = BuildID.toInt();
+    createPhysicalCopier(intBuildID);
 
     delete copyCompareForBuild;
 }
@@ -343,10 +343,10 @@ CopyCompare *CopySenderServer::createCopyCompare(QList<QString> &keys, QVariantM
     return copyCompare;
 }
 
-void CopySenderServer::PhysicalServerDoneNotify(int buildNo){
+void CopySenderServer::PhysicalServerDoneNotify(int BuildID){
     QString jsonMessage = startJSONMessage();
     appendJSONValue(jsonMessage, "handler","PhysicalServerDone", true);
-    appendJSONValue(jsonMessage, "buildNo", QString::number(buildNo),false);
+    appendJSONValue(jsonMessage, "BuildID", QString::number(BuildID),false);
     endJSONMessage(jsonMessage);
 
     socket->write(jsonMessage.toAscii().data());
@@ -354,10 +354,10 @@ void CopySenderServer::PhysicalServerDoneNotify(int buildNo){
 }
 
 
-void CopySenderServer::createPhysicalCopier(int buildNo){
-    QString zipDirectory = fileCompressPath + "/" + QString::number(machineId) + "/" + QString::number(buildNo) + ".7z";
+void CopySenderServer::createPhysicalCopier(int BuildID){
+    QString zipDirectory = fileCompressPath + "/" + QString::number(machineId) + "/" + QString::number(BuildID) + ".7z";
 
-    CopierPhysical *physicalCopier = new CopierPhysical(machineId, buildNo, zipDirectory);
+    CopierPhysical *physicalCopier = new CopierPhysical(machineId, BuildID, zipDirectory);
 
     //connect the signal to be able to notify the physical copier when the copying has been completed
     connect(physicalCopier, SIGNAL(copierPhysicalDone(int)), this, SLOT(PhysicalServerDoneNotify(int)));
@@ -396,17 +396,17 @@ void CopySenderServer::addToQueue(CopierPhysical *physicalCopier){
 }
 
 void CopySenderServer::NotifyCopySuccess(const QVariantMap jsonObject){
-    //appendJSONValue(jsonMessage, "buildNo", QString::number(buildNo), true);
+    //appendJSONValue(jsonMessage, "BuildID", QString::number(BuildID), true);
     //appendJSONValue(jsonMessage, "success", QString::number(success), false);
 
     bool success = jsonObject.value("success").toBool();
-    int buildNo = jsonObject.value("buildNo").toInt();
+    int BuildID = jsonObject.value("BuildID").toInt();
 
 
     //if it was a success just delete the zip(it is done copying it over...)
     if(success){
         zipFilesToDelete = true;
-        QString zipDirectory = fileCompressPath + "/"+ QString::number(machineId) + "/" + QString::number(buildNo) + ".7z";
+        QString zipDirectory = fileCompressPath + "/"+ QString::number(machineId) + "/" + QString::number(BuildID) + ".7z";
         QFile zipFile(zipDirectory);
         zipFile.remove();
         zipFile.waitForBytesWritten(-1);
@@ -414,23 +414,23 @@ void CopySenderServer::NotifyCopySuccess(const QVariantMap jsonObject){
     }
     //otherwise recreate a physical copier to resend the zip file
     else{
-        createPhysicalCopier(buildNo);
+        createPhysicalCopier(BuildID);
     }
 }
 
-//notifyProgress(i, buffer.size(), buildNo);
-void CopySenderServer::notifyProgress(int index, int bufferSize, int buildNo){
+//notifyProgress(i, buffer.size(), BuildID);
+void CopySenderServer::notifyProgress(int index, int bufferSize, int BuildID){
     //Management::machineBuildSynched(int machineId, int buildId, double percentageSynched)
     //double progress =
    // qDebug()<<"int index = "<<index;
 }
 
 
-void CopySenderServer::nextInQueue(int port, int buildNo){
+void CopySenderServer::nextInQueue(int port, int BuildID){
     //this will go and notify the copysenderclient about a new server awaiting a connection
     QString jsonMessage = startJSONMessage();
     appendJSONValue(jsonMessage, "handler","ConnectPhysicalServer",true);
-    appendJSONValue(jsonMessage, "buildNo", QString::number(buildNo), true);
+    appendJSONValue(jsonMessage, "BuildID", QString::number(BuildID), true);
     appendJSONValue(jsonMessage, "port", QString::number(port), false);
     endJSONMessage(jsonMessage);
 

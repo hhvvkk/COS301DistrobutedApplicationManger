@@ -34,7 +34,7 @@ void addBuildForTest::on_pushButton_clicked()
         return;
     }
 
-    if(!checkBuildNo(num)){
+    if(!checkBuildID(num)){
         showError("The Build Number cannot be a duplicate entry","error");
         return;
     }
@@ -45,7 +45,7 @@ void addBuildForTest::on_pushButton_clicked()
     this->close();
 }
 
-bool addBuildForTest::checkBuildNo(QString buildNum){
+bool addBuildForTest::checkBuildID(QString buildNum){
     xmlReader xRead;
     xRead.parseXML();
     bool original = true;

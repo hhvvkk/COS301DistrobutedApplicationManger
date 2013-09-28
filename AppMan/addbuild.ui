@@ -54,7 +54,7 @@
     </widget>
    </item>
    <item row="3" column="1">
-    <widget class="QLineEdit" name="lineEditBuildNo"/>
+    <widget class="QLineEdit" name="lineEditBuildID"/>
    </item>
    <item row="0" column="0">
     <widget class="QLabel" name="label">
@@ -97,7 +97,7 @@
  <tabstops>
   <tabstop>lineEditDirectory</tabstop>
   <tabstop>pushButtonChooseDirectory</tabstop>
-  <tabstop>lineEditBuildNo</tabstop>
+  <tabstop>lineEditBuildID</tabstop>
   <tabstop>lineEditName</tabstop>
   <tabstop>lineEditDescription</tabstop>
   <tabstop>pushButton</tabstop>

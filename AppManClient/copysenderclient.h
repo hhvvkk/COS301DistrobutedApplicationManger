@@ -50,7 +50,7 @@ private slots:
     /**
       * @brief A function called when it has written everything to the file
       */
-    void doneWritingToFile(int buildNo,  bool success);
+    void doneWritingToFile(int BuildID,  bool success);
 
 private:
     QString startJSONMessage();
@@ -115,11 +115,11 @@ private:
     void PhysicalServerDone(const QVariantMap jsonObject);
 
     /**
-     * \fn void notifyServerSuccess(int buildNo, bool success);
+     * \fn void notifyServerSuccess(int BuildID, bool success);
      * @brief A function which notifies the server which sent the build on whether it was successfull or not. This will invoke another creation of a physical copier if it was not successful
-     * @param buildNo the Build number of the physical copier which invoked the notify
+     * @param BuildID the Build number of the physical copier which invoked the notify
      */
-    void notifyServerSuccess(int buildNo, bool success);
+    void notifyServerSuccess(int BuildID, bool success);
 private:
     QString allBuildsDirectory;
 

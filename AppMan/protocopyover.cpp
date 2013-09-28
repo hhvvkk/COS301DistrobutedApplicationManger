@@ -19,10 +19,10 @@ void ProtoCopyOver::handle(QVariantMap jsonObject, Management *management, QTcpS
 
 void ProtoCopyOver::GotABuild(QVariantMap jsonObject, Management *management, QTcpSocket *slaveSocket){
 
-    QString buildNo = jsonObject.value("buildNo").toString();
+    QString BuildID = jsonObject.value("BuildID").toString();
 
-    int buildNoId = buildNo.toInt();
-    QString buildName = management->getBuildByID(buildNoId).getBuildName();
+    int BuildIDId = BuildID.toInt();
+    QString buildName = management->getBuildByID(BuildIDId).getBuildName();
 
     QObject *myParent = this->parent();
     if(myParent == 0)
@@ -30,10 +30,10 @@ void ProtoCopyOver::GotABuild(QVariantMap jsonObject, Management *management, QT
 
     ProtocolHandler *handler = dynamic_cast<ProtocolHandler*>(myParent);
 
-    management->addBuildToSlave(handler->getMachine()->getMachineID(), buildNoId, buildName);
+    management->addBuildToSlave(handler->getMachine()->getMachineID(), BuildIDId, buildName);
 
     //finally call size check on that build
-    sizeCheckCertainBuild(buildNo, slaveSocket);
+    sizeCheckCertainBuild(BuildID, slaveSocket);
 }
 
 
@@ -43,7 +43,7 @@ void ProtoCopyOver::copyBuildOver(int buildId, QString buildName, QTcpSocket *sl
     QString jsonMessage = startJSONMessage();
     appendJSONValue(jsonMessage,"handler","ProtoCopyOver",true);
     appendJSONValue(jsonMessage,"subHandler","CopyBuildOver",true);
-    appendJSONValue(jsonMessage, "buildNo", buildIdString,true);
+    appendJSONValue(jsonMessage, "BuildID", buildIdString,true);
     appendJSONValue(jsonMessage, "buildName", buildName,false);
     endJSONMessage(jsonMessage);
 
@@ -51,11 +51,11 @@ void ProtoCopyOver::copyBuildOver(int buildId, QString buildName, QTcpSocket *sl
     slaveSocket->flush();//write all that should be written
 }
 
-void ProtoCopyOver::sizeCheckCertainBuild(QString buildNo, QTcpSocket *slaveSocket){
+void ProtoCopyOver::sizeCheckCertainBuild(QString BuildID, QTcpSocket *slaveSocket){
     QString jsonMessage = startJSONMessage();
     appendJSONValue(jsonMessage,"handler","ProtoSizeCheckBuilds",true);
     appendJSONValue(jsonMessage,"subHandler","SizeCheckABuild",true);
-    appendJSONValue(jsonMessage, "buildNo", buildNo,false);
+    appendJSONValue(jsonMessage, "BuildID", BuildID,false);
     endJSONMessage(jsonMessage);
 
     slaveSocket->write(jsonMessage.toAscii().data());

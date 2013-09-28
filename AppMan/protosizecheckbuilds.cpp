@@ -17,7 +17,7 @@ void ProtoSizeCheckBuilds::handle(QVariantMap jsonObject, Management *management
 }
 
 void ProtoSizeCheckBuilds::BuildMD5(QVariantMap jsonObject, Management *management, QTcpSocket *slaveSocket){
-    QString buildNo = jsonObject.value("buildNo").toString();
+    QString BuildID = jsonObject.value("BuildID").toString();
 
     QString OneBuildOnly = jsonObject.value("OneBuildOnly").toString();
 
@@ -35,10 +35,10 @@ void ProtoSizeCheckBuilds::BuildMD5(QVariantMap jsonObject, Management *manageme
     }
 
     if(OneBuildOnly.compare("true")){
-        management->slaveBuildSize(buildNo.toInt(), buildMD5Value, handler->getMachine()->getMachineID());
+        management->slaveBuildSize(BuildID.toInt(), buildMD5Value, handler->getMachine()->getMachineID());
     }
     else{
-        management->slaveABuildSize(buildNo.toInt(), buildMD5Value, handler->getMachine()->getMachineID());
+        management->slaveABuildSize(BuildID.toInt(), buildMD5Value, handler->getMachine()->getMachineID());
     }
 
 

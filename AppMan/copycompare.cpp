@@ -48,12 +48,12 @@ void CopyCompare::deleteFile(const QString file){
     deleteFilePaths->append(file);
 }
 
-QString CopyCompare::getDeleteJsonString(QString buildNo){
+QString CopyCompare::getDeleteJsonString(QString BuildID){
     if(deleteFilePaths->isEmpty())
         return "";
 
     QString jsonDeleteString = "{";
-    jsonDeleteString.append("\"handler\" : \"DeleteFilesList\" , \"buildNo\" : \""+buildNo+"\", \"filePaths\": [ ");
+    jsonDeleteString.append("\"handler\" : \"DeleteFilesList\" , \"BuildID\" : \""+BuildID+"\", \"filePaths\": [ ");
 
     for(int i = 0; i <deleteFilePaths->size(); i++){
         if(i < (deleteFilePaths->size() -1))

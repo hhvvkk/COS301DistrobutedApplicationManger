@@ -27,7 +27,7 @@ public:
 
     void deleteFile(const QString file);
 
-    QString getDeleteJsonString(QString buildNo);
+    QString getDeleteJsonString(QString BuildID);
 private:
     unsigned long int numFilesNotCopied;
     QStringList *filePaths;

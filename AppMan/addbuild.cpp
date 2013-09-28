@@ -34,30 +34,30 @@ void AddBuild::okClick(){
         return;
     }
     //continue if it does exist
-    QString buildNo = ui->lineEditBuildNo->text();
+    QString BuildID = ui->lineEditBuildID->text();
     QString buildName = ui->lineEditName->text();
     QString buildDescription = ui->lineEditDescription->text();
 
     //Exit if a field is empty
-    if(buildNo.compare("") == 0|| buildName.compare("") == 0){
+    if(BuildID.compare("") == 0|| buildName.compare("") == 0){
         showError("All fields are required","error");
         return;
     }
 
-    //Exit if the BuildNo is in use
-    if(!checkBuildNo(buildNo)){
+    //Exit if the BuildID is in use
+    if(!checkBuildID(BuildID)){
         showError("The Build Number cannot be a duplicate entry","error");
         return;
     }
 
     //If all is fine, continue
-    int buildID = buildNo.toInt();
+    int buildID = BuildID.toInt();
     Build buildToAdd(buildID,buildName,buildDescription,buildDirectory);
     //qDebug()<<"about to emit";
     addToXML(buildID,buildName,buildDescription,buildDirectory);
 
     //clean up for next add
-    ui->lineEditBuildNo->setText("");
+    ui->lineEditBuildID->setText("");
     ui->lineEditName->setText("");
     ui->lineEditDescription->setText("");
     ui->lineEditDirectory->setText("");
@@ -70,7 +70,7 @@ void AddBuild::okClick(){
     this->close();
 }
 
-bool AddBuild::checkBuildNo(QString buildNum){
+bool AddBuild::checkBuildID(QString buildNum){
     xmlReader xRead;
     xRead.parseXML();
     bool original = true;

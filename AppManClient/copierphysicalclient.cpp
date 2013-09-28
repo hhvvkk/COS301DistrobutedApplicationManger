@@ -5,7 +5,7 @@ CopierPhysicalClient::CopierPhysicalClient(QHostAddress hAdr, int portNumber, in
     QObject(parent),
     port(portNumber),
     hostAddress(hAdr),
-    buildNo(bNumber)
+    BuildID(bNumber)
 {
     socket = new QTcpSocket();
     connect(socket, SIGNAL(readyRead()), this, SLOT(readyReadFunction()));
@@ -40,8 +40,8 @@ CopierPhysicalClient::~CopierPhysicalClient(){
 }
 
 
-int CopierPhysicalClient::getBuildNo(){
-    return buildNo;
+int CopierPhysicalClient::getBuildID(){
+    return BuildID;
 }
 
 bool CopierPhysicalClient::connectToHost(){
@@ -77,7 +77,7 @@ void CopierPhysicalClient::readyReadFunction(){
 void CopierPhysicalClient::writeToFile(){
     //write the full buffer to the zip file...
 
-    QFile zipFile(compressDirectory+"/"+QString::number(buildNo)+".7z");
+    QFile zipFile(compressDirectory+"/"+QString::number(BuildID)+".7z");
 
     if(zipFile.exists()){
         //qDebug()<<"creating zip received over network";
@@ -95,7 +95,7 @@ void CopierPhysicalClient::writeToFile(){
     bool zipCopySuccess = zipInTact();
 
 
-    emit doneWritingToFile(buildNo, zipCopySuccess);
+    emit doneWritingToFile(BuildID, zipCopySuccess);
 
     if(zipCopySuccess){
         extractZipToDirectory();
@@ -107,7 +107,7 @@ void CopierPhysicalClient::writeToFile(){
 
 
 void CopierPhysicalClient::removeZipFile(){
-    QFile zipFile(compressDirectory+"/"+QString::number(buildNo)+".7z");
+    QFile zipFile(compressDirectory+"/"+QString::number(BuildID)+".7z");
 
     if(zipFile.exists()){
         zipFile.remove();
@@ -118,7 +118,7 @@ void CopierPhysicalClient::removeZipFile(){
 bool CopierPhysicalClient::zipInTact(){
     Compression c;
 
-    QString zipPath(compressDirectory+"/"+QString::number(buildNo)+".7z");
+    QString zipPath(compressDirectory+"/"+QString::number(BuildID)+".7z");
     //determine whether the zip is in tact. Return true if it is, else false;
     bool zipInTact = c.zipInTact(zipPath);
 
@@ -128,9 +128,9 @@ bool CopierPhysicalClient::zipInTact(){
 
 
 void CopierPhysicalClient::extractZipToDirectory(){
-    QString zipPath(compressDirectory+"/"+QString::number(buildNo)+".7z");
-    QString extractPath(extractDirectory+"/"+QString::number(buildNo));
-    QString buildPath(allBuildsDirectory + "/" + QString::number(buildNo));
+    QString zipPath(compressDirectory+"/"+QString::number(BuildID)+".7z");
+    QString extractPath(extractDirectory+"/"+QString::number(BuildID));
+    QString buildPath(allBuildsDirectory + "/" + QString::number(BuildID));
 
     QDir eDir(extractPath);
     if(!eDir.exists()){
@@ -144,10 +144,10 @@ void CopierPhysicalClient::extractZipToDirectory(){
     if(zipDelete.exists())
         zipDelete.remove();
 
-    DirectoryHandler dHandler;
-
     QStringList listOfPaths;
-    dHandler.recurseAddDir(eDir, listOfPaths);
+    DirectoryHandler::recurseAddDir(eDir, listOfPaths);
 
-    dHandler.copyOverFromList(3, listOfPaths, buildPath, extractPath);
+    DirectoryHandler::copyOverFromList(3, listOfPaths, buildPath, extractPath);
+
+    DirectoryHandler::removeDir(extractPath);
 }

@@ -178,25 +178,25 @@ Build Management::getBuildByName(QString name){
     return Build(0, "NULL", "NULL", "NULL");
 }
 
-void Management::addBuildToSlave(int machineId, int buildNo, QString buildName){
+void Management::addBuildToSlave(int machineId, int BuildID, QString buildName){
 
     Machine *machine = getMachineById(machineId);
 
     if(machine==NULL)
         return;
 
-    Build buildToAdd = getBuildByID(buildNo);
+    Build buildToAdd = getBuildByID(BuildID);
 
     if(!buildToAdd.getBuildDescription().compare("NULL")
         && !buildToAdd.getBuildDirectory().compare("NULL")
         && !buildToAdd.getBuildName().compare("NULL")
         && buildToAdd.getBuildID() == 0){
         //this point the build does not exist
-        emit slaveGotBuild(machine, buildNo, buildName, false);
+        emit slaveGotBuild(machine, BuildID, buildName, false);
     }
     else{
         machine->addBuild(buildToAdd);
-        emit slaveGotBuild(machine, buildNo, buildName, true);
+        emit slaveGotBuild(machine, BuildID, buildName, true);
     }
 
 }
@@ -256,8 +256,8 @@ Machine *Management::getMachineById(int machineId){
     return machine;
 }
 
-void Management::slaveBuildSize(int buildNo, QString buildMD5Value, int slaveId){
-    Build theBuild = getBuildByID(buildNo);
+void Management::slaveBuildSize(int BuildID, QString buildMD5Value, int slaveId){
+    Build theBuild = getBuildByID(BuildID);
 
     if(!theBuild.getBuildDescription().compare("NULL")
         && !theBuild.getBuildDirectory().compare("NULL")
@@ -267,7 +267,7 @@ void Management::slaveBuildSize(int buildNo, QString buildMD5Value, int slaveId)
         return;
     }
     else{
-        //qDebug()<<"EXISTS::"<<buildNo;
+        //qDebug()<<"EXISTS::"<<BuildID;
     }
 
     if(!buildMD5Value.compare(getBuildMD5(&theBuild))){
@@ -282,8 +282,8 @@ void Management::slaveBuildSize(int buildNo, QString buildMD5Value, int slaveId)
 }
 
 
-void Management::slaveABuildSize(int buildNo, QString buildMD5Value, int slaveId){
-    Build theBuild = getBuildByID(buildNo);
+void Management::slaveABuildSize(int BuildID, QString buildMD5Value, int slaveId){
+    Build theBuild = getBuildByID(BuildID);
 
     if(!theBuild.getBuildDescription().compare("NULL")
         && !theBuild.getBuildDirectory().compare("NULL")
@@ -293,7 +293,7 @@ void Management::slaveABuildSize(int buildNo, QString buildMD5Value, int slaveId
         return;
     }
     else{
-        //qDebug()<<"EXISTS::"<<buildNo;
+        //qDebug()<<"EXISTS::"<<BuildID;
     }
 
     if(!buildMD5Value.compare(getBuildMD5(&theBuild))){

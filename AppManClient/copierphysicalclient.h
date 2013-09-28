@@ -19,12 +19,12 @@ class CopierPhysicalClient : public QObject
     Q_OBJECT
 signals:
     /**
-     * \fn void doneWritingToFile(int buildNo);
+     * \fn void doneWritingToFile(int BuildID);
      * @brief This signal will be emitted once the files has been copied over and will notify via a boolean whether it is successful
-     * @param buildNo The build number of this physical copier
+     * @param BuildID The build number of this physical copier
      * @param success A boolean indicating whether the 7zip file is in tact
      */
-    void doneWritingToFile(int buildNo, bool success);
+    void doneWritingToFile(int BuildID, bool success);
 
 public:
     explicit CopierPhysicalClient(QHostAddress hAdr, int portNumber, int bNumber, QObject *parent = 0);
@@ -48,11 +48,11 @@ public:
 
 
     /**
-     * \fn int getBuildNo();
+     * \fn int getBuildID();
      * @brief A function returning the build number for which this physical copy is taking place
      * @return Return the build no to which the copy takes place
      */
-    int getBuildNo();
+    int getBuildID();
 
     /**
       * \fn void writeToFile();
@@ -105,7 +105,7 @@ private:
     QString compressDirectory;
     QString extractDirectory;
 
-    int buildNo;
+    int BuildID;
 
     int amountRead;
 

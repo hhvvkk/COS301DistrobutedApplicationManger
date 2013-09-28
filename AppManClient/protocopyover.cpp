@@ -15,9 +15,9 @@ void ProtoCopyOver::handle(QVariantMap jsonObject, Management *management, QTcpS
 
 void ProtoCopyOver::CopyBuildOver(QVariantMap jsonObject, Management *management, QTcpSocket *masterSocket){
 
-    QString buildNo = jsonObject.value("buildNo").toString();
+    QString BuildID = jsonObject.value("BuildID").toString();
     QString buildName = jsonObject.value("buildName").toString();
-    Build newBuild = Build(buildNo.toInt() , buildName,"", "");
+    Build newBuild = Build(BuildID.toInt() , buildName,"", "");
 
     xmlWriter xWrite;
     Build buildToAdd = management->createBuildDirectory(newBuild);
@@ -28,7 +28,7 @@ void ProtoCopyOver::CopyBuildOver(QVariantMap jsonObject, Management *management
     QString jsonMessage = startJSONMessage();
     appendJSONValue(jsonMessage,"handler","ProtoCopyOver",true);
     appendJSONValue(jsonMessage,"subHandler","GotABuild",true);
-    appendJSONValue(jsonMessage, "buildNo", buildNo,false);
+    appendJSONValue(jsonMessage, "BuildID", BuildID,false);
     endJSONMessage(jsonMessage);
 
     masterSocket->write(jsonMessage.toAscii().data());

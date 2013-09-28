@@ -49,12 +49,12 @@ void ProtoSendBuild::SizeCheckAllBuildsDone(QTcpSocket *slaveSocket, Management 
     Build *slaveBuilds = handler->getMachine()->getBuilds();
 
     QStringList *differentBuildDirectories = new QStringList();
-    QStringList *differentBuildNos = new QStringList();;
+    QStringList *differentBuildIDs = new QStringList();;
 
     for(int i = 0; i < handler->getMachine()->getBuildCount(); i++){
         Build aBuild = slaveBuilds[i];
         if(!aBuild.getIsSame()){//if the build is not the same, append it to the list
-            differentBuildNos->append(QString::number(aBuild.getBuildID()));
+            differentBuildIDs->append(QString::number(aBuild.getBuildID()));
             differentBuildDirectories->append(aBuild.getBuildDirectory());
         }
     }
@@ -63,7 +63,7 @@ void ProtoSendBuild::SizeCheckAllBuildsDone(QTcpSocket *slaveSocket, Management 
 
     CopySenderServer *newSender = 0;
     if(newSender == 0){
-        newSender = new CopySenderServer(differentBuildDirectories, differentBuildNos, management, machineId);
+        newSender = new CopySenderServer(differentBuildDirectories, differentBuildIDs, management, machineId);
         sendList.append(newSender);
         connect(newSender, SIGNAL(copySenderServerDone(CopySenderServer*)), this, SLOT(copySenderServerDone(CopySenderServer*)));
     }

@@ -23,8 +23,8 @@ void ProtoSizeCheckBuilds::sendCurrentBuildMD5(Management *management, QTcpSocke
         appendJSONValue(jsonMessage, "handler", "ProtoSizeCheckBuilds", true);
         appendJSONValue(jsonMessage, "subHandler", "BuildMD5", true);
         appendJSONValue(jsonMessage, "md5Sum", management->getBuildMD5(builds[buildIterator]), true);
-        QString buildNoString = QString::number(builds[buildIterator].getBuildID());
-        appendJSONValue(jsonMessage, "buildNo", buildNoString, false);
+        QString BuildIDString = QString::number(builds[buildIterator].getBuildID());
+        appendJSONValue(jsonMessage, "BuildID", BuildIDString, false);
         endJSONMessage(jsonMessage);
 
         masterSocket->write(jsonMessage.toAscii().data());
@@ -50,15 +50,15 @@ void ProtoSizeCheckBuilds::sendCurrentBuildMD5(Management *management, QTcpSocke
 
 void ProtoSizeCheckBuilds::SizeCheckABuild(QVariantMap jsonObject, Management *management, QTcpSocket *masterSocket){
 
-    QString buildNo = jsonObject.value("buildNo").toString();
+    QString BuildID = jsonObject.value("BuildID").toString();
 
-    Build theBuild = management->getBuildByID(buildNo.toInt());
+    Build theBuild = management->getBuildByID(BuildID.toInt());
 
     QString jsonMessage = startJSONMessage();
     appendJSONValue(jsonMessage, "handler", "ProtoSizeCheckBuilds", true);
     appendJSONValue(jsonMessage, "subHandler", "BuildMD5", true);
-    QString buildNoString = QString::number(theBuild.getBuildID());
-    appendJSONValue(jsonMessage, "buildNo", buildNoString, true);
+    QString BuildIDString = QString::number(theBuild.getBuildID());
+    appendJSONValue(jsonMessage, "BuildID", BuildIDString, true);
     appendJSONValue(jsonMessage, "md5Sum", management->getBuildMD5(theBuild), true);
     appendJSONValue(jsonMessage, "OneBuildOnly", "true", false);
     endJSONMessage(jsonMessage);

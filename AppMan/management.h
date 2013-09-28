@@ -46,14 +46,14 @@ signals:
     void slaveDisconnected(int index);
 
     /**
-     * \fn void slaveGotBuild(Machine *machine, int buildNo, QString buildName, bool buildExists);
+     * \fn void slaveGotBuild(Machine *machine, int BuildID, QString buildName, bool buildExists);
      * @brief A signal that will invoke a function on the mainform to add the build to the view
      * @param machine The machine on which the build must be displayed
-     * @param buildNo The number of the build that must be added
+     * @param BuildID The number of the build that must be added
      * @param buildExists A boolean value indicating whether the build on slave exist on master
      * @param buildName The build name that is on the slave machine side
      */
-    void slaveGotBuild(Machine *machine, int buildNo,  QString buildName, bool buildExists);
+    void slaveGotBuild(Machine *machine, int BuildID,  QString buildName, bool buildExists);
 
     void slaveBuildSizeSame(int buildId, int slaveId, bool isTheSame);
 
@@ -196,12 +196,12 @@ public:
     void copyBuildOver(int machineId, QString buildName);
 
     /**
-     * \fn void addBuildToSlave(int machineId, QString buildNo);
+     * \fn void addBuildToSlave(int machineId, QString BuildID);
      * @brief This function will be called once the build has been added to the slave machine. This emits a slaveGotBuild signal
      * @param machineId The unique Id of the machine
-     * @param buildNo The buildName to copy over
+     * @param BuildID The buildName to copy over
      */
-    void addBuildToSlave(int machineId, int buildNo, QString buildName);
+    void addBuildToSlave(int machineId, int BuildID, QString buildName);
 
     /**
     * \fn QString getBuildMD5(Build b);
@@ -220,9 +220,9 @@ public:
     Machine *getMachineById(int machineId);
 
 
-    void slaveBuildSize(int buildNo, QString buildMD5Value, int slaveId);
+    void slaveBuildSize(int BuildID, QString buildMD5Value, int slaveId);
 
-    void slaveABuildSize(int buildNo, QString buildMD5Value, int slaveId);
+    void slaveABuildSize(int BuildID, QString buildMD5Value, int slaveId);
 
     void setSlaveBuildIsSame(bool isSame, int machineId, int buildID);
 

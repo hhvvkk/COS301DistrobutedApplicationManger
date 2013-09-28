@@ -24,10 +24,10 @@ signals:
     void queueFinished(CopyQueue *thisQueue);
 
     /**
-      * \fn void nextInQueue(int port, int buildNo);
+      * \fn void nextInQueue(int port, int BuildID);
       * @brief This signal will be emitted each time the next server in the queue has started and waiting transferal of a build zip
       */
-    void nextInQueue(int port, int buildNo);
+    void nextInQueue(int port, int BuildID);
 
 public:
     explicit CopyQueue(QObject *parent = 0);
@@ -50,11 +50,11 @@ public:
 private slots:
 
     /**
-      * \fn void popFront(int buildNo);
+      * \fn void popFront(int BuildID);
       * @brief A function which will take the next physical copier in the queue and start the physical copy over process
-      * @param buildNo The build number which will be popped from the queue
+      * @param BuildID The build number which will be popped from the queue
       */
-    void popFront(int buildNo);
+    void popFront(int BuildID);
 
 private:
     /**

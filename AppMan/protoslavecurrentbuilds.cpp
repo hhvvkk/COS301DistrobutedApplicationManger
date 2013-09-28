@@ -48,11 +48,11 @@ void ProtoSlaveCurrentBuilds::SizeCheckAllBuilds(QTcpSocket *slaveSocket){
 
 void ProtoSlaveCurrentBuilds::Rechecker(QVariantMap jsonObject, Management *management, QTcpSocket *socket){
 
-    QString buildNo = jsonObject.value("buildNo").toString();
+    QString BuildID = jsonObject.value("BuildID").toString();
 
     QString buildName = jsonObject.value("buildName").toString();
 
-    int buildNoId = buildNo.toInt();
+    int BuildIDId = BuildID.toInt();
 
     QObject *myParent = this->parent();
     if(myParent == 0)
@@ -60,7 +60,7 @@ void ProtoSlaveCurrentBuilds::Rechecker(QVariantMap jsonObject, Management *mana
 
     ProtocolHandler *handler = dynamic_cast<ProtocolHandler*>(myParent);
 
-    management->addBuildToSlave(handler->getMachine()->getMachineID(), buildNoId, buildName);
+    management->addBuildToSlave(handler->getMachine()->getMachineID(), BuildIDId, buildName);
 
     QString jsonMessage = startJSONMessage();
     appendJSONValue(jsonMessage, "handler", "ProtoSlaveCurrentBuilds", true);
