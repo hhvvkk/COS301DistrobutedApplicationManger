@@ -142,3 +142,8 @@ void Slave::getDetStats(){
 void Slave::slaveABuildSizeDone(){
     protocolHandler->slaveABuildSizeDone();
 }
+
+
+void Slave::updateBuildName(int buildID, QString newBuildName){
+    protocolHandler->updateBuildName(buildID, newBuildName);
+}

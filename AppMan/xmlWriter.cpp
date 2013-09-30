@@ -61,3 +61,41 @@ void xmlWriter::receiveBuild(QString num,QString name,QString descript, QString 
     buildDirectory.insertMulti("buildDirectory",direc);
     //qDebug()<<"done receiving build";
 }
+
+
+int xmlWriter::findBuildIndex(int buildID){
+
+    QMapIterator<QString, QString> mapIterator = QMapIterator<QString, QString>(buildNumber);
+
+    if(!mapIterator.hasNext()){
+        return -1;
+    }
+
+    QMapIterator<QString, QString> mapI(buildNumber);
+
+    int count = 0;
+    while (mapI.hasNext())
+    {
+        mapI.next();
+        if(!mapI.value().compare(QString::number(buildID)))
+            return count;
+        count++;
+    }
+
+    return -1;
+}
+
+void xmlWriter::updateBuildName(int buildID, QString newBuildName){
+    int index = findBuildIndex(buildID);
+
+    //qDebug()<<"IndexFound = "<<index;
+
+    if(index <= -1 || index >= buildNumber.values().size()){
+        return;
+    }
+
+    //buildName.values().at(index);
+    buildName.values().replace(index, newBuildName);
+    qDebug()<<"newBuildNAme"<<newBuildName;
+    createXMLFile();
+}

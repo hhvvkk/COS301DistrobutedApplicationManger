@@ -37,26 +37,16 @@ public:
      */
     void handle(QVariantMap jsonObject, Management *man, QTcpSocket *slaveSocket);
 
-
-
+private:
     /**
-     * \fn void updateName(int buildID, QString newBuildName);
-     * @brief A function which writes to the slave machine the new build updated Name
-     * @param buildID the management to perform functions on
-     * @param newBuildName the socket if it is needed to write to it
-     * @param slaveSocket the slave machine socket to write the new updated information
-     */
-    void updateName(int buildID, QString newBuildName, QTcpSocket *slaveSocket);
-
-
-    /**
-     * \fn void UpdatedBuildName(QVariantMap jsonObject, Management *management, QTcpSocket *slaveSocket);
-     * @brief A function which fires in the event that the build name is updated sucessfully on the slave machine
+     * \fn void UpdateBuildName(int buildID, QString newName);
+     * @brief A function which updates the build Name on this machine, invoked when subhandler = "UpdateBuildName"
      * @param jsonObject A QVariantMap which contains values
-     * @param management the management to perform functions on
+     * @param man the management to perform functions on
      * @param slaveSocket the socket if it is needed to write to it
      */
-    void UpdatedBuildName(QVariantMap jsonObject, Management *management, QTcpSocket *slaveSocket);
+    void UpdateBuildName(QVariantMap jsonObject, Management *management, QTcpSocket *slaveSocket);
+
 };
 
 #endif // PROTOUPDATE_H

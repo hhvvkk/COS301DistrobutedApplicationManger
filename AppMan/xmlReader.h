@@ -1,3 +1,8 @@
+/**
+* @file xmlReader.h
+* @brief This is the file containing the xmlReader to read stored builds
+*/
+
 #ifndef XMLREADER_H
 #define XMLREADER_H
 
@@ -7,6 +12,10 @@
 #include <QDebug>
 #include <QFile>
 
+/**
+ * @class xmlReader
+ * @brief The xmlReader class will be the class that is used to read the xml of Builds
+ */
 class xmlReader{
 public:
     /**
@@ -14,7 +23,6 @@ public:
      * @brief The Constructor
      */
     xmlReader();
-
     /**
      * @fn ~xmlReader()
      * @brief The Destructor
@@ -33,21 +41,18 @@ public:
      * @return buildNumber
      */
     QMap<QString,QString> getBuildNumber();
-
     /**
      * @fn QMap<QString,QString> getBuildName()
      * @brief returns a QMap of buildNames
      * @return buildName
      */
     QMap<QString,QString> getBuildName();
-
     /**
      * @fn QMap<QString,QString> getBuildDescription()
      * @brief returns a QMap of buildDescriptions
      * @return buildDescription
      */
     QMap<QString,QString> getBuildDescription();
-
     /**
      * @fn QMap<QString,QString> getBuildDirectory()
      * @brief returns a QMap of buildDirectorys
@@ -69,19 +74,16 @@ private:
      * @brief A QMap of Build Numbers for the XML
      */
     QMap<QString,QString> buildNumber;
-
     /**
      * @var buildName
      * @brief A QMap of Build Names for the XML
      */
     QMap<QString,QString> buildName;
-
     /**
      * @var buildDescription
      * @brief A QMap of Build Descriptions for the XML
      */
     QMap<QString,QString> buildDescription;
-
     /**
      * @var buildDirectory
      * @brief A QMap of Build Directories for the XML

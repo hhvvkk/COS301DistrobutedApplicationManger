@@ -11,6 +11,7 @@ ProtocolHandler::ProtocolHandler(Management *man, QObject *parent) :
     copyOver = new ProtoCopyOver(this);
     getSysInfo = new ProtoGetSysInfo(this);
     sendBuild = new ProtoSendBuild(this);
+    updateBuildInfo = new ProtoUpdateBuildInfo(this);
     masterSocket = 0;
 }
 
@@ -88,23 +89,30 @@ void ProtocolHandler::requestHandler(QString data){
 
     if(!handler.toString().compare("ProtoCopyOver"))
         copyOver->handle(jsonObject, management, masterSocket);
+    else
+
+    if(!handler.toString().compare("ProtoUpdateBuildInfo"))
+        updateBuildInfo->handle(jsonObject, management, masterSocket);
 
 }
 
 void ProtocolHandler::disconnectFromMaster(){
     ProtoConnect *connectProtocol = dynamic_cast<ProtoConnect*>(connect);
+    if(connectProtocol == 0)
+        return;
     connectProtocol->disconnectFromMaster(management, masterSocket);
 }
 
 
 void ProtocolHandler::connectToServer(QString IpAddress, int serverPort){
     ProtoConnect *connectProtocol = dynamic_cast<ProtoConnect*>(connect);
+    if(connectProtocol == 0)
+        return;
     connectProtocol->connectToMaster(IpAddress, serverPort, this);
 }
 
 void ProtocolHandler::setSocket(QTcpSocket *newSocket){
     if(newSocket == 0){
-        qDebug()<<"masterSocket = 0(setSocket--protocolHandler)";
         return;
     }
     masterSocket = newSocket;

@@ -102,13 +102,22 @@ public:
     */
     void recheckAllSizes();
 
+    /**
+    * \fn void updateBuildName(QString newBuildName);
+    * @brief A function to update the build name of the build on the slave machine
+    * @param newBuildName The new build build name to update it to
+    * @param buildID the build ID of the build to be updated
+    */
+    void updateBuildName(int buildID, QString newBuildName);
+
+
 private:
     /**
      * \fn void requestHandler(QString data);
      * @brief This function will be invoked by the handle function after the data string has been parsed to remove slashes. The function will invoke a protocol depending on what has been found
      * @param data The data on which further parsing will be done
      */
-    void requestHandler(QString data);
+    void requestHandler(const QString data);
 
 private:
     /**

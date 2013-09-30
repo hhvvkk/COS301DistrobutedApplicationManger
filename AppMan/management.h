@@ -58,6 +58,15 @@ signals:
     void slaveBuildSizeSame(int buildId, int slaveId, bool isTheSame);
 
     void slaveBuildSynched(int machineId, int buildId, double percentageSynched);
+
+    /**
+     * \fn void newSlaveUpdatedBuildName(int machineID, int buildID, QString buildName);
+     * @brief A signal emitted each time a slave has updated their build name to a new name
+     * @param machineID The machine ID on which the updated buildName is done
+     * @param buildID The number of the build was updated
+     * @param buildName The build name that was updated
+     */
+    void newSlaveUpdatedBuildName(int machineID, int buildID, QString buildName);
 public:
     /**
     * \fn Management();
@@ -235,6 +244,15 @@ public:
     void setDetStats(QString stats);
 
     void machineBuildSynched(int machineId, int buildId, double percentageSynched);
+
+    /**
+     * \fn void clearMachines();
+     * @brief A function executed after a slave has updated build information
+     * @param buildID The ID of the build that has updated on slave machine
+     * @param buildName The name of the build that was updated
+     * @param machineID The Machine's ID that has an updated buildName
+     */
+    void slaveUpdatedBuildName(int machineID, int buildID, QString buildName);
 private:
     /**
      * \fn void clearMachines();

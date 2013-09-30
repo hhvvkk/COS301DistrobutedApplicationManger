@@ -119,6 +119,14 @@ public:
 
     QString getMinSysInfo();
 
+    /**
+    * \fn void updateBuildName(int buildID, QString newBuildName);
+    * @brief A function to update the build name on the slave machine
+    * @param buildID The build ID of the build that will be changed
+    * @param newBuildName the new build name to be changed to
+    */
+    void updateBuildName(int buildID, QString newBuildName);
+
 private:
     /**
      * @brief network An Object that will harbour some of the network information

@@ -16,6 +16,7 @@ MainForm::MainForm(QWidget *parent) :
     connect(management, SIGNAL(slaveGotBuild(Machine*,int, QString,bool)), this, SLOT(slaveGotBuild(Machine*,int, QString,bool)));
     connect(management, SIGNAL(slaveBuildSizeSame(int,int,bool)), this, SLOT(slaveBuildSizeSame(int,int,bool)));
 
+    connect(management, SIGNAL(newSlaveUpdatedBuildName(int,int,QString)), this, SLOT(slaveUpdatedBuildName(int, int, QString)));
     connect(management, SIGNAL(slaveBuildSynched(int,int,double)), this, SLOT(slaveBuildSynched(int,int,double)));
 
     masterBuilds = new MasterBuilds();
@@ -698,4 +699,27 @@ void MainForm::on_treeWidgetActiveSimulations_activated(QModelIndex index)
     connect(slaveStats, SIGNAL(clicked(QModelIndex)), this, SLOT(slaveStatsClicked(QModelIndex)));
     clearWidget();
     ui->dockWidgetContents->layout()->addWidget(slaveStats);
+}
+
+
+void MainForm::slaveUpdatedBuildName(int machineID, int buildID, QString updatedName){
+    QTreeWidgetItem *item = 0;
+
+    item = getSlaveTreeItemById(machineID);
+
+    if(item == 0)
+        return;
+
+    QTreeWidgetItem *buildChild = 0;
+
+    for(int i = 0; i < item->childCount(); i++){
+        if(!item->child(i)->text(1).compare(QString::number(buildID))){
+            buildChild = item->child(i);
+        }
+    }
+
+    if(buildChild == 0)
+        return;
+    buildChild->setText(0, updatedName);
+
 }

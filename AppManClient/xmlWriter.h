@@ -40,7 +40,7 @@ public:
     void CreateXMLFile();
     /**
      * @fn void receiveBuild(QString num,QString name,QString descript, QString direc);
-     * @brief The function that accepts parameters of the build
+     * @brief The function that accepts parameters of the build to write the build to the xml file
      * @param num The Build number
      * @param name The Build name
      * @param descript The Build Description
@@ -48,6 +48,20 @@ public:
      */
     void receiveBuild(QString num,QString name,QString descript, QString direc);
 
+    /**
+     * \fn void updateBuildName(int buildID, QString newBuildName);
+     * @brief A function to update the new build Name to the xml file
+     * @param buildID The Build Description
+     * @param newBuildName The Build Directory
+     */
+    void updateBuildName(int buildID, QString newBuildName);
+
+    /**
+     * \fn void updateBuildName(int buildID, QString newBuildName);
+     * @brief Finds the index of a build inside buildNumber
+     * @param buildID The Build Description
+     */
+    int findBuildIndex(int buildID);
 private:
     /**
      * @var buildNumber

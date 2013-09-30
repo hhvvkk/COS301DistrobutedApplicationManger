@@ -41,15 +41,19 @@ void xmlReader::parseBuild(QXmlStreamReader& xml) {
     QXmlStreamAttributes attributes = xml.attributes();
     if(attributes.hasAttribute("buildNumber")) {
         buildNumber.insertMulti("buildNumber",attributes.value("buildNumber").toString());
+        qDebug()<<attributes.value("buildNumber").toString();
     }
     if(attributes.hasAttribute("buildName")) {
         buildName.insertMulti("buildName",attributes.value("buildName").toString());
+        qDebug()<<attributes.value("buildName").toString();
     }
     if(attributes.hasAttribute("buildDescription")) {
         buildDescription.insertMulti("buildDescription",attributes.value("buildDescription").toString());
+        qDebug()<<attributes.value("buildDescription").toString();
     }
     if(attributes.hasAttribute("buildDirectory")) {
         buildDirectory.insertMulti("buildDirectory",attributes.value("buildDirectory").toString());
+        qDebug()<<attributes.value("buildDirectory").toString();
     }
     xml.readNext();
 }

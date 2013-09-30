@@ -185,7 +185,8 @@ void Management::addBuildToSlave(int machineId, int BuildID, QString buildName){
     if(machine==NULL)
         return;
 
-    Build buildToAdd = getBuildByID(BuildID);
+    Build trueBuild = getBuildByID(BuildID);
+    Build buildToAdd = Build(BuildID, buildName,"","");
 
     if(!buildToAdd.getBuildDescription().compare("NULL")
         && !buildToAdd.getBuildDirectory().compare("NULL")
@@ -193,10 +194,17 @@ void Management::addBuildToSlave(int machineId, int BuildID, QString buildName){
         && buildToAdd.getBuildID() == 0){
         //this point the build does not exist
         emit slaveGotBuild(machine, BuildID, buildName, false);
+        //this point that machine has a build it is not suppose to have...go and delete it
     }
     else{
         machine->addBuild(buildToAdd);
         emit slaveGotBuild(machine, BuildID, buildName, true);
+
+        //check if the build name corrolate with the information on the
+        //slave side
+        if(buildName.compare(trueBuild.getBuildName())){
+            machine->updateBuildName(buildToAdd.getBuildID(), trueBuild.getBuildName());
+        }
     }
 
 }
@@ -337,4 +345,9 @@ void Management::setMinStats(QString stats){
 
 int Management::generateUniqueId(){
     return 1;
+}
+
+
+void Management::slaveUpdatedBuildName(int machineID, int buildID, QString buildName){
+    emit newSlaveUpdatedBuildName(machineID, buildID, buildName);
 }

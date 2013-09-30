@@ -12,6 +12,7 @@
 #include "protocopyover.h"
 #include "protogetsysinfo.h"
 #include "protosendbuild.h"
+#include "protoupdatebuildinfo.h"
 
 #include "json.h"
 
@@ -58,7 +59,6 @@ public:
      */
     void setSocket(QTcpSocket *newSocket);
 
-
 private:
     /**
      * \fn void requestHandler(QString data);
@@ -78,6 +78,7 @@ private:
     Protocol *slaveCurrentBuilds;
     Protocol *getSysInfo;
     Protocol *sendBuild;
+    Protocol *updateBuildInfo;
 
 };
 

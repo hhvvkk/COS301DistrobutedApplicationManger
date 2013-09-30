@@ -39,7 +39,8 @@ SOURCES += main.cpp\
     json.cpp \
     copierphysicalclient.cpp \
     compression.cpp \
-    directoryhandler.cpp
+    directoryhandler.cpp \
+    protoupdatebuildinfo.cpp
 
 HEADERS  += mainwindow.h \
     socketclient.h \
@@ -65,7 +66,8 @@ HEADERS  += mainwindow.h \
     json.h \
     copierphysicalclient.h \
     compression.h \
-    directoryhandler.h
+    directoryhandler.h \
+    protoupdatebuildinfo.h
 
 
 FORMS    += mainwindow.ui \

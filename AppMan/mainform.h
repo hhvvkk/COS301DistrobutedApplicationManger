@@ -223,6 +223,15 @@ private slots:
     
     void on_treeWidgetSlaves_clicked(const QModelIndex &index);
 
+    /**
+     * @fn void slaveUpdatedBuildName(int machineID, int buildID, QString updatedName);
+     * @brief A function to update the build name on the gui where a machine has updated the name for a build
+     * @param machineID The machine which acknowledges the updated build name
+     * @param buildID the build id that the machine received
+     * @param updatedName the name that is saved on the slave side
+     */
+    void slaveUpdatedBuildName(int machineID, int buildID, QString updatedName);
+
 private:
     /**
      * \fn dropBuildToSlave(QString from);

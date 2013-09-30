@@ -53,7 +53,6 @@ void Management::addBuild(Build buildToAdd){
         allBuilds[buildCount] = myBuild;
     }
     buildCount++;
-    qDebug("added build to management");
 }
 
 Build Management::createBuildDirectory(Build build){
@@ -135,4 +134,13 @@ QString Management::getDetSysInfo(){
 
 QString Management::getMinSysInfo(){
     return systeminfo.getMinimalStats();
+}
+
+void Management::updateBuildName(int buildID, QString newBuildName){
+    Build theBuild = getBuildByID(buildID);
+    theBuild.setBuildName(newBuildName);
+
+    //finally go and update the build information in the xml
+    xmlWriter anXMLWriter = xmlWriter();
+    anXMLWriter.updateBuildName(buildID, newBuildName);
 }

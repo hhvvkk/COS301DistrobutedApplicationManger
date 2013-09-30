@@ -25,6 +25,7 @@ ProtocolHandler::~ProtocolHandler(){
     sizeCheckBuilds->deleteLater();
     getSysInfo->deleteLater();
     sendBuild->deleteLater();
+    updateBuildInfo->deleteLater();
 }
 
 void ProtocolHandler::handle(QString data){
@@ -100,6 +101,10 @@ void ProtocolHandler::requestHandler(QString data){
 
     if(!handler.toString().compare("ProtoCopyOver"))
         copyOver->handle(jsonObject, management, slaveSocket);
+    else
+
+    if(!handler.toString().compare("ProtoUpdateBuildInfo"))
+        updateBuildInfo->handle(jsonObject, management, slaveSocket);
 
 }
 
@@ -154,5 +159,14 @@ void ProtocolHandler::recheckAllSizes(){
 
 void ProtocolHandler::slaveABuildSizeDone(){
     ProtoSendBuild * theSendBuild = dynamic_cast<ProtoSendBuild*>(sendBuild);
+    if(theSendBuild == 0)
+        return;
     theSendBuild->sizeCheckCertainBuildDone(/*buildID, machine, management,*/ slaveSocket);
+}
+
+void ProtocolHandler::updateBuildName(int buildID, QString newBuildName){
+    ProtoUpdateBuildInfo *theUpdater = dynamic_cast<ProtoUpdateBuildInfo*>(updateBuildInfo);
+    if(theUpdater == 0)
+        return;
+    theUpdater->updateName(buildID, newBuildName, slaveSocket);
 }
