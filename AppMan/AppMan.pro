@@ -50,7 +50,8 @@ SOURCES += main.cpp\
     copierphysical.cpp \
     directoryhandler.cpp \
     database.cpp \
-    protoupdatebuildinfo.cpp
+    protoupdatebuildinfo.cpp \
+    mainbuildinfo.cpp
 
 HEADERS  += mainform.h \
     aboutversion.h \
@@ -86,7 +87,8 @@ HEADERS  += mainform.h \
     copierphysical.h \
     directoryhandler.h \
     database.h \
-    protoupdatebuildinfo.h
+    protoupdatebuildinfo.h \
+    mainbuildinfo.h
 
 FORMS    += mainform.ui \
     aboutversion.ui \

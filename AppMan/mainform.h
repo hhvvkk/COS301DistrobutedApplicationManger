@@ -29,6 +29,7 @@
 #include <QTimer>
 #include <QSystemTrayIcon>
 
+#include "mainbuildinfo.h"
 #include "abouthelp.h"
 #include "aboutversion.h"
 #include "addbuild.h"
@@ -232,6 +233,15 @@ private slots:
      */
     void slaveUpdatedBuildName(int machineID, int buildID, QString updatedName);
 
+
+    /**
+     * \fn void buildInfoDoubleClicked(QTreeWidgetItem* theDoubleClickedItem, int theColumn);
+     * @brief A function executing each time an item inside the build info is double clicked
+     * @param theDoubleClickedItem The item that was double clicked
+     * @param theColumn The index of the column of the item double clicked
+     */
+    void buildInfoDoubleClicked(QTreeWidgetItem* theDoubleClickedItem, int theColumn);
+
 private:
     /**
      * \fn dropBuildToSlave(QString from);
@@ -271,7 +281,7 @@ private:
     void populateTreeWidgetInfo(Build retr);
 
     /**
-     * QTreeWidgetItem* getSlaveTreeItemById(int uniqueId);
+     * \fn QTreeWidgetItem* getSlaveTreeItemById(int uniqueId);
      * @brief Finds and returns the QTreeWidgetItem of the machine which has an IP adddress
      * @param uniqueId The unique Id of the machine
      * @return Returns the QTreeWidgetItem for a machine
@@ -319,15 +329,6 @@ private:
      * @brief The pointer to a Masterbuilds object
      */
     MasterBuilds *masterBuilds;
-
-    /**
-     * @class BuildInfo
-     * @brief The BuildInfo class will be used to display information related to selected builds
-     */
-    class BuildInfo: public QTreeWidget{
-    public:
-        BuildInfo(QWidget *parent = 0);
-    };
 
     /**
      * @var buildInfo

@@ -20,7 +20,7 @@ MainForm::MainForm(QWidget *parent) :
     connect(management, SIGNAL(slaveBuildSynched(int,int,double)), this, SLOT(slaveBuildSynched(int,int,double)));
 
     masterBuilds = new MasterBuilds();
-    masterBuilds->setHeaderHidden(true);    
+    masterBuilds->setHeaderHidden(true);
 
     /*
      * This part initializes the masterBuilds and adds it to mainform
@@ -34,6 +34,7 @@ MainForm::MainForm(QWidget *parent) :
      **/
     QVBoxLayout *topDocWidgetLayout = new QVBoxLayout();
     buildInfo = new BuildInfo();
+    connect(buildInfo, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(buildInfoDoubleClicked(QTreeWidgetItem*,int)));
     topDocWidgetLayout->addWidget(buildInfo);
    // ui->dockWidgetProperty->layout()->addWidget(buildInfo);
 
@@ -87,42 +88,6 @@ MainForm::MasterBuilds::MasterBuilds(QWidget *parent)
     setColumnCount(2);
     hideColumn(1);
 }
-
-MainForm::BuildInfo::BuildInfo(QWidget *parent)
-    :QTreeWidget(parent){
-
-    QString labelHeader1 = "Property";
-    QString labelHeader2 = "Value";
-    QStringList labelHeaders;
-    labelHeaders << labelHeader1<<labelHeader2;
-
-    QTreeWidget::setColumnCount(2);
-
-    QTreeWidget::setHeaderLabels(labelHeaders);
-
-    QTreeWidgetItem *newItem;
-
-    newItem = new QTreeWidgetItem();
-    newItem->setText(0,"Build Number");
-    this->addTopLevelItem(newItem);
-
-    newItem = new QTreeWidgetItem();
-    newItem->setText(0,"Name");
-    this->addTopLevelItem(newItem);
-
-
-    newItem = new QTreeWidgetItem();
-    newItem->setText(0,"Directory");
-    this->addTopLevelItem(newItem);
-
-
-    newItem = new QTreeWidgetItem();
-    newItem->setText(0,"Description");
-    this->addTopLevelItem(newItem);
-
-
-}
-
 
 void MainForm::MasterBuilds::mousePressEvent(QMouseEvent *event){
 
@@ -404,6 +369,7 @@ void MainForm::masterBuildsClicked(QModelIndex index){
     Build retr = management->getBuildByID(num);
     clearWidget();
     buildInfo = new BuildInfo();
+    connect(buildInfo, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(buildInfoDoubleClicked(QTreeWidgetItem*,int)));
     ui->dockWidgetContents->layout()->addWidget(buildInfo);
     populateBuildInfo(retr);
     populateTreeWidgetInfo(retr);
@@ -414,6 +380,9 @@ void MainForm::populateBuildInfo(Build retr){
     QTreeWidgetItem *boola;
     for(int i = 0; i < 4; i++){
         boola = new QTreeWidgetItem();
+        Qt::ItemFlags eFlags = boola->flags();
+        eFlags |= Qt::ItemIsEditable;
+        boola->setFlags(eFlags);
         if(i == 0){
             int bID = retr.getBuildID();
             QString buildID = QString::number(bID);
@@ -721,5 +690,16 @@ void MainForm::slaveUpdatedBuildName(int machineID, int buildID, QString updated
     if(buildChild == 0)
         return;
     buildChild->setText(0, updatedName);
+
+}
+
+void MainForm::buildInfoDoubleClicked(QTreeWidgetItem* theDoubleClickedItem, int theColumn){
+    if(theColumn == 1){
+        //ui->treeWidgetInfoBox->editItem(theDoubleClickedItem, theColumn);
+        //ui->treeWidgetInfoBox->openPersistentEditor(theDoubleClickedItem,theColumn);
+    }
+    else{
+        //it is not editable
+    }
 
 }
