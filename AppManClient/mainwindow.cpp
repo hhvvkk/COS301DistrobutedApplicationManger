@@ -161,7 +161,7 @@ void MainWindow::initiateAddBuild(Build myBuild){
     management->addBuild(myAltered);
     xmlWriter xWrite;
     xWrite.receiveBuild(QString::number(myAltered.getBuildID()),myAltered.getBuildName(),myAltered.getBuildDescription(),myAltered.getBuildDirectory());
-    xWrite.CreateXMLFile();
+    xWrite.createXMLFile();
     ui->label_BuildCount->setText(QString::number(management->getBuildCount()));
     qDebug()<<"Build added";
 }

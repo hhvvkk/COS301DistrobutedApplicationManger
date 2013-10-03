@@ -114,15 +114,15 @@ void xmlWriter::updateBuildDir(int buildID, QString newBuildDir){
         return;
     }
 
-    QString buildName = buildName.values().at(index);
-    QString buildDescr = buildDescription.values().at(index);
-    QString buildNum = buildNumber.values().at(index);
+    QString theBuildName = buildName.values().at(index);
+    QString theBuildDescr = buildDescription.values().at(index);
+    QString theBuildNum = buildNumber.values().at(index);
 
     RemoveBuildToBeUpdated(buildID);
 
-    buildNumber.insertMulti("buildNumber",buildNum);
-    buildName.insertMulti("buildName",buildName);
-    buildDescription.insertMulti("buildDescription",buildDescr);
+    buildNumber.insertMulti("buildNumber",theBuildNum);
+    buildName.insertMulti("buildName",theBuildName);
+    buildDescription.insertMulti("buildDescription",theBuildDescr);
     buildDirectory.insertMulti("buildDirectory",newBuildDir);
 
     createXMLFile();

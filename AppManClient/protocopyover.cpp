@@ -22,7 +22,7 @@ void ProtoCopyOver::CopyBuildOver(QVariantMap jsonObject, Management *management
     xmlWriter xWrite;
     Build buildToAdd = management->createBuildDirectory(newBuild);
     xWrite.receiveBuild(QString::number(buildToAdd.getBuildID()),buildToAdd.getBuildName(),buildToAdd.getBuildDescription(),buildToAdd.getBuildDirectory());
-    xWrite.CreateXMLFile();
+    xWrite.createXMLFile();
     management->addBuild(buildToAdd);
 
     QString jsonMessage = startJSONMessage();
