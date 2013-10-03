@@ -69,6 +69,8 @@ public:
      int findBuildIndex(int buildID);
 
      void updateBuildDescr(int buildID, QString newBuildDescr);
+	 
+	  void updateBuildDir(int buildID, QString newBuildDir);
 private:
     /**
      * @var buildNumber
