@@ -415,6 +415,6 @@ void Management::setBuildDescription(int buildID, QString value){
     }
 
     theBuild.setBuildDescription(value);
-    //xmlWriter writer;
+    xmlWriter writer;
     //writer.updateBuildDescription(buildID, value);
 }
