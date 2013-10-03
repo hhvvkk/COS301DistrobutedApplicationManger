@@ -14,6 +14,7 @@
 #include <QCryptographicHash>
 
 #include "Build.h"
+#include "xmlWriter.h"
 #include "Slave.h"
 #include "Machine.h"
 #include "server.h"
@@ -253,6 +254,40 @@ public:
      * @param machineID The Machine's ID that has an updated buildName
      */
     void slaveUpdatedBuildName(int machineID, int buildID, QString buildName);
+
+
+    /**
+     * \fn void setBuildDirectory(int buildID, QString value);
+     * @brief The function to set the build directory to the new information passed through
+     * @param buildID The ID of the build that will be updated
+     * @param value The value to which the build directory will be updated to
+     */
+    void setBuildDirectory(int buildID, QString value);
+
+    /**
+     * \fn void setBuildName(int buildID, QString value);
+     * @brief The function to set the build name to the new information passed through
+     * @param buildID The ID of the build that will be updated
+     * @param value The value to which the build name will be updated to
+     */
+    void setBuildName(int buildID, QString value);
+
+    /**
+     * \fn void setBuildNumber(int buildID, QString value);
+     * @brief The function to set the build number to the new information passed through
+     * @param buildID The ID of the build that will be updated
+     * @param value The value to which the build number will be updated to
+     */
+    void setBuildNumber(int buildID, QString value);
+
+    /**
+     * \fn void setBuildDescription(int buildID, QString value);
+     * @brief The function to set the build description to the new information passed through
+     * @param buildID The ID of the build that will be updated
+     * @param value The value to which the build description will be updated to
+     */
+    void setBuildDescription(int buildID, QString value);
+
 private:
     /**
      * \fn void clearMachines();

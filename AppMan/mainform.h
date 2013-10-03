@@ -28,6 +28,7 @@
 #include <QWidget>
 #include <QTimer>
 #include <QSystemTrayIcon>
+#include <QInputDialog>
 
 #include "mainbuildinfo.h"
 #include "abouthelp.h"
@@ -242,6 +243,14 @@ private slots:
      */
     void buildInfoDoubleClicked(QTreeWidgetItem* theDoubleClickedItem, int theColumn);
 
+
+    /**
+     * \fn void buildInfoItemEditedChanged(QTreeWidgetItem*, int column);
+     * @brief A function executing each time an item inside the build info is double clicked
+     * @param theDoubleClickedItem The item that was double clicked
+     * @param theColumn The index of the column of the item double clicked
+     */
+    void buildInfoItemEditedChanged(QTreeWidgetItem*, int column);
 private:
     /**
      * \fn dropBuildToSlave(QString from);
@@ -288,12 +297,25 @@ private:
      */
     QTreeWidgetItem* getSlaveTreeItemById(int uniqueId);
 
+    /**
+     * \fn void setBuildInfo(int setWhat, QString value)
+     * @brief A function to set the piece of build information referred to by setWhat to the value passed through in management and the gui(in the case of name or number)
+     * @param setWhat The value of the BuildInformationEnum which will be set
+     * @param value The value to which it will be set
+     * @param buildID The id of the build to set
+     */
+    void setBuildInfo(int setWhat, QString value, int buildID);
+
 private:
     /**
      * @var ui
      * @brief ui It is the graphical user interface
      */
     Ui::MainForm *ui;
+
+    int NAME_SIZE_LIMIT;
+
+    int DESCRIPTION_SIZE_LIMIT;
 
     /**
      * @var trayIcon
@@ -352,6 +374,7 @@ private:
     SlaveStats *slaveStats;
 
 
+    enum BuildInformationEnum { BUILDDIRECTORY, BUILDNAME, BUILDNUMBER, BUILDDESCRIPTION };
 
 };
 

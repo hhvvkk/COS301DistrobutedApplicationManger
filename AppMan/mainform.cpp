@@ -34,7 +34,6 @@ MainForm::MainForm(QWidget *parent) :
      **/
     QVBoxLayout *topDocWidgetLayout = new QVBoxLayout();
     buildInfo = new BuildInfo();
-    connect(buildInfo, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(buildInfoDoubleClicked(QTreeWidgetItem*,int)));
     topDocWidgetLayout->addWidget(buildInfo);
    // ui->dockWidgetProperty->layout()->addWidget(buildInfo);
 
@@ -47,7 +46,9 @@ MainForm::MainForm(QWidget *parent) :
     connect(masterBuilds, SIGNAL(clicked(QModelIndex)), this, SLOT(masterBuildsClicked(QModelIndex)));
     loadXMLBuilds();
 
+    slaveStats = 0;
     management->startServer();
+
 
     /*
      *Create the tray(BEGIN)
@@ -68,6 +69,10 @@ MainForm::MainForm(QWidget *parent) :
     /*
      *Create the tray(END)
      **/
+
+    //set some constant limits
+    NAME_SIZE_LIMIT = 25;
+    DESCRIPTION_SIZE_LIMIT = 300;
 }
 
 void MainForm::quitTheApplication(){
@@ -368,8 +373,16 @@ void MainForm::masterBuildsClicked(QModelIndex index){
     int num = selBuild.toInt();
     Build retr = management->getBuildByID(num);
     clearWidget();
+
+    if(buildInfo != 0){
+        buildInfo->deleteLater();
+    }
     buildInfo = new BuildInfo();
+
     connect(buildInfo, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(buildInfoDoubleClicked(QTreeWidgetItem*,int)));
+    connect(buildInfo, SIGNAL(itemChanged(QTreeWidgetItem*,int)), this, SLOT(buildInfoItemEditedChanged(QTreeWidgetItem*,int)));
+    //connect(buildInfo, SIGNAL(currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)), this, SLOT(buildInfoItemEditedChanged(QTreeWidgetItem*,QTreeWidgetItem*)));
+
     ui->dockWidgetContents->layout()->addWidget(buildInfo);
     populateBuildInfo(retr);
     populateTreeWidgetInfo(retr);
@@ -380,13 +393,11 @@ void MainForm::populateBuildInfo(Build retr){
     QTreeWidgetItem *boola;
     for(int i = 0; i < 4; i++){
         boola = new QTreeWidgetItem();
-        Qt::ItemFlags eFlags = boola->flags();
-        eFlags |= Qt::ItemIsEditable;
-        boola->setFlags(eFlags);
+
         if(i == 0){
             int bID = retr.getBuildID();
             QString buildID = QString::number(bID);
-            boola->setText(0,"Build Number");
+            boola->setText(0,"BuildID");
             boola->setText(1,buildID);
             boola->setToolTip(0,QString::number(retr.getBuildID()));
             boola->setToolTip(1,QString::number(retr.getBuildID()));
@@ -608,6 +619,9 @@ void MainForm::on_treeWidgetSlaves_clicked(const QModelIndex &index)
     selected->getMinStats();
     QString inp = "16%#46%#2.39695MB#5.375KB" ;
     buildInfo->hide();
+    if(slaveStats != 0){
+        slaveStats->deleteLater();
+    }
     slaveStats = new SlaveStats(this,selected->getMachineIP(), inp);
     connect(slaveStats, SIGNAL(clicked(QModelIndex)), this, SLOT(slaveStatsClicked(QModelIndex)));
     clearWidget();
@@ -624,7 +638,6 @@ void MainForm::clearWidget(){
 
 void MainForm::slaveStatsClicked(QModelIndex index){
     QTreeWidgetItem *item = ui->treeWidgetSlaves->selectedItems().at(0);
-
 
     bool *ok = new bool();
     int machineID = item->text(1).toInt();
@@ -662,8 +675,11 @@ void MainForm::on_treeWidgetActiveSimulations_activated(QModelIndex index)
     if(selected == 0)
         return;
     selected->getMinStats();
-    QString inp = "16%#46%#2.39695MB#5.375KB" ;
+    QString inp = "16%#46%#2.39695MB#5.375KB";
     buildInfo->hide();
+    if(slaveStats != 0){
+        slaveStats->deleteLater();
+    }
     slaveStats = new SlaveStats(this,selected->getMachineIP(), inp);
     connect(slaveStats, SIGNAL(clicked(QModelIndex)), this, SLOT(slaveStatsClicked(QModelIndex)));
     clearWidget();
@@ -694,12 +710,141 @@ void MainForm::slaveUpdatedBuildName(int machineID, int buildID, QString updated
 }
 
 void MainForm::buildInfoDoubleClicked(QTreeWidgetItem* theDoubleClickedItem, int theColumn){
-    if(theColumn == 1){
-        //ui->treeWidgetInfoBox->editItem(theDoubleClickedItem, theColumn);
-        //ui->treeWidgetInfoBox->openPersistentEditor(theDoubleClickedItem,theColumn);
+
+    if(!theDoubleClickedItem->text(0).compare("Directory")){
+        QMessageBox::StandardButton reply;
+
+        reply = QMessageBox::question(this, "Change build directory", "Are you sure you wish to change the directory?", QMessageBox::Yes|QMessageBox::No);
+
+        if (reply == QMessageBox::Yes) {
+
+            if(buildInfo == 0)
+                return;
+
+            int indexBuildID = -1;
+            for(int i = 0; i < buildInfo->topLevelItemCount();i++){
+                //find out what the buildID is that is currently looked for
+                if(!buildInfo->topLevelItem(i)->text(0).compare("BuildID")){
+                    indexBuildID = i;
+                    break;
+                }
+            }
+
+
+            if(indexBuildID <= -1)
+                return;
+
+            //change the number into an actual integer
+            bool ok = false;
+
+            int buildID = buildInfo->topLevelItem(indexBuildID)->text(1).toInt(&ok);
+
+            if(!ok)
+                return;
+
+            QString directory = QFileDialog::getExistingDirectory(this, tr("Open Directory"), theDoubleClickedItem->text(1), QFileDialog::ShowDirsOnly| QFileDialog::DontResolveSymlinks);
+            setBuildInfo(BUILDDIRECTORY, directory, buildID);
+        }
+        return;
     }
-    else{
-        //it is not editable
+    if(theColumn == 1){
+       buildInfo->openPersistentEditor(theDoubleClickedItem,theColumn);
+    }
+}
+
+void MainForm::buildInfoItemEditedChanged(QTreeWidgetItem* itemChanged, int column){
+    buildInfo->closePersistentEditor(itemChanged, column);
+    QString value = itemChanged->text(1);
+
+    QString setWhatQString = itemChanged->text(0);
+
+    int setWhat = -1;
+
+    //directory is set some other way, not like this...
+    if(!setWhatQString.compare("Name")){
+        setWhat = BUILDNAME;
+    }else if(!setWhatQString.compare("Number")){
+        setWhat = BUILDNUMBER;
+    }else if(!setWhatQString.compare("Description")){
+        setWhat = BUILDDESCRIPTION;
     }
 
+    //get the build ID...
+    if(buildInfo == 0)
+        return;
+
+    int indexBuildID = -1;
+    for(int i = 0; i < buildInfo->topLevelItemCount();i++){
+        //find out what the buildID is that is currently looked for
+        if(!buildInfo->topLevelItem(i)->text(0).compare("BuildID")){
+            indexBuildID = i;
+            break;
+        }
+    }
+
+
+    if(indexBuildID <= -1)
+        return;
+
+    //change the number into an actual integer
+    bool ok = false;
+
+    int buildID = buildInfo->topLevelItem(indexBuildID)->text(1).toInt(&ok);
+
+    if(!ok)
+        return;
+
+    setBuildInfo(setWhat, value, buildID);
+}
+
+void MainForm::setBuildInfo(int setWhat, QString value, int buildID){
+    if(management == 0)
+        return;
+
+
+    if(setWhat == BUILDDIRECTORY){
+        //gui interface already changed
+        //thus only set the xml
+        management->setBuildDirectory(buildID, value);
+    }
+    else if(setWhat == BUILDNAME){
+        if(value.size() > NAME_SIZE_LIMIT || value.size() < 1){
+            //don't allow sizes larger than 25 for names or size of 0
+            return;
+        }
+
+        //set the buildinfo in gui
+
+        for(int i = 0; i < masterBuilds->topLevelItemCount(); i++){
+            if(!masterBuilds->topLevelItem(i)->text(1).compare(QString::number(buildID))){
+                masterBuilds->topLevelItem(i)->setText(0, value);
+                break;
+            }
+        }
+
+        //set the buildInfo in xml
+        management->setBuildName(buildID, value);
+    }
+    else if(setWhat == BUILDNUMBER){
+        for(int i = 0; i < masterBuilds->topLevelItemCount(); i++){
+            if(!masterBuilds->topLevelItem(i)->text(1).compare(QString::number(buildID))){
+                masterBuilds->topLevelItem(i)->setToolTip(0, value);
+                break;
+            }
+        }
+
+        //set the buildInfo in xml
+        management->setBuildNumber(buildID, value);
+    }
+    else if(setWhat == BUILDDESCRIPTION){
+        if(value.size() > DESCRIPTION_SIZE_LIMIT){
+            //don't allow sizes larger than 25 for names or size of 0
+            return;
+        }
+
+
+        //no gui elements for this
+        //set the buildInfo in xml
+        management->setBuildDescription(buildID, value);
+    }
 }

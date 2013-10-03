@@ -351,3 +351,70 @@ int Management::generateUniqueId(){
 void Management::slaveUpdatedBuildName(int machineID, int buildID, QString buildName){
     emit newSlaveUpdatedBuildName(machineID, buildID, buildName);
 }
+
+
+
+void Management::setBuildDirectory(int buildID, QString value){
+    Build theBuild = getBuildByID(buildID);
+    qDebug()<<"Setting:"<<value;
+
+    if(!theBuild.getBuildDescription().compare("NULL")
+        && !theBuild.getBuildDirectory().compare("NULL")
+        && !theBuild.getBuildName().compare("NULL")
+        && theBuild.getBuildID() == 0){
+        return;
+    }
+
+    //else the build exists
+    theBuild.setBuildDirectory(value);
+    xmlWriter writer;
+    writer.updateBuildDirectory(buildID, value);
+}
+
+void Management::setBuildName(int buildID, QString value){
+    Build theBuild = getBuildByID(buildID);
+    qDebug()<<"Setting:"<<value;
+
+    if(!theBuild.getBuildDescription().compare("NULL")
+        && !theBuild.getBuildDirectory().compare("NULL")
+        && !theBuild.getBuildName().compare("NULL")
+        && theBuild.getBuildID() == 0){
+        return;
+    }
+
+    theBuild.setBuildName(value);
+    xmlWriter writer;
+    writer.updateBuildName(buildID, value);
+}
+
+void Management::setBuildNumber(int buildID, QString value){
+    Build theBuild = getBuildByID(buildID);
+    qDebug()<<"Setting:"<<value;
+
+    if(!theBuild.getBuildDescription().compare("NULL")
+        && !theBuild.getBuildDirectory().compare("NULL")
+        && !theBuild.getBuildName().compare("NULL")
+        && theBuild.getBuildID() == 0){
+        return;
+    }
+
+    //theBuild.setBuildDescription(value);
+//    xmlWriter writer;
+//    writer.updateBuildDirectory(buildID, value);
+}
+
+void Management::setBuildDescription(int buildID, QString value){
+    Build theBuild = getBuildByID(buildID);
+    qDebug()<<"Setting:"<<value;
+
+    if(!theBuild.getBuildDescription().compare("NULL")
+        && !theBuild.getBuildDirectory().compare("NULL")
+        && !theBuild.getBuildName().compare("NULL")
+        && theBuild.getBuildID() == 0){
+        return;
+    }
+
+    theBuild.setBuildDescription(value);
+    xmlWriter writer;
+    writer.updateBuildDescription(buildID, value);
+}

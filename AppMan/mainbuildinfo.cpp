@@ -15,7 +15,7 @@ BuildInfo::BuildInfo(QWidget *parent)
     QTreeWidgetItem *newItem;
 
     newItem = new QTreeWidgetItem();
-    newItem->setText(0,"Build Number");
+    newItem->setText(0,"BuildID");
     this->addTopLevelItem(newItem);
 
     newItem = new QTreeWidgetItem();
