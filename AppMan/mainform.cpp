@@ -374,11 +374,6 @@ void MainForm::masterBuildsClicked(QModelIndex index){
     Build retr = management->getBuildByID(num);
     clearWidget();
 
-    if(buildInfo != 0){
-        buildInfo->deleteLater();
-    }
-    buildInfo = new BuildInfo();
-
     connect(buildInfo, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(buildInfoDoubleClicked(QTreeWidgetItem*,int)));
     connect(buildInfo, SIGNAL(itemChanged(QTreeWidgetItem*,int)), this, SLOT(buildInfoItemEditedChanged(QTreeWidgetItem*,int)));
     //connect(buildInfo, SIGNAL(currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)), this, SLOT(buildInfoItemEditedChanged(QTreeWidgetItem*,QTreeWidgetItem*)));
@@ -743,12 +738,16 @@ void MainForm::buildInfoDoubleClicked(QTreeWidgetItem* theDoubleClickedItem, int
                 return;
 
             QString directory = QFileDialog::getExistingDirectory(this, tr("Open Directory"), theDoubleClickedItem->text(1), QFileDialog::ShowDirsOnly| QFileDialog::DontResolveSymlinks);
+
+            if(!QDir().exists(directory))
+                return;
+
             setBuildInfo(BUILDDIRECTORY, directory, buildID);
         }
         return;
     }
     if(theColumn == 1){
-       //buildInfo->openPersistentEditor(theDoubleClickedItem,theColumn);
+        buildInfo->openPersistentEditor(theDoubleClickedItem,theColumn);
     }
 }
 
@@ -811,7 +810,6 @@ void MainForm::setBuildInfo(int setWhat, QString value, int buildID){
             //don't allow sizes larger than 25 for names or size of 0
             return;
         }
-
         //set the buildinfo in gui
 
         for(int i = 0; i < masterBuilds->topLevelItemCount(); i++){
@@ -820,7 +818,6 @@ void MainForm::setBuildInfo(int setWhat, QString value, int buildID){
                 break;
             }
         }
-
         //set the buildInfo in xml
         management->setBuildName(buildID, value);
     }
