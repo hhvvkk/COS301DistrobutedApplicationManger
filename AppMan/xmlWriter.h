@@ -11,6 +11,7 @@
 #include <QMapIterator>
 #include <QString>
 #include <QXmlStreamWriter>
+#include <iterator>
 
 #include "xmlReader.h"
 
@@ -66,6 +67,8 @@ public:
       * @param buildID The Build Description
       */
      int findBuildIndex(int buildID);
+
+     void updateBuildDescr(int buildID, QString newBuildDescr);
 private:
     /**
      * @var buildNumber
@@ -96,6 +99,8 @@ private:
      * @brief A QXmlStreamWriter instance
      */
     QXmlStreamWriter* theXMLWriter;
+
+    void RemoveBuildToBeUpdated(int buildID);
 
 };
 
