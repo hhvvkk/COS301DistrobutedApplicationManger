@@ -368,7 +368,7 @@ void Management::setBuildDirectory(int buildID, QString value){
     //else the build exists
     theBuild.setBuildDirectory(value);
     xmlWriter writer;
-    writer.updateBuildDirectory(buildID, value);
+    //writer.updateBuildDirectory(buildID, value);
 }
 
 void Management::setBuildName(int buildID, QString value){
@@ -384,7 +384,7 @@ void Management::setBuildName(int buildID, QString value){
 
     theBuild.setBuildName(value);
     xmlWriter writer;
-    writer.updateBuildName(buildID, value);
+    //writer.updateBuildName(buildID, value);
 }
 
 void Management::setBuildNumber(int buildID, QString value){
@@ -416,5 +416,5 @@ void Management::setBuildDescription(int buildID, QString value){
 
     theBuild.setBuildDescription(value);
     xmlWriter writer;
-    writer.updateBuildDescription(buildID, value);
+    //writer.updateBuildDescription(buildID, value);
 }

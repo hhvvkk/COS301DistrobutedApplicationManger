@@ -748,7 +748,7 @@ void MainForm::buildInfoDoubleClicked(QTreeWidgetItem* theDoubleClickedItem, int
         return;
     }
     if(theColumn == 1){
-       buildInfo->openPersistentEditor(theDoubleClickedItem,theColumn);
+       //buildInfo->openPersistentEditor(theDoubleClickedItem,theColumn);
     }
 }
 
@@ -800,7 +800,6 @@ void MainForm::buildInfoItemEditedChanged(QTreeWidgetItem* itemChanged, int colu
 void MainForm::setBuildInfo(int setWhat, QString value, int buildID){
     if(management == 0)
         return;
-
 
     if(setWhat == BUILDDIRECTORY){
         //gui interface already changed
