@@ -147,7 +147,12 @@ void CopierPhysicalClient::extractZipToDirectory(){
     QStringList listOfPaths;
     DirectoryHandler::recurseAddDir(eDir, listOfPaths);
 
+#ifdef WIN32
+    DirectoryHandler::copyOverFromList(4, listOfPaths, buildPath, extractPath);
+#else
     DirectoryHandler::copyOverFromList(3, listOfPaths, buildPath, extractPath);
+#endif
 
+    qDebug()<<"Rmovin:"<<extractPath;
     DirectoryHandler::removeDir(extractPath);
 }

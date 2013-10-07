@@ -14,7 +14,10 @@ void Management::setServer(Server *s){
 }
 
 Management::~Management(){
-    delete server;
+    if(server != 0){
+        server->stopServer();
+        delete server;
+    }
     if(buildCount != 0)
     {
         delete[] allBuilds;
@@ -364,7 +367,6 @@ void Management::slaveUpdatedBuildName(int machineID, int buildID, QString build
 
 void Management::setBuildDirectory(int buildID, QString value){
     Build theBuild = getBuildByID(buildID);
-    qDebug()<<"Setting:"<<value;
 
     if(!theBuild.getBuildDescription().compare("NULL")
         && !theBuild.getBuildDirectory().compare("NULL")
@@ -375,13 +377,12 @@ void Management::setBuildDirectory(int buildID, QString value){
 
     //else the build exists
     theBuild.setBuildDirectory(value);
-    //xmlWriter writer;
-    //writer.updateBuildDirectory(buildID, value);
+    xmlWriter writer;
+    writer.updateBuildDir(buildID, value);
 }
 
 void Management::setBuildName(int buildID, QString value){
     Build theBuild = getBuildByID(buildID);
-    qDebug()<<"Setting:"<<value;
 
     if(!theBuild.getBuildDescription().compare("NULL")
         && !theBuild.getBuildDirectory().compare("NULL")
@@ -397,7 +398,6 @@ void Management::setBuildName(int buildID, QString value){
 
 void Management::setBuildNumber(int buildID, QString value){
     Build theBuild = getBuildByID(buildID);
-    qDebug()<<"Setting:"<<value;
 
     if(!theBuild.getBuildDescription().compare("NULL")
         && !theBuild.getBuildDirectory().compare("NULL")
@@ -413,7 +413,6 @@ void Management::setBuildNumber(int buildID, QString value){
 
 void Management::setBuildDescription(int buildID, QString value){
     Build theBuild = getBuildByID(buildID);
-    qDebug()<<"Setting:"<<value;
 
     if(!theBuild.getBuildDescription().compare("NULL")
         && !theBuild.getBuildDirectory().compare("NULL")

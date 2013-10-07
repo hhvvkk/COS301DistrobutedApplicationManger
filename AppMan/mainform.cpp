@@ -82,6 +82,8 @@ void MainForm::quitTheApplication(){
 
 MainForm::~MainForm()
 {
+    if(buildInfo)
+        buildInfo->deleteLater();
     delete ui;
     //this must be set to delete later or segmentation fault will occur!
     management->deleteLater();
@@ -747,6 +749,8 @@ void MainForm::buildInfoDoubleClicked(QTreeWidgetItem* theDoubleClickedItem, int
         return;
     }
     if(theColumn == 1){
+        if(!theDoubleClickedItem->text(0).compare("BuildID"))
+            return;
         buildInfo->openPersistentEditor(theDoubleClickedItem,theColumn);
     }
 }
@@ -804,6 +808,30 @@ void MainForm::setBuildInfo(int setWhat, QString value, int buildID){
         //gui interface already changed
         //thus only set the xml
         management->setBuildDirectory(buildID, value);
+
+        QTreeWidgetItem *treeWidgItem = 0;
+
+        int count = 0;
+
+        if(buildInfo == 0)
+            return;
+
+        while(count <= buildInfo->topLevelItemCount()){
+            //find the directory item
+            if(!buildInfo->topLevelItem(count)->text(0).compare("Directory")){
+                treeWidgItem = buildInfo->topLevelItem(count);
+                break;
+            }
+            count++;
+        }
+
+        if(treeWidgItem == 0){
+            return;//if it has not found it return
+        }
+
+        treeWidgItem->setText(1, value);
+        treeWidgItem->setToolTip(1, value);
+        treeWidgItem->setToolTip(0, value);
     }
     else if(setWhat == BUILDNAME){
         if(value.size() > NAME_SIZE_LIMIT || value.size() < 1){
@@ -820,6 +848,30 @@ void MainForm::setBuildInfo(int setWhat, QString value, int buildID){
         }
         //set the buildInfo in xml
         management->setBuildName(buildID, value);
+
+        //finally set the build name tooltips
+        QTreeWidgetItem *treeWidgItem = 0;
+
+        int count = 0;
+
+        if(buildInfo == 0)
+            return;
+
+        while(count <= buildInfo->topLevelItemCount()){
+            //find the directory item
+            if(!buildInfo->topLevelItem(count)->text(0).compare("Name")){
+                treeWidgItem = buildInfo->topLevelItem(count);
+                break;
+            }
+            count++;
+        }
+
+        if(treeWidgItem == 0){
+            return;//if it has not found it return
+        }
+
+        treeWidgItem->setToolTip(1, value);
+        treeWidgItem->setToolTip(0, value);
     }
     else if(setWhat == BUILDNUMBER){
         for(int i = 0; i < masterBuilds->topLevelItemCount(); i++){
@@ -831,6 +883,31 @@ void MainForm::setBuildInfo(int setWhat, QString value, int buildID){
 
         //set the buildInfo in xml
         management->setBuildNumber(buildID, value);
+
+
+        //finally set the build name tooltips
+        QTreeWidgetItem *treeWidgItem = 0;
+
+        int count = 0;
+
+        if(buildInfo == 0)
+            return;
+
+        while(count <= buildInfo->topLevelItemCount()){
+            //find the directory item
+            if(!buildInfo->topLevelItem(count)->text(0).compare("BuildNumber")){
+                treeWidgItem = buildInfo->topLevelItem(count);
+                break;
+            }
+            count++;
+        }
+
+        if(treeWidgItem == 0){
+            return;//if it has not found it return
+        }
+
+        treeWidgItem->setToolTip(1, value);
+        treeWidgItem->setToolTip(0, value);
     }
     else if(setWhat == BUILDDESCRIPTION){
         if(value.size() > DESCRIPTION_SIZE_LIMIT){
@@ -842,5 +919,30 @@ void MainForm::setBuildInfo(int setWhat, QString value, int buildID){
         //no gui elements for this
         //set the buildInfo in xml
         management->setBuildDescription(buildID, value);
+
+
+        //finally set the build name tooltips
+        QTreeWidgetItem *treeWidgItem = 0;
+
+        int count = 0;
+
+        if(buildInfo == 0)
+            return;
+
+        while(count <= buildInfo->topLevelItemCount()){
+            //find the directory item
+            if(!buildInfo->topLevelItem(count)->text(0).compare("Description")){
+                treeWidgItem = buildInfo->topLevelItem(count);
+                break;
+            }
+            count++;
+        }
+
+        if(treeWidgItem == 0){
+            return;//if it has not found it return
+        }
+
+        treeWidgItem->setToolTip(1, value);
+        treeWidgItem->setToolTip(0, value);
     }
 }
