@@ -344,7 +344,8 @@ void Management::setMinStats(QString stats){
 }
 
 int Management::generateUniqueId(){
-    return 1;
+    return qrand() % ((9999 + 1) - 1000) + 1000;
+    //return qrand() % ((high + 1) - low) + low; - http://developer.nokia.com/Community/Wiki/Generating_random-value_integers_in_Qt
 }
 
 

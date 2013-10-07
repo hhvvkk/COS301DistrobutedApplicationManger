@@ -42,25 +42,33 @@ public:
     }
 
     /**
-    * \fn void create_table_example();
-    * @brief creating a table with sqlite in QT example
+    * \fn void insert_machine(QString IPaddr);
+    * @brief inserting machine data with sqlite in QT
     */
-    void create_table_example();
+    void insert_machine(QString IPaddr);
     /**
-    * \fn void insert_query_example();
-    * @brief inserting data with sqlite in QT example
+    * \fn void insert_vitality(QString IPaddr);
+    * @brief inserting vitality data with sqlite in QT
     */
-    void insert_query_example();
-    /**
-    * \fn QString select_name_where_id_example(int id);
-    * @brief selecting data with sqlite in QT example
-    * @param id that has to match with expected name
-    */
-    QString select_name_where_id_example(int id);
+    void insert_vitality(int machineId, int CPUusage, int RAMused, int RAMavail);
+
+    QString select_machineId_by_IPaddr(QString IPaddr);
 
     //add all additional/needed queries here and implement in database.cpp
 
 private:
+    /**
+    * \fn void create_table_machine();
+    * @brief creating a table with sqlite in QT example
+    */
+    void create_table_machine();
+    /**
+    * \fn void create_table_machine_vitality();
+    * @brief creating a table with sqlite in QT example
+    */
+    void create_table_machine_vitality();
+
+
     /**
     * \fn Database();
     * @brief opens the database or creates it if it does not exist

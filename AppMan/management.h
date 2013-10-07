@@ -288,13 +288,12 @@ public:
      */
     void setBuildDescription(int buildID, QString value);
 
-private:
     /**
-     * \fn void clearMachines();
+     * \fn void generateUniqueId();
      * @brief A function to generate a unique id for a new connecting machine
      * @return Returns a new unique Id for a new connecting machine
      */
-    int generateUniqueId();
+    static int generateUniqueId();
 
 private:
     /**
