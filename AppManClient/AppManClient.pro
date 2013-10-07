@@ -40,7 +40,8 @@ SOURCES += main.cpp\
     copierphysicalclient.cpp \
     compression.cpp \
     directoryhandler.cpp \
-    protoupdatebuildinfo.cpp
+    protoupdatebuildinfo.cpp \
+    protoupdatemachineinfo.cpp
 
 HEADERS  += mainwindow.h \
     socketclient.h \
@@ -67,7 +68,8 @@ HEADERS  += mainwindow.h \
     copierphysicalclient.h \
     compression.h \
     directoryhandler.h \
-    protoupdatebuildinfo.h
+    protoupdatebuildinfo.h \
+    protoupdatemachineinfo.h
 
 
 FORMS    += mainwindow.ui \

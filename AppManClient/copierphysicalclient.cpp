@@ -19,15 +19,15 @@ CopierPhysicalClient::CopierPhysicalClient(QHostAddress hAdr, int portNumber, in
      */
     QDir allBDir(allBuildsDirectory);
     if(!allBDir.exists())
-        QDir().mkdir(allBuildsDirectory);
+        QDir().mkpath(allBuildsDirectory);
 
     QDir allCDir(compressDirectory);
     if(!allCDir.exists())
-        QDir().mkdir(compressDirectory);
+        QDir().mkpath(compressDirectory);
 
     QDir allEDir(extractDirectory);
     if(!allEDir.exists())
-        QDir().mkdir(extractDirectory);
+        QDir().mkpath(extractDirectory);
 
     amountRead = 0;
 }

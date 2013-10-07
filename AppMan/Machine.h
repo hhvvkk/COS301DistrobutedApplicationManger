@@ -145,12 +145,19 @@ public:
         virtual void slaveABuildSizeDone() = 0;
 
         /**
-        * \fn void updateBuildName(QString newBuildName) = 0;
-        * @brief The pure virtual function that will be overridden by the Slave update the build name on slave machine
+        * \fn void updateBuildName(int buildID, QString newBuildName) = 0;
+        * @brief The pure virtual function that will be overridden by the Slave to update the build name on slave machine
         * @param newBuildName The new build name to update it to
         * @param buildID the Id of the build to be updated
         */
         virtual void updateBuildName(int buildID, QString newBuildName) = 0;
+
+        /**
+        * \fn void updateUniqueID(int uniqueID) = 0;
+        * @brief The pure virtual function that will be overridden by the Slave to update the machine unique ID
+        * @param uniqueID The new unique ID of the machine
+        */
+        virtual void updateUniqueID(int uniqueID) = 0;
 };
 
 #endif // MACHINE_H

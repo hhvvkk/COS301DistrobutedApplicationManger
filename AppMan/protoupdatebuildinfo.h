@@ -16,7 +16,7 @@ class ProtoUpdateBuildInfo : public Protocol
 public:
 
     /**
-     * \fn ProtoUpdate(QObject *parent = 0);
+     * \fn ProtoUpdateBuildInfo(QObject *parent = 0);
      * @brief the constructor
      */
     ProtoUpdateBuildInfo(QObject *parent = 0);

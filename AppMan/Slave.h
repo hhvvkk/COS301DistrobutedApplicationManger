@@ -125,12 +125,20 @@ public:
         void slaveABuildSizeDone();
 
         /**
-        * \fn void updateBuildName(QString newBuildName);
+        * \fn void updateBuildName(int buildID, QString newBuildName);
         * @brief The function to update the build name on the slave machine
         * @param newBuildName The new build build name to update it to
         * @param buildID the build ID of the build to be updated
         */
         void updateBuildName(int buildID, QString newBuildName);
+
+
+        /**
+        * \fn void updateUniqueID(int uniqueID);
+        * @brief The function to update the unique ID on the machine
+        * @param uniqueID the new ID of the machine
+        */
+        void updateUniqueID(int uniqueID);
 
 };
 

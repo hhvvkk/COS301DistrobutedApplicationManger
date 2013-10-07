@@ -15,6 +15,7 @@ ProtocolHandler::ProtocolHandler( Management *man, QObject *parent) :
     getSysInfo = new ProtoGetSysInfo(this);
     sendBuild = new ProtoSendBuild(this);
     updateBuildInfo = new ProtoUpdateBuildInfo(this);
+    updateMachineInfo = new ProtoUpdateMachineInfo(this);
     firstTalk = true;
 }
 
@@ -26,6 +27,7 @@ ProtocolHandler::~ProtocolHandler(){
     getSysInfo->deleteLater();
     sendBuild->deleteLater();
     updateBuildInfo->deleteLater();
+    updateMachineInfo->deleteLater();
 }
 
 void ProtocolHandler::handle(QString data){
@@ -105,6 +107,10 @@ void ProtocolHandler::requestHandler(QString data){
 
     if(!handler.toString().compare("ProtoUpdateBuildInfo"))
         updateBuildInfo->handle(jsonObject, management, slaveSocket);
+    else
+
+    if(!handler.toString().compare("ProtoUpdateMachineInfo"))
+        updateMachineInfo->handle(jsonObject, management, slaveSocket);
 
 }
 
@@ -169,4 +175,12 @@ void ProtocolHandler::updateBuildName(int buildID, QString newBuildName){
     if(theUpdater == 0)
         return;
     theUpdater->updateName(buildID, newBuildName, slaveSocket);
+}
+
+
+void ProtocolHandler::updateUniqueID(int uniqueID){
+    ProtoUpdateMachineInfo *theUpdater = dynamic_cast<ProtoUpdateMachineInfo*>(updateMachineInfo);
+    if(theUpdater == 0)
+        return;
+    theUpdater->updateUniqueID(uniqueID, slaveSocket);
 }

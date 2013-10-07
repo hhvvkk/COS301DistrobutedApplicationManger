@@ -144,3 +144,15 @@ void Management::updateBuildName(int buildID, QString newBuildName){
     xmlWriter anXMLWriter = xmlWriter();
     anXMLWriter.updateBuildName(buildID, newBuildName);
 }
+
+
+void Management::updateUniqueID(int uniqueID){
+    QSettings setting("settings.ini",QSettings::IniFormat);
+
+    //grouping the settings
+    setting.beginGroup("Connection");
+
+    setting.setValue("machineID", uniqueID);
+
+    setting.endGroup();
+}

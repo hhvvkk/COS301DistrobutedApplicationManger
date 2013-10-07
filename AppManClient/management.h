@@ -9,6 +9,7 @@
 #include <QString>
 #include <QDir>
 #include <QCryptographicHash>
+#include <QSettings>
 
 #include "Build.h"
 #include "network.h"
@@ -127,6 +128,13 @@ public:
     */
     void updateBuildName(int buildID, QString newBuildName);
 
+
+    /**
+    * \fn void updateUniqueID(int uniqueID);
+    * @brief The function to update the unique ID on the machine
+    * @param uniqueID the new ID of the machine
+    */
+    void updateUniqueID(int uniqueID);
 private:
     /**
      * @brief network An Object that will harbour some of the network information

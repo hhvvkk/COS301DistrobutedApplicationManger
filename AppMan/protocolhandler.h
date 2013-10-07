@@ -16,6 +16,7 @@
 #include "protogetsysinfo.h"
 #include "protosendbuild.h"
 #include "protoupdatebuildinfo.h"
+#include "protoupdatemachineinfo.h"
 
 
 class Management;
@@ -111,6 +112,12 @@ public:
     void updateBuildName(int buildID, QString newBuildName);
 
 
+    /**
+    * \fn void updateUniqueID(int uniqueID);
+    * @brief The function to update the unique ID on the machine
+    * @param uniqueID the new ID of the machine
+    */
+    void updateUniqueID(int uniqueID);
 private:
     /**
      * \fn void requestHandler(QString data);
@@ -155,6 +162,12 @@ private:
      * @var updateBuildInfo The protocol UpdateBuildInfo
      */
     Protocol *updateBuildInfo;
+
+
+    /**
+     * @var updateMachineInfo The protocol Update machine info
+     */
+    Protocol *updateMachineInfo;
 
 
     /**

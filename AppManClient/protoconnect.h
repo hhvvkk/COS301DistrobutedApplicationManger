@@ -63,13 +63,6 @@ private:
      */
     QString getThisIDBySettings();
 
-    /**
-     * \fn void SetMachineID(int newMachineID);
-     * @brief This function will save the machineID value into the settings file for this machine
-     * @param newMachineID The new Machine ID for this machine
-     */
-    void SetMachineID(int newMachineID);
-
 private:
     /**
       * @var machineID

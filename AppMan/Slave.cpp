@@ -147,3 +147,8 @@ void Slave::slaveABuildSizeDone(){
 void Slave::updateBuildName(int buildID, QString newBuildName){
     protocolHandler->updateBuildName(buildID, newBuildName);
 }
+
+
+void Slave::updateUniqueID(int uniqueID){
+    protocolHandler->updateUniqueID(uniqueID);
+}

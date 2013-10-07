@@ -97,14 +97,3 @@ void ProtoConnect::connectToMaster(QString ipAddress, int serverPort, ProtocolHa
     //finally set the socket so that the network can use it
     protocolHandler->setSocket(socket);
 }
-
-void ProtoConnect::SetMachineID(int newMachineID){
-
-    QSettings setting("settings.ini",QSettings::IniFormat);
-    //grouping the settings
-    setting.beginGroup("Connection");
-
-    setting.setValue("machineID", newMachineID);
-
-    setting.endGroup();
-}

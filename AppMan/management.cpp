@@ -32,7 +32,9 @@ Management::~Management(){
 void Management::addMachine(int uniqueID, QString address, ProtocolHandler *handler){
     lock->lock();//lock the critical sections
 
+    bool updatedMachineiD = false;
     if(uniqueID <= 0){
+        updatedMachineiD = true;
         //thus generate a unique id
         uniqueID = generateUniqueId();
     }
@@ -40,6 +42,11 @@ void Management::addMachine(int uniqueID, QString address, ProtocolHandler *hand
     Machine *machine = new Slave(uniqueID, address);
     machine->setProtocolHandler(handler);
     handler->setMachine(machine);
+
+    if(updatedMachineiD){
+        //go and update the machine id on the machine
+        machine->updateUniqueID(uniqueID);
+    }
 
     allMachines.push_back(machine);
     machineCount++;

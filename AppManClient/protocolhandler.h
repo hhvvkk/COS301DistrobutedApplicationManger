@@ -13,6 +13,7 @@
 #include "protogetsysinfo.h"
 #include "protosendbuild.h"
 #include "protoupdatebuildinfo.h"
+#include "protoupdatemachineinfo.h"
 
 #include "json.h"
 
@@ -30,6 +31,9 @@ class ProtocolHandler : public QObject
 public:
     explicit ProtocolHandler(Management *man, QObject *parent = 0);
 
+
+
+    ~ProtocolHandler();
 
     /**
      * \fn void handle(QString data);
@@ -79,6 +83,7 @@ private:
     Protocol *getSysInfo;
     Protocol *sendBuild;
     Protocol *updateBuildInfo;
+    Protocol *updateMachineInfo;
 
 };
 
