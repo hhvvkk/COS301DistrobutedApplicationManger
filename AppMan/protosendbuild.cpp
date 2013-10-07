@@ -34,7 +34,6 @@ void ProtoSendBuild::SizeCheckAllBuildsDone(QTcpSocket *slaveSocket, Management 
     if(slaveSocket == 0){
         return;
     }
-
     QObject *myParent = this->parent();
     if(myParent == 0)
         return;
@@ -53,6 +52,7 @@ void ProtoSendBuild::SizeCheckAllBuildsDone(QTcpSocket *slaveSocket, Management 
 
     for(int i = 0; i < handler->getMachine()->getBuildCount(); i++){
         Build aBuild = slaveBuilds[i];
+
         if(!aBuild.getIsSame()){//if the build is not the same, append it to the list
             differentBuildIDs->append(QString::number(aBuild.getBuildID()));
             differentBuildDirectories->append(aBuild.getBuildDirectory());
@@ -70,7 +70,6 @@ void ProtoSendBuild::SizeCheckAllBuildsDone(QTcpSocket *slaveSocket, Management 
 
     //get the port on which new server will run
     int port = newSender->startServer();
-
 
     if(port == 0){
         newSender->deleteLater();

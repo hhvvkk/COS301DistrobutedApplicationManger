@@ -193,17 +193,17 @@ void Management::addBuildToSlave(int machineId, int BuildID, QString buildName){
         return;
 
     Build trueBuild = getBuildByID(BuildID);
-    Build buildToAdd = Build(BuildID, buildName,"","");
 
-    if(!buildToAdd.getBuildDescription().compare("NULL")
-        && !buildToAdd.getBuildDirectory().compare("NULL")
-        && !buildToAdd.getBuildName().compare("NULL")
-        && buildToAdd.getBuildID() == 0){
+    if(!trueBuild.getBuildDescription().compare("NULL")
+        && !trueBuild.getBuildDirectory().compare("NULL")
+        && !trueBuild.getBuildName().compare("NULL")
+        && trueBuild.getBuildID() == 0){
         //this point the build does not exist
         emit slaveGotBuild(machine, BuildID, buildName, false);
         //this point that machine has a build it is not suppose to have...go and delete it
     }
     else{
+        Build buildToAdd = Build(BuildID, buildName, "", trueBuild.getBuildDirectory());
         machine->addBuild(buildToAdd);
         emit slaveGotBuild(machine, BuildID, buildName, true);
 

@@ -181,7 +181,7 @@ void CopySenderServer::requestHandler(QString data){
 
     if(!handler.toString().compare("QVariant(, )")){
         qDebug()<< "invalid JSON String::"<<data;
-        return;
+        ;
     }
 
     if(firstTalk){
