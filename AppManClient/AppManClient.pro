@@ -41,6 +41,7 @@ SOURCES += main.cpp\
     compression.cpp \
     directoryhandler.cpp \
     protoupdatebuildinfo.cpp \
+    md5thread.cpp \
     protoupdatemachineinfo.cpp
 
 HEADERS  += mainwindow.h \
@@ -69,6 +70,7 @@ HEADERS  += mainwindow.h \
     compression.h \
     directoryhandler.h \
     protoupdatebuildinfo.h \
+    md5thread.h \
     protoupdatemachineinfo.h
 
 

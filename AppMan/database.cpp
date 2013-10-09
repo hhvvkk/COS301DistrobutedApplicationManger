@@ -31,9 +31,9 @@ bool Database::checkUniqueID(int Id){
     q.exec();
     q.next();
     if (q.value(0).toInt() == 0) {
-        return false;
-    } else {
         return true;
+    } else {
+        return false;
     }
 }
 

@@ -233,8 +233,8 @@ void CopySenderClient::EndAllDifferences(){
 }
 
 BuildMD5* CopySenderClient::getBuildMD5Class(QString directory){
-    BuildMD5* md5class = new BuildMD5();
-    md5class->generateAllMD5(directory);
+    BuildMD5* md5class = new BuildMD5(directory,5);
+    md5class->generate();
     return md5class;
 }
 

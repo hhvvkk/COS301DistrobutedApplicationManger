@@ -21,6 +21,7 @@
 #include "myDirIterator.h"
 #include "protocolhandler.h"
 #include "database.h"
+#include "buildmd5.h"
 
 //forward declaration of server so that it can be used
 class Server;

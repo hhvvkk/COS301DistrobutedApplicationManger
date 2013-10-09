@@ -8,7 +8,5 @@ AboutVersion::AboutVersion(QWidget *parent) :
     ui->setupUi(this);
 }
 
-AboutVersion::~AboutVersion()
-{
-    delete ui;
+AboutVersion::~AboutVersion(){
 }

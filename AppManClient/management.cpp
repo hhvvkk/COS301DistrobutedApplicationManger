@@ -99,28 +99,9 @@ Build Management::getBuildByID(int id){
 }
 
 QString Management::getBuildMD5(Build build){
-    /*  This method iterates through all files and sub-directories
-     *  of the current build directory, adding all file data and then
-     *  calculates a MD5 checksum of all files combined
-     */
-        QCryptographicHash md5(QCryptographicHash::Md5);
-
-        QString dir = build.getBuildDirectory();
-
-        myDirIterator dirIt(dir,1);
-        dirIt.getFileInfo();
-        QVector<QString> paths = dirIt.retrieveFilePaths();
-
-        for (int i=0;i<paths.size();i++) {
-            QFile file(paths.at(i));
-            //qDebug()<< "PATH: " + paths.at(i);
-            file.open(QFile::ReadOnly);
-            md5.addData(file.readAll());
-            file.close();
-        }
-        //qDebug()<< md5.result().toHex();
-        QString hash(md5.result().toHex().constData());
-        return hash;
+    BuildMD5 md5(build.getBuildDirectory(),5);
+    md5.generate();
+    return md5.getDirectoryMD5();
 }
 
 void Management::setConnected(bool connectionValue){

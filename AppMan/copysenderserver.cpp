@@ -266,8 +266,8 @@ void CopySenderServer::BuildFileSumMD5(const QVariantMap jsonObject){
     if(!theBuildDirectory.compare(""))
         return;
 
-    BuildMD5 *buildMD5Class = new BuildMD5();
-    buildMD5Class->generateAllMD5(theBuildDirectory);
+    BuildMD5 *buildMD5Class = new BuildMD5(theBuildDirectory,5);
+    buildMD5Class->generate();
 
     //here it gets all the build md5 values with their keys(The keys are their file directory)
     QVariantMap mapOfBuilds = allMD5s.toMap();

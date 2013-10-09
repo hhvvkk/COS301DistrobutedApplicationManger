@@ -52,6 +52,7 @@ SOURCES += main.cpp\
     database.cpp \
     protoupdatebuildinfo.cpp \
     mainbuildinfo.cpp \
+    md5thread.cpp \
     protoupdatemachineinfo.cpp
 
 HEADERS  += mainform.h \
@@ -90,6 +91,7 @@ HEADERS  += mainform.h \
     database.h \
     protoupdatebuildinfo.h \
     mainbuildinfo.h \
+    md5thread.h \
     protoupdatemachineinfo.h
 
 FORMS    += mainform.ui \
