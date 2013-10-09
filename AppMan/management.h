@@ -20,6 +20,7 @@
 #include "server.h"
 #include "myDirIterator.h"
 #include "protocolhandler.h"
+#include "database.h"
 
 //forward declaration of server so that it can be used
 class Server;
@@ -293,7 +294,7 @@ public:
      * @brief A function to generate a unique id for a new connecting machine
      * @return Returns a new unique Id for a new connecting machine
      */
-    static int generateUniqueId();
+    int generateUniqueId();
 
 private:
     /**

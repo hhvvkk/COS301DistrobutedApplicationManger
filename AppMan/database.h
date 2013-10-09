@@ -41,11 +41,13 @@ public:
         mutex.unlock();
     }
 
+    bool checkUniqueID(int Id);
+
     /**
     * \fn void insert_machine(QString IPaddr);
     * @brief inserting machine data with sqlite in QT
     */
-    void insert_machine(QString IPaddr);
+    void insert_machine(int Id, QString IPaddr);
     /**
     * \fn void insert_vitality(QString IPaddr);
     * @brief inserting vitality data with sqlite in QT

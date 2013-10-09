@@ -4,7 +4,6 @@
 
 int main(int argc, char *argv[])
 {
-    qsrand(QDateTime::currentDateTime().toTime_t());
     Q_INIT_RESOURCE(images);
     QApplication a(argc, argv);
     a.setQuitOnLastWindowClosed(false);

@@ -1,5 +1,7 @@
 #include "management.h"
 
+const int MAX_MACHINES = 10000;
+
 Management::Management(QObject *parent) :
     QObject(parent)
 {
@@ -353,9 +355,13 @@ void Management::setMinStats(QString stats){
     minStats = stats;
 }
 
-int Management::generateUniqueId(){
-    return qrand() % ((9999 + 1) - 1000) + 1000;
-    //return qrand() % ((high + 1) - low) + low; - http://developer.nokia.com/Community/Wiki/Generating_random-value_integers_in_Qt
+int Management::generateUniqueId(){        
+    for (int i=1 ;i <= MAX_MACHINES ;i++) {
+        if (Database::instance()->checkUniqueID(i)) {
+            return i;
+        }
+    }
+    return -1;
 }
 
 

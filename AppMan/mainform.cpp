@@ -49,7 +49,6 @@ MainForm::MainForm(QWidget *parent) :
     slaveStats = 0;
     management->startServer();
 
-
     /*
      *Create the tray(BEGIN)
      **/

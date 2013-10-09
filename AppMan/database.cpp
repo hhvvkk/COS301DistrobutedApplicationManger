@@ -2,7 +2,7 @@
 #include "management.h"
 
 //Sample Usage:
-
+//
 //Database::instance()->insert_query_example();
 //QString s = Database::instance()->select_name_where_id(10);
 //Database::drop();
@@ -24,6 +24,19 @@ Database::Database()
     }
 }
 
+bool Database::checkUniqueID(int Id){
+    QSqlQuery q;
+    QString s = "SELECT machineId FROM machine WHERE machineId='" + QString::number(Id) + "';";
+    q.prepare(s);
+    q.exec();
+    q.next();
+    if (q.value(0).toInt() == 0) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
 void Database::create_table_machine() {
     QSqlQuery q;
     q.prepare("CREATE TABLE machine(machineId int PRIMARY KEY,IPaddr text);");
@@ -35,13 +48,9 @@ void Database::create_table_machine_vitality() {
     q.prepare("CREATE TABLE vitality(machineId int PRIMARY KEY, CPUusage int, RAMused int, RAMavail int, FOREIGN KEY(machineId) REFERENCES machine(machineId));");
     q.exec();
 }
-void Database::insert_machine(QString IPaddr) {
+void Database::insert_machine(int Id, QString IPaddr) {
     QSqlQuery q;
-    int id = Management::generateUniqueId();
-
-    //TODO check if id exists in database
-
-    q.prepare("INSERT INTO machine (machineId,IPaddr) VALUES (" + QString::number(id) + ",'" + IPaddr +  "');");
+    q.prepare("INSERT INTO machine (machineId,IPaddr) VALUES (" + QString::number(Id) + ",'" + IPaddr +  "');");
     q.exec();
 }
 
