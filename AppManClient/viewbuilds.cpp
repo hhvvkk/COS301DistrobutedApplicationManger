@@ -28,6 +28,10 @@ void viewBuilds::getReader(xmlReader xRead){
     xReader = xRead;
 }
 
+void viewBuilds::getAppReader(appXMLReader xreader){
+    xAppRead = xreader;
+}
+
 void viewBuilds::showBuilds(){
     QTreeWidgetItem *boola;
     QTreeWidgetItem *boola1;
@@ -70,6 +74,29 @@ void viewBuilds::showBuilds(){
         boola->addChild(boola2);
         ui->treeWidget->addTopLevelItem(boola);
     }
+
+    xAppRead.parseXML();
+    QMap<QString,QString> appName = xAppRead.getAppNames();
+    QMap<QString,QString> appFile = xAppRead.getAppFiles();
+    QMapIterator<QString, QString> m(appName);
+    QMapIterator<QString, QString> n(appFile);
+
+    while (m.hasNext() && n.hasNext())
+    {
+        m.next(); n.next();
+        boola = new QTreeWidgetItem();
+        boola1 = new QTreeWidgetItem();
+        boola2 = new QTreeWidgetItem();
+        boola->setText(0,"Application");
+        boola1->setText(0,"App Name: "+m.value());
+        boola1->setToolTip(0,m.value());
+        boola2->setText(0,"App Executable: "+n.value());
+        boola2->setToolTip(0,n.value());
+        boola1->addChild(boola2);
+        boola->addChild(boola1);
+        ui->treeWidget->addTopLevelItem(boola);
+    }
+
 }
 
 void viewBuilds::on_treeWidget_clicked(const QModelIndex &index)

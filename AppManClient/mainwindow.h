@@ -21,6 +21,7 @@
 #include "management.h"
 #include "viewbuilds.h"
 #include "addbuildfortest.h"
+#include "addapp.h"
 
 namespace Ui {
 class MainWindow;
@@ -110,6 +111,8 @@ private slots:
      * @brief on_pushButton_@_clicked the click function of the button
      */
     void on_pushButton_2_clicked();
+
+    void on_pushButton_3_clicked();
 
 private:
     /**

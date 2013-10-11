@@ -135,6 +135,10 @@ public:
     * @param uniqueID the new ID of the machine
     */
     void updateUniqueID(int uniqueID);
+
+    void addToAppList(QString appName, QString appDir);
+
+    QMap<QString,QString> getAppList();
 private:
     /**
      * @brief network An Object that will harbour some of the network information
@@ -169,6 +173,9 @@ private:
       *@brief systeminfo is an instance of the sysInfo class
       */
      sysInfo systeminfo;
+
+
+     QMap<QString,QString> appList;
 };
 
 #endif // MANAGEMENT_H

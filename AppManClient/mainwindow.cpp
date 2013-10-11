@@ -233,3 +233,9 @@ bool MainWindow::validateIpAddress(const QString &ipAddress){
 
     return false;
 }
+
+void MainWindow::on_pushButton_3_clicked()
+{
+    AddApp * appAdder = new AddApp();
+    appAdder->show();
+}

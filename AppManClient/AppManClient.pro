@@ -42,7 +42,10 @@ SOURCES += main.cpp\
     directoryhandler.cpp \
     protoupdatebuildinfo.cpp \
     md5thread.cpp \
-    protoupdatemachineinfo.cpp
+    protoupdatemachineinfo.cpp \
+    addapp.cpp \
+    appxmlwriter.cpp \
+    appxmlreader.cpp
 
 HEADERS  += mainwindow.h \
     socketclient.h \
@@ -71,12 +74,16 @@ HEADERS  += mainwindow.h \
     directoryhandler.h \
     protoupdatebuildinfo.h \
     md5thread.h \
-    protoupdatemachineinfo.h
+    protoupdatemachineinfo.h \
+    addapp.h \
+    appxmlwriter.h \
+    appxmlreader.h
 
 
 FORMS    += mainwindow.ui \
     viewbuilds.ui \
-    addbuildfortest.ui
+    addbuildfortest.ui \
+    addapp.ui
 
 RESOURCES += \
     images.qrc \

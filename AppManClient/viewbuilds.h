@@ -10,6 +10,7 @@
 #include <QTreeWidgetItem>
 #include "xmlReader.h"
 #include "management.h"
+#include "appxmlreader.h"
 
 namespace Ui {
 class viewBuilds;
@@ -51,6 +52,8 @@ public:
      * @param man the manager to be set
      */
     void getManager(Management * man);
+
+    void getAppReader(appXMLReader xreader);
     
 private slots:
     void on_pushButton_clicked();
@@ -73,6 +76,8 @@ private:
      * @brief manage the pointer to a manager instance
      */
     Management * manage;
+
+    appXMLReader xAppRead;
 };
 
 #endif // VIEWBUILDS_H

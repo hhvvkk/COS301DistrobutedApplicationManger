@@ -137,3 +137,11 @@ void Management::updateUniqueID(int uniqueID){
 
     setting.endGroup();
 }
+
+void Management::addToAppList(QString appName, QString appDir){
+    appList.insertMulti(appName,appDir);
+}
+
+QMap<QString,QString> Management::getAppList(){
+    return appList;
+}
