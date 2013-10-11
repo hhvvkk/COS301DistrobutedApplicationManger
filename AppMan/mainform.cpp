@@ -945,3 +945,25 @@ void MainForm::setBuildInfo(int setWhat, QString value, int buildID){
         treeWidgItem->setToolTip(0, value);
     }
 }
+
+void MainForm::on_actionAdd_Simulation_triggered(){
+    AddSimulation * as = new AddSimulation(this,management);
+     connect(as,SIGNAL(initiateAddSimulation(Simulation *)),this,SLOT(initiateAddSimulation(Simulation *)));
+     as->show();
+}
+
+void MainForm::initiateAddSimulation(Simulation *sim){
+    management->addSimulation(sim);
+    showSimulations();
+}
+
+void MainForm::showSimulations(){
+    ui->treeWidgetSimulations->clear();
+        ui->treeWidgetSimulations->setColumnCount(1);
+        QTreeWidgetItem *newItem;
+        for(int i = 0; i < management->getSimCount(); i++){
+            newItem = new QTreeWidgetItem();
+            newItem->setText(0,management->getAllSims().at(i)->getName());
+            ui->treeWidgetSimulations->addTopLevelItem(newItem);
+        }
+}

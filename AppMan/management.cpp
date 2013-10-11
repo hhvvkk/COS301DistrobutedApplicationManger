@@ -9,6 +9,7 @@ Management::Management(QObject *parent) :
     buildCount = 0;
     machineCount = 0;
     lock = new QMutex();
+    simCount = 0;
 }
 
 void Management::setServer(Server *s){
@@ -398,4 +399,9 @@ void Management::setBuildDescription(int buildID, QString value){
     theBuild.setBuildDescription(value);
     xmlWriter writer;
     writer.updateBuildDescr(buildID, value);
+}
+
+void Management::addSimulation(Simulation *sim){
+    allSimulations.push_back(sim);
+    simCount++;
 }

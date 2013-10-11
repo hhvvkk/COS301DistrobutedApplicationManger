@@ -22,6 +22,7 @@
 #include "protocolhandler.h"
 #include "database.h"
 #include "buildmd5.h"
+#include "simulation.h"
 
 //forward declaration of server so that it can be used
 class Server;
@@ -297,6 +298,11 @@ public:
      */
     int generateUniqueId();
 
+
+    void addSimulation(Simulation * sim);
+        int getSimCount() { return simCount; }
+        QVector<Simulation*> getAllSims() { return allSimulations; }
+
 private:
     /**
      * @var server
@@ -336,6 +342,10 @@ private:
 
     QString minStats;
     QString detStats;
+
+
+    int simCount;
+        QVector<Simulation*> allSimulations;
 
 };
 

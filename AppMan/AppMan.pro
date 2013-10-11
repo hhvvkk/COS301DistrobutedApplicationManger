@@ -53,7 +53,9 @@ SOURCES += main.cpp\
     protoupdatebuildinfo.cpp \
     mainbuildinfo.cpp \
     md5thread.cpp \
-    protoupdatemachineinfo.cpp
+    protoupdatemachineinfo.cpp \
+    addsimulation.cpp \
+    simulation.cpp
 
 HEADERS  += mainform.h \
     aboutversion.h \
@@ -92,7 +94,9 @@ HEADERS  += mainform.h \
     protoupdatebuildinfo.h \
     mainbuildinfo.h \
     md5thread.h \
-    protoupdatemachineinfo.h
+    protoupdatemachineinfo.h \
+    addsimulation.h \
+    simulation.h
 
 FORMS    += mainform.ui \
     aboutversion.ui \
@@ -101,7 +105,8 @@ FORMS    += mainform.ui \
     addbuild.ui \
     copybuildover.ui\
     moreinfo.ui \
-    applicationsettings.ui
+    applicationsettings.ui \
+    addsimulation.ui
 
 RESOURCES += \
     images.qrc \

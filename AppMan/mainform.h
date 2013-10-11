@@ -30,6 +30,8 @@
 #include <QSystemTrayIcon>
 #include <QInputDialog>
 
+#include "addsimulation.h"
+
 #include "mainbuildinfo.h"
 #include "abouthelp.h"
 #include "aboutversion.h"
@@ -42,6 +44,7 @@
 #include "server.h"
 #include "xmlReader.h"
 #include "moreinfo.h"
+#include "simulation.h"
 
 
 namespace Ui {
@@ -136,6 +139,12 @@ private slots:
      * @brief initiateAddBuild will emit a signal to add the build
      */
     void initiateAddBuild(Build b);
+
+
+    void initiateAddSimulation(Simulation * sim);
+
+    void showSimulations();
+
 
     /**
       * \fn void slaveDisconnected(int index);
@@ -251,6 +260,11 @@ private slots:
      * @param theColumn The index of the column of the item double clicked
      */
     void buildInfoItemEditedChanged(QTreeWidgetItem*, int column);
+
+
+    void on_actionAdd_Simulation_triggered();
+
+
 private:
     /**
      * \fn dropBuildToSlave(QString from);
