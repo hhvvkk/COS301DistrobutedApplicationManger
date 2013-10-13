@@ -8,6 +8,8 @@
 #include <QDebug>
 #include <QStringList>
 #include <QTimer>
+#include <QFuture>
+#include <QtConcurrentRun>
 
 /**
  * @class CopierPhysical
@@ -81,11 +83,27 @@ private slots:
     void readyReadFunction();
 
 private:
+
+    /**
+     * \fn void writeFileOverNetwork();
+     * @brief A function which physically writes the file over the network(as captured in the buffer)
+     */
+    void writeFileOverNetwork();
+
+
     /**
      * \fn void destroyServer();
      * @brief A function which starts the process of copying the file over the network
      */
     void initiateCopyOver();
+
+    /**
+     * \fn QByteArray concurrentFileRead(QFile *fileToRead);
+     * @brief A function to read from the file into a byte array
+     * @return Returns the QByteArray of the file
+     * @param fileToRead The file which will be read
+     */
+    QByteArray concurrentFileRead(QFile *fileToRead);
 
 private:
     /**

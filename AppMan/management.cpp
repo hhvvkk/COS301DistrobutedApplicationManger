@@ -255,11 +255,11 @@ void Management::slaveBuildSize(int BuildID, QString buildMD5Value, int slaveId)
         //this point the build does not exist
         return;
     }
-    else{
-        //qDebug()<<"EXISTS::"<<BuildID;
-    }
 
-    if(!buildMD5Value.compare(getBuildMD5(&theBuild))){
+    QFuture<QString> future = QtConcurrent::run(this, &Management::getBuildMD5, &theBuild);
+    QString currentBuildMD5Value = future.result();
+
+    if(!buildMD5Value.compare(currentBuildMD5Value)){
         setSlaveBuildIsSame(true, slaveId, theBuild.getBuildID());
         //void slaveBuildSizeSame(int buildId, int slaveId, bool isTheSame);
         emit slaveBuildSizeSame(theBuild.getBuildID(), slaveId, true);
@@ -281,11 +281,16 @@ void Management::slaveABuildSize(int BuildID, QString buildMD5Value, int slaveId
         //this point the build does not exist
         return;
     }
-    else{
-        //qDebug()<<"EXISTS::"<<BuildID;
-    }
 
-    if(!buildMD5Value.compare(getBuildMD5(&theBuild))){
+
+    Machine * m = getMachineById(slaveId);
+    if(m == 0)
+        return;
+
+    QFuture<QString> future = QtConcurrent::run(this, &Management::getBuildMD5, &theBuild);
+    QString currentBuildMD5Value = future.result();
+
+    if(!buildMD5Value.compare(currentBuildMD5Value)){
         setSlaveBuildIsSame(true, slaveId, theBuild.getBuildID());
         //void slaveBuildSizeSame(int buildId, int slaveId, bool isTheSame);
         emit slaveBuildSizeSame(theBuild.getBuildID(), slaveId, true);
@@ -295,9 +300,6 @@ void Management::slaveABuildSize(int BuildID, QString buildMD5Value, int slaveId
         emit slaveBuildSizeSame(theBuild.getBuildID(), slaveId, false);
     }
 
-    Machine * m = getMachineById(slaveId);
-    if(m == 0)
-        return;
     m->slaveABuildSizeDone();
 }
 

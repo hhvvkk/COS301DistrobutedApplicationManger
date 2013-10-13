@@ -59,7 +59,13 @@ void ProtoSizeCheckBuilds::SizeCheckABuild(QVariantMap jsonObject, Management *m
     appendJSONValue(jsonMessage, "subHandler", "BuildMD5", true);
     QString BuildIDString = QString::number(theBuild.getBuildID());
     appendJSONValue(jsonMessage, "BuildID", BuildIDString, true);
-    appendJSONValue(jsonMessage, "md5Sum", management->getBuildMD5(theBuild), true);
+
+    //generate the md5 value in a separate thread
+    QFuture<QString> future = QtConcurrent::run(management, &Management::getBuildMD5, theBuild);
+
+    QString md5ValueGenerated = future.result();
+
+    appendJSONValue(jsonMessage, "md5Sum", md5ValueGenerated, true);
     appendJSONValue(jsonMessage, "OneBuildOnly", "true", false);
     endJSONMessage(jsonMessage);
 

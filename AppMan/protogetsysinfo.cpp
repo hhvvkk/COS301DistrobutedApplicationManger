@@ -32,9 +32,7 @@ void ProtoGetSysInfo::getDetailed(QTcpSocket *slaveSocket){
     appendJSONValue(jsonMessage,"subHandler","GetDetailedSysInfo",false);
     endJSONMessage(jsonMessage);
 
-
-    slaveSocket->write(jsonMessage.toAscii().data());
-    slaveSocket->flush();
+    sendJSONMessage(slaveSocket, jsonMessage);
 }
 
 void ProtoGetSysInfo::getMinimal(QTcpSocket *slaveSocket){
@@ -43,7 +41,5 @@ void ProtoGetSysInfo::getMinimal(QTcpSocket *slaveSocket){
     appendJSONValue(jsonMessage,"subHandler","GetMinimalSysInfo",false);
     endJSONMessage(jsonMessage);
 
-
-    slaveSocket->write(jsonMessage.toAscii().data());
-    slaveSocket->flush();
+    sendJSONMessage(slaveSocket, jsonMessage);
 }

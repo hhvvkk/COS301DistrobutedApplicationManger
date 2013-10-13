@@ -42,11 +42,10 @@ void ProtoSlaveCurrentBuilds::SizeCheckAllBuilds(QTcpSocket *slaveSocket){
     appendJSONValue(jsonMessage, "subHandler", "SizeCheckAllBuilds", false);
     endJSONMessage(jsonMessage);
 
-    slaveSocket->write(jsonMessage.toAscii().data());
-    slaveSocket->flush();
+    sendJSONMessage(slaveSocket, jsonMessage);
 }
 
-void ProtoSlaveCurrentBuilds::Rechecker(QVariantMap jsonObject, Management *management, QTcpSocket *socket){
+void ProtoSlaveCurrentBuilds::Rechecker(QVariantMap jsonObject, Management *management, QTcpSocket *slaveSocket){
 
     QString BuildID = jsonObject.value("BuildID").toString();
 
@@ -54,21 +53,31 @@ void ProtoSlaveCurrentBuilds::Rechecker(QVariantMap jsonObject, Management *mana
 
     int BuildIDId = BuildID.toInt();
 
-    QObject *myParent = this->parent();
-    if(myParent == 0)
-        return;
-
-    ProtocolHandler *handler = dynamic_cast<ProtocolHandler*>(myParent);
-
-    management->addBuildToSlave(handler->getMachine()->getMachineID(), BuildIDId, buildName);
+    QtConcurrent::run(this, &ProtoSlaveCurrentBuilds::addBuildToSlave, management, BuildIDId, buildName);
 
     QString jsonMessage = startJSONMessage();
     appendJSONValue(jsonMessage, "handler", "ProtoSlaveCurrentBuilds", true);
     appendJSONValue(jsonMessage, "subHandler", "Rechecker", false);
     endJSONMessage(jsonMessage);
 
-    socket->write(jsonMessage.toAscii().data());
-    socket->flush();
+    sendJSONMessage(slaveSocket, jsonMessage);
+}
+
+void ProtoSlaveCurrentBuilds::addBuildToSlave(Management *management, int buildID, QString buildName){
+    if(management == 0)
+        return;
+
+    QObject *myParent = this->parent();
+    if(myParent == 0)
+        return;
+
+    ProtocolHandler *handler = dynamic_cast<ProtocolHandler*>(myParent);
+
+    if(handler == 0){
+        return;
+    }
+
+    management->addBuildToSlave(handler->getMachine()->getMachineID(), buildID, buildName);
 }
 
 void ProtoSlaveCurrentBuilds::RecheckBuilds(QTcpSocket *slaveSocket){

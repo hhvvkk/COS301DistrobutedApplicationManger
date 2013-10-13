@@ -20,7 +20,7 @@ class Management;
  * @class ServerThread
  * @brief The ServerThread class will be constructed each time a client application will connects to harbour separate communication for all clients connecting
  */
-class ServerThread : public QThread
+class ServerThread : public QObject
 {
     Q_OBJECT
 public:
@@ -33,10 +33,10 @@ public:
     explicit ServerThread(int ID, Management *man, QObject *parent = 0);
 
     /**
-     * \fn run();
+     * \fn start();
      * @brief run Function that start the thread for a client
      */
-    void run();
+    void start();
 
 
     /**

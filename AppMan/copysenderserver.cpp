@@ -9,7 +9,7 @@ CopySenderServer::CopySenderServer( QStringList *differentB, QStringList *differ
     machineId = mashId;
 
     firstTalk = true;
-    loadCompressPath();
+    QtConcurrent::run(this, &CopySenderServer::loadCompressPath);
 
     //the copier queue will be created at another location
     copierQueue = 0;
@@ -85,6 +85,19 @@ void CopySenderServer::endJSONMessage(QString &currentString){
 }
 
 
+void CopySenderServer::sendJSONMessage(QTcpSocket *slaveSocket, QString jsonMessage){
+    if(slaveSocket == 0){
+        return;
+    }
+
+    try{
+        slaveSocket->write(jsonMessage.toAscii().data());
+        slaveSocket->flush();
+    }catch(...){
+        //if it fails to write and throws an exception somehow, you catch the exception
+    }
+}
+
 int CopySenderServer::startServer(){
     if(!this->listen(QHostAddress::Any)){
         qDebug() << "Could not start server";
@@ -136,12 +149,25 @@ void CopySenderServer::readyReadFunction(){
 }
 
 void CopySenderServer::handle(QString data){
-    if(socket == 0){
-        qDebug()<<"socket = 0(handle--CopySenderServer)";
-        return;
+
+    QFuture <QStringList>future = QtConcurrent::run(this, &CopySenderServer::splitRequests, data);
+
+    QStringList protocolRequests = future.result();
+
+    if(protocolRequests.isEmpty())
+        return;//no requests found
+
+    ///////////HANDLE ALL THE REQUESTS THAT IS SENT THROUGH///////////////
+    /////////////E.g. It could be multiple requests///////////////////
+    for(int i = 0; i < protocolRequests.length(); i++){
+        requestHandler(protocolRequests.at(i));
     }
 
-    QStringList protocolRequests;
+}
+
+
+QStringList CopySenderServer::splitRequests(QString data){
+    QStringList requests;
     //firstly strip the slashes to reveal all the requests sent through(in case of multiple requests)
     while(data.contains("|")){
         int indexOfLine = -1;
@@ -159,29 +185,28 @@ void CopySenderServer::handle(QString data){
 
         QString newRequest = data.mid(startRequestIndex, (indexOfLine - startRequestIndex));
 
-        protocolRequests.append(newRequest);
+        requests.append(newRequest);
 
         //remove the current request + the lines
         data.remove(0, (indexOfLine + startRequestIndex));
     }
 
-
-    ///////////HANDLE ALL THE REQUloadCompressPathESTS THAT IS SENT THROUGH///////////////
-    /////////////E.g. It could be multiple requests///////////////////
-    for(int i = 0; i < protocolRequests.length(); i++){
-        requestHandler(protocolRequests.at(i));
-    }
-
+    return requests;
 }
 
 
 void CopySenderServer::requestHandler(QString data){
-    const QVariantMap jsonObject = JSON::instance().parse(data);
+
+    JSON *instance = &JSON::instance();
+
+    //go and parse the json to an object concurrently...
+    QFuture <QVariantMap>future = QtConcurrent::run(instance, &JSON::parse, data);
+
+    const QVariantMap jsonObject = future.result();//finally retrieve the jsonObject after it has been parsed
     QVariant handler = jsonObject.value("handler");
 
     if(!handler.toString().compare("QVariant(, )")){
         qDebug()<< "invalid JSON String::"<<data;
-        ;
     }
 
     if(firstTalk){
@@ -207,8 +232,7 @@ void CopySenderServer::requestHandler(QString data){
         endJSONMessage(jsonMessage);
 
 
-        socket->write(jsonMessage.toAscii().data());
-        socket->flush();
+        sendJSONMessage(socket, jsonMessage);
         return;
     }
 
@@ -235,19 +259,17 @@ void CopySenderServer::SendDifferences(){
         //should generate the MD5classes for
         QString jsonMessage = startJSONMessage();
         appendJSONValue(jsonMessage, "handler", "BuildDifferent", true);
-        appendJSONValue(jsonMessage, "differentBuildID",differentBuildIDs->at(i),false);
+        appendJSONValue(jsonMessage, "differentBuildID", differentBuildIDs->at(i),false);
         endJSONMessage(jsonMessage);
 
-        socket->write(jsonMessage.toAscii().data());
-        socket->flush();
+        sendJSONMessage(socket, jsonMessage);
     }
 
     QString jsonMessage = startJSONMessage();
     appendJSONValue(jsonMessage, "handler", "EndAllDifferences", false);
     endJSONMessage(jsonMessage);
 
-    socket->write(jsonMessage.toAscii().data());
-    socket->flush();
+    sendJSONMessage(socket, jsonMessage);
 }
 
 void CopySenderServer::BuildFileSumMD5(const QVariantMap jsonObject){
@@ -266,15 +288,24 @@ void CopySenderServer::BuildFileSumMD5(const QVariantMap jsonObject){
     if(!theBuildDirectory.compare(""))
         return;
 
+
     BuildMD5 *buildMD5Class = new BuildMD5(theBuildDirectory,5);
-    buildMD5Class->generate();
+
+    QFuture <void>future = QtConcurrent::run(buildMD5Class, &BuildMD5::generate);
+    future.waitForFinished();//wait untill the md5 class has been created
 
     //here it gets all the build md5 values with their keys(The keys are their file directory)
     QVariantMap mapOfBuilds = allMD5s.toMap();
     QList<QString> keys = mapOfBuilds.keys();
 
+    if(keys.size() == 0)//if map is empty(end it)
+        return;
+
     //create a copy compare class to be able to build it later on
-    CopyCompare *copyCompareForBuild = createCopyCompare(keys, mapOfBuilds, buildMD5Class, theBuildDirectory);
+    //make use of QConcurrent to do so
+    QFuture <CopyCompare *> futureCopyCompare = QtConcurrent::run(this, &CopySenderServer::createCopyCompare, keys, mapOfBuilds, buildMD5Class, theBuildDirectory);
+    //after computation retrieve the future value
+    CopyCompare *copyCompareForBuild = futureCopyCompare.result();
 
     //done with the class so delete it
     buildMD5Class->deleteLater();
@@ -289,10 +320,14 @@ void CopySenderServer::BuildFileSumMD5(const QVariantMap jsonObject){
 
     //do something with that
     //     void machineBuildSynched(int machineId, int buildId, double percentageSynched);
-    management->machineBuildSynched(machineId, BuildID.toInt(),copyCompareForBuild->percentageSynched());
+    QtConcurrent::run(management, &Management::machineBuildSynched, machineId,BuildID.toInt(), copyCompareForBuild->percentageSynched());
 
     Compression c;
-    c.compress(copyCompareForBuild->getFilepaths(), fileCompressPath+ "/" + QString::number(machineId) + "/"+BuildID.toString(), theBuildDirectory);
+    QFuture <void>compressFuture = QtConcurrent::run(&c, &Compression::compress,copyCompareForBuild->getFilepaths(),  fileCompressPath+ "/" + QString::number(machineId) + "/"+BuildID.toString(), theBuildDirectory);
+
+    //wait untill it has finished compressing
+    compressFuture.waitForFinished();
+    // c.compress(copyCompareForBuild->getFilepaths(), fileCompressPath+ "/" + QString::number(machineId) + "/"+BuildID.toString(), theBuildDirectory);
 
     int intBuildID = BuildID.toInt();
     createPhysicalCopier(intBuildID);
@@ -349,8 +384,7 @@ void CopySenderServer::PhysicalServerDoneNotify(int BuildID){
     appendJSONValue(jsonMessage, "BuildID", QString::number(BuildID),false);
     endJSONMessage(jsonMessage);
 
-    socket->write(jsonMessage.toAscii().data());
-    socket->flush();
+    sendJSONMessage(socket, jsonMessage);
 }
 
 
@@ -434,8 +468,7 @@ void CopySenderServer::nextInQueue(int port, int BuildID){
     appendJSONValue(jsonMessage, "port", QString::number(port), false);
     endJSONMessage(jsonMessage);
 
-    socket->write(jsonMessage.toAscii().data());
-    socket->flush();
+    sendJSONMessage(socket, jsonMessage);
 }
 
 void CopySenderServer::queueFinished(CopyQueue * theCopyQueue){
@@ -454,3 +487,6 @@ void CopySenderServer::queueFinished(CopyQueue * theCopyQueue){
     }
     lock.unlock();
 }
+
+
+

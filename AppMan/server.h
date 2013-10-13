@@ -33,6 +33,14 @@ public:
      */
     explicit Server(Management *m, QObject *parent = 0);
 
+
+    /**
+     * \fn ~Server();
+     * @brief The destructor
+     */
+    ~Server();
+
+
     /**
      * \fn void startServer();
      * @brief startServer A function that will start the server

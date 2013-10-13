@@ -47,8 +47,7 @@ void ProtoCopyOver::copyBuildOver(int buildId, QString buildName, QTcpSocket *sl
     appendJSONValue(jsonMessage, "buildName", buildName,false);
     endJSONMessage(jsonMessage);
 
-    slaveSocket->write(jsonMessage.toAscii().data());
-    slaveSocket->flush();//write all that should be written
+    sendJSONMessage(slaveSocket, jsonMessage);
 }
 
 void ProtoCopyOver::sizeCheckCertainBuild(QString BuildID, QTcpSocket *slaveSocket){
@@ -58,6 +57,5 @@ void ProtoCopyOver::sizeCheckCertainBuild(QString BuildID, QTcpSocket *slaveSock
     appendJSONValue(jsonMessage, "BuildID", BuildID,false);
     endJSONMessage(jsonMessage);
 
-    slaveSocket->write(jsonMessage.toAscii().data());
-    slaveSocket->flush();
+    sendJSONMessage(slaveSocket, jsonMessage);
 }

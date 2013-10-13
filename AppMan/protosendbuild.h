@@ -45,15 +45,32 @@ public:
      */
     void SizeCheckAllBuildsDone(QTcpSocket *slaveSocket,  Management *management);
 
+    /**
+      * \fn void sizeCheckCertainBuildDone(QTcpSocket *slaveSocket);
+      * @brief The following invokes the check for all builds to see whether their sizes match
+      */
     void sizeCheckCertainBuildDone(/*int buildID, Machine *machine, Management *management,*/ QTcpSocket *slaveSocket);
 
     /**
       * \fn void SizeCheckAllBuilds();
-      * @brief The following invokes the checkinf of all build sizes and is used to create a loop to continually update the build until the information is updated.
+      * @brief The following invokes the check if of all build sizes and is used to create a loop to continually update the build until the information is updated.
       */
     void SizeCheckAllBuilds();
 private slots:
+    /**
+      * \fn void copySenderServerDone(CopySenderServer * deleteCopySender);
+      * @brief A function deleting a copy sender server which was used to synchronise multiple builds
+      * @param deleteCopySender The CopySenderServer to delete
+      */
     void copySenderServerDone(CopySenderServer * deleteCopySender);
+
+private:
+    /**
+      * \fn void deleteCopySenderServer(CopySenderServer * deleteCopySender);
+      * @brief A which will be called concurrently by copySenderServerDone to delete the copySenderServer
+      * @param deleteCopySender The CopySenderServer to be deleted
+      */
+    void deleteCopySenderServer(CopySenderServer * deleteCopySender);
 
 private:
     /**

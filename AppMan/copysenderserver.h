@@ -9,6 +9,7 @@
 #include <QVariant>
 #include <QVariantMap>
 #include <QMutex>
+#include <QFuture>
 
 #include "buildmd5.h"
 #include "json.h"
@@ -112,19 +113,54 @@ private slots:
      void queueFinished(CopyQueue * theCopyQueue);
 
 private:
+     /**
+      * \fn QString startJSONMessage();
+     * @brief Returns a jsonMessage for the started QString as the started jsonstring to send across network
+     * @return returns a QString containing the jsonMessage that was started
+     */
     QString startJSONMessage();
 
+    /**
+     * \fn QString startJSONMessage();
+    * @brief Appends the newkey as a jsonValue to the json current string and will add a comma depending on the boolean
+    * @param currentString The current json message string as it is progressing
+    * @param newKey The key of the item to be sent
+    * @param newValue The value for the corrosponding new key
+    * @param addComma A boolean indicating whether or not to add a comma to the value(Hint: end of json no comma is required)
+    */
     void appendJSONValue(QString &currentString, QString newKey, QString newValue, bool addComma);
 
+    /**
+     * \fn void endJSONMessage(QString &currentString);
+    * @brief A function to end the jsonMessage that was started
+    * @param currentString The current json message string as it is progressing
+    */
     void endJSONMessage(QString &currentString);
+
+    /**
+     * \fn void sendJSONMessage(QTcpSocket *slaveSocket, QString jsonMessage);
+    * @brief This writes the jsonMessage to the slaveSocket as specified
+    * @param jsonMessage The JsonMessage that will be written to  the network
+    * @param slaveSocket The slave socket that will be written to
+    */
+    void sendJSONMessage(QTcpSocket *slaveSocket, QString jsonMessage);
 
 
     /**
      * \fn void handle(QString data);
-     * @brief A function which strips the slashes from data and splits various requests that may be together into separate requests and calls requestHandler(theData)
+     * @brief A function which handles the incoming data accordingly
      * @param data The data that will be used and parsed
      */
     void handle(QString data);
+
+
+    /**
+     * \fn QStringList splitRequests(QString data);
+     * @brief A function which strips the slashes from data and splits various requests that may be together into separate requests and places those request in the return object
+     * @param data The data that will be used and parsed
+     * @return The different requests that will be returned inside an object
+     */
+    QStringList splitRequests(QString data);
 
     /**
      * \fn void requestHandler(QString data);

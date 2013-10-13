@@ -30,7 +30,6 @@ void ProtoSizeCheckBuilds::BuildMD5(QVariantMap jsonObject, Management *manageme
     ProtocolHandler *handler = dynamic_cast<ProtocolHandler*>(myParent);
 
     if(handler == 0){
-        slaveSocket->disconnectFromHost();
         return;
     }
 
@@ -39,6 +38,7 @@ void ProtoSizeCheckBuilds::BuildMD5(QVariantMap jsonObject, Management *manageme
     }
     else{
         management->slaveABuildSize(BuildID.toInt(), buildMD5Value, handler->getMachine()->getMachineID());
+        invokeSizeCheckAll(slaveSocket);
     }
 
 
@@ -53,7 +53,6 @@ void ProtoSizeCheckBuilds::invokeSizeCheckAll(QTcpSocket *slaveSocket){
     appendJSONValue(jsonMessage, "subHandler", "SizeCheckAllBuilds", false);
     endJSONMessage(jsonMessage);
 
-    slaveSocket->write(jsonMessage.toAscii().data());
-    slaveSocket->flush();
+    sendJSONMessage(slaveSocket, jsonMessage);
 }
 

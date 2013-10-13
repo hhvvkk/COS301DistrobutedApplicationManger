@@ -76,15 +76,13 @@ void ProtoSendBuild::SizeCheckAllBuildsDone(QTcpSocket *slaveSocket, Management 
         return;
     }
     else{
-
         QString jsonMessage = startJSONMessage();
         appendJSONValue(jsonMessage, "handler", "ProtoSendBuild", true);
         appendJSONValue(jsonMessage, "subHandler", "SendBuildCopyServer", true);
         appendJSONValue(jsonMessage, "hostPort", QString::number(port), false);
         endJSONMessage(jsonMessage);
 
-        slaveSocket->write(jsonMessage.toAscii().data());
-        slaveSocket->flush();
+        sendJSONMessage(slaveSocket, jsonMessage);
     }
 }
 
@@ -106,25 +104,24 @@ void ProtoSendBuild::sizeCheckCertainBuildDone(/*int buildID, Machine *machine, 
     appendJSONValue(jsonMessage, "subHandler", "SizeCheckAllBuilds", false);
     endJSONMessage(jsonMessage);
 
-    slaveSocket->write(jsonMessage.toAscii().data());
-    slaveSocket->flush();
+    sendJSONMessage(slaveSocket, jsonMessage);
 }
 
 
 void ProtoSendBuild::copySenderServerDone(CopySenderServer * deleteCopySender){
     //go and finish the copySender since it is done
+    QtConcurrent::run(this, &ProtoSendBuild::deleteCopySenderServer, deleteCopySender);
+    SizeCheckAllBuilds();
+}
 
+void ProtoSendBuild::deleteCopySenderServer(CopySenderServer * deleteCopySender){
     sendList.removeOne(deleteCopySender);
 
     //This means that there is another newSender or it is empty, thus can just delete
     while(deleteCopySender->isBusyDeleting())
-    {/*Wait untill it is finished deleting*/}
+    {/*Wait untill it is finished deleting the physical files*/}
 
     deleteCopySender->deleteLater();
-    if(sendList.size() == 0){
-        SizeCheckAllBuilds();
-    }
-
 }
 
 void ProtoSendBuild::SizeCheckAllBuilds(){
@@ -142,7 +139,6 @@ void ProtoSendBuild::SizeCheckAllBuilds(){
         qDebug()<<"handler=0";
         return;
     }
-
 
     handler->recheckAllSizes();
 }

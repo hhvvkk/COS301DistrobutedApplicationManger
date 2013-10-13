@@ -16,6 +16,7 @@ Slave::~Slave(){
     if(buildCount != 0){
         delete[] slaveBuilds;
     }
+    protocolHandler->deleteLater();
 }
 
 Slave::Slave(){

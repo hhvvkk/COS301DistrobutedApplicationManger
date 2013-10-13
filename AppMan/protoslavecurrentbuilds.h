@@ -24,6 +24,16 @@ public:
     void handle(QVariantMap jsonObject, Management *man, QTcpSocket *slaveSocket);
 
 private:
+
+    /**
+      * \fn void addBuildToSlave(Management *management, int buildID, QString buildName);
+      * @brief A function to display the build for a machine on the master via management
+     * @param management The management which will be used to call a function on
+     * @param buildID The ID of the build that was on the slave machine
+     * @param buildName The build name of the build that was on the slave machine
+      */
+    void addBuildToSlave(Management *management, int buildID, QString buildName);
+
     /**
       * \fn void RecheckDone(QTcpSocket *slaveSocket);
       * @brief This function will be invoked if RecheckDone has been found in the data
@@ -41,11 +51,11 @@ private:
 
 
     /**
-     * \fn void Rechecker(QString data, Management *management, QTcpSocket *socket);
+     * \fn void Rechecker(QString data, Management *management, QTcpSocket *slaveSocket);
      * @brief A function invoked when the ReadyRead observes 'Rechecker' in the data string and parses it
      * @param data The data to be parsed by this function
      */
-    void Rechecker(QVariantMap jsonObject, Management *management, QTcpSocket *socket);
+    void Rechecker(QVariantMap jsonObject, Management *management, QTcpSocket *slaveSocket);
 
 
     /**

@@ -1,6 +1,5 @@
 #include "protocolhandler.h"
 #include "management.h"
-
 #include "Slave.h"
 
 
@@ -31,9 +30,28 @@ ProtocolHandler::~ProtocolHandler(){
 }
 
 void ProtocolHandler::handle(QString data){
-    QStringList protocolRequests;
 
+    if(slaveSocket == 0){
+        return;
+    }
 
+    QFuture <QStringList>future = QtConcurrent::run(this, &ProtocolHandler::splitRequests, data);
+
+    QStringList protocolRequests = future.result();
+
+    if(protocolRequests.isEmpty())
+        return;//no requests found
+
+    ///////////HANDLE ALL THE REQUESTS THAT IS SENT THROUGH///////////////
+    /////////////E.g. It could be multiple requests///////////////////
+    for(int i = 0; i < protocolRequests.length(); i++){
+        requestHandler(protocolRequests.at(i));
+    }
+
+}
+
+QStringList ProtocolHandler::splitRequests(QString data){
+    QStringList requests;
     //firstly strip the slashes to reveal all the requests sent through(in case of multiple requests)
     while(data.contains("|")){
         int indexOfLine = -1;
@@ -51,23 +69,22 @@ void ProtocolHandler::handle(QString data){
 
         QString newRequest = data.mid(startRequestIndex, (indexOfLine - startRequestIndex));
 
-        protocolRequests.append(newRequest);
+        requests.append(newRequest);
 
         //remove the current request + the lines
         data.remove(0, (indexOfLine + startRequestIndex));
     }
 
-
-    ///////////HANDLE ALL THE REQUESTS THAT IS SENT THROUGH///////////////
-    /////////////E.g. It could be multiple requests///////////////////
-    for(int i = 0; i < protocolRequests.length(); i++){
-        requestHandler(protocolRequests.at(i));
-    }
-
+    return requests;
 }
 
 void ProtocolHandler::requestHandler(QString data){
-    const QVariantMap jsonObject = JSON::instance().parse(data);
+    JSON *instance = &JSON::instance();
+
+    //go and parse the json to an object concurrently...
+    QFuture <QVariantMap>future = QtConcurrent::run(instance, &JSON::parse, data);
+
+    const QVariantMap jsonObject = future.result();//finally retrieve the jsonObject after it has been parsed
     QVariant handler = jsonObject.value("handler");
 
     if(firstTalk == true){

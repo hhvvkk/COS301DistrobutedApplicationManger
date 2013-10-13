@@ -67,16 +67,23 @@ void ProtoConnect::handle(QVariantMap jsonObject, Management *management, QTcpSo
         appendJSONValue(jsonMessage, "newMachineID", QString::number(myMachineObject->getMachineID()) ,false);
         endJSONMessage(jsonMessage);
 
-        slaveSocket->write(jsonMessage.toAscii().data());
-        slaveSocket->flush();
+        sendJSONMessage(slaveSocket, jsonMessage);
     }
     else{
         slaveSocket->disconnectFromHost();
     }
 }
 
-
 void ProtoConnect::disconnectMachine(Machine *machine, Management *management){
+    //old
+    //management->removeMachine(machine)
+
     //remove the machine from management
-    management->removeMachine(machine);
+    QFuture<void> *future = new QFuture<void>;
+    QFutureWatcher<void> *watcher = new QFutureWatcher<void>;
+
+    //connect the signal to the time the qtconcurrent has finished running
+    connect(watcher, SIGNAL(finished()), watcher, SLOT(deleteLater()));
+
+    *future = QtConcurrent::run(management, &Management::removeMachine, machine);
 }

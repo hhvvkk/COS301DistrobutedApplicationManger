@@ -3,7 +3,7 @@
 #include "management.h"
 
 ServerThread::ServerThread(int ID, Management *man, QObject *parent)
-    :QThread(parent)
+    :QObject(parent)
 {
     this->socketID = ID;
     socket = 0;
@@ -14,7 +14,7 @@ ServerThread::ServerThread(int ID, Management *man, QObject *parent)
 }
 
 //thread starts here
-void ServerThread::run(){
+void ServerThread::start(){
     socket = new QTcpSocket();
 
     protocolHandler->setSocket(socket);
@@ -24,14 +24,14 @@ void ServerThread::run(){
     }
 
     //connect the function that will execute when there are things waiting to be read
-    connect(socket,SIGNAL(readyRead()),this,SLOT(readyReadFunction()),Qt::DirectConnection);
+    connect(socket,SIGNAL(readyRead()),this,SLOT(readyReadFunction()), Qt::QueuedConnection); //,Qt::DirectConnection);
 
     //connect the disconnected which will execute once client has disconnected
-    connect(socket,SIGNAL(disconnected()),this,SLOT(disconnectedFunction()),Qt::DirectConnection);
+    connect(socket,SIGNAL(disconnected()),this,SLOT(disconnectedFunction()), Qt::QueuedConnection); //,Qt::DirectConnection);
 
     //NB exec() is needed!!!
     //this execute keeps the thread running in a loop thus it won't exit once it is done
-    exec();
+    //exec();
 }
 
 QTcpSocket *ServerThread::getSocket(){
@@ -39,6 +39,7 @@ QTcpSocket *ServerThread::getSocket(){
 }
 
 void ServerThread::readyReadFunction(){
+
     QByteArray Data = socket->readAll();
     QString data = Data;
 
@@ -51,8 +52,8 @@ void ServerThread::disconnectedFunction(){
     protocolHandler->disconnectMachine();
 
     socket->deleteLater();
-    protocolHandler->deleteLater();
+    //protocolHandler->deleteLater();
 
     //this exit shows that the thread is done and don't have to be on loop
-    exit(0);
+    //exit(0);
 }

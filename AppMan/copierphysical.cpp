@@ -80,7 +80,26 @@ void CopierPhysical::initiateCopyOver(){
         return;
     }
 
-    buffer = zipFile.readAll();
+    //concurrently read all from buffer...
+
+    QFuture <QByteArray>futureReadFile = QtConcurrent::run(this, &CopierPhysical::concurrentFileRead, &zipFile);
+    buffer = futureReadFile.result();
+
+    writeFileOverNetwork();
+
+    //QFuture <void>endWrittenFuture = QtConcurrent::run(this, &CopierPhysical::writeFileOverNetwork);
+    //endWrittenFuture.waitForResult();
+
+
+    //emit that it is done so that the copysenderClient can be notified...
+    emit copierPhysicalDone(this->BuildID);
+    signalNotifyProgress();
+    notifyTimer.stop();
+
+}
+
+void CopierPhysical::writeFileOverNetwork(){
+    socket->moveToThread(QThread::currentThread());
     notifyTimer.start();
     for(; i < buffer.size();){
         //QByteArray  mid ( int pos, int len = -1 ) const
@@ -90,12 +109,10 @@ void CopierPhysical::initiateCopyOver(){
         //change the speed at which it writes...
         i = i + written;
     }
+}
 
-    //emit that it is done so that the copysenderClient can be notified...
-    emit copierPhysicalDone(this->BuildID);
-    signalNotifyProgress();
-    notifyTimer.stop();
-
+QByteArray CopierPhysical::concurrentFileRead(QFile *fileToRead){
+     return fileToRead->readAll();
 }
 
 void CopierPhysical::signalNotifyProgress(){

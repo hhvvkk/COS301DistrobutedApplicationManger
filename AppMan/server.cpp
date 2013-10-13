@@ -33,6 +33,11 @@ Server::Server(Management *m,QObject *parent) :
     }
 }
 
+
+Server::~Server(){
+
+}
+
 void Server::startServer(){
     if(!this->listen(QHostAddress::Any,port)){
         qDebug() << "Could not start server";
@@ -57,7 +62,7 @@ void Server::incomingConnection(int socketID){
 
     ServerThread *serverThread = new ServerThread(socketID, management, this);
 
-    connect(serverThread, SIGNAL(finished()), serverThread, SLOT(deleteLater()));
+    //connect(serverThread, SIGNAL(finished()), serverThread, SLOT(deleteLater()));
 
     serverThread->start();
 }

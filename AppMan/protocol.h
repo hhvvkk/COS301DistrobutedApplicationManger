@@ -55,6 +55,14 @@ protected:
      * @brief A function which appends the bracket to end the message and appends the slashes for communication
      */
     void endJSONMessage(QString &currentString);
+
+    /**
+      * \fn void sendJSONMessage(QTcpSocket *slaveSocket, QString jsonMessage)
+      * @brief This writes the jsonMessage to the slaveSocket specified
+      * @param slaveSocket the socket to which must be written
+      * @param jsonMessage the Message to be written
+      */
+    void sendJSONMessage(QTcpSocket *slaveSocket, QString jsonMessage);
 };
 
 #endif // PROTOCOL_H
