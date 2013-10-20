@@ -2,6 +2,7 @@
 #define MANAGMENTTEST_H
 
 #include "AutoTest.h"
+#include "AppMan/management.h"
 
 class ManagementTest : public QObject
 {
@@ -9,9 +10,16 @@ class ManagementTest : public QObject
 
 private slots:
     void initTestCase();
-    void aTest();
-    void test2();
+
+    //TESTS
+    void addBuildTest();
+    void addMachineTest();
+    void removeMachineTest();
+
     void cleanupTestCase();
+private:
+    Management *management;
+
 };
 
 DECLARE_TEST(ManagementTest)

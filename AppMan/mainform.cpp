@@ -44,6 +44,16 @@ MainForm::MainForm(QWidget *parent) :
 
     //ui->dockWidgetProperty->setLayout();
     connect(masterBuilds, SIGNAL(clicked(QModelIndex)), this, SLOT(masterBuildsClicked(QModelIndex)));
+
+    //connect signals dealing with a timer which will eventually collapse all menus
+    collapseTimer = new QTimer();
+    collapseTimer->setInterval(10000);
+    collapseTimer->stop();
+    connect(masterBuilds, SIGNAL(expanded(QModelIndex)), this, SLOT(buildActiveUse()));
+    connect(collapseTimer, SIGNAL(timeout()), this, SLOT(collapseMasterBuilds()));
+
+
+    //load all the builds from the xml
     loadXMLBuilds();
 
     slaveStats = 0;
@@ -85,7 +95,11 @@ MainForm::~MainForm()
         buildInfo->deleteLater();
     delete ui;
     //this must be set to delete later or segmentation fault will occur!
-    management->deleteLater();
+    if(management)
+        management->deleteLater();
+
+    if(collapseTimer)
+        collapseTimer->deleteLater();
 }
 
 
@@ -93,56 +107,6 @@ MainForm::MasterBuilds::MasterBuilds(QWidget *parent)
     :QTreeWidget(parent){
     setColumnCount(2);
     hideColumn(1);
-}
-
-void MainForm::MasterBuilds::mousePressEvent(QMouseEvent *event){
-
-    //if it is a normal click just call the parent's mouse press event
-    QTreeWidget::mousePressEvent(event);
-    QTreeWidget::mouseReleaseEvent(event);
-
-    //the point where the event was fired
-    QPoint hotSpot = event->pos();// - child->pos();
-
-    QTreeWidgetItem  *theItem =  itemAt(hotSpot);
-
-    if(!theItem){
-        return;//return if it fails to dynamic cast
-    }
-
-    QMimeData *mimeData = new QMimeData;
-
-    //set the mime data for mouse drag
-    QString indexOfItem = QString::number(this->indexOfTopLevelItem(itemAt(hotSpot)));
-    mimeData->setText("#<<MBIndex="+indexOfItem );//+ theItem->text(0));
-    mimeData->setData("application/x-hotspot", QByteArray::number(hotSpot.x()) + " " + QByteArray::number(hotSpot.y()));
-
-    QLabel *renderer = new QLabel();
-    renderer->setText(theItem->text(0));
-
-    QPixmap pixmap(renderer->size());
-    renderer->render(&pixmap); //render the image of the item that will be dragged
-
-
-    //create a QDrag file to set all the mimedata for drag and drop
-    QDrag *drag = new QDrag(this);
-    drag->setMimeData(mimeData);
-    drag->setPixmap(pixmap);
-    //don't set hotspot
-    //drag->setHotSpot(hotSpot);
-
-    Qt::DropAction dropAction = drag->exec(Qt::CopyAction | Qt::MoveAction, Qt::CopyAction);
-
-    if(dropAction == Qt::MoveAction){
-        renderer->close();
-        //Very very important! ")
-        renderer->deleteLater();
-    }
-    else{
-        renderer->close();
-        //Very very important! ")
-        renderer->deleteLater();
-    }
 }
 
 
@@ -163,25 +127,6 @@ void MainForm::dropEvent ( QDropEvent *event ){
         dropNewBuildAdd(urlFromMime);
         event->accept();
         return;
-    }
-
-    /*else looks if a build is dropped from master builds to slave builds*/
-    QWidget *slaveTreeWidget = dynamic_cast<QWidget*>(childAt(event->pos()));
-
-    if(slaveTreeWidget){
-        if(slaveTreeWidget != ui->groupBoxSlaves)
-            return;
-        QString buildIndex = event->mimeData()->text();
-
-        //check to see if it is the right item that is dropped
-        if(!buildIndex.contains("#<<MBIndex="))
-            return;
-        dropBuildToSlave(buildIndex);
-        event->accept();
-        return;
-    }
-    else{
-        //qDebug()<<"...FALSE...";
     }
 
 }
@@ -330,19 +275,32 @@ void MainForm::displayBuilds(){
     int len = management->getBuildCount();
     QTreeWidgetItem *newWidgetItem;
     QString buildName = "";
-    QString strNum;
-    int buildNum = -1;
+    QString strID;
+    int buildID = -1;
     for(int i = 0; i < len; i++){
         //qDebug()<<"looping through builds";
         buildName = myBuilds[i].getBuildName();
-        buildNum = myBuilds[i].getBuildID();
-        strNum = QString::number(buildNum);
+        buildID = myBuilds[i].getBuildID();
+        strID = QString::number(buildID);
         newWidgetItem = new QTreeWidgetItem();
         // The build no in column 1, which is hidden
         newWidgetItem->setText(0,buildName);
-        newWidgetItem->setText(1,strNum);
-        newWidgetItem->setToolTip(0,strNum);
+        newWidgetItem->setText(1,strID);
+        newWidgetItem->setToolTip(0,strID);
         masterBuilds->addTopLevelItem(newWidgetItem);
+
+        //add the build buttons(copy over, delete, etc.)
+        //firstly add the text for the copy over or delete or other "buttons"
+        QTreeWidgetItem *copyOverItem = new QTreeWidgetItem();
+        copyOverItem->setText(0, "Copy Over");
+
+        QTreeWidgetItem *deleteItem = new QTreeWidgetItem();
+        deleteItem->setText(0, "Delete Build");
+
+        //add them both
+        newWidgetItem->addChild(copyOverItem);
+        newWidgetItem->addChild(deleteItem);
+
     }
 }
 
@@ -370,18 +328,63 @@ void MainForm::loadXMLBuilds(){
 }
 
 void MainForm::masterBuildsClicked(QModelIndex index){
+    //reset the timer since it is in active use
+    buildActiveUse();
     QString selBuild = index.sibling(index.row(),1).data().toString();
-    int num = selBuild.toInt();
-    Build retr = management->getBuildByID(num);
-    clearWidget();
 
-    connect(buildInfo, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(buildInfoDoubleClicked(QTreeWidgetItem*,int)));
-    connect(buildInfo, SIGNAL(itemChanged(QTreeWidgetItem*,int)), this, SLOT(buildInfoItemEditedChanged(QTreeWidgetItem*,int)));
-    //connect(buildInfo, SIGNAL(currentItemChanged(QTreeWidgetItem*,QTreeWidgetItem*)), this, SLOT(buildInfoItemEditedChanged(QTreeWidgetItem*,QTreeWidgetItem*)));
+    bool ok = false;
+    int buildID = selBuild.toInt(&ok);
 
-    ui->dockWidgetContents->layout()->addWidget(buildInfo);
-    populateBuildInfo(retr);
-    populateTreeWidgetInfo(retr);
+    if(ok){
+        Build retr = management->getBuildByID(buildID);
+        clearDockWidget();
+
+        connect(buildInfo, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(buildInfoDoubleClicked(QTreeWidgetItem*,int)));
+        connect(buildInfo, SIGNAL(itemChanged(QTreeWidgetItem*,int)), this, SLOT(buildInfoItemEditedChanged(QTreeWidgetItem*,int)));
+
+
+        ui->dockWidgetContents->layout()->addWidget(buildInfo);
+        populateBuildInfo(retr);
+        populateTreeWidgetInfo(retr);
+    }
+    else{
+        //else if it has failed, it most likely is a action button clicked(CopyOver, Delete, etc.)
+        QString itemClicked = index.data().toString();
+
+        if(!itemClicked.compare(""))
+            return;
+
+        if(!itemClicked.compare("Copy Over")){//meaning a copy over will occur
+            //int itemIndex = index.parent().row();
+            QString buildName = index.parent().sibling(index.parent().row(), 0).data().toString();
+
+            QStringList nameListSuggest;
+            for(int i = 0; i < masterBuilds->topLevelItemCount(); i++){
+                nameListSuggest<<masterBuilds->topLevelItem(i)->text(0);
+            }
+            QStringList ipListSuggest;
+            QTreeWidgetItem *safetyItem;//so that if that item is retrieved, but does not exist(concurrency)
+            for(int i = 0; i < ui->treeWidgetSlaves->topLevelItemCount(); i++){
+                safetyItem = ui->treeWidgetSlaves->topLevelItem(i);
+                if(safetyItem != 0)
+                    ipListSuggest<< safetyItem->text(0);
+            }
+            CopyBuildOver *copyBuild = new CopyBuildOver(management, nameListSuggest, ipListSuggest, buildName);
+            copyBuild->show();
+            connect(copyBuild, SIGNAL(copyBuildOver(int,QString)), this, SLOT(initiateCopyBuildOver(int,QString)));
+        }
+        else if(!itemClicked.compare("Delete Build")){
+            //int itemIndex = index.parent().row();
+            QString buildID = index.parent().sibling(index.parent().row(), 1).data().toString();
+
+            bool convertParentBID  = false;
+            int convertedID = buildID.toInt(&convertParentBID);
+
+            if(!convertParentBID)
+                return;
+            management->deleteBuild(convertedID);
+        }
+    }
 }
 
 void MainForm::populateBuildInfo(Build retr){
@@ -620,11 +623,12 @@ void MainForm::on_treeWidgetSlaves_clicked(const QModelIndex &index)
     }
     slaveStats = new SlaveStats(this,selected->getMachineIP(), inp);
     connect(slaveStats, SIGNAL(clicked(QModelIndex)), this, SLOT(slaveStatsClicked(QModelIndex)));
-    clearWidget();
+    clearDockWidget();
     ui->dockWidgetContents->layout()->addWidget(slaveStats);
 }
 
-void MainForm::clearWidget(){
+void MainForm::clearDockWidget(){
+
     int cnt = ui->dockWidgetContents->layout()->count();
     for(int i = 0; i < cnt; i++){
         QWidget *w = ui->dockWidgetContents->layout()->itemAt(i)->widget();
@@ -678,7 +682,7 @@ void MainForm::on_treeWidgetActiveSimulations_activated(QModelIndex index)
     }
     slaveStats = new SlaveStats(this,selected->getMachineIP(), inp);
     connect(slaveStats, SIGNAL(clicked(QModelIndex)), this, SLOT(slaveStatsClicked(QModelIndex)));
-    clearWidget();
+    clearDockWidget();
     ui->dockWidgetContents->layout()->addWidget(slaveStats);
 }
 
@@ -966,4 +970,33 @@ void MainForm::showSimulations(){
             newItem->setText(0,management->getAllSims().at(i)->getName());
             ui->treeWidgetSimulations->addTopLevelItem(newItem);
         }
+}
+
+void MainForm::buildActiveUse(){
+    //reset the timer which will clear the expanding of all items in masterBuilds
+    collapseTimer->stop();
+    collapseTimer->start();
+}
+
+void MainForm::collapseMasterBuilds(){
+    if(mouseCurserOver(masterBuilds)){
+        //then the item is most probably still active
+        buildActiveUse();
+    }else{//then it is most likely not in use
+        masterBuilds->collapseAll();
+        //stop the timer since it is done!
+        collapseTimer->stop();
+    }
+
+}
+
+bool MainForm::mouseCurserOver(QWidget *theItem){
+    //returns true if the mouse curser is over the sitem sent through
+    if(!theItem)
+        return false;
+
+    if(theItem->underMouse())
+        return true;
+    else
+        return false;
 }

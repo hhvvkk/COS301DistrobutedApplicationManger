@@ -1,7 +1,7 @@
 #ifndef MD5THREAD_H
 #define MD5THREAD_H
 
-#include "BuildMD5.h"
+#include "buildmd5.h"
 
 #include <QStringList>
 #include <QThread>

@@ -186,9 +186,18 @@ private slots:
      */
     void masterBuildsClicked(QModelIndex index);
 
+    /**
+     * @fn void slaveStatsClicked(QModelIndex index);
+     * @brief Performed when the slave has been clicked
+     * @param index the index that is clicked on main form
+     */
     void slaveStatsClicked(QModelIndex index);
 
-    void clearWidget();
+    /**
+     * @fn void clearDockWidget();
+     * @brief Clears the dock widget that will either contain build info or slave info
+     */
+    void clearDockWidget();
 	
     /**
      * @fn void on_actionAdd_Build_triggered();
@@ -265,6 +274,19 @@ private slots:
     void on_actionAdd_Simulation_triggered();
 
 
+
+    /**
+     * \fn void buildActiveUse();
+     * @brief A function resetting the timer which prolongues the collapse untill inactive
+     */
+    void buildActiveUse();
+
+    /**
+     * \fn void collapseMasterBuilds();
+     * @brief A function executed after the masterBuilds menu must be collapsed(which happens when the timer runs out and inactive)
+     */
+    void collapseMasterBuilds();
+
 private:
     /**
      * \fn dropBuildToSlave(QString from);
@@ -320,6 +342,13 @@ private:
      */
     void setBuildInfo(int setWhat, QString value, int buildID);
 
+    /**
+     * \fn bool mouseCurserOver(QWidget *theItem);
+     * @brief A function which determines whether the item sent through is underneath the cursor
+     * @param theItem The item which will be tested
+     * @return Returns true if the mouse is over the item otherwise returns false
+     */
+    bool mouseCurserOver(QWidget *theItem);
 private:
     /**
      * @var ui
@@ -350,14 +379,6 @@ private:
     class MasterBuilds: public QTreeWidget{
     public:
         MasterBuilds(QWidget *par = 0);
-
-    protected:
-        /**
-         * \fn mousePressEvent(QMouseEvent *event);
-         * @brief A custom mouse press event to enable drag and drop
-         * @param event
-         */
-        void mousePressEvent(QMouseEvent *event);
     };
 	
     /**
@@ -389,6 +410,8 @@ private:
 
 
     enum BuildInformationEnum { BUILDDIRECTORY, BUILDNAME, BUILDNUMBER, BUILDDESCRIPTION };
+
+    QTimer *collapseTimer;
 
 };
 

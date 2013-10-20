@@ -26,6 +26,15 @@ class Machine{
         * @brief the IP of the machine
         */
         QString machineIP;
+private:
+        /**
+        * \fn  bool validateIpAddress(const QString &ipAddress);
+        * @brief A function validating whether ip address is correct
+        * @param ipAddress The ip to be validated
+        * @return Returns true if it is a valid ip address
+        */
+    bool validateIpAddress(const QString &ipAddress);
+
 public:
         /**
         * \fn Machine(int id, QString ip);
@@ -46,14 +55,6 @@ public:
         * @brief The default constructor
         */
         Machine();
-
-        /**
-        * \fn void setMachine(int id, QString ip, bool onL);
-        * @brief The function to set machine details
-        * @param id The machineID to assign
-        * param ip The machineIP to assign
-        */
-        void setMachine(int id, QString ip);
 
         /**
         * \fn int getMachineID() {return machineID;};
@@ -158,6 +159,7 @@ public:
         * @param uniqueID The new unique ID of the machine
         */
         virtual void updateUniqueID(int uniqueID) = 0;
+
 };
 
 #endif // MACHINE_H

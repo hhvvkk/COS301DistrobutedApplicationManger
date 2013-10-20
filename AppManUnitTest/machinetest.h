@@ -2,7 +2,8 @@
 #define MACHINETEST_H
 
 #include "AutoTest.h"
-#include "../AppMan/Slave.h"
+#include "AppMan/Slave.h"
+#include "AppMan/Machine.h"
 
 class MachineTest : public QObject
 {
@@ -10,12 +11,16 @@ class MachineTest : public QObject
 
 private slots:
     void initTestCase();
-    void setMachineTest();
-    void aTest();
-    void cleanupTestCase();
 
-private:
-    Machine *machine;
+
+    //TESTS
+    void setMachineTest();
+    void constructorTest();
+    void setMachineIPTest();
+    void setMachineIDTest();
+
+
+    void cleanupTestCase();
 };
 
 DECLARE_TEST(MachineTest)

@@ -87,7 +87,7 @@ void Management::addMyBuilds(){
     }
 }
 
-Build Management::getBuildByID(int id){
+Build &Management::getBuildByID(int id){
     for(int i = 0; i < buildCount; i++){
         if(allBuilds[i].getBuildID() == id){
             return allBuilds[i];
@@ -118,12 +118,18 @@ QString Management::getMinSysInfo(){
 }
 
 void Management::updateBuildName(int buildID, QString newBuildName){
-    Build theBuild = getBuildByID(buildID);
-    theBuild.setBuildName(newBuildName);
+    Build &theBuild = getBuildByID(buildID);
 
-    //finally go and update the build information in the xml
-    xmlWriter anXMLWriter = xmlWriter();
-    anXMLWriter.updateBuildName(buildID, newBuildName);
+    if(!theBuild.getBuildDescription().compare("NULL")
+        && !theBuild.getBuildDirectory().compare("NULL")
+        && !theBuild.getBuildName().compare("NULL")
+        && theBuild.getBuildID() == 0){
+        return;
+    }
+
+    theBuild.setBuildName(newBuildName);
+    xmlWriter writer;
+    writer.updateBuildName(buildID, newBuildName);
 }
 
 

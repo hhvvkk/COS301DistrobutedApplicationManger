@@ -75,9 +75,11 @@ void BuildMD5::generate() {
 
     while (finished != threadCount){
     }
+    qDebug()<<"md5Val::"<<getDirectoryMD5();
 }
 
 void BuildMD5::patchThreads(QStringList* dirs, QStringList* dirsMD5, QByteArray mainHash){
+    qDebug()<<"Beginning";
     lock->lock();
     dirHash->addData(mainHash.constData());
     buildFiles->append(dirs->mid(0));
@@ -85,6 +87,7 @@ void BuildMD5::patchThreads(QStringList* dirs, QStringList* dirsMD5, QByteArray 
     directoryMD5 = dirHash->result().toHex().constData();
     finished++;
     lock->unlock();
+    qDebug()<<"Ending";
 }
 
 const QString* BuildMD5::getCurrentBuildDirectory() const{

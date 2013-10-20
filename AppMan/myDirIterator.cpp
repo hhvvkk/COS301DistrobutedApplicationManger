@@ -25,6 +25,12 @@ void myDirIterator::getFileInfo(){
         QDateTime date = fileInfo.lastModified();
         QString strDate = date.toString();
 
+        QDir dirTest(it->fileName());
+
+        if(dirTest.exists()){
+            qDebug()<<"IT IS DIR::"<<dirTest.absolutePath();
+        }
+        else //it is a file or other, thus include
         if(it->fileName().compare("..") && it->fileName().compare(".")) {
             //if the file names are not . or .. continue
             fileMods.push_back(strDate);

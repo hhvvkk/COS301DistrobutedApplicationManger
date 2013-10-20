@@ -50,7 +50,7 @@ void Compression::compress(QStringList dirs, QString toDir, QString buildDirecto
     //7zip does not have commands to force the directories to be kept
     int buildDirectorySize = buildDirectory.size();
 
-    int maximumBytes = 1500000000;//maximum for byteArray is //2147483647
+    int maximumBytes = 1500000000;//maximum for byteArray is //2147483647, therefore only allow this amount
 
     int currentBytes = 0;
 

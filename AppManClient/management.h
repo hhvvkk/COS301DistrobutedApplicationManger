@@ -92,12 +92,12 @@ public:
     xmlReader getxRead() {return xRead;}
 
     /**
-     * \fn Build getBuildByID(int num);
+     * \fn Build &getBuildByID(int num);
      * @brief The function finds a build by its id and returns it
      * @return Returns a build
      * @param num the id of the build
      */
-    Build getBuildByID(int num);
+    Build &getBuildByID(int num);
 
     /**
      * \fn void createBuildDirectory(Build build);

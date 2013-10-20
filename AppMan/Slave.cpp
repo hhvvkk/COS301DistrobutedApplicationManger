@@ -1,22 +1,17 @@
 #include "Slave.h"
 
 
-Slave::Slave(int id, QString ip){
-        if(id <= 0){
-		return;
-	}
-	else{
-		machineID = id;
-        this->machineIP = ip;
-		buildCount = 0;
-	}
+Slave::Slave(int id, QString ip)
+    :Machine(id, ip){
+    buildCount = 0;
 }
 
 Slave::~Slave(){
     if(buildCount != 0){
         delete[] slaveBuilds;
     }
-    protocolHandler->deleteLater();
+    if(protocolHandler != 0)
+        protocolHandler->deleteLater();
 }
 
 Slave::Slave(){
@@ -31,6 +26,11 @@ Slave::Slave(Slave &toCopy)
 }
 
 void Slave::addBuild(Build buildToAdd){
+	for(int i = 0; i < buildCount; i++){
+        //if any of them are similar, return
+            if(buildToAdd.getBuildID() == slaveBuilds[i].getBuildID())
+                return;
+	}
 	if(buildCount != 0){
 		Build temp[buildCount];
 		for(int i = 0; i < buildCount; i++){

@@ -2,6 +2,7 @@
 #define SLAVETEST_H
 
 #include "AutoTest.h"
+#include "AppMan/Slave.h"
 
 class SlaveTest : public QObject
 {
@@ -9,9 +10,15 @@ class SlaveTest : public QObject
 
 private slots:
     void initTestCase();
-    void test1();
-    void anotherTest();
+
+    //TESTS
+    void addBuildTest();
+    void deleteBuildTest();
+
     void cleanupTestCase();
+
+private:
+    Slave *slave;
 };
 
 DECLARE_TEST(SlaveTest)

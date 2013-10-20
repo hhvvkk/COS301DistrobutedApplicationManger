@@ -85,11 +85,11 @@ public:
     ~Management();
 
     /**
-     * @fn Build * getBuildByID(int id);
+     * @fn Build &getBuildByID(int id);
      * @brief returns the build by ID from the Management object
      * @return buildToRetrieve
      */
-    Build getBuildByID(int id);
+    Build &getBuildByID(int id);
 
     /**
      * @fn Build * getAllBuilds()
@@ -302,6 +302,8 @@ public:
     void addSimulation(Simulation * sim);
         int getSimCount() { return simCount; }
         QVector<Simulation*> getAllSims() { return allSimulations; }
+
+    void deleteBuild(int buildID);
 
 private:
     /**

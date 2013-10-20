@@ -45,6 +45,11 @@ void Management::addMachine(int uniqueID, QString address, ProtocolHandler *hand
         uniqueID = generateUniqueId();
     }
 
+    if(handler == 0){
+        lock->unlock();
+        return;
+    }
+
     Machine *machine = new Slave(uniqueID, address);
     machine->setProtocolHandler(handler);
     handler->setMachine(machine);
@@ -85,11 +90,15 @@ void Management::removeMachine(Machine *m){
 
     //delete the machine
     emit slaveDisconnected(m->getMachineID());
-    m->~Machine();
+    delete m;
     lock->unlock();
 }
 
 void Management::addBuild(Build buildToAdd){
+    for(int i = 0; i < buildCount; i++){
+        if(buildToAdd.getBuildID() == allBuilds[i].getBuildID())
+            return;//return if it tries to add something which should not be able to
+    }
     if(buildCount != 0){
         Build temp[buildCount];
         for(int i = 0; i < buildCount; i++){
@@ -131,7 +140,7 @@ void Management::setPort(int newPort){
     server->setPort(newPort);
 }
 
-Build Management::getBuildByID(int id){
+Build &Management::getBuildByID(int id){
     for(int i = 0; i < buildCount; i++){
         if(allBuilds[i].getBuildID() == id){
             return allBuilds[i];
@@ -198,7 +207,7 @@ void Management::addBuildToSlave(int machineId, int BuildID, QString buildName){
     if(machine==NULL)
         return;
 
-    Build trueBuild = getBuildByID(BuildID);
+    Build &trueBuild = getBuildByID(BuildID);
 
     if(!trueBuild.getBuildDescription().compare("NULL")
         && !trueBuild.getBuildDirectory().compare("NULL")
@@ -223,10 +232,16 @@ void Management::addBuildToSlave(int machineId, int BuildID, QString buildName){
 }
 
 QString Management::getBuildMD5(Build* build){
+    BuildMD5 *md5 = new BuildMD5(build->getBuildDirectory(),5);
+    QFuture <void>futureValue = QtConcurrent::run(md5, &BuildMD5::generate);
 
-    BuildMD5 md5(build->getBuildDirectory(),5);
-    md5.generate();
-    return md5.getDirectoryMD5();
+    //wait until it has completed
+    futureValue.waitForFinished();
+
+    QString returnValue = md5->getDirectoryMD5();
+
+    md5->deleteLater();
+    return returnValue;
 }
 
 
@@ -246,7 +261,7 @@ Machine *Management::getMachineById(int machineId){
 }
 
 void Management::slaveBuildSize(int BuildID, QString buildMD5Value, int slaveId){
-    Build theBuild = getBuildByID(BuildID);
+    Build &theBuild = getBuildByID(BuildID);
 
     if(!theBuild.getBuildDescription().compare("NULL")
         && !theBuild.getBuildDirectory().compare("NULL")
@@ -272,7 +287,7 @@ void Management::slaveBuildSize(int BuildID, QString buildMD5Value, int slaveId)
 
 
 void Management::slaveABuildSize(int BuildID, QString buildMD5Value, int slaveId){
-    Build theBuild = getBuildByID(BuildID);
+    Build &theBuild = getBuildByID(BuildID);
 
     if(!theBuild.getBuildDescription().compare("NULL")
         && !theBuild.getBuildDirectory().compare("NULL")
@@ -343,7 +358,7 @@ void Management::slaveUpdatedBuildName(int machineID, int buildID, QString build
 
 
 void Management::setBuildDirectory(int buildID, QString value){
-    Build theBuild = getBuildByID(buildID);
+    Build &theBuild = getBuildByID(buildID);
 
     if(!theBuild.getBuildDescription().compare("NULL")
         && !theBuild.getBuildDirectory().compare("NULL")
@@ -359,7 +374,7 @@ void Management::setBuildDirectory(int buildID, QString value){
 }
 
 void Management::setBuildName(int buildID, QString value){
-    Build theBuild = getBuildByID(buildID);
+    Build &theBuild = getBuildByID(buildID);
 
     if(!theBuild.getBuildDescription().compare("NULL")
         && !theBuild.getBuildDirectory().compare("NULL")
@@ -374,7 +389,7 @@ void Management::setBuildName(int buildID, QString value){
 }
 
 void Management::setBuildNumber(int buildID, QString value){
-    Build theBuild = getBuildByID(buildID);
+    Build &theBuild = getBuildByID(buildID);
 
     if(!theBuild.getBuildDescription().compare("NULL")
         && !theBuild.getBuildDirectory().compare("NULL")
@@ -389,7 +404,7 @@ void Management::setBuildNumber(int buildID, QString value){
 }
 
 void Management::setBuildDescription(int buildID, QString value){
-    Build theBuild = getBuildByID(buildID);
+    Build &theBuild = getBuildByID(buildID);
 
     if(!theBuild.getBuildDescription().compare("NULL")
         && !theBuild.getBuildDirectory().compare("NULL")
@@ -406,4 +421,18 @@ void Management::setBuildDescription(int buildID, QString value){
 void Management::addSimulation(Simulation *sim){
     allSimulations.push_back(sim);
     simCount++;
+}
+
+void Management::deleteBuild(int buildID){
+    if(buildID < 0){
+        return;
+    }
+
+    //go and delete build
+    //from (1):allBuilds
+
+    //from (2):xml
+
+    //from (3):all connected clients
+
 }

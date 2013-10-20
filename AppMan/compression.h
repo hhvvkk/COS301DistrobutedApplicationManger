@@ -1,7 +1,6 @@
 #ifndef COMPRESSION_H
 #define COMPRESSION_H
 
-#include <Build.h>
 #include <QObject>
 #include <QProcess>
 #include <QDir>
