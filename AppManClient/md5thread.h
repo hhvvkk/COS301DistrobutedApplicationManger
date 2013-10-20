@@ -16,11 +16,13 @@ class md5Thread : public QThread {
 
 public:
     /**
-     * \fn md5Thread(QStringList* list, BuildMD5* r);
+     * \fn md5Thread(int id, QStringList* list, BuildMD5* r);
      * @brief constructs the md5 thread with a fileset and a pointer to the generator
+     * @param id the identification number of the thread
      * @param list pointer to the list of files that needs to be md5 calculated
+     * @param r pointer to the BuildMD5 class that needs to reassemble the md5 values
      */
-    md5Thread(QStringList* list, BuildMD5* r);
+    md5Thread(int id, QStringList* list, BuildMD5* r);
     /**
      * \fn ~md5Thread();
      * @brief destructor
@@ -41,6 +43,10 @@ private:
       * @var reply pointer back to the generator who started this thread.
       **/
     BuildMD5* reply;
+    /**
+      * @var the thread identification number given by the BuildMD5 class calling this thread
+      **/
+    int threadNumber;
 };
 
 #endif // MD5THREAD_H

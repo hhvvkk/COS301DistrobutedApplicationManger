@@ -101,6 +101,7 @@ Build &Management::getBuildByID(int id){
 QString Management::getBuildMD5(Build build){
     BuildMD5 md5(build.getBuildDirectory(),5);
     md5.generate();
+    qDebug()<<"buildMD5="<<md5.getDirectoryMD5();
     return md5.getDirectoryMD5();
 }
 

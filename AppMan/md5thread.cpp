@@ -4,7 +4,8 @@
 #include <QDir>
 #include <QCryptographicHash>
 
-md5Thread::md5Thread(QStringList* list, BuildMD5* r){
+md5Thread::md5Thread(int id, QStringList* list, BuildMD5* r){
+    threadNumber = id;
     dirs = list;
     reply = r;
 }
@@ -14,8 +15,7 @@ md5Thread::~md5Thread(){
     delete reply;
 }
 
-void md5Thread::run() {
-    qDebug()<<"begin";
+void md5Thread::run() {    
     QStringList* dirsMD5 = new QStringList();
     QCryptographicHash md5(QCryptographicHash::Md5);
     QCryptographicHash md5full(QCryptographicHash::Md5);
@@ -31,7 +31,6 @@ void md5Thread::run() {
         file.close();
         md5.reset();
     }        
-    reply->patchThreads(dirs,dirsMD5,md5full.result());
-    qDebug()<<"end";
+    reply->patchThreads(threadNumber, dirs,dirsMD5,md5full.result());
     this->terminate();
 }

@@ -28,7 +28,7 @@ void myDirIterator::getFileInfo(){
         QDir dirTest(it->fileName());
 
         if(dirTest.exists()){
-            qDebug()<<"IT IS DIR::"<<dirTest.absolutePath();
+            //it is a directory, ignore therefore
         }
         else //it is a file or other, thus include
         if(it->fileName().compare("..") && it->fileName().compare(".")) {

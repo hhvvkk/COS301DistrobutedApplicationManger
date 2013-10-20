@@ -232,16 +232,19 @@ void Management::addBuildToSlave(int machineId, int BuildID, QString buildName){
 }
 
 QString Management::getBuildMD5(Build* build){
-    BuildMD5 *md5 = new BuildMD5(build->getBuildDirectory(),5);
-    QFuture <void>futureValue = QtConcurrent::run(md5, &BuildMD5::generate);
+//    BuildMD5 *md5 = new BuildMD5(build->getBuildDirectory(),5);
+//    QFuture <void>futureValue = QtConcurrent::run(md5, &BuildMD5::generate);
 
-    //wait until it has completed
-    futureValue.waitForFinished();
+//    //wait until it has completed
+//    futureValue.waitForFinished();
+//    QString returnValue = md5->getDirectoryMD5();
 
-    QString returnValue = md5->getDirectoryMD5();
-
-    md5->deleteLater();
-    return returnValue;
+//    md5->deleteLater();
+//    return returnValue;
+    BuildMD5 md5(build->getBuildDirectory(),5);
+    md5.generate();
+    qDebug()<<"buildMD5=="<<md5.getDirectoryMD5();
+    return md5.getDirectoryMD5();
 }
 
 
