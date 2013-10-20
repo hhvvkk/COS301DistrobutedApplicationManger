@@ -28,10 +28,13 @@ BuildMD5::BuildMD5(QString directory, int threadCnt)
     dirHash = new QCryptographicHash(QCryptographicHash::Md5);
     lock = new QMutex();
     currentIndex = 0;
+    md5perthread = new QByteArray[threadCount];
 }
 
 BuildMD5::~BuildMD5()
 {
+    md5perthread->clear();
+    delete md5perthread;
     buildFiles->clear();
     delete buildFiles;
     buildFilesMD5->clear();
@@ -68,21 +71,28 @@ void BuildMD5::generate() {
             }
         }
 
-        threads.push_back(new md5Thread(fileSplit,this));
+        threads.push_back(new md5Thread(i, fileSplit,this));
         connect(threads.at(i), SIGNAL(finished()), threads.at(i), SLOT(deleteLater()));
         threads.at(i)->start();
    }
 
     while (finished != threadCount){
     }
+
+    for (int i=0;i<threadCount;i++){
+        dirHash->addData(md5perthread[i]);
+    }
+
+    directoryMD5 = dirHash->result().toHex().constData();
 }
 
-void BuildMD5::patchThreads(QStringList* dirs, QStringList* dirsMD5, QByteArray mainHash){
+void BuildMD5::patchThreads(int threadNumber, QStringList* dirs, QStringList* dirsMD5, QByteArray mainHash){
     lock->lock();
-    dirHash->addData(mainHash.constData());
+    //dirHash->addData(mainHash.constData());
+    md5perthread[threadNumber] = mainHash;
     buildFiles->append(dirs->mid(0));
     buildFilesMD5->append(dirsMD5->mid(0));
-    directoryMD5 = dirHash->result().toHex().constData();
+    //directoryMD5 = dirHash->result().toHex().constData();
     finished++;
     lock->unlock();
 }

@@ -225,7 +225,7 @@ void Management::addBuildToSlave(int machineId, int BuildID, QString buildName){
 QString Management::getBuildMD5(Build* build){
 
     BuildMD5 md5(build->getBuildDirectory(),5);
-    md5.generate();
+    md5.generate();    
     return md5.getDirectoryMD5();
 }
 

@@ -52,11 +52,12 @@ public:
     /**
      * \fn void patchThreads(QStringList* dirs, QStringList* dirsMD5, QByteArray mainHash);
      * @brief this function will be called by the threads and will put together all the calculated md5 sums
+     * @param threadNumber The thread number of current returning thread
      * @param dirs The directory paths of the md5 sums that was calculated
      * @param dirsMD5 The md5 sums that was calculated
      * @param mainhash Contains the partial md5 sum of the complete directory
      */
-    void patchThreads(QStringList* dirs, QStringList* dirsMD5, QByteArray mainHash);
+    void patchThreads(int threadNumber, QStringList* dirs, QStringList* dirsMD5, QByteArray mainHash);
 
     /**
      * \fn QString getCurrentBuildDirectory()
@@ -89,6 +90,10 @@ private:
       * @var threads A list of handles for all running threads
       **/
     QVector<md5Thread*> threads;
+    /**
+      * @var md5perthread A list of the total md5values return by specific thread
+      **/
+    QByteArray* md5perthread;
     /**
       * @note buildFiles and buildFilesMD5 are linked through indices.
         E.g. buildFiles[1] {filepath} has a MD5 sum value of buildFilesMD5[1]
