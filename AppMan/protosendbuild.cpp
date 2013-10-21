@@ -31,6 +31,7 @@ void ProtoSendBuild::handle(QVariantMap jsonObject, Management *management, QTcp
 }
 
 void ProtoSendBuild::SizeCheckAllBuildsDone(QTcpSocket *slaveSocket, Management *management){
+
     if(slaveSocket == 0){
         return;
     }
@@ -48,7 +49,7 @@ void ProtoSendBuild::SizeCheckAllBuildsDone(QTcpSocket *slaveSocket, Management 
     Build *slaveBuilds = handler->getMachine()->getBuilds();
 
     QStringList *differentBuildDirectories = new QStringList();
-    QStringList *differentBuildIDs = new QStringList();;
+    QStringList *differentBuildIDs = new QStringList();
 
     for(int i = 0; i < handler->getMachine()->getBuildCount(); i++){
         Build aBuild = slaveBuilds[i];

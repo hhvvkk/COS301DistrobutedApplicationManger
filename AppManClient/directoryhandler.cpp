@@ -117,7 +117,6 @@ void DirectoryHandler::copyFile(QString filePath, QString directoryTo, QString f
 
 
 bool DirectoryHandler::removeDir(const QString &dirName){
-
     bool result = true;
     QDir dir(dirName);
 

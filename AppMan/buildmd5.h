@@ -105,7 +105,7 @@ private:
     /**
       * @var buildFilesMD5 The md5 sum for each of the files
       **/
-    QStringList* buildFilesMD5;    
+    QStringList* buildFilesMD5;
 
     /**
       * @var dir The directory which need to be calculated

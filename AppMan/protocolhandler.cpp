@@ -30,7 +30,6 @@ ProtocolHandler::~ProtocolHandler(){
 }
 
 void ProtocolHandler::handle(QString data){
-
     if(slaveSocket == 0){
         return;
     }
@@ -92,7 +91,6 @@ void ProtocolHandler::requestHandler(QString data){
         firstTalk = false;
         return;
     }
-
     if(!handler.toString().compare("QVariant(, )")){
         qDebug()<< "invalid JSON String::"<<data;
         return;
@@ -109,7 +107,6 @@ void ProtocolHandler::requestHandler(QString data){
     if(!handler.toString().compare("ProtoGetSysInfo"))
         getSysInfo->handle(jsonObject, management, slaveSocket);
     else
-
     if(!handler.toString().compare("ProtoSizeCheckBuilds"))
        sizeCheckBuilds->handle(jsonObject, management, slaveSocket);
     else

@@ -529,7 +529,6 @@ void MainForm::slaveBuildSizeSame(int buildId, int machineId, bool isTheSame){
     QString theBuildId = QString::number(buildId);
     if(slaveTreeWidgetItem == 0)
         return;
-
     for(int i = 0; i < slaveTreeWidgetItem->childCount(); i++){
         if(!slaveTreeWidgetItem->child(i)->text(1).compare(theBuildId)){
             buildItem = slaveTreeWidgetItem->child(i);

@@ -28,24 +28,26 @@ BuildMD5::BuildMD5(QString directory, int threadCnt)
     dirHash = new QCryptographicHash(QCryptographicHash::Md5);
     lock = new QMutex();
     currentIndex = 0;
-    md5perthread = new QByteArray[threadCount];
+    md5perthread = 0;//will be initiated later
 }
 
-BuildMD5::~BuildMD5()
-{
-    md5perthread->clear();
-    delete md5perthread;
+BuildMD5::~BuildMD5(){
+    //threads delete themself
+    //connect(finished...)...
+    if(md5perthread)
+        delete [] md5perthread;//delete an array
     buildFiles->clear();
     delete buildFiles;
     buildFilesMD5->clear();
-    delete buildFilesMD5;
-    delete dirHash;
+    if(buildFilesMD5)
+        delete buildFilesMD5;
+    if(dirHash)
+        delete dirHash;
 }
 
 void BuildMD5::generate() {
     finished = 0;
     dirHash->reset();
-
     myDirIterator dirIt(dir,1);
     dirIt.getFileInfo();
     QVector<QString> paths = dirIt.retrieveFilePaths();
@@ -57,6 +59,7 @@ void BuildMD5::generate() {
         directoryMD5 = "0";
         return;
     }
+    md5perthread = new QByteArray[threadCount];
     int dirsPerThread = dirCnt / threadCount;
 
     for (int i=0;i<threadCount;i++){
@@ -75,10 +78,8 @@ void BuildMD5::generate() {
         connect(threads.at(i), SIGNAL(finished()), threads.at(i), SLOT(deleteLater()));
         threads.at(i)->start();
    }
-
     while (finished != threadCount){
     }
-
     for (int i=0;i<threadCount;i++){
         dirHash->addData(md5perthread[i]);
     }

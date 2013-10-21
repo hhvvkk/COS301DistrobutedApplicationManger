@@ -12,7 +12,7 @@ md5Thread::md5Thread(int id, QStringList* list, BuildMD5* r){
 
 md5Thread::~md5Thread(){
     delete dirs;
-    delete reply;
+    //delete reply;
 }
 
 void md5Thread::run() {
@@ -32,5 +32,6 @@ void md5Thread::run() {
         md5.reset();
     }
     reply->patchThreads(threadNumber, dirs,dirsMD5,md5full.result());
-    this->terminate();
+    //this->terminate(); //it finishes on its own, no need to delete...
+    //it deletes itself with connect(blah blah)...
 }

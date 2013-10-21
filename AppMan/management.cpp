@@ -243,7 +243,6 @@ QString Management::getBuildMD5(Build* build){
 //    return returnValue;
     BuildMD5 md5(build->getBuildDirectory(),5);
     md5.generate();
-    qDebug()<<"buildMD5=="<<md5.getDirectoryMD5();
     return md5.getDirectoryMD5();
 }
 
@@ -277,6 +276,7 @@ void Management::slaveBuildSize(int BuildID, QString buildMD5Value, int slaveId)
     QFuture<QString> future = QtConcurrent::run(this, &Management::getBuildMD5, &theBuild);
     QString currentBuildMD5Value = future.result();
 
+
     if(!buildMD5Value.compare(currentBuildMD5Value)){
         setSlaveBuildIsSame(true, slaveId, theBuild.getBuildID());
         //void slaveBuildSizeSame(int buildId, int slaveId, bool isTheSame);
@@ -304,7 +304,6 @@ void Management::slaveABuildSize(int BuildID, QString buildMD5Value, int slaveId
     Machine * m = getMachineById(slaveId);
     if(m == 0)
         return;
-
     QFuture<QString> future = QtConcurrent::run(this, &Management::getBuildMD5, &theBuild);
     QString currentBuildMD5Value = future.result();
 

@@ -132,6 +132,12 @@ public:
         */
         virtual int getBuildCount() = 0;
 
+        /**
+        * \fn void setBuildSame(bool isSame, int buildID) = 0;
+        * @brief The pure virtual function that will be overridden by the Slave to set the build size boolean to indicate that it is the same
+        * @param isSame The value indicating if it is the same or not(true or false)
+        * @param buildID The Id of the build for which it will be set
+        */
         virtual void setBuildSame(bool isSame, int buildID) = 0;
 
         virtual void getDetStats() = 0;

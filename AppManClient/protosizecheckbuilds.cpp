@@ -17,16 +17,15 @@ void ProtoSizeCheckBuilds::handle(QVariantMap jsonObject, Management *management
 
 void ProtoSizeCheckBuilds::sendCurrentBuildMD5(Management *management, QTcpSocket *masterSocket){
     Build * builds = management->getAllBuilds();
-    while(buildIterator < management->getBuildCount())
-    {
+    while(buildIterator < management->getBuildCount()){
         QString jsonMessage = startJSONMessage();
         appendJSONValue(jsonMessage, "handler", "ProtoSizeCheckBuilds", true);
         appendJSONValue(jsonMessage, "subHandler", "BuildMD5", true);
-        appendJSONValue(jsonMessage, "md5Sum", management->getBuildMD5(builds[buildIterator]), true);
+        QString buildMD5Value = management->getBuildMD5(builds[buildIterator]);
+        appendJSONValue(jsonMessage, "md5Sum", buildMD5Value, true);
         QString BuildIDString = QString::number(builds[buildIterator].getBuildID());
         appendJSONValue(jsonMessage, "BuildID", BuildIDString, false);
         endJSONMessage(jsonMessage);
-
         masterSocket->write(jsonMessage.toAscii().data());
         masterSocket->flush();
 
@@ -46,6 +45,7 @@ void ProtoSizeCheckBuilds::sendCurrentBuildMD5(Management *management, QTcpSocke
         buildIterator = 0;//reset the iterator
         return;//Done
     }
+
 }
 
 void ProtoSizeCheckBuilds::SizeCheckABuild(QVariantMap jsonObject, Management *management, QTcpSocket *masterSocket){

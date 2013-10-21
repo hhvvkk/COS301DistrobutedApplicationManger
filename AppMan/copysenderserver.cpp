@@ -285,8 +285,9 @@ void CopySenderServer::BuildFileSumMD5(const QVariantMap jsonObject){
         }
     }
 
-    if(!theBuildDirectory.compare(""))
+    if(!theBuildDirectory.compare("")){
         return;
+    }
 
 
     BuildMD5 *buildMD5Class = new BuildMD5(theBuildDirectory,5);
@@ -298,8 +299,8 @@ void CopySenderServer::BuildFileSumMD5(const QVariantMap jsonObject){
     QVariantMap mapOfBuilds = allMD5s.toMap();
     QList<QString> keys = mapOfBuilds.keys();
 
-    if(keys.size() == 0)//if map is empty(end it)
-        return;
+    if(keys.size() == 0){//if map is empty, no files exist on slave side...
+    }
 
     //create a copy compare class to be able to build it later on
     //make use of QConcurrent to do so
@@ -327,6 +328,7 @@ void CopySenderServer::BuildFileSumMD5(const QVariantMap jsonObject){
 
     //wait untill it has finished compressing
     compressFuture.waitForFinished();
+    //the above similar to the following...
     // c.compress(copyCompareForBuild->getFilepaths(), fileCompressPath+ "/" + QString::number(machineId) + "/"+BuildID.toString(), theBuildDirectory);
 
     int intBuildID = BuildID.toInt();

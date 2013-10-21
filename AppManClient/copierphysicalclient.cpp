@@ -153,6 +153,5 @@ void CopierPhysicalClient::extractZipToDirectory(){
     DirectoryHandler::copyOverFromList(3, listOfPaths, buildPath, extractPath);
 #endif
 
-    qDebug()<<"Rmovin:"<<extractPath;
     DirectoryHandler::removeDir(extractPath);
 }
