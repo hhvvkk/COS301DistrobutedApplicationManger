@@ -32,6 +32,8 @@ BuildMD5::BuildMD5(QString directory, int threadCnt)
 }
 
 BuildMD5::~BuildMD5(){
+    //threads delete themself
+    //connect(finished...)...
     if(md5perthread)
         delete [] md5perthread;//delete an array
     buildFiles->clear();

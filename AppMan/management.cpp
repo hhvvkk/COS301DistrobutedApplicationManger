@@ -243,6 +243,7 @@ QString Management::getBuildMD5(Build* build){
 //    return returnValue;
     BuildMD5 md5(build->getBuildDirectory(),5);
     md5.generate();
+    qDebug()<<"MD5=="<<md5.getDirectoryMD5();
     return md5.getDirectoryMD5();
 }
 
