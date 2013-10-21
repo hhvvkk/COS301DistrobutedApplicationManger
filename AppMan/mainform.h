@@ -235,10 +235,22 @@ private slots:
      */
     void slaveGotBuild(Machine*m, int buildId,  QString slaveBuildName, bool buildExist);
 
-
+    /**
+    * \fn void slaveBuildSizeSame(int buildId, int machineId, bool isTheSame);
+    * @brief A function showing whether the build is the same on the master with the slave
+    * @param isSame A boolean indicating if it is the same or not
+    * @param buildID The ID of the build which isSame value is being set for
+    * @param machineId The ID of the machine which invoked the function
+    */
     void slaveBuildSizeSame(int buildId, int machineId, bool isTheSame);
 
-
+    /**
+     * \fn void slaveBuildSynched(int machineId, int buildId, double percentageSynched);
+     * @brief Function which indicates how far the build is synchronised on the user interface
+     * @param buildId The number of the build is the same or not
+     * @param slaveId The ID of the machine which has the build
+     * @param percentageSynched The percentage that the build is synchronised
+     */
     void slaveBuildSynched(int machineId, int buildId,double percentageSynched);
     
     void on_treeWidgetSlaves_clicked(const QModelIndex &index);

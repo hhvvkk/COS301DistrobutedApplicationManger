@@ -28,6 +28,6 @@ void ProtoUpdateBuildInfo::UpdateBuildName(QVariantMap jsonObject, Management *m
     appendJSONValue(jsonMessage, "buildName", newBuildName, false);
     endJSONMessage(jsonMessage);
 
-    slaveSocket->write(jsonMessage.toAscii().data());
+    slaveSocket->write(jsonMessage.toUtf8().data());
     slaveSocket->flush();
 }

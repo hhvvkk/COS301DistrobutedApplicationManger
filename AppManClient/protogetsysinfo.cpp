@@ -20,7 +20,7 @@ void ProtoGetSysInfo::GetDetSysInfo(Management *management, QTcpSocket *masterSo
     appendJSONValue(jsonMessage, "data", management->getDetSysInfo(),false);
     endJSONMessage(jsonMessage);
 
-    masterSocket->write(jsonMessage.toAscii().data());
+    masterSocket->write(jsonMessage.toUtf8().data());
     masterSocket->flush();
 }
 
@@ -31,6 +31,6 @@ void ProtoGetSysInfo::GetMinSysInfo(Management *management, QTcpSocket *masterSo
     appendJSONValue(jsonMessage, "data", management->getMinSysInfo(),false);
     endJSONMessage(jsonMessage);
 
-    masterSocket->write(jsonMessage.toAscii().data());
+    masterSocket->write(jsonMessage.toUtf8().data());
     masterSocket->flush();
 }

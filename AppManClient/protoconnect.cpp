@@ -59,7 +59,7 @@ void ProtoConnect::initiateSlaveCurrentBuilds(QTcpSocket *masterSocket){
     appendJSONValue(jsonMessage, "subHandler", "RecheckBuilds", false);
     endJSONMessage(jsonMessage);
 
-    masterSocket->write(jsonMessage.toAscii().data());
+    masterSocket->write(jsonMessage.toUtf8().data());
     masterSocket->flush();
 }
 
@@ -91,7 +91,7 @@ void ProtoConnect::connectToMaster(QString ipAddress, int serverPort, ProtocolHa
     appendJSONValue(jsonMessage, "machineID", QString::number(machineID), false);
     endJSONMessage(jsonMessage);
 
-    socket->write(jsonMessage.toAscii().data());
+    socket->write(jsonMessage.toUtf8().data());
     socket->flush();
 
     //finally set the socket so that the network can use it

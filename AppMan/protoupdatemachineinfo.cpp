@@ -24,6 +24,6 @@ void ProtoUpdateMachineInfo::updateUniqueID(int uniqueID, QTcpSocket *slaveSocke
     appendJSONValue(jsonMessage, "uniqueID", QString::number(uniqueID), false);
     endJSONMessage(jsonMessage);
 
-    slaveSocket->write(jsonMessage.toAscii().data());
+    slaveSocket->write(jsonMessage.toUtf8().data());
     slaveSocket->flush();
 }

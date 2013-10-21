@@ -65,6 +65,7 @@ QString CopyCompare::getDeleteJsonString(QString BuildID){
     }
 
     jsonDeleteString.append(" ] }");
+
     return jsonDeleteString;
 }
 

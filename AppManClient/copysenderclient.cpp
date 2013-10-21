@@ -106,7 +106,7 @@ bool CopySenderClient::connectToHost(){
     appendJSONValue(jsonMessage, "machineID", machineID, false);
     endJSONMessage(jsonMessage);
 
-    socket->write(jsonMessage.toAscii().data());
+    socket->write(jsonMessage.toUtf8().data());
     socket->flush();
 
     return true;
@@ -177,7 +177,7 @@ void CopySenderClient::requestHandler(QString data){
         endJSONMessage(jsonMessage);
 
 
-        socket->write(jsonMessage.toAscii().data());
+        socket->write(jsonMessage.toUtf8().data());
         socket->flush();
         return;
     }
@@ -228,7 +228,7 @@ void CopySenderClient::EndAllDifferences(){
     endJSONMessage(jsonMessage);
 
 
-    socket->write(jsonMessage.toAscii().data());
+    socket->write(jsonMessage.toUtf8().data());
     socket->flush();
 }
 
@@ -279,7 +279,7 @@ void CopySenderClient::SendBuildMD5Class(BuildMD5 *md5Class, int i){
     jsonString.append("} }");
 
     jsonString = "||" + jsonString +"||";
-    socket->write(jsonString.toAscii().data());
+    socket->write(jsonString.toUtf8().data());
     socket->flush();
 
     md5Class->deleteLater();
@@ -412,6 +412,6 @@ void CopySenderClient::notifyServerSuccess(int BuildID, bool success){
     appendJSONValue(jsonMessage, "success", QString::number(success), false);
     endJSONMessage(jsonMessage);
 
-    socket->write(jsonMessage.toAscii().data());
+    socket->write(jsonMessage.toUtf8().data());
     socket->flush();
 }

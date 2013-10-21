@@ -88,6 +88,6 @@ void ProtoSlaveCurrentBuilds::RecheckBuilds(QTcpSocket *slaveSocket){
     appendJSONValue(jsonMessage, "subHandler", "Rechecker", false);
     endJSONMessage(jsonMessage);
 
-    slaveSocket->write(jsonMessage.toAscii().data());
+    slaveSocket->write(jsonMessage.toUtf8().data());
     slaveSocket->flush();
 }

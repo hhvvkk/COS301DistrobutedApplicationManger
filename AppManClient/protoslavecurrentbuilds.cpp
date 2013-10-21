@@ -26,7 +26,7 @@ void ProtoSlaveCurrentBuilds::Rechecker(Management *management, QTcpSocket *mast
         appendJSONValue(jsonMessage, "buildName", allBuilds[buildIterator].getBuildName(), false);
         endJSONMessage(jsonMessage);
 
-        masterSocket->write(jsonMessage.toAscii().data());
+        masterSocket->write(jsonMessage.toUtf8().data());
         masterSocket->flush();
         buildIterator++;
     }
@@ -41,7 +41,7 @@ void ProtoSlaveCurrentBuilds::Rechecker(Management *management, QTcpSocket *mast
         appendJSONValue(jsonMessage, "subHandler", "RecheckDone", false);
         endJSONMessage(jsonMessage);
 
-        masterSocket->write(jsonMessage.toAscii().data());
+        masterSocket->write(jsonMessage.toUtf8().data());
         masterSocket->flush();
     }
 }

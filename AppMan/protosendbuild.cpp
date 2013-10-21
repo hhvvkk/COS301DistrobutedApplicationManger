@@ -48,6 +48,8 @@ void ProtoSendBuild::SizeCheckAllBuildsDone(QTcpSocket *slaveSocket, Management 
 
     Build *slaveBuilds = handler->getMachine()->getBuilds();
 
+    int machineId = handler->getMachine()->getMachineID();
+
     QStringList *differentBuildDirectories = new QStringList();
     QStringList *differentBuildIDs = new QStringList();
 
@@ -58,9 +60,12 @@ void ProtoSendBuild::SizeCheckAllBuildsDone(QTcpSocket *slaveSocket, Management 
             differentBuildIDs->append(QString::number(aBuild.getBuildID()));
             differentBuildDirectories->append(aBuild.getBuildDirectory());
         }
+        else{//if they are the same...
+            //show that they are the same through the function...(redundency)
+            management->setSlaveBuildIsSame(true, machineId, aBuild.getBuildID());
+        }
     }
 
-    int machineId = handler->getMachine()->getMachineID();
 
     CopySenderServer *newSender = 0;
     if(newSender == 0){

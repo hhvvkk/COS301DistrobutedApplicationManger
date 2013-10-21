@@ -50,7 +50,7 @@ signals:
     void slaveDisconnected(int index);
 
     /**
-     * \fn void slaveGotBuild(Machine *machine, int BuildID, QString buildName, bool buildExists);
+     * \fn void slaveGotBuild(Machine *machine, int BuildID,  QString buildName, bool buildExists);
      * @brief A signal that will invoke a function on the mainform to add the build to the view
      * @param machine The machine on which the build must be displayed
      * @param BuildID The number of the build that must be added
@@ -59,8 +59,22 @@ signals:
      */
     void slaveGotBuild(Machine *machine, int BuildID,  QString buildName, bool buildExists);
 
+    /**
+     * \fn void slaveBuildSizeSame(int buildId, int slaveId, bool isTheSame);
+     * @brief Signal emitted which says if the build is the same on the master and the slave
+     * @param buildId The number of the build is the same or not
+     * @param slaveId The ID of the machine which has the build
+     * @param isTheSame boolean indicating if it is the same or not
+     */
     void slaveBuildSizeSame(int buildId, int slaveId, bool isTheSame);
 
+    /**
+     * \fn void slaveBuildSynched(int machineId, int buildId, double percentageSynched);
+     * @brief Signal emitted which indicates how far the build is synchronised
+     * @param buildId The number of the build is the same or not
+     * @param slaveId The ID of the machine which has the build
+     * @param percentageSynched The percentage that the build is synchronised
+     */
     void slaveBuildSynched(int machineId, int buildId, double percentageSynched);
 
     /**
@@ -232,11 +246,31 @@ public:
     */
     Machine *getMachineById(int machineId);
 
-
+    /**
+    * \fn void slaveBuildSize(int BuildID, QString buildMD5Value, int slaveId);
+    * @brief A function to compare the md5 value of the master machine to that of the slave machine
+    * @param BuildID The ID of the build that has the md5 sum value
+    * @param buildMD5Value The md5 sum value of the build
+    * @param slaveId The ID of the machine which invoked the function
+    */
     void slaveBuildSize(int BuildID, QString buildMD5Value, int slaveId);
 
+    /**
+    * \fn void slaveABuildSize(int BuildID, QString buildMD5Value, int slaveId);
+    * @brief A function which invokes a single build size and which will invoke the rest of the syncrhonisation process
+    * @param BuildID The ID of the build that has the md5 sum value
+    * @param buildMD5Value The md5 sum value of the build
+    * @param slaveId The ID of the machine which invoked the function
+    */
     void slaveABuildSize(int BuildID, QString buildMD5Value, int slaveId);
 
+    /**
+    * \fn void slaveABuildSize(int BuildID, QString buildMD5Value, int slaveId);
+    * @brief A function setting whether the build on a slave is the same or not and emitting the change
+    * @param isSame A boolean indicating if it is the same or not
+    * @param buildID The ID of the build which isSame value is being set for
+    * @param machineId The ID of the machine which invoked the function
+    */
     void setSlaveBuildIsSame(bool isSame, int machineId, int buildID);
 
     QString getMinStats(){return minStats;}

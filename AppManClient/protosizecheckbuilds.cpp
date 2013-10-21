@@ -26,7 +26,7 @@ void ProtoSizeCheckBuilds::sendCurrentBuildMD5(Management *management, QTcpSocke
         QString BuildIDString = QString::number(builds[buildIterator].getBuildID());
         appendJSONValue(jsonMessage, "BuildID", BuildIDString, false);
         endJSONMessage(jsonMessage);
-        masterSocket->write(jsonMessage.toAscii().data());
+        masterSocket->write(jsonMessage.toUtf8().data());
         masterSocket->flush();
 
         buildIterator++;//go to next build
@@ -38,7 +38,7 @@ void ProtoSizeCheckBuilds::sendCurrentBuildMD5(Management *management, QTcpSocke
     appendJSONValue(jsonMessage, "subHandler", "SizeCheckAllBuildsDone", false);
     endJSONMessage(jsonMessage);
 
-    masterSocket->write(jsonMessage.toAscii().data());
+    masterSocket->write(jsonMessage.toUtf8().data());
     masterSocket->flush();
 
     if(buildIterator >= management->getBuildCount()){
@@ -69,6 +69,6 @@ void ProtoSizeCheckBuilds::SizeCheckABuild(QVariantMap jsonObject, Management *m
     appendJSONValue(jsonMessage, "OneBuildOnly", "true", false);
     endJSONMessage(jsonMessage);
 
-    masterSocket->write(jsonMessage.toAscii().data());
+    masterSocket->write(jsonMessage.toUtf8().data());
     masterSocket->flush();
 }

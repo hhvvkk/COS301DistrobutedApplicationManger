@@ -24,7 +24,7 @@ void ProtoUpdateBuildInfo::updateName(int buildID, QString newBuildName, QTcpSoc
     appendJSONValue(jsonMessage, "buildName", newBuildName, false);
     endJSONMessage(jsonMessage);
 
-    slaveSocket->write(jsonMessage.toAscii().data());
+    slaveSocket->write(jsonMessage.toUtf8().data());
     slaveSocket->flush();
 }
 

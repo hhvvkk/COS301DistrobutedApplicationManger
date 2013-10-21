@@ -31,6 +31,6 @@ void ProtoCopyOver::CopyBuildOver(QVariantMap jsonObject, Management *management
     appendJSONValue(jsonMessage, "BuildID", BuildID,false);
     endJSONMessage(jsonMessage);
 
-    masterSocket->write(jsonMessage.toAscii().data());
+    masterSocket->write(jsonMessage.toUtf8().data());
     masterSocket->flush();//write all that should be written
 }

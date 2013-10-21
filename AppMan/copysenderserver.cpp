@@ -91,7 +91,7 @@ void CopySenderServer::sendJSONMessage(QTcpSocket *slaveSocket, QString jsonMess
     }
 
     try{
-        slaveSocket->write(jsonMessage.toAscii().data());
+        slaveSocket->write(jsonMessage.toUtf8().data());
         slaveSocket->flush();
     }catch(...){
         //if it fails to write and throws an exception somehow, you catch the exception
@@ -310,10 +310,10 @@ void CopySenderServer::BuildFileSumMD5(const QVariantMap jsonObject){
     //after computation retrieve the future value
     CopyCompare *copyCompareForBuild = futureCopyCompare.result();
 
+    copyCompareForBuild->getDeleteJsonString(BuildID.toString());
     //done with the class so delete it
     buildMD5Class->deleteLater();
     buildMD5Class = 0;
-
 
     if(copyCompareForBuild->isSynchronised()){
         //this point the build is fully syncrhonised, but it may happen that the buildMD5 differ from master to slave since it could possibly be calculated with different files first
@@ -326,7 +326,7 @@ void CopySenderServer::BuildFileSumMD5(const QVariantMap jsonObject){
     QString deleteJsonString = copyCompareForBuild->getDeleteJsonString(BuildID.toString());
 
     if(!deleteJsonString.isEmpty()){
-        socket->write(("||"+deleteJsonString+"||").toAscii().data());
+        socket->write(("||"+deleteJsonString+"||").toUtf8().data());
         socket->flush();
     }
 

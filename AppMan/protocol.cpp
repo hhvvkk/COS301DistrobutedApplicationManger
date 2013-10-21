@@ -34,7 +34,7 @@ void Protocol::sendJSONMessage(QTcpSocket *slaveSocket, QString jsonMessage){
     }
 
     try{
-        slaveSocket->write(jsonMessage.toAscii().data());
+        slaveSocket->write(jsonMessage.toUtf8().data());
         slaveSocket->flush();
     }catch(...){
         //if it fails to write and throws an exception somehow, you catch the exception

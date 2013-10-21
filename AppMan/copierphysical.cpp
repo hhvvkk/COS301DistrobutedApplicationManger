@@ -105,7 +105,12 @@ void CopierPhysical::writeFileOverNetwork(){
         //QByteArray  mid ( int pos, int len = -1 ) const
         QByteArray midToWrite = buffer.mid(i, maxPerSize);
         qint64 written = socket->write(midToWrite);
-        socket->waitForBytesWritten(-1);
+        if(socket->isWritable()){
+            socket->waitForBytesWritten(-1);
+        }
+        else{
+            break;
+        }
         //change the speed at which it writes...
         i = i + written;
     }
