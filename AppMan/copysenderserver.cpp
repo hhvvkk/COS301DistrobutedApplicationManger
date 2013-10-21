@@ -276,6 +276,9 @@ void CopySenderServer::BuildFileSumMD5(const QVariantMap jsonObject){
     QVariant allMD5s = jsonObject.value("BuildToMD5");
     QVariant BuildID = jsonObject.value("BuildID");
 
+    bool ok = false;
+    int intBuildID = BuildID.toInt(&ok);
+
     //generate the build md5 class for that build
     QString theBuildDirectory = "";
     for(int i = 0; i < differentBuildDirectories->size(); i++){
@@ -299,8 +302,7 @@ void CopySenderServer::BuildFileSumMD5(const QVariantMap jsonObject){
     QVariantMap mapOfBuilds = allMD5s.toMap();
     QList<QString> keys = mapOfBuilds.keys();
 
-    if(keys.size() == 0){//if map is empty, no files exist on slave side...
-    }
+    if(keys.size() == 0){}//if map is empty, no files exist on slave side...
 
     //create a copy compare class to be able to build it later on
     //make use of QConcurrent to do so
@@ -312,6 +314,15 @@ void CopySenderServer::BuildFileSumMD5(const QVariantMap jsonObject){
     buildMD5Class->deleteLater();
     buildMD5Class = 0;
 
+
+    if(copyCompareForBuild->isSynchronised()){
+        //this point the build is fully syncrhonised, but it may happen that the buildMD5 differ from master to slave since it could possibly be calculated with different files first
+        emit fullySynchronised(intBuildID, machineId, management);
+        copyCompareForBuild->deleteLater();
+        copyCompareForBuild = 0;
+        return;
+    }
+
     QString deleteJsonString = copyCompareForBuild->getDeleteJsonString(BuildID.toString());
 
     if(!deleteJsonString.isEmpty()){
@@ -321,20 +332,19 @@ void CopySenderServer::BuildFileSumMD5(const QVariantMap jsonObject){
 
     //do something with that
     //     void machineBuildSynched(int machineId, int buildId, double percentageSynched);
-    QtConcurrent::run(management, &Management::machineBuildSynched, machineId,BuildID.toInt(), copyCompareForBuild->percentageSynched());
+    QtConcurrent::run(management, &Management::machineBuildSynched, machineId, BuildID.toInt(), copyCompareForBuild->percentageSynched());
 
     Compression c;
-    QFuture <void>compressFuture = QtConcurrent::run(&c, &Compression::compress,copyCompareForBuild->getFilepaths(),  fileCompressPath+ "/" + QString::number(machineId) + "/"+BuildID.toString(), theBuildDirectory);
+    QFuture <void>compressFuture = QtConcurrent::run(&c, &Compression::compress, copyCompareForBuild->getFilepaths(),  fileCompressPath+ "/" + QString::number(machineId) + "/"+BuildID.toString(), theBuildDirectory);
 
     //wait untill it has finished compressing
     compressFuture.waitForFinished();
     //the above similar to the following...
     // c.compress(copyCompareForBuild->getFilepaths(), fileCompressPath+ "/" + QString::number(machineId) + "/"+BuildID.toString(), theBuildDirectory);
 
-    int intBuildID = BuildID.toInt();
     createPhysicalCopier(intBuildID);
 
-    delete copyCompareForBuild;
+    copyCompareForBuild->deleteLater();
 }
 
 CopyCompare *CopySenderServer::createCopyCompare(QList<QString> &keys, QVariantMap mapOfBuilds, BuildMD5 *md5Class, QString theBuildDirectory)  const{

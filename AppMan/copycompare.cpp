@@ -21,9 +21,11 @@ QStringList CopyCompare::getFilepaths(){
 void CopyCompare::compareMD5(const QString *masterMD5Value, const QString *masterFilePath, QString slaveMd5Value){
     //Will now compare whether or not the file should be included in the build
     if(masterMD5Value->compare(slaveMd5Value)){//if it is the same, it should not be included in copy over
+        //here it is not the same, thus it is included
         filePaths->append(*masterFilePath);
     }
     else{
+        //here it means it is the same, thus dont include it and increase num files not copied
         numFilesNotCopied++;
     }
 }
@@ -64,4 +66,11 @@ QString CopyCompare::getDeleteJsonString(QString BuildID){
 
     jsonDeleteString.append(" ] }");
     return jsonDeleteString;
+}
+
+bool CopyCompare::isSynchronised(){
+    if((filePaths->size() == 0) && (deleteFilePaths->size() == 0))
+        return true;
+    else
+        return false;
 }

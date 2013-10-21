@@ -64,6 +64,18 @@ private slots:
       */
     void copySenderServerDone(CopySenderServer * deleteCopySender);
 
+
+
+
+    /**
+      * \fn void fullySynchronisedBuild(int intBuildID, int machineId, Management *management);
+      * @brief Executes when a build is fully synchronised on slave machine(i.e. no files to copy and no files to delete)
+      * @param intBuildID the ID of the build which is fully synchronised
+      * @param machineId The ID of the machien which has a full synchronisation
+      * @param management The management class which will be notified of the syncrhonisation
+      */
+    void fullySynchronisedBuild(int intBuildID, int machineId, Management *management);
+
 private:
     /**
       * \fn void deleteCopySenderServer(CopySenderServer * deleteCopySender);

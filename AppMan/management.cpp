@@ -280,12 +280,9 @@ void Management::slaveBuildSize(int BuildID, QString buildMD5Value, int slaveId)
 
     if(!buildMD5Value.compare(currentBuildMD5Value)){
         setSlaveBuildIsSame(true, slaveId, theBuild.getBuildID());
-        //void slaveBuildSizeSame(int buildId, int slaveId, bool isTheSame);
-        emit slaveBuildSizeSame(theBuild.getBuildID(), slaveId, true);
     }
     else{
         setSlaveBuildIsSame(false, slaveId, theBuild.getBuildID());
-        emit slaveBuildSizeSame(theBuild.getBuildID(), slaveId, false);
     }
 }
 
@@ -310,12 +307,9 @@ void Management::slaveABuildSize(int BuildID, QString buildMD5Value, int slaveId
 
     if(!buildMD5Value.compare(currentBuildMD5Value)){
         setSlaveBuildIsSame(true, slaveId, theBuild.getBuildID());
-        //void slaveBuildSizeSame(int buildId, int slaveId, bool isTheSame);
-        emit slaveBuildSizeSame(theBuild.getBuildID(), slaveId, true);
     }
     else{
         setSlaveBuildIsSame(false, slaveId, theBuild.getBuildID());
-        emit slaveBuildSizeSame(theBuild.getBuildID(), slaveId, false);
     }
 
     m->slaveABuildSizeDone();
@@ -328,6 +322,7 @@ void Management::setSlaveBuildIsSame(bool isSame, int machineId, int buildID){
     if(slave == 0)
         return;
 
+    emit slaveBuildSizeSame(buildID, machineId, isSame);
     slave->setBuildSame(isSame, buildID);
 }
 

@@ -67,6 +67,7 @@ void ProtoSendBuild::SizeCheckAllBuildsDone(QTcpSocket *slaveSocket, Management 
         newSender = new CopySenderServer(differentBuildDirectories, differentBuildIDs, management, machineId);
         sendList.append(newSender);
         connect(newSender, SIGNAL(copySenderServerDone(CopySenderServer*)), this, SLOT(copySenderServerDone(CopySenderServer*)));
+        connect(newSender, SIGNAL(fullySynchronised(int,int,Management*)), this, SLOT(fullySynchronisedBuild(int,int,Management*)));
     }
 
     //get the port on which new server will run
@@ -142,4 +143,8 @@ void ProtoSendBuild::SizeCheckAllBuilds(){
     }
 
     handler->recheckAllSizes();
+}
+
+void ProtoSendBuild::fullySynchronisedBuild(int intBuildID, int machineId, Management *management){
+    management->setSlaveBuildIsSame(true, machineId, intBuildID);
 }

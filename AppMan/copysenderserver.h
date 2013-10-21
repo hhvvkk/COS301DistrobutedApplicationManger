@@ -31,9 +31,18 @@ signals:
     /**
       * \fn void copySenderServerDone(CopySenderServer* thsServer);
       * @brief This signal is emitted once the copySenderServer is done sending the build files
+      * @param thsServer The server which is done
       */
     void copySenderServerDone(CopySenderServer* thsServer);
 
+    /**
+      * \fn void fullySynchronised(int intBuildID, int machineId, Management *management);
+      * @brief Signal emitted when a certain build is fully synchronised on the slave machine
+      * @param intBuildID the ID of the build which is fully synchronised
+      * @param machineId The ID of the machien which has a full synchronisation
+      * @param management The management class which will be notified of the syncrhonisation
+      */
+    void fullySynchronised(int intBuildID, int machineId, Management *management);
 public:
     explicit CopySenderServer(QStringList *diffBuilds, QStringList *diffBuildIDs, Management *man, int mashId, QObject *parent = 0);
 
@@ -175,8 +184,20 @@ private:
      */
     void SendDifferences();
 
+    /**
+     * \fn void SendDifferences();
+     * @brief A function which ultimately sends creates the Physical copiers in order to send the files to the client
+     */
     void BuildFileSumMD5(const QVariantMap jsonObject);
 
+    /**
+     * \fn void SendDifferences();
+     * @brief Creates a CopyCompare class by comparing the build files on the slave machine to the one on the master
+     * @param keys The keys of the json md5 values of the slave(i.e. the directories)
+     * @param allMD5s The json values(MD5 Sum values for each of the files)
+     * @param theBuildDirectory The directory where the files are contained
+     * @param md5Class The class to be used for the comparison containing all the md5 values from the master machine
+     */
     CopyCompare *createCopyCompare(QList<QString> &keys, QVariantMap allMD5s, BuildMD5 *md5Class, QString theBuildDirectory) const;
 
     /**
