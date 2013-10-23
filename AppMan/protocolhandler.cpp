@@ -15,6 +15,7 @@ ProtocolHandler::ProtocolHandler( Management *man, QObject *parent) :
     sendBuild = new ProtoSendBuild(this);
     updateBuildInfo = new ProtoUpdateBuildInfo(this);
     updateMachineInfo = new ProtoUpdateMachineInfo(this);
+    deleteBuild = new ProtoDeleteBuild(this);
     firstTalk = true;
 }
 
@@ -27,6 +28,7 @@ ProtocolHandler::~ProtocolHandler(){
     sendBuild->deleteLater();
     updateBuildInfo->deleteLater();
     updateMachineInfo->deleteLater();
+    deleteBuild->deleteLater();
 }
 
 void ProtocolHandler::handle(QString data){
@@ -125,6 +127,11 @@ void ProtocolHandler::requestHandler(QString data){
 
     if(!handler.toString().compare("ProtoUpdateMachineInfo"))
         updateMachineInfo->handle(jsonObject, management, slaveSocket);
+    else
+
+
+    if(!handler.toString().compare("ProtoDeleteBuild"))
+        deleteBuild->handle(jsonObject, management, slaveSocket);
 
 }
 
@@ -197,4 +204,12 @@ void ProtocolHandler::updateUniqueID(int uniqueID){
     if(theUpdater == 0)
         return;
     theUpdater->updateUniqueID(uniqueID, slaveSocket);
+}
+
+
+void ProtocolHandler::deleteBuildFromSlave(int BuildID){
+    ProtoDeleteBuild *theDeleter = dynamic_cast<ProtoDeleteBuild*>(deleteBuild);
+    if(theDeleter == 0)
+        return;
+    theDeleter->deleteBuildFromSlave(slaveSocket, BuildID);
 }

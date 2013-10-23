@@ -18,6 +18,8 @@ MainForm::MainForm(QWidget *parent) :
 
     connect(management, SIGNAL(newSlaveUpdatedBuildName(int,int,QString)), this, SLOT(slaveUpdatedBuildName(int, int, QString)));
     connect(management, SIGNAL(slaveBuildSynched(int,int,double)), this, SLOT(slaveBuildSynched(int,int,double)));
+    connect(management, SIGNAL(slaveDeletedBuild(int,int)), this, SLOT(slaveDeletedBuild(int,int)));
+    connect(management, SIGNAL(buildDeleted()), this, SLOT(buildDeleted()));
 
     masterBuilds = new MasterBuilds();
     masterBuilds->setHeaderHidden(true);
@@ -166,7 +168,7 @@ void MainForm::dropBuildToSlave(QString fromBuild){
 
 void MainForm::dropNewBuildAdd(QString newBuildDirectory){
     AddBuild *newBuild = new AddBuild(newBuildDirectory);
-    connect(newBuild,SIGNAL(initiateAddBuild(Build)),this,SLOT(initiateAddBuild(Build)));
+    connect(newBuild, SIGNAL(initiateAddBuild(Build*)), this, SLOT(initiateAddBuild(Build*)));
     newBuild->show();
 }
 
@@ -264,14 +266,14 @@ void MainForm::slaveDisconnected(int uId){
     }
 }
 
-void MainForm::initiateAddBuild(Build b){
-    management->addBuild(b);
+void MainForm::initiateAddBuild(Build *newBuild){
+    management->addBuild(newBuild);
     displayBuilds();
 }
 
 void MainForm::displayBuilds(){
     masterBuilds->clear();
-    Build* myBuilds = management->getAllBuilds();
+    QList<Build*> myBuilds = management->getAllBuilds();
     int len = management->getBuildCount();
     QTreeWidgetItem *newWidgetItem;
     QString buildName = "";
@@ -279,8 +281,8 @@ void MainForm::displayBuilds(){
     int buildID = -1;
     for(int i = 0; i < len; i++){
         //qDebug()<<"looping through builds";
-        buildName = myBuilds[i].getBuildName();
-        buildID = myBuilds[i].getBuildID();
+        buildName = myBuilds[i]->getBuildName();
+        buildID = myBuilds[i]->getBuildID();
         strID = QString::number(buildID);
         newWidgetItem = new QTreeWidgetItem();
         // The build no in column 1, which is hidden
@@ -322,8 +324,8 @@ void MainForm::loadXMLBuilds(){
     while (i.hasNext() && j.hasNext() && k.hasNext() && l.hasNext())
     {
         i.next(); j.next(); k.next(); l.next();
-        Build b(i.value().toInt(),j.value(),k.value(),l.value());
-        initiateAddBuild(b);
+        Build *newBuild = new Build(i.value().toInt(),j.value(),k.value(),l.value());
+        initiateAddBuild(newBuild);
     }
 }
 
@@ -336,7 +338,7 @@ void MainForm::masterBuildsClicked(QModelIndex index){
     int buildID = selBuild.toInt(&ok);
 
     if(ok){
-        Build retr = management->getBuildByID(buildID);
+        Build *retr = management->getBuildByID(buildID);
         clearDockWidget();
 
         connect(buildInfo, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(buildInfoDoubleClicked(QTreeWidgetItem*,int)));
@@ -387,43 +389,43 @@ void MainForm::masterBuildsClicked(QModelIndex index){
     }
 }
 
-void MainForm::populateBuildInfo(Build retr){
+void MainForm::populateBuildInfo(Build *retr){
     buildInfo->clear();
     QTreeWidgetItem *boola;
     for(int i = 0; i < 4; i++){
         boola = new QTreeWidgetItem();
 
         if(i == 0){
-            int bID = retr.getBuildID();
+            int bID = retr->getBuildID();
             QString buildID = QString::number(bID);
             boola->setText(0,"BuildID");
             boola->setText(1,buildID);
-            boola->setToolTip(0,QString::number(retr.getBuildID()));
-            boola->setToolTip(1,QString::number(retr.getBuildID()));
+            boola->setToolTip(0,QString::number(retr->getBuildID()));
+            boola->setToolTip(1,QString::number(retr->getBuildID()));
         }
         else if(i == 1){
             boola->setText(0,"Name");
-            boola->setText(1,retr.getBuildName());
-            boola->setToolTip(0,retr.getBuildName());
-            boola->setToolTip(1,retr.getBuildName());
+            boola->setText(1,retr->getBuildName());
+            boola->setToolTip(0,retr->getBuildName());
+            boola->setToolTip(1,retr->getBuildName());
         }
         else if(i == 2){
             boola->setText(0,"Directory");
-            boola->setText(1,retr.getBuildDirectory());
-            boola->setToolTip(0,retr.getBuildDirectory());
-            boola->setToolTip(1,retr.getBuildDirectory());
+            boola->setText(1,retr->getBuildDirectory());
+            boola->setToolTip(0,retr->getBuildDirectory());
+            boola->setToolTip(1,retr->getBuildDirectory());
         }
         else{
             boola->setText(0,"Description");
-            boola->setText(1,retr.getBuildDescription());
-            boola->setToolTip(0,retr.getBuildDescription());
-            boola->setToolTip(1,retr.getBuildDescription());
+            boola->setText(1,retr->getBuildDescription());
+            boola->setToolTip(0,retr->getBuildDescription());
+            boola->setToolTip(1,retr->getBuildDescription());
         }
         buildInfo->addTopLevelItem(boola);
     }
 }
 
-void MainForm::populateTreeWidgetInfo(Build retr){
+void MainForm::populateTreeWidgetInfo(Build *retr){
     /*
      *NOTA: Hierdie funksie is vir as mens sou die TreeWidgetInfo met files en hulle mod dates populate
      */
@@ -433,7 +435,7 @@ void MainForm::populateTreeWidgetInfo(Build retr){
     headers << "File Name" << "Modification Date";
     ui->treeWidgetInfoBox->setHeaderLabels(headers);
     //Run the DirIterator
-    QString dir = retr.getBuildDirectory();
+    QString dir = retr->getBuildDirectory();
     myDirIterator iter(dir);
     iter.getFileInfo();
     QVector<QString> fileNames = iter.retrieveFileNames();
@@ -462,7 +464,7 @@ void MainForm::populateTreeWidgetInfo(Build retr){
 
 void MainForm::on_actionAdd_Build_triggered(){
     AddBuild *newBuild = new AddBuild();
-    connect(newBuild,SIGNAL(initiateAddBuild(Build)),this,SLOT(initiateAddBuild(Build)));
+    connect(newBuild,SIGNAL(initiateAddBuild(Build*)),this,SLOT(initiateAddBuild(Build*)));
     newBuild->show();
 }
 
@@ -492,6 +494,25 @@ void MainForm::slaveGotBuild(Machine*m, int buildId,  QString slaveBuildName, bo
     if(machineT == 0){
         return;
     }
+
+    //firstly check whether it already exists or not
+    //if it does exist, return(don't want dupilicate values)
+    for(int i = 0; i < machineT->childCount(); i++){
+        QTreeWidgetItem *childItem = machineT->child(i);
+
+        bool ok = false;
+
+        int theBuildID = childItem->text(1).toInt(&ok);
+
+        if(ok){
+            if(theBuildID == buildId)
+                return;//dont want duplicate items
+        }
+        else{
+            return;
+        }
+    }
+
     QString slaveBuildId = QString::number(buildId);
     QTreeWidgetItem *newBuildForSlave = new QTreeWidgetItem();
     if(buildExist == false){
@@ -527,17 +548,21 @@ void MainForm::slaveBuildSizeSame(int buildId, int machineId, bool isTheSame){
     QTreeWidgetItem * buildItem = 0;
 
     QString theBuildId = QString::number(buildId);
+
     if(slaveTreeWidgetItem == 0)
         return;
+
     for(int i = 0; i < slaveTreeWidgetItem->childCount(); i++){
         if(!slaveTreeWidgetItem->child(i)->text(1).compare(theBuildId)){
             buildItem = slaveTreeWidgetItem->child(i);
             break;
         }
     }
+
     if(buildItem == 0){
         return;
     }
+
     if(isTheSame){
         buildItem->setBackgroundColor(0, Qt::green);
     }
@@ -998,4 +1023,34 @@ bool MainForm::mouseCurserOver(QWidget *theItem){
         return true;
     else
         return false;
+}
+
+void MainForm::slaveDeletedBuild(int machineID, int buildID){
+    QTreeWidgetItem *slaveItem = getSlaveTreeItemById(machineID);
+
+    if(slaveItem == 0)
+        return;
+
+    //the Child count is how many builds there are
+    for(int i = 0; i < slaveItem->childCount(); i++){
+        QTreeWidgetItem *childItem = slaveItem->child(i);
+        if(childItem != 0){
+            //the buildID is the 2nd column(i.e. index 1)
+            bool ok = false;
+
+            int theItemBuildID = childItem->text(1).toInt(&ok);
+
+            if(ok){
+                if(theItemBuildID == buildID){
+                    //delete it since it is removed
+                    childItem->~QTreeWidgetItem();
+                    break;
+                }
+            }
+        }
+    }
+}
+
+void MainForm::buildDeleted(){
+    displayBuilds();
 }

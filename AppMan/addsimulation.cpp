@@ -90,12 +90,12 @@ void AddSimulation::on_pushButton_2_clicked()
 }
 
 void AddSimulation::setup(){
-    allBuilds = management->getAllBuilds();
+    QList<Build*> allBuilds = management->getAllBuilds();
     for(int i = 0; i < management->getBuildCount(); i++){
         QString item = "";
-        item += QString::number(allBuilds[i].getBuildID());
+        item += QString::number(allBuilds[i]->getBuildID());
         item += "-";
-        item += allBuilds[i].getBuildName();
+        item += allBuilds[i]->getBuildName();
         ui->buildComboBox01->addItem(item);
         ui->buildComboBox02->addItem(item);
         ui->buildComboBox03->addItem(item);

@@ -42,6 +42,7 @@ public:
      */
     void createXMLFile();
 
+
     /**
      * @fn void receiveBuild(QString num,QString name,QString descript, QString direc);
      * @brief The function that accepts parameters of the build
@@ -68,9 +69,24 @@ public:
       */
      int findBuildIndex(int buildID);
 
-     void updateBuildDescr(int buildID, QString newBuildDescr);
+    void updateBuildDescr(int buildID, QString newBuildDescr);
 	 
-	  void updateBuildDir(int buildID, QString newBuildDir);
+    void updateBuildDir(int buildID, QString newBuildDir);
+
+    /**
+     * \fn void removeBuild(int buildID);
+     * @brief Removes the build from the xml file
+     * @param buildID the ID of the build to be removed from the xml
+     */
+    void removeBuild(int buildID);
+
+private:
+    /**
+     * \fn void RemoveBuildToBeUpdated(int buildID);
+     * @brief A function which removes the build to be updated in order to update all variables
+     * @param buildID the ID of the build which will temporarily be removed
+     */
+    void RemoveBuildToBeUpdated(int buildID);
 private:
     /**
      * @var buildNumber
@@ -101,9 +117,6 @@ private:
      * @brief A QXmlStreamWriter instance
      */
     QXmlStreamWriter* theXMLWriter;
-
-    void RemoveBuildToBeUpdated(int buildID);
-
 };
 
 #endif // XMLWRITER_H

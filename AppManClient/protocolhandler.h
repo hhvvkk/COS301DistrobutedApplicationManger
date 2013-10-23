@@ -16,6 +16,7 @@
 #include "protosendbuild.h"
 #include "protoupdatebuildinfo.h"
 #include "protoupdatemachineinfo.h"
+#include "protodeletebuild.h"
 
 #include "json.h"
 
@@ -96,6 +97,7 @@ private:
     Protocol *sendBuild;
     Protocol *updateBuildInfo;
     Protocol *updateMachineInfo;
+    Protocol *deleteBuild;
 
 };
 

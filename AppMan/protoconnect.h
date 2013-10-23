@@ -6,8 +6,8 @@
 class Machine;
 
 /**
-  * @class ProtoCopyOver
-  * @brief This class is the protocol class handling connect and disconnect of machines with the master machine
+  * @class ProtoConnect
+  * @brief This class is the protocol class handling protocols for connect and disconnect of machines with the master machine
   */
 class ProtoConnect : public Protocol
 {

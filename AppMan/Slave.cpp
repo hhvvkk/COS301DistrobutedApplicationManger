@@ -49,33 +49,6 @@ void Slave::addBuild(Build buildToAdd){
 	buildCount++;
 }
 
-void Slave::deleteBuild(QString name){
-	int delIndex = -1;
-	for(int i = 0; i< buildCount; i++){
-                if(!slaveBuilds[i].getBuildName().compare(name)){
-			delIndex = i;
-		}
-	}
-
-	if(delIndex >= 0){
-		Build temp[buildCount-1];
-		for(int j = 0; j < buildCount; j++){
-			
-			if(j < delIndex){
-				temp[j] = slaveBuilds[j];
-			}
-			else if(j > delIndex){
-				temp[j-1] = slaveBuilds[j];
-			}
-		}
-		slaveBuilds = new Build[buildCount-1];
-		for(int k = 0; k < buildCount-1; k++){
-			slaveBuilds[k] = temp[k];
-		}
-		buildCount --;
-	}
-}
-
 void Slave:: deleteBuild(int id){
 	
 	int delIndex = -1;
@@ -152,4 +125,8 @@ void Slave::updateBuildName(int buildID, QString newBuildName){
 
 void Slave::updateUniqueID(int uniqueID){
     protocolHandler->updateUniqueID(uniqueID);
+}
+
+void Slave::deleteBuildNotify(int BuildID){
+    protocolHandler->deleteBuildFromSlave(BuildID);
 }

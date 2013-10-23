@@ -32,11 +32,11 @@ class AddBuild : public QWidget
     
 signals:
     /**
-     * @fn void initiateAddBuild(Build b);
+     * @fn void initiateAddBuild(Build *b);
      * @param b the Build to add
      * @brief initiateAddBuild will emit a signal to add the build
      */
-    void initiateAddBuild(Build b);
+    void initiateAddBuild(Build *b);
 
 public:
     /**

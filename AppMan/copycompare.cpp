@@ -42,7 +42,11 @@ double CopyCompare::percentageSynched(){
 
     int total = numFilesNotCopied + filePaths->size();
 
-    percentageComplete = 100.00 - filePaths->size()*100/total;
+    if(total != 0)
+        percentageComplete = 100.00 - filePaths->size()*100/total;
+    else
+        percentageComplete = 100;
+
     return percentageComplete;
 }
 
@@ -70,8 +74,11 @@ QString CopyCompare::getDeleteJsonString(QString BuildID){
 }
 
 bool CopyCompare::isSynchronised(){
-    if((filePaths->size() == 0) && (deleteFilePaths->size() == 0))
+    if((filePaths->size() == 0) && (deleteFilePaths->size() == 0)){
         return true;
-    else
+    }
+    else{
         return false;
+    }
+
 }

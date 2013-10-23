@@ -18,6 +18,7 @@
 #include "protosendbuild.h"
 #include "protoupdatebuildinfo.h"
 #include "protoupdatemachineinfo.h"
+#include "protodeletebuild.h"
 
 
 class Management;
@@ -126,6 +127,15 @@ public:
     * @param uniqueID the new ID of the machine
     */
     void updateUniqueID(int uniqueID);
+
+
+    /**
+    * \fn void deleteBuildNotify(int BuildID);
+    * @brief The function to notify the slave to delete the build physically
+    * @param BuildID The ID of the build that will be deleted physically
+    */
+    void deleteBuildFromSlave(int BuildID);
+
 private:
     /**
      * \fn void requestHandler(QString data);
@@ -176,6 +186,11 @@ private:
      * @var updateMachineInfo The protocol Update machine info
      */
     Protocol *updateMachineInfo;
+
+    /**
+     * @var deleteBuild The protocol Delete Build
+     */
+    Protocol *deleteBuild;
 
 
     /**

@@ -43,7 +43,6 @@ void xmlWriter::createXMLFile()
         }
         theXMLWriter->writeEndElement();
         theXMLWriter->writeEndDocument();
-        qDebug()<<"creating xml";
     }
 
 }
@@ -180,4 +179,40 @@ void xmlWriter::RemoveBuildToBeUpdated(int buildID){
     buildName = tmpName;
     buildDescription = tmpDesc;
     buildDirectory = tmpDir;
+}
+
+void xmlWriter::removeBuild(int buildID){
+    QMap <QString,QString> tmpNum;
+    QMap <QString,QString> tmpName;
+    QMap <QString,QString> tmpDesc;
+    QMap <QString,QString> tmpDir;
+
+    QMapIterator<QString, QString> i(buildNumber);
+    QMapIterator<QString, QString> j(buildName);
+    QMapIterator<QString, QString> k(buildDescription);
+    QMapIterator<QString, QString> l(buildDirectory);
+
+    int m = 0;
+
+    while (i.hasNext() && j.hasNext() && k.hasNext() && l.hasNext())
+    {
+        i.next(); j.next(); k.next(); l.next();
+
+        if(buildNumber.values().at(m).compare(QString::number(buildID))){
+            //if the build is not the same include the build
+            tmpNum.insertMulti("buildNumber",buildNumber.values().at(m));
+            tmpName.insertMulti("buildName",buildName.values().at(m));
+            tmpDesc.insertMulti("buildDescription",buildDescription.values().at(m));
+            tmpDir.insertMulti("buildDirectory",buildDirectory.values().at(m));
+        }
+        m++;
+    }
+
+    //replace the current values
+    buildNumber = tmpNum;
+    buildName = tmpName;
+    buildDescription = tmpDesc;
+    buildDirectory = tmpDir;
+
+    createXMLFile();
 }

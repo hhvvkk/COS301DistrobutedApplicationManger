@@ -1,11 +1,12 @@
 #include "copierphysicalclient.h"
 #include "directoryhandler.h"
 
-CopierPhysicalClient::CopierPhysicalClient(QHostAddress hAdr, int portNumber, int bNumber,  QObject *parent) :
+CopierPhysicalClient::CopierPhysicalClient(QHostAddress hAdr, int portNumber, int bNumber,  int theMagicNumber,  QObject *parent) :
     QObject(parent),
     port(portNumber),
     hostAddress(hAdr),
-    BuildID(bNumber)
+    BuildID(bNumber),
+    magicNumber(theMagicNumber)
 {
     socket = new QTcpSocket();
     connect(socket, SIGNAL(readyRead()), this, SLOT(readyReadFunction()));
@@ -147,11 +148,7 @@ void CopierPhysicalClient::extractZipToDirectory(){
     QStringList listOfPaths;
     DirectoryHandler::recurseAddDir(eDir, listOfPaths);
 
-#ifdef WIN32
-    DirectoryHandler::copyOverFromList(4, listOfPaths, buildPath, extractPath);
-#else
-    DirectoryHandler::copyOverFromList(3, listOfPaths, buildPath, extractPath);
-#endif
+    DirectoryHandler::copyOverFromList(magicNumber, listOfPaths, buildPath, extractPath);
 
     DirectoryHandler::removeDir(extractPath);
 }

@@ -52,7 +52,7 @@ void AddBuild::okClick(){
 
     //If all is fine, continue
     int buildID = BuildID.toInt();
-    Build buildToAdd(buildID,buildName,buildDescription,buildDirectory);
+    Build * newBuild = new Build(buildID,buildName,buildDescription,buildDirectory);
     //qDebug()<<"about to emit";
     addToXML(buildID,buildName,buildDescription,buildDirectory);
 
@@ -66,7 +66,7 @@ void AddBuild::okClick(){
     //Use show error to confirm the build is added
     showError("Build added successfully","info");
 
-    emit initiateAddBuild(buildToAdd);
+    emit initiateAddBuild(newBuild);
     this->close();
 }
 

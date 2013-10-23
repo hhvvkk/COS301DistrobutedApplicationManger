@@ -54,10 +54,14 @@ void CopyBuildOver::buildMoreInformationClick(){
         return;
     }
 
-    Build b = management->getBuildByName(ui->lineEditBuildName->text());
-    QString information = "Build Information:\n+ BuildName: "+b.getBuildName();
-    information = information + "\n+ Build Number: " + QString::number(b.getBuildID());
-    information = information + "\n+ Build Description: "+ b.getBuildDescription();
+    Build *b = management->getBuildByName(ui->lineEditBuildName->text());
+
+    if(b ==0)
+        return;
+
+    QString information = "Build Information:\n+ BuildName: "+ b->getBuildName();
+    information = information + "\n+ Build Number: " + QString::number(b->getBuildID());
+    information = information + "\n+ Build Description: "+ b->getBuildDescription();
     showMessage(information, "inform");
 
 }

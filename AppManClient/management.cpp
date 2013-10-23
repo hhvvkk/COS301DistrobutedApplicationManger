@@ -88,20 +88,22 @@ void Management::addMyBuilds(){
 }
 
 Build &Management::getBuildByID(int id){
+    lock.lock();
     for(int i = 0; i < buildCount; i++){
         if(allBuilds[i].getBuildID() == id){
+            lock.unlock();
             return allBuilds[i];
         }
     }
     // Returns a build with id 0 to show it does not exist
     Build b(0,"NULL","NULL","NULL");
+    lock.unlock();
     return b;
 }
 
 QString Management::getBuildMD5(Build build){
     BuildMD5 md5(build.getBuildDirectory(),5);
     md5.generate();
-    qDebug()<<"MD5(client)=="<<md5.getDirectoryMD5();
     return md5.getDirectoryMD5();
 }
 
@@ -151,4 +153,75 @@ void Management::addToAppList(QString appName, QString appDir){
 
 QMap<QString,QString> Management::getAppList(){
     return appList;
+}
+
+
+void Management::deleteBuild(int buildID){
+
+    Build &theBuild = getBuildByID(buildID);
+
+    if(!theBuild.getBuildDescription().compare("NULL")
+        && !theBuild.getBuildDirectory().compare("NULL")
+        && !theBuild.getBuildName().compare("NULL")
+        && theBuild.getBuildID() == 0){
+        return;
+    }
+
+    QString buildDirectory = theBuild.getBuildDirectory();
+
+    //go and delete build
+    //from (1): logical view point
+    removeBuildLogically(buildID);
+
+    //from (2): xml
+    xmlWriter aWriter;
+    aWriter.removeBuild(buildID);
+
+    //from (3): physically
+    DirectoryHandler::removeDir(buildDirectory);
+}
+
+void Management::removeBuildLogically(int buildID){
+    lock.lock();
+    int index = -1;
+    for(int i = 0; i < buildCount; i++){
+        if(buildID == allBuilds[i].getBuildID()){
+            index = i;
+            break;
+        }
+    }
+
+    if(index = -1){
+        lock.unlock();
+        return;//means the build has not been found
+    }
+
+    //one less build thus -1
+    Build *newAllBuilds = new Build[buildCount-1];
+
+
+    //copy over from 0 to index(where build was)
+    int counter = 0;
+    for(int i =0; i < index; i++){
+        //create the build to be added
+        Build oneNewBuild = Build(allBuilds[i].getBuildID(), allBuilds[i].getBuildName(), allBuilds[i].getBuildDescription(), allBuilds[i].getBuildDirectory());
+        //add the build to new all builds
+        newAllBuilds[counter] = oneNewBuild;
+        counter++;
+    }
+
+    for(int i = index+1; i < buildCount; i++){
+        //create the build to be added
+        Build oneNewBuild = Build(allBuilds[i].getBuildID(), allBuilds[i].getBuildName(), allBuilds[i].getBuildDescription(), allBuilds[i].getBuildDirectory());
+        //add the build to new all builds
+        newAllBuilds[counter] = oneNewBuild;
+        counter++;
+    }
+
+    //set the variables
+    delete [] allBuilds;
+    allBuilds = newAllBuilds;
+    buildCount--;
+
+    lock.unlock();
 }

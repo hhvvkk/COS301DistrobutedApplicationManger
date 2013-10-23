@@ -45,7 +45,6 @@ Compression::Compression(QObject *parent)
 }
 
 void Compression::compress(QStringList dirs, QString toDir, QString buildDirectory){
-
     //copy all files into the directories(in order to keep the directory structures
     //7zip does not have commands to force the directories to be kept
     int buildDirectorySize = buildDirectory.size();
@@ -84,6 +83,17 @@ void Compression::compress(QStringList dirs, QString toDir, QString buildDirecto
     #endif
 
     QString compressDirectory = toDir  + ".7z";
+
+    QDir theCompressDirTest(compressDirectory);
+    QFile theCompressFileTest(compressDirectory);
+
+    if(theCompressDirTest.exists()){
+        theCompressDirTest.remove(compressDirectory);
+    }
+    if(theCompressFileTest.exists()){
+        theCompressFileTest.remove(compressDirectory);
+        theCompressFileTest.waitForBytesWritten(15);
+    }
 
     //Finally compress the files in folders into a 7zip file
     QStringList args;

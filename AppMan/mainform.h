@@ -119,8 +119,9 @@ private slots:
      * @brief A function emitting a signal called quitApplication which will then end application
      */
     void on_treeWidgetActiveSimulations_activated(QModelIndex index);
-    void quitTheApplication();
 
+
+    void quitTheApplication();
 
     /**
      * \fn void showOrHideTrayClick();
@@ -137,8 +138,9 @@ private slots:
     /**
      * \fn void initiateAddBuild(Build b);
      * @brief initiateAddBuild will emit a signal to add the build
+     * @param b The build to be added
      */
-    void initiateAddBuild(Build b);
+    void initiateAddBuild(Build *b);
 
 
     void initiateAddSimulation(Simulation * sim);
@@ -299,6 +301,20 @@ private slots:
      */
     void collapseMasterBuilds();
 
+    /**
+     * \fn void slaveDeletedBuild(int machineID, int buildID);
+     * @brief Slot connected such that each time a slave deletes a build and all its files, this function is called
+     * @brief machineID The machine's ID of the machine who deleted the build sucessfully
+     * @param buildID The build ID of the build that was deleted on the slave machine
+     */
+    void slaveDeletedBuild(int machineID, int buildID);
+
+
+    /**
+      * \fn void buildDeleted();
+      * @brief Executed when the build has been deleted on the master machine and all machines are notified of the delete
+      */
+    void buildDeleted();
 private:
     /**
      * \fn dropBuildToSlave(QString from);
@@ -325,17 +341,17 @@ private:
      */
     void loadXMLBuilds();
     /**
-     * @fn void populateBuildInfo(Build retr);
+     * @fn void populateBuildInfo(Build *retr);
      * @brief Displays the selected slave in the xml
      * @param retr the build that was retrieved
      */
-    void populateBuildInfo(Build retr);
+    void populateBuildInfo(Build *retr);
     /**
-     * @fn void populateTreeWidgetInfo(Build retr);
+     * @fn void populateTreeWidgetInfo(Build *retr);
      * @brief Displays the selected slave in the xml
      * @param retr the build that was retrieved
      */
-    void populateTreeWidgetInfo(Build retr);
+    void populateTreeWidgetInfo(Build *retr);
 
     /**
      * \fn QTreeWidgetItem* getSlaveTreeItemById(int uniqueId);

@@ -64,13 +64,6 @@ public:
         Slave(Slave &toCopy);
 
         /**
-        * \fn void deleteBuild(QString name);
-        * @brief The overridden deleteBuild function
-        * @param name The Build name
-        */
-        void deleteBuild(QString name);
-
-        /**
         * \fn void deleteBuild(int id);
         * @brief The overridden deleteBuild function
         * @param id The Build ID
@@ -139,6 +132,13 @@ public:
         * @param uniqueID the new ID of the machine
         */
         void updateUniqueID(int uniqueID);
+
+        /**
+        * \fn void deleteBuildNotify(int BuildID);
+        * @brief The function to delete the build physically from the slave machine
+        * @param BuildID The ID of the build that will be deleted physically
+        */
+        void deleteBuildNotify(int BuildID);
 
 };
 

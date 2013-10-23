@@ -85,13 +85,6 @@ public:
         void setMachineIP(QString ip);
 
         /**
-        * \fn virtual void deleteBuild(QString name);
-        * @brief The pure virtual deleteBuild function that will be overridden by Slave class which receives buildName as parameter
-        * @param name The Build name
-        */
-        virtual void deleteBuild(QString name) = 0;
-
-        /**
         * \fn virtual void deleteBuild(int id);
         * @brief The pure virtual deleteBuild function that will be overridden by Slave class which receives the buildId as parameter
         * @param id The Build ID
@@ -165,6 +158,13 @@ public:
         * @param uniqueID The new unique ID of the machine
         */
         virtual void updateUniqueID(int uniqueID) = 0;
+
+        /**
+        * \fn void deleteBuildNotify(int BuildID) = 0;
+        * @brief The pure virtual function that will be overridden by the Slave to physically go and delete the build
+        * @param BuildID The ID of the build that will be deleted physically
+        */
+        virtual void deleteBuildNotify(int BuildID) = 0;
 
 };
 

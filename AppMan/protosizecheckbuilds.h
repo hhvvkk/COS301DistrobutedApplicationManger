@@ -3,6 +3,10 @@
 
 #include "protocol.h"
 
+/**
+  * @class ProtoSizeCheckBuilds
+  * @brief The class which will check for the difference between master builds and slave builds in the whole directory(i.e. all files used)
+  */
 class ProtoSizeCheckBuilds : public Protocol
 {
     Q_OBJECT

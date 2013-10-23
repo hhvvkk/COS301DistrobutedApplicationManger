@@ -1,4 +1,5 @@
 #include "copysenderclient.h"
+#include "directoryhandler.h"
 
 
 CopySenderClient::CopySenderClient(QHostAddress hAdr, int portNumber, QObject *parent) :
@@ -286,6 +287,7 @@ void CopySenderClient::SendBuildMD5Class(BuildMD5 *md5Class, int i){
 }
 
 void CopySenderClient::DeleteFilesList(const QVariantMap jsonObject){
+
     QVariant filePaths = jsonObject.value("filePaths");
 
     QVariant BuildID = jsonObject.value("BuildID");
@@ -296,7 +298,15 @@ void CopySenderClient::DeleteFilesList(const QVariantMap jsonObject){
         QVariantMap mappingToFile = deleteList.at(i).toMap();
         QString deleteFilePath = mappingToFile.value(mappingToFile.keys().at(0)).toString();
         deleteFilePath = allBuildsDirectory+ "/" + BuildID.toString() + "/" + deleteFilePath;
-        QFile::remove(deleteFilePath);
+        qDebug()<<"Should delete::"<<deleteFilePath;
+        if(QFile(deleteFilePath).exists()){
+            QFile().remove(deleteFilePath);
+        }
+        if(QDir(deleteFilePath).exists()){
+            //QDir().remove(deleteFilePath);
+            DirectoryHandler::removeDir(deleteFilePath);
+
+        }
 
         int indexOfLastSlash = -1;
         for(int i = 0; i < deleteFilePath.length(); i++){
@@ -320,10 +330,19 @@ void CopySenderClient::ConnectPhysicalServer(const QVariantMap jsonObject){
     if(port <= 0){
         return;
     }
-    int BuildID = jsonObject.value("BuildID").toInt();
+    bool ok = false;
+    int BuildID = jsonObject.value("BuildID").toInt(&ok);
+    if(!ok)
+        return;
+
+    //This magic number depends on how the build is compressed on the master machine
+    //and will determine how the files are found and extracted to the correct directory
+    int magicNumber = jsonObject.value("magicNumber").toInt(&ok);
+    if(!ok)
+        return;
 
     //connect to that server...
-    CopierPhysicalClient * physicalClient = new CopierPhysicalClient(hostAddress, port, BuildID);
+    CopierPhysicalClient * physicalClient = new CopierPhysicalClient(hostAddress, port, BuildID, magicNumber);
     connect(physicalClient, SIGNAL(doneWritingToFile(int, bool)), this, SLOT(doneWritingToFile(int, bool)) );
 
     bool connected = physicalClient->connectToHost();
@@ -383,7 +402,6 @@ void CopySenderClient::doneWritingToFile(int BuildID, bool success){
 
 
     if(cpPhysical == 0){
-        qDebug()<<"not found...";
         return;
     }
 
@@ -402,6 +420,7 @@ void CopySenderClient::doneWritingToFile(int BuildID, bool success){
     cpPhysical->deleteLater();
 
     //notify if it has been a success or not...
+
     notifyServerSuccess(BuildID, success);
 }
 

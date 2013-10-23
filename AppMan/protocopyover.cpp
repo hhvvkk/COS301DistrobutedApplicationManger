@@ -21,8 +21,14 @@ void ProtoCopyOver::GotABuild(QVariantMap jsonObject, Management *management, QT
 
     QString BuildID = jsonObject.value("BuildID").toString();
 
-    int BuildIDId = BuildID.toInt();
-    QString buildName = management->getBuildByID(BuildIDId).getBuildName();
+    bool ok = false;
+
+    int BuildIDId = BuildID.toInt(&ok);
+
+    if(!ok)
+        return;
+
+    QString buildName = management->getBuildByID(BuildIDId)->getBuildName();
 
     QObject *myParent = this->parent();
     if(myParent == 0)

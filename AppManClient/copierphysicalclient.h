@@ -27,7 +27,14 @@ signals:
     void doneWritingToFile(int BuildID, bool success);
 
 public:
-    explicit CopierPhysicalClient(QHostAddress hAdr, int portNumber, int bNumber, QObject *parent = 0);
+    /**
+     * \fn CopierPhysicalClient(QHostAddress hAdr, int portNumber, int bNumber, int theMagicNumber, QObject *parent = 0);
+     * @brief The constructor for the physicalClient
+     * @param hAdr The host address of the machine to which it will connect
+     * @param portNumber The port number where the server will connect to
+     * @param theMagicNumber The magic number which will determine how the build is extracted and how deep the file will be traversed to keep structure of files
+     */
+    explicit CopierPhysicalClient(QHostAddress hAdr, int portNumber, int bNumber, int theMagicNumber, QObject *parent = 0);
 
     ~CopierPhysicalClient();
 
@@ -111,6 +118,7 @@ private:
 
     QByteArray fileBuffer;
 
+    int magicNumber;
 };
 
 #endif // COPIERPHYSICALCLIENT_H

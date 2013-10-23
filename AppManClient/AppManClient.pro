@@ -45,7 +45,8 @@ SOURCES += main.cpp\
     protoupdatemachineinfo.cpp \
     addapp.cpp \
     appxmlwriter.cpp \
-    appxmlreader.cpp
+    appxmlreader.cpp \
+    protodeletebuild.cpp
 
 HEADERS  += mainwindow.h \
     socketclient.h \
@@ -77,7 +78,8 @@ HEADERS  += mainwindow.h \
     protoupdatemachineinfo.h \
     addapp.h \
     appxmlwriter.h \
-    appxmlreader.h
+    appxmlreader.h \
+    protodeletebuild.h
 
 
 FORMS    += mainwindow.ui \

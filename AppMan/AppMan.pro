@@ -55,7 +55,8 @@ SOURCES += main.cpp\
     md5thread.cpp \
     protoupdatemachineinfo.cpp \
     addsimulation.cpp \
-    simulation.cpp
+    simulation.cpp \
+    protodeletebuild.cpp
 
 HEADERS  += mainform.h \
     aboutversion.h \
@@ -96,7 +97,8 @@ HEADERS  += mainform.h \
     md5thread.h \
     protoupdatemachineinfo.h \
     addsimulation.h \
-    simulation.h
+    simulation.h \
+    protodeletebuild.h
 
 FORMS    += mainform.ui \
     aboutversion.ui \

@@ -42,7 +42,6 @@ void ProtoSendBuild::SizeCheckAllBuildsDone(QTcpSocket *slaveSocket, Management 
     ProtocolHandler *handler = dynamic_cast<ProtocolHandler*>(myParent);
 
     if(handler == 0){
-        qDebug()<<"handler=0";
         return;
     }
 

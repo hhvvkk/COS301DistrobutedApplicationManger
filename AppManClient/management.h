@@ -18,6 +18,7 @@
 #include "buildmd5.h"
 #include "myDirIterator.h"
 #include "sysInfo.h"
+#include "directoryhandler.h"
 
 /**
  * @class Management
@@ -139,6 +140,21 @@ public:
     void addToAppList(QString appName, QString appDir);
 
     QMap<QString,QString> getAppList();
+
+    /**
+    * \fn void deleteBuild(int buildID);
+    * @brief The function to update the unique ID on the machine
+    * @param buildID ID of the build to be deleted
+    */
+    void deleteBuild(int buildID);
+
+private:
+    /**
+    * \fn void removeBuildLogically(int buildID);
+    * @brief Function which logcially removes the build from existence(i.e. from the allBuild array)
+    * @param buildID ID of the build to be removed
+    */
+    void removeBuildLogically(int buildID);
 private:
     /**
      * @brief network An Object that will harbour some of the network information
@@ -176,6 +192,8 @@ private:
 
 
      QMap<QString,QString> appList;
+
+     QMutex lock;
 };
 
 #endif // MANAGEMENT_H

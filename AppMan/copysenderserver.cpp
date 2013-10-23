@@ -150,6 +150,9 @@ void CopySenderServer::readyReadFunction(){
 
 void CopySenderServer::handle(QString data){
 
+    //QFutureWatcher<void> *watcher = new QFutureWatcher<void>;
+    //connect(watcher, SIGNAL(),
+
     QFuture <QStringList>future = QtConcurrent::run(this, &CopySenderServer::splitRequests, data);
 
     QStringList protocolRequests = future.result();
@@ -235,7 +238,6 @@ void CopySenderServer::requestHandler(QString data){
         sendJSONMessage(socket, jsonMessage);
         return;
     }
-
 
     if(!handler.toString().compare("SendDifferences"))
         SendDifferences();
@@ -329,10 +331,14 @@ void CopySenderServer::BuildFileSumMD5(const QVariantMap jsonObject){
         socket->write(("||"+deleteJsonString+"||").toUtf8().data());
         socket->flush();
     }
-
     //do something with that
     //     void machineBuildSynched(int machineId, int buildId, double percentageSynched);
     QtConcurrent::run(management, &Management::machineBuildSynched, machineId, BuildID.toInt(), copyCompareForBuild->percentageSynched());
+
+    if(copyCompareForBuild->getFilepaths().size() == 0){
+        management->setSlaveBuildIsSame(true, machineId,  BuildID.toInt());
+        return;
+    }
 
     Compression c;
     QFuture <void>compressFuture = QtConcurrent::run(&c, &Compression::compress, copyCompareForBuild->getFilepaths(),  fileCompressPath+ "/" + QString::number(machineId) + "/"+BuildID.toString(), theBuildDirectory);
@@ -444,7 +450,6 @@ void CopySenderServer::addToQueue(CopierPhysical *physicalCopier){
 void CopySenderServer::NotifyCopySuccess(const QVariantMap jsonObject){
     //appendJSONValue(jsonMessage, "BuildID", QString::number(BuildID), true);
     //appendJSONValue(jsonMessage, "success", QString::number(success), false);
-
     bool success = jsonObject.value("success").toBool();
     int BuildID = jsonObject.value("BuildID").toInt();
 
@@ -477,6 +482,21 @@ void CopySenderServer::nextInQueue(int port, int BuildID){
     QString jsonMessage = startJSONMessage();
     appendJSONValue(jsonMessage, "handler","ConnectPhysicalServer",true);
     appendJSONValue(jsonMessage, "BuildID", QString::number(BuildID), true);
+
+    int magicNumber;
+    /* This magic number is a number that is dependent on operating system and how the file structure is
+     * preserved in the zip file when compressing.
+     * Operating systems and the 7Zip handle files differently, thus how they preserve
+     * the file structure when compressing, differs from OS to OS with different 7zip
+     * executables. Thus it is different from each other.
+     */
+#ifdef WIN32
+    magicNumber = 4;
+#else
+    magicNumber = 3;
+#endif
+    appendJSONValue(jsonMessage, "magicNumber", QString::number(magicNumber), true);
+
     appendJSONValue(jsonMessage, "port", QString::number(port), false);
     endJSONMessage(jsonMessage);
 
