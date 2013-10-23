@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012/Debian) (format=pdflatex 2012.10.25)  22 OCT 2013 09:27
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012/Debian) (format=pdflatex 2012.10.25)  22 OCT 2013 09:29
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**"Architectural Requirements Document.tex"
-(./Architectural Requirements Document.tex
+**"Test Document.tex"
+(./Test Document.tex
 LaTeX2e <2011/06/27>
 Babel <v3.8m> and hyphenation patterns for english, dumylang, nohyphenation, lo
 aded.
@@ -56,8 +56,8 @@ Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
 \Gin@req@height=\dimen103
 \Gin@req@width=\dimen104
 )
-(./Architectural Requirements Document.aux)
-\openout1 = `"Architectural Requirements Document.aux"'.
+(./Test Document.aux)
+\openout1 = `"Test Document.aux"'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 15.
 LaTeX Font Info:    ... okay on input line 15.
@@ -180,137 +180,61 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <6> on input line 27.
 [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./101Logo.png>]
-Overfull \hbox (18.19408pt too wide) in paragraph at lines 40--75
-[] 
- []
-
-[2] (./Architectural Requirements Document.toc)
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./101Logo.png>] [2]
+(./Test Document.toc)
 \tf@toc=\write3
-\openout3 = `"Architectural Requirements Document.toc"'.
+\openout3 = `"Test Document.toc"'.
 
  [3]
-Underfull \hbox (badness 10000) in paragraph at lines 83--100
+Underfull \hbox (badness 10000) in paragraph at lines 59--76
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 83--100
+Underfull \hbox (badness 10000) in paragraph at lines 59--76
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 101--112
+Underfull \hbox (badness 10000) in paragraph at lines 77--88
 
  []
 
 [1]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 124.
+Underfull \hbox (badness 10000) in paragraph at lines 93--98
 
- (/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 93--98
+
+ []
+
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 101.
+
+(/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 124.
- [2]
-<AppManGuiSimPage.png, id=25, 627.84563pt x 273.27094pt>
-File: AppManGuiSimPage.png Graphic file (type png)
-
-<use AppManGuiSimPage.png>
-Package pdftex.def Info: AppManGuiSimPage.png used on input line 147.
-(pdftex.def)             Requested size: 376.71028pt x 163.9638pt.
-
-<AppManGuiBuildPage.png, id=26, 627.84563pt x 273.27094pt>
-File: AppManGuiBuildPage.png Graphic file (type png)
-
-<use AppManGuiBuildPage.png>
-Package pdftex.def Info: AppManGuiBuildPage.png used on input line 150.
-(pdftex.def)             Requested size: 376.71028pt x 163.9638pt.
- [3 <./AppManGuiSimPage.png> <./AppManGuiBuildPage.png>] <AppManClientGui.png, 
-id=30, 417.05812pt x 340.27126pt>
-File: AppManClientGui.png Graphic file (type png)
-
-<use AppManClientGui.png>
-Package pdftex.def Info: AppManClientGui.png used on input line 156.
-(pdftex.def)             Requested size: 250.2368pt x 204.16432pt.
- [4 <./AppManClientGui.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 168--173
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 168--173
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 168--173
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 168--173
-
- []
-
-[5]
-Overfull \hbox (13.01535pt too wide) in paragraph at lines 178--179
-\OT1/cmr/m/n/12 A Com-po-nent based sys-tem is suit-able as we have var-i-ous c
-on-cerns/components,
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 178--179
-
- []
-
-<ArchComponentDiag.png, id=38, 310.15875pt x 196.48407pt>
-File: ArchComponentDiag.png Graphic file (type png)
-
-<use ArchComponentDiag.png>
-Package pdftex.def Info: ArchComponentDiag.png used on input line 180.
-(pdftex.def)             Requested size: 310.15799pt x 196.48358pt.
- [6 <./ArchComponentDiag.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 184--185
-
- []
-
-<ClientServer.jpeg, id=43, 350.81062pt x 322.95656pt>
-File: ClientServer.jpeg Graphic file (type jpg)
- <use ClientServer.jpeg>
-Package pdftex.def Info: ClientServer.jpeg used on input line 186.
-(pdftex.def)             Requested size: 210.48799pt x 193.77542pt.
-
-[7 <./ClientServer.jpeg>] [8] [9]
-Underfull \hbox (badness 10000) in paragraph at lines 210--211
-
- []
-
-<ComponentDiag.png, id=53, 681.29532pt x 365.11406pt>
-File: ComponentDiag.png Graphic file (type png)
- <use ComponentDiag.png>
-Package pdftex.def Info: ComponentDiag.png used on input line 213.
-(pdftex.def)             Requested size: 681.29366pt x 365.11316pt.
-
-[10 <./ComponentDiag.png>] [11] (./Architectural Requirements Document.aux) ) 
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 101.
+ [2] [3] [4]
+(./Test Document.aux) ) 
 Here is how much of TeX's memory you used:
- 1547 strings out of 495059
- 22643 string characters out of 3182029
- 76405 words of memory out of 3000000
- 4727 multiletter control sequences out of 15000+200000
+ 1516 strings out of 495059
+ 21703 string characters out of 3182029
+ 75383 words of memory out of 3000000
+ 4703 multiletter control sequences out of 15000+200000
  9115 words of font info for 32 fonts, out of 3000000 for 9000
  14 hyphenation exceptions out of 8191
- 37i,7n,23p,602b,267s stack positions out of 5000i,500n,10000p,200000b,50000s
-</
-usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/sh
-are/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/tex
-live/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/te
-xmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on "Architectural Requirements Document.pdf" (14 pages, 336461 b
-ytes).
+ 37i,6n,23p,311b,267s stack positions out of 5000i,500n,10000p,200000b,50000s
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfon
+ts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/
+cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.p
+fb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
+Output written on "Test Document.pdf" (7 pages, 141217 bytes).
 PDF statistics:
- 77 PDF objects out of 1000 (max. 8388607)
- 46 compressed objects within 1 object stream
+ 47 PDF objects out of 1000 (max. 8388607)
+ 31 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 36 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 6 words of extra memory for PDF output out of 10000 (max. 10000000)
 

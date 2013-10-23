@@ -8,10 +8,10 @@
 \contentsline {subsection}{\numberline {4.2}Slave GUI}{4}
 \contentsline {subsection}{\numberline {4.3}Integration channels}{4}
 \contentsline {section}{\numberline {5}Architectural Constraints}{5}
-\contentsline {section}{\numberline {6}Patterns}{5}
-\contentsline {subsection}{\numberline {6.1}Component based system}{5}
-\contentsline {subsection}{\numberline {6.2}Client server}{6}
-\contentsline {section}{\numberline {7}Architectural tactics or strategies}{7}
-\contentsline {section}{\numberline {8}Use of reference architectures and\\ frameworks}{7}
-\contentsline {section}{\numberline {9}Component Diagram}{9}
-\contentsline {section}{\numberline {10}Glossary}{10}
+\contentsline {section}{\numberline {6}Patterns}{6}
+\contentsline {subsection}{\numberline {6.1}Component based system}{6}
+\contentsline {subsection}{\numberline {6.2}Client server}{7}
+\contentsline {section}{\numberline {7}Architectural tactics or strategies}{8}
+\contentsline {section}{\numberline {8}Use of reference architectures and\\ frameworks}{9}
+\contentsline {section}{\numberline {9}Component Diagram}{10}
+\contentsline {section}{\numberline {10}Glossary}{11}
