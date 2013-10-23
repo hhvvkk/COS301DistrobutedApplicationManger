@@ -409,6 +409,11 @@ void Management::setBuildDescription(int buildID, QString value){
 }
 
 void Management::addSimulation(Simulation *sim){
+    simXMLWriter xWrite;
+    xWrite.addSim(sim->getName(),sim->getSlaves(),sim->getBuilds(),sim->getArgs());
+    qDebug()<<"about to add";
+    xWrite.createXML();
+    qDebug()<<"added";
     allSimulations.push_back(sim);
     simCount++;
 }

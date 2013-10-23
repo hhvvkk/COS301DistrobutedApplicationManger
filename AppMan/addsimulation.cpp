@@ -44,48 +44,73 @@ void AddSimulation::on_pushButton_clicked()
 void AddSimulation::on_pushButton_2_clicked()
 {
     QString simName = ui->lineEdit->text();
-    QStringList * slaves = new QStringList();
-    QStringList * builds = new QStringList();
-    QStringList * args = new QStringList();
-    Simulation * sim = new Simulation(simName);
-
-    int cnt = management->getMachineCount();
-    for(int i = 0; i < cnt; i++){
-        if(i == 0){
-            if(ui->slaveCheck01->isChecked()){
-                slaves->append(ui->slaveCheck01->text());
-                builds->append(ui->buildComboBox01->currentText());
-                args->append(ui->argEdit01->text());
-            }
-        }else if(i == 1){
-            if(ui->slaveCheck02->isChecked()){
-                slaves->append(ui->slaveCheck02->text());
-                builds->append(ui->buildComboBox02->currentText());
-                args->append(ui->argEdit02->text());
-            }
-        }else if(i == 2){
-            if(ui->slaveCheck03->isChecked()){
-                slaves->append(ui->slaveCheck03->text());
-                builds->append(ui->buildComboBox03->currentText());
-                args->append(ui->argEdit03->text());
-            }
-        }else if(i == 3){
-            if(ui->slaveCheck04->isChecked()){
-                slaves->append(ui->slaveCheck04->text());
-                builds->append(ui->buildComboBox04->currentText());
-                args->append(ui->argEdit04->text());
-            }
-        }else if(i == 4){
-            if(ui->slaveCheck05->isChecked()){
-                slaves->append(ui->slaveCheck05->text());
-                builds->append(ui->buildComboBox05->currentText());
-                args->append(ui->argEdit05->text());
+    if(simName.compare("") == 0){
+        QMessageBox *msb = new QMessageBox();
+        msb->setIcon(QMessageBox::Critical);
+        QPixmap pic(":/images/images/ALogo.png");
+        msb->setWindowIcon(QIcon(pic));
+        msb->setText("Simulation name must be entered");
+        msb->show();
+    }else{
+        QStringList * slaves = new QStringList();
+        QStringList * builds = new QStringList();
+        QStringList * args = new QStringList();
+        Simulation * sim = new Simulation(simName);
+        int slaveCnt = 0;
+        int cnt = management->getMachineCount();
+        for(int i = 0; i < cnt; i++){
+            if(i == 0){
+                if(ui->slaveCheck01->isChecked()){
+                    slaves->append(ui->slaveCheck01->text());
+                    builds->append(ui->buildComboBox01->currentText());
+                    args->append(ui->argEdit01->text());
+                    slaveCnt++;
+                }
+            }else if(i == 1){
+                if(ui->slaveCheck02->isChecked()){
+                    slaves->append(ui->slaveCheck02->text());
+                    builds->append(ui->buildComboBox02->currentText());
+                    args->append(ui->argEdit02->text());
+                    slaveCnt++;
+                }
+            }else if(i == 2){
+                if(ui->slaveCheck03->isChecked()){
+                    slaves->append(ui->slaveCheck03->text());
+                    builds->append(ui->buildComboBox03->currentText());
+                    args->append(ui->argEdit03->text());
+                    slaveCnt++;
+                }
+            }else if(i == 3){
+                if(ui->slaveCheck04->isChecked()){
+                    slaves->append(ui->slaveCheck04->text());
+                    builds->append(ui->buildComboBox04->currentText());
+                    args->append(ui->argEdit04->text());
+                    slaveCnt++;
+                }
+            }else if(i == 4){
+                if(ui->slaveCheck05->isChecked()){
+                    slaves->append(ui->slaveCheck05->text());
+                    builds->append(ui->buildComboBox05->currentText());
+                    args->append(ui->argEdit05->text());
+                    slaveCnt++;
+                }
             }
         }
+
+        if(slaveCnt > 0){
+            sim->addSlave(slaves,builds,args);
+            emit initiateAddSimulation(sim);
+            this->close();
+        }
+        else{
+            QMessageBox *msb = new QMessageBox();
+            msb->setIcon(QMessageBox::Critical);
+            QPixmap pic(":/images/images/ALogo.png");
+            msb->setWindowIcon(QIcon(pic));
+            msb->setText("Slaves must be added");
+            msb->show();
+        }
     }
-    sim->addSlave(slaves,builds,args);
-    emit initiateAddSimulation(sim);
-    this->close();
 
 }
 

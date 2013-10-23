@@ -56,7 +56,9 @@ SOURCES += main.cpp\
     protoupdatemachineinfo.cpp \
     addsimulation.cpp \
     simulation.cpp \
-    protodeletebuild.cpp
+    protodeletebuild.cpp \
+    simxmlreader.cpp \
+    simxmlwriter.cpp
 
 HEADERS  += mainform.h \
     aboutversion.h \
@@ -98,7 +100,9 @@ HEADERS  += mainform.h \
     protoupdatemachineinfo.h \
     addsimulation.h \
     simulation.h \
-    protodeletebuild.h
+    protodeletebuild.h \
+    simxmlreader.h \
+    simxmlwriter.h
 
 FORMS    += mainform.ui \
     aboutversion.ui \

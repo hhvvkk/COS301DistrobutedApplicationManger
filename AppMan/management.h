@@ -23,6 +23,7 @@
 #include "database.h"
 #include "buildmd5.h"
 #include "simulation.h"
+#include "simxmlwriter.h"
 
 //forward declaration of server so that it can be used
 class Server;
