@@ -424,6 +424,15 @@ void Management::deleteBuild(int buildID){
     aWriter.removeBuild(buildID);
 
     //from(3): all connected clients
+    for(int i = 0; i < machineCount; i++){
+        Machine *machine = getMachineAt(i);
+        if(machineWithBuild(machine->getMachineID(), buildID)){
+            //only notify the machine if that machine has the build
+            machine->deleteBuildNotify(buildID);
+        }
+
+
+    }
 
     //from(4):gui
     emit buildDeleted();

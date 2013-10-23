@@ -1,5 +1,6 @@
 #include "mainform.h"
 #include "ui_mainform.h"
+#include "directoryhandler.h"
 
 MainForm::MainForm(QWidget *parent) :
     QMainWindow(parent),
@@ -563,12 +564,68 @@ void MainForm::slaveBuildSizeSame(int buildId, int machineId, bool isTheSame){
         return;
     }
 
+    QBrush good = Qt::green;
+    QBrush bad = Qt::yellow;
+
     if(isTheSame){
-        buildItem->setBackgroundColor(0, Qt::green);
+        buildItem->setBackground(0, good);
     }
     else{
-        buildItem->setBackgroundColor(0, Qt::yellow);
+        buildItem->setBackground(0, bad);
     }
+
+    //check whether the slave is fully synchronised(if so, display green, else yellow)
+    bool displayGreen = true;
+    for(int i = 0; i < slaveTreeWidgetItem->childCount(); i++){
+        QTreeWidgetItem *anItem = slaveTreeWidgetItem->child(i);
+
+        if(anItem->background(0).color() == bad.color()){
+            displayGreen = false;
+            break;
+        }
+    }
+
+    if(displayGreen){
+        slaveTreeWidgetItem->setBackground(0, good);
+        QString zipStuffToDelete = getCompressPath();
+        zipStuffToDelete.append("/"+QString::number(machineId));
+        DirectoryHandler::removeDir(zipStuffToDelete);
+    }
+    else{
+        slaveTreeWidgetItem->setBackground(0, bad);
+    }
+}
+
+QString MainForm::getCompressPath(){
+    QString fileCompressPath = "buildCompressed";
+    QSettings setting("settings.ini",QSettings::IniFormat);
+    //grouping the settings
+    setting.beginGroup("FileCopy");
+
+    //default settings values
+    QVariant defaultfileCompressPath;
+    QString theDefaultPathCompress = "buildCompressed";
+    defaultfileCompressPath.setValue(theDefaultPathCompress);
+
+    //send in the default values in case it does not exist...
+    QString loadedFileCompressPath = setting.value("fileCompressPath", defaultfileCompressPath).toString();
+
+    setting.endGroup();
+
+    if(!QDir(loadedFileCompressPath).exists()){
+        //firstly try and create that directory...
+        bool successCreate = QDir().mkdir(loadedFileCompressPath);
+        //...if it fails, revert to default
+        if(!successCreate){
+            fileCompressPath = "buildCompressed";
+            QDir().mkdir(fileCompressPath);
+        }
+    }
+    else{
+        fileCompressPath = loadedFileCompressPath;
+    }
+
+    return fileCompressPath;
 }
 
 

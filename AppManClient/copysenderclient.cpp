@@ -298,14 +298,14 @@ void CopySenderClient::DeleteFilesList(const QVariantMap jsonObject){
         QVariantMap mappingToFile = deleteList.at(i).toMap();
         QString deleteFilePath = mappingToFile.value(mappingToFile.keys().at(0)).toString();
         deleteFilePath = allBuildsDirectory+ "/" + BuildID.toString() + "/" + deleteFilePath;
-        qDebug()<<"Should delete::"<<deleteFilePath;
         if(QFile(deleteFilePath).exists()){
             QFile().remove(deleteFilePath);
         }
         if(QDir(deleteFilePath).exists()){
             //QDir().remove(deleteFilePath);
+            //bring in the big guns(Directory handler) to delete the directory
             DirectoryHandler::removeDir(deleteFilePath);
-
+            continue;
         }
 
         int indexOfLastSlash = -1;
@@ -319,7 +319,7 @@ void CopySenderClient::DeleteFilesList(const QVariantMap jsonObject){
         if(indexOfLastSlash != -1){//if it was -1 it means it is root in that build
             //check to see if the directory where file is removed from is empty, if so delete the directory as well
             if( ( QDir(directoryWhereDeleted).entryInfoList(QDir::NoDotAndDotDot|QDir::AllEntries).count() == 0 ) & ( !directoryWhereDeleted.compare(BuildID.toString()) ) ){
-                QDir().rmdir(directoryWhereDeleted);
+                DirectoryHandler::removeDir(directoryWhereDeleted);
             }
         }
     }

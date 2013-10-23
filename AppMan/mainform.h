@@ -246,6 +246,14 @@ private slots:
     */
     void slaveBuildSizeSame(int buildId, int machineId, bool isTheSame);
 
+
+    /**
+      * QString getCompressPath();
+      * @brief Gets the directory where the builds will be compressed in(i.e. where the zip files will be located)
+      * @return Returns the build compress directory
+      */
+    QString getCompressPath();
+
     /**
      * \fn void slaveBuildSynched(int machineId, int buildId, double percentageSynched);
      * @brief Function which indicates how far the build is synchronised on the user interface
