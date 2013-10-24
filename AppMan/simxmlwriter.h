@@ -5,7 +5,7 @@
 #include <QStringList>
 #include <QXmlStreamWriter>
 #include <QFile>
-#include <QDebug>
+//#include <QDebug>
 
 #include "simxmlreader.h"
 

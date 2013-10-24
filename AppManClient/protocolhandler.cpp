@@ -14,6 +14,8 @@ ProtocolHandler::ProtocolHandler(Management *man, QObject *parent) :
     updateBuildInfo = new ProtoUpdateBuildInfo(this);
     updateMachineInfo = new ProtoUpdateMachineInfo(this);
     deleteBuild = new ProtoDeleteBuild(this);
+    aRunSim = new ProtoRunSim(this);
+    appList = new ProtoAppList(this);
     masterSocket = 0;
 }
 
@@ -27,6 +29,8 @@ ProtocolHandler::~ProtocolHandler(){
     updateBuildInfo->deleteLater();
     updateMachineInfo->deleteLater();
     deleteBuild->deleteLater();
+    aRunSim->deleteLater();
+    appList->deleteLater();
 }
 
 void ProtocolHandler::handle(QString data){
@@ -132,6 +136,16 @@ void ProtocolHandler::requestHandler(QString data){
     if(!handler.toString().compare("ProtoDeleteBuild"))
         deleteBuild->handle(jsonObject, management, masterSocket);
 
+
+    else
+
+        if(!handler.toString().compare("ProtoRunSim"))
+            aRunSim->handle(jsonObject, management, masterSocket);
+
+    else
+
+        if(!handler.toString().compare("ProtoAppList"))
+            appList->handle(jsonObject, management, masterSocket);
 }
 
 void ProtocolHandler::disconnectFromMaster(){

@@ -39,6 +39,7 @@ void ProtoConnect::handle(QVariantMap jsonObject, Management *management, QTcpSo
     if(!subHandler.toString().compare("Hello AppManClient")){
         //means a connection was established
         initiateSlaveCurrentBuilds(masterSocket);
+        initiateAppList(masterSocket);
         management->setConnected(true);
         return;
     }
@@ -96,4 +97,14 @@ void ProtoConnect::connectToMaster(QString ipAddress, int serverPort, ProtocolHa
 
     //finally set the socket so that the network can use it
     protocolHandler->setSocket(socket);
+}
+
+void ProtoConnect::initiateAppList(QTcpSocket *masterSocket){
+    QString jsonMessage = startJSONMessage();
+    appendJSONValue(jsonMessage, "handler", "ProtoAppList", true);
+    appendJSONValue(jsonMessage, "subHandler", "requestAppList", false);
+    endJSONMessage(jsonMessage);
+
+    masterSocket->write(jsonMessage.toUtf8().data());
+    masterSocket->flush();
 }

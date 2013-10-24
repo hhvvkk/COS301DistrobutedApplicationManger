@@ -59,7 +59,9 @@ SOURCES += main.cpp\
     protodeletebuild.cpp \
     watcher.cpp\
     simxmlreader.cpp \
-    simxmlwriter.cpp
+    simxmlwriter.cpp \
+    protoapplist.cpp \
+    protorunsim.cpp
 
 HEADERS  += mainform.h \
     aboutversion.h \
@@ -104,7 +106,9 @@ HEADERS  += mainform.h \
     protodeletebuild.h \
     watcher.h\
     simxmlreader.h \
-    simxmlwriter.h
+    simxmlwriter.h \
+    protoapplist.h \
+    protorunsim.h
 
 FORMS    += mainform.ui \
     aboutversion.ui \

@@ -5,7 +5,7 @@
 #include <QStringList>
 #include <QMap>
 #include <QFile>
-#include <QDebug>
+//#include <QDebug>
 
 class simXMLReader
 {

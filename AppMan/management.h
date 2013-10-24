@@ -397,6 +397,8 @@ public:
       */
     void resynchAllCertainBuild(int buildIDToResynch);
 
+    void runSimulation(QString simName);
+
 private:
     /**
     * \fn void removeBuildLogically(int buildID);

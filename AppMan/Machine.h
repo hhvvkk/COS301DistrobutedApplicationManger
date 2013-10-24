@@ -6,6 +6,7 @@
 #define MACHINE_H
 
 #include <QString>
+#include <QStringList>
 
 #include "Build.h"
 #include "protocolhandler.h"
@@ -26,6 +27,7 @@ class Machine{
         * @brief the IP of the machine
         */
         QString machineIP;
+
         /**
         * @var minStats
         * @brief the minimal stats of the machine
@@ -35,9 +37,10 @@ class Machine{
         * @var detStats
         * @brief the detailed stats of the machine
         */
-        QString detStats;
+        QString detStats;        
 
-        bool gotStats;
+        QStringList appList;
+
 private:
         /**
         * \fn  bool validateIpAddress(const QString &ipAddress);
@@ -189,6 +192,12 @@ public:
         * @brief The pure virtual function that will be overridden by the Slave to manually resynch all builds
         */
         virtual void resynchAll() = 0;
+
+        virtual void runSim(QString build, QString args) = 0;
+
+        virtual void addToAppList(QString name) = 0;
+
+        virtual QStringList getAppList() = 0;
 
 };
 
