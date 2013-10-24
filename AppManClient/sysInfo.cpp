@@ -528,6 +528,12 @@ QString sysInfo::getDetailedStats(){
     for(int j = 0; j < procIDs.length(); j++){
         stats = stats + "#" + procIDs.at(j) + "," + procNames.at(j);
     }
+    filesystems.clear();
+    capacitys.clear();
+    useds.clear();
+    procIDs.clear();
+    procNames.clear();
+    procCount.clear();
     return stats;
 }
 

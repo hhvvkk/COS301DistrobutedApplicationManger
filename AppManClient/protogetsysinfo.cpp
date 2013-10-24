@@ -14,10 +14,16 @@ void ProtoGetSysInfo::handle(QVariantMap jsonObject, Management *management, QTc
 }
 
 void ProtoGetSysInfo::GetDetSysInfo(Management *management, QTcpSocket *masterSocket){
+    QSettings setting("settings.ini",QSettings::IniFormat);
+    setting.beginGroup("Connection");
+    QString machineID = setting.value("machineID").toString();
+    setting.endGroup();
+
     QString jsonMessage = startJSONMessage();
     appendJSONValue(jsonMessage,"handler","ProtoGetSysInfo",true);
     appendJSONValue(jsonMessage,"subHandler","DetailedSysInfoFollows",true);
-    appendJSONValue(jsonMessage, "data", management->getDetSysInfo(),false);
+    appendJSONValue(jsonMessage, "data", management->getDetSysInfo(),true);
+    appendJSONValue(jsonMessage, "id", machineID,false);
     endJSONMessage(jsonMessage);
 
     masterSocket->write(jsonMessage.toUtf8().data());
@@ -25,10 +31,16 @@ void ProtoGetSysInfo::GetDetSysInfo(Management *management, QTcpSocket *masterSo
 }
 
 void ProtoGetSysInfo::GetMinSysInfo(Management *management, QTcpSocket *masterSocket){
+    QSettings setting("settings.ini",QSettings::IniFormat);
+    setting.beginGroup("Connection");
+    QString machineID = setting.value("machineID").toString();
+    setting.endGroup();
+
     QString jsonMessage = startJSONMessage();
     appendJSONValue(jsonMessage,"handler","ProtoGetSysInfo",true);
     appendJSONValue(jsonMessage,"subHandler","MinimalSysInfoFollows",true);
-    appendJSONValue(jsonMessage, "data", management->getMinSysInfo(),false);
+    appendJSONValue(jsonMessage, "data", management->getMinSysInfo(),true);
+    appendJSONValue(jsonMessage, "id", machineID,false);
     endJSONMessage(jsonMessage);
 
     masterSocket->write(jsonMessage.toUtf8().data());

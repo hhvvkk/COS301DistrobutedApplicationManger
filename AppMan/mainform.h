@@ -111,11 +111,6 @@ protected:
 
 private slots:
 
-//    void getDetStats(QString stats);
-
-  //  void getMinStats(QString stats);
-
-
     /**
      * \fn void quitTheApplication();
      * @brief A function emitting a signal called quitApplication which will then end application
@@ -415,6 +410,7 @@ private:
      * @param index The index that was clicked
      */
     void slaveItemClicked(const QModelIndex &index);
+
 private:
     /**
      * @var ui
@@ -480,6 +476,7 @@ private:
     QTimer *collapseTimer;
 
     Watcher *watcher;
+
 
 };
 

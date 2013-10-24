@@ -70,7 +70,6 @@ MainForm::MainForm(QWidget *parent) :
     connect(masterBuilds, SIGNAL(expanded(QModelIndex)), this, SLOT(buildActiveUse()));
     connect(collapseTimer, SIGNAL(timeout()), this, SLOT(collapseMasterBuilds()));
 
-
     //load all the builds from the xml
     loadXMLBuilds();
 
@@ -218,6 +217,8 @@ void MainForm::newSlaveConnected(Machine *m){
     activeSimulationItem->setText(0, m->getMachineIP());
     activeSimulationItem->setText(1, QString::number(m->getMachineID()));
     ui->treeWidgetActiveSimulations->addTopLevelItem(activeSimulationItem);
+
+    m->getMinStats();
 }
 
 void MainForm::slaveDisconnected(int uId){
@@ -763,12 +764,12 @@ void MainForm::slaveItemClicked(const QModelIndex &index){
     if(selected == 0)
         return;
     selected->getMinStats();
-    QString inp = "16%#46%#2.39695MB#5.375KB" ;
+    //QString inp = "16%#46%#2.39695MB#5.375KB" ;
     buildInfo->hide();
     if(slaveStats != 0){
         slaveStats->deleteLater();
     }
-    slaveStats = new SlaveStats(this,selected->getMachineID(), inp);
+    slaveStats = new SlaveStats(this,selected->getMachineID(), selected->getMinStatsString());
     connect(slaveStats, SIGNAL(clicked(QModelIndex)), this, SLOT(slaveStatsClicked(QModelIndex)));
     clearDockWidget();
     ui->dockWidgetContents->layout()->addWidget(slaveStats);
@@ -787,7 +788,7 @@ void MainForm::slaveStatsClicked(QModelIndex index){
     QString selectedText = contentBoxSelected->text(0);
 
     if(selectedText.compare("Click for more")){
-        //if yoou dont want more information(i.e. clicked another place)
+        //if you dont want more information(i.e. clicked another place)
         return;
     }
 
@@ -804,12 +805,10 @@ void MainForm::slaveStatsClicked(QModelIndex index){
     delete ok;
 
 
-    Machine * selected = management->getMachineById(machineID);
-    selected->getDetStats();
-    moreInfo * mi = new moreInfo();
-    mi->show();
-
-
+    Machine* selected = management->getMachineById(machineID);
+    //selected->getDetStats();
+    moreInfo* mi = new moreInfo(selected);
+    mi->show();    
 }
 
 void MainForm::slaveUpdatedBuildName(int machineID, int buildID, QString updatedName){

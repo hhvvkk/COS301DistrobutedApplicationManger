@@ -26,6 +26,18 @@ class Machine{
         * @brief the IP of the machine
         */
         QString machineIP;
+        /**
+        * @var minStats
+        * @brief the minimal stats of the machine
+        */
+        QString minStats;
+        /**
+        * @var detStats
+        * @brief the detailed stats of the machine
+        */
+        QString detStats;
+
+        bool gotStats;
 private:
         /**
         * \fn  bool validateIpAddress(const QString &ipAddress);
@@ -83,6 +95,12 @@ public:
         * @param ip The IP to be assigned to machineIP
         */
         void setMachineIP(QString ip);
+
+        QString getMinStatsString();
+        QString getDetStatsString();
+
+        void setMinStatsString(QString data);
+        void setDetStatsString(QString data);
 
         /**
         * \fn virtual void deleteBuild(int id);

@@ -42,6 +42,7 @@ void Management::addMachine(int uniqueID, QString address, ProtocolHandler *hand
         updatedMachineiD = true;
         //thus generate a unique id
         uniqueID = generateUniqueId();
+        Database::instance()->insert_machine(uniqueID,address);
     }
 
     if(handler == 0){

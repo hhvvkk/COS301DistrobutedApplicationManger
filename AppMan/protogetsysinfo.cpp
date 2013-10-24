@@ -1,4 +1,5 @@
 #include "protogetsysinfo.h"
+#include "management.h"
 
 ProtoGetSysInfo::ProtoGetSysInfo(QObject *parent)
     :Protocol(parent)
@@ -18,12 +19,16 @@ void ProtoGetSysInfo::handle(QVariantMap jsonObject, Management *management, QTc
 
 void ProtoGetSysInfo::DetailedSysInfoFollows(QVariantMap jsonObject, Management * management){
     QString data = jsonObject.value("data").toString();
-    //emit setDetStats(stripped);
+    int machineID = jsonObject.value("id").toInt();
+    Machine* m = management->getMachineById(machineID);
+    m->setDetStatsString(data);
 }
 
 void ProtoGetSysInfo::MinimalSysInfoFollows(QVariantMap jsonObject, Management *management){
-    QString data = jsonObject.value("data").toString();
-    //emit setMinStats(stripped);
+    QString data = jsonObject.value("data").toString();        
+    int machineID = jsonObject.value("id").toInt();
+    Machine* m = management->getMachineById(machineID);
+    m->setMinStatsString(data);
 }
 
 void ProtoGetSysInfo::getDetailed(QTcpSocket *slaveSocket){
