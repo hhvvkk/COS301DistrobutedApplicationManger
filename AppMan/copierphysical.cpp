@@ -1,9 +1,9 @@
 #include "copierphysical.h"
 
-CopierPhysical::CopierPhysical(int machID, int buildNumber, QString pathForZip, QObject *parent) :
+CopierPhysical::CopierPhysical(int machID, int theBuildID, QString pathForZip, QObject *parent) :
     QTcpServer(parent),
     machineID(machID),
-    BuildID(buildNumber),
+    BuildID(theBuildID),
     zipPath(pathForZip)//,
     //management(man)
 {
@@ -75,8 +75,10 @@ void CopierPhysical::initiateCopyOver(){
     if(!zipFile.exists()){
         return;
     }
+
     if(!zipFile.open(QFile::ReadOnly)){
-        qDebug()<<"unable to open for copy";
+        //if it fails to open the file
+        emit copierPhysicalDone(this->BuildID);
         return;
     }
 
@@ -129,4 +131,6 @@ void CopierPhysical::readyReadFunction(){
     QString data = socket->readAll();
     if(!data.compare("HelloPhysicalSender"))
         initiateCopyOver();
+    else
+        emit copierPhysicalDone(this->BuildID);
 }

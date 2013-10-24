@@ -55,14 +55,14 @@ public:
 
 public:
     /**
-     * @fn void addToXML(int num,QString name,QString descript,QString direc);
-     * @param num the Build number to add
+     * @fn void addToXML(int ID,QString name,QString descript,QString direc);
+     * @param ID the Build ID to add
      * @param name the Build name to add
      * @param descript the Build description to add
      * @param direc the Build directory to add
      * @brief addToXML will add the current build to the xml file
      */
-    void addToXML(int num,QString name,QString descript,QString direc);
+    void addToXML(int ID,QString name,QString descript,QString direc);
 
 private slots:
     /**
@@ -92,11 +92,19 @@ private slots:
     void chooseClick();
 
     /**
-     * @brief checkBuildID looks if the buildnumber is already in the xml
-     * @param buildNum the current build number being passed
-     * @return a boolean indication wether the build number is taken
+     * @brief checkBuildID looks if the build ID is already in the xml
+     * @param buildID the current build ID being passed
+     * @return a boolean indication wether the build ID is taken
      */
-    bool checkBuildID(QString buildNum);
+    bool checkBuildID(QString buildID);
+
+    /**
+     * \fn bool checkBuildName(QString buildName);
+     * @brief checkBuildName looks if the build name is already in the xml
+     * @param buildName the current build name being passed
+     * @return a boolean indication wether the build name is taken
+     */
+    bool checkBuildName(QString buildName);
 
 private:
 	/**
@@ -109,6 +117,9 @@ private:
 	 * @brief the xmlWriter object
 	 */
     xmlWriter *theXMLWriter;
+
+    int NAME_SIZE_LIMIT;
+    int DESCRIPTION_SIZE_LIMIT;
 };
 
 #endif // ADDBUILD_H

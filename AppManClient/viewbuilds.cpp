@@ -48,12 +48,12 @@ void viewBuilds::showBuilds(){
     }
     ui->msg_label->setText(msg);
 
-    QMap<QString,QString> buildsNum = xReader.getBuildNumber();
+    QMap<QString,QString> buildsID = xReader.getBuildUniqueID();
     QMap<QString,QString> buildsName = xReader.getBuildName();
     QMap<QString,QString> buildsDesc = xReader.getBuildDescription();
     QMap<QString,QString> buildsDir = xReader.getBuildDirectory();
 
-    QMapIterator<QString, QString> i(buildsNum);
+    QMapIterator<QString, QString> i(buildsID);
     QMapIterator<QString, QString> j(buildsName);
     QMapIterator<QString, QString> k(buildsDesc);
     QMapIterator<QString, QString> l(buildsDir);

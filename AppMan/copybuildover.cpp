@@ -60,7 +60,7 @@ void CopyBuildOver::buildMoreInformationClick(){
         return;
 
     QString information = "Build Information:\n+ BuildName: "+ b->getBuildName();
-    information = information + "\n+ Build Number: " + QString::number(b->getBuildID());
+    information = information + "\n+ Build ID: " + QString::number(b->getBuildID());
     information = information + "\n+ Build Description: "+ b->getBuildDescription();
     showMessage(information, "inform");
 

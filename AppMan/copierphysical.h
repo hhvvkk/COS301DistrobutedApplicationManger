@@ -22,9 +22,9 @@ signals:
     /**
       * \fn void copierPhysicalDone();
       * @brief A signal that will be emitted once the file has completely been sent across the network
-      * @param buildNumber The build number which is done sending
+      * @param buildID The build ID of the build which is done sending
       */
-    void copierPhysicalDone(int buildNumber);
+    void copierPhysicalDone(int buildID);
 
 
     /**
@@ -37,7 +37,15 @@ signals:
     void notifyProgress(int currentIndex, int bufferSize, int BuildID);
 
 public:
-    explicit CopierPhysical(int machID, int buildNumber, QString pathForZip, QObject *parent = 0);
+
+    /**
+      * \fn CopierPhysical(int machID, int buildID, QString pathForZip, QObject *parent = 0);
+      * @brief Constructor for the physical copier
+      * @param machID The current ID of the machine
+      * @param pathForZip Where the zip is located to be copied
+      * @param buildID The number of the build which will be copied by this copier
+      */
+    explicit CopierPhysical(int machID, int buildID, QString pathForZip, QObject *parent = 0);
 
 
     ~CopierPhysical();
@@ -112,7 +120,7 @@ private:
     int machineID;
 
     /**
-      * The build number being copied over
+      * The build ID being copied over
       *
       */
     int BuildID;

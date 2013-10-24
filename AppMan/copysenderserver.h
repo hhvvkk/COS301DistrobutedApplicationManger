@@ -91,7 +91,7 @@ private slots:
     /**
      * \fn void PhysicalServerDoneNotify(int BuildID);
      * @brief Function which is invoked if the physical copier is done copying the file and emits a signal
-     * @param BuildID The number of the build being copied over
+     * @param BuildID The ID of the build being copied over
      */
     void PhysicalServerDoneNotify(int BuildID);
 
@@ -101,16 +101,15 @@ private slots:
      * @brief Function which is invoked if the physical copier is done copying the file and emits a signal
      * @param index The index where the copy currently is
      * @param bufferSize The total buffer size which will be sent across the network
-     * @param BuildID The number of the build being copied over
+     * @param BuildID The ID of the build being copied over
      */
      void notifyProgress(int index, int bufferSize, int BuildID);
-
 
      /**
       * \fn void nextInQueue(int port);
       * @brief A function connected to the nextInQueue of the copyQueue which will emit the port that the client should connect to
       * @param port The port on which the next in queue is waiting on
-      * @param BuildID The build number for which the next in queue is meant for
+      * @param BuildID The build ID for which the next in queue is meant for
       */
      void nextInQueue(int port, int BuildID);
 
@@ -203,7 +202,7 @@ private:
     /**
      * \fn void SendDifferences();
      * @brief A function which creates the physical copysenderserver by which it copies the files over...
-     * @param BuildID The build number for which the physical copying will be created
+     * @param BuildID The build ID for which the physical copying will be created
      */
     void createPhysicalCopier(int BuildID);
 
@@ -219,6 +218,14 @@ private:
      * @brief A function which is called when the client copy sender notifies this machien if the file copy has been a success
      */
     void NotifyCopySuccess(const QVariantMap jsonObject);
+
+    /**
+     * @brief Where the actual calculation of the progress is done and management is notified apon that
+     * @param index The index where the copy currently is
+     * @param bufferSize The total buffer size which will be sent across the network
+     * @param BuildID The ID of the build being copied over
+     */
+    void calculateProgress(int index, int bufferSize, int BuildID);
 protected:
     /**
      * \fn void incomingConnection(int socketID);

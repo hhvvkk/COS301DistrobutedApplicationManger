@@ -56,7 +56,8 @@ SOURCES += main.cpp\
     protoupdatemachineinfo.cpp \
     addsimulation.cpp \
     simulation.cpp \
-    protodeletebuild.cpp
+    protodeletebuild.cpp \
+    watcher.cpp
 
 HEADERS  += mainform.h \
     aboutversion.h \
@@ -98,7 +99,8 @@ HEADERS  += mainform.h \
     protoupdatemachineinfo.h \
     addsimulation.h \
     simulation.h \
-    protodeletebuild.h
+    protodeletebuild.h \
+    watcher.h
 
 FORMS    += mainform.ui \
     aboutversion.ui \
@@ -112,4 +114,5 @@ FORMS    += mainform.ui \
 
 RESOURCES += \
     images.qrc \
-    7Zip.qrc
+    7Zip.qrc \
+    Styles.qrc

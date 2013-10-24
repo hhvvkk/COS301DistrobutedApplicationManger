@@ -179,6 +179,12 @@ void Management::copyBuildOver(int machineId, QString buildName){
 }
 
 bool Management::machineWithBuild(int machineID, int buildID){
+    Build *build = getBuildByID(buildID);
+
+    if(build == 0){
+        return false;//there exist no such build
+    }
+
     Machine *machine = getMachineById(machineID);
 
     if(machine == 0)
@@ -332,15 +338,11 @@ void Management::setSlaveBuildIsSame(bool isSame, int machineId, int buildID){
 
 // void slaveBuildSynched(int machineId, int buildId, double percentageSynched);
 void Management::machineBuildSynched(int machineId, int buildId, double percentageSynched){
+    if(percentageSynched < 0)
+        percentageSynched = 0;
+    if(percentageSynched > 100)
+        percentageSynched = 100;
     emit slaveBuildSynched(machineId, buildId, percentageSynched);
-}
-
-void Management::setDetStats(QString stats){
-    detStats = stats;
-}
-
-void Management::setMinStats(QString stats){
-    minStats = stats;
 }
 
 int Management::generateUniqueId(){        
@@ -382,6 +384,19 @@ void Management::setBuildName(int buildID, QString value){
     theBuild->setBuildName(value);
     xmlWriter writer;
     writer.updateBuildName(buildID, value);
+
+    //notify all slaves apon the change
+    for(int i = 0; i < machineCount; i++){
+        Machine *machine = getMachineAt(i);
+
+        if(machine == 0)
+            continue;
+
+        if(machineWithBuild(machine->getMachineID(), buildID)){
+            //only notify the machine if that machine has the build
+            machine->updateBuildName(buildID, value);
+        }
+    }
 }
 
 void Management::setBuildNumber(int buildID, QString value){
@@ -391,9 +406,9 @@ void Management::setBuildNumber(int buildID, QString value){
         return;
     }
 
-    theBuild->setBuildDescription(value);
-    xmlWriter writer;
-    writer.updateBuildDir(buildID, value);
+//    theBuild->setBuildDescription(value);
+//    xmlWriter writer;
+//    writer.updateBuildNumber(buildID, value);
 }
 
 void Management::setBuildDescription(int buildID, QString value){
@@ -426,12 +441,14 @@ void Management::deleteBuild(int buildID){
     //from(3): all connected clients
     for(int i = 0; i < machineCount; i++){
         Machine *machine = getMachineAt(i);
+
+        if(machine == 0)
+            continue;
+
         if(machineWithBuild(machine->getMachineID(), buildID)){
             //only notify the machine if that machine has the build
             machine->deleteBuildNotify(buildID);
         }
-
-
     }
 
     //from(4):gui
@@ -469,4 +486,40 @@ void Management::slaveSuccessDeleteABuild(int machineID, int buildID){
     machine->deleteBuild(buildID);
 
     emit slaveDeletedBuild(machineID, buildID);
+}
+
+void Management::deleteBuildFromSlave(int machineID, int buildID){
+    Machine *machine = getMachineById(machineID);
+
+    if(machine == 0)
+        return;
+
+    if(machineWithBuild(machineID, buildID)){
+        machine->deleteBuildNotify(buildID);
+    }
+}
+
+void Management::resynchAllBuildsOnSlave(int machineID){
+    Machine *machine = getMachineById(machineID);
+
+    if(machine == 0)
+        return;
+
+    machine->resynchAll();
+}
+
+void Management::resynchAllCertainBuild(int buildIDToResynch){
+    Build *theBuild = getBuildByID(buildIDToResynch);
+
+    if(theBuild == 0)
+        return;
+
+    for(int i = 0; i < machineCount; i++){
+        Machine * machine = getMachineAt(i);
+        if(machine == 0)
+            continue;//continue to next in loop
+
+        if(machineWithBuild(machine->getMachineID(), buildIDToResynch))
+            machine->resynchAll();//invoke the resynch all in order to resynch all the builds currently there
+    }
 }

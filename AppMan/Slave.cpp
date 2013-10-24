@@ -130,3 +130,8 @@ void Slave::updateUniqueID(int uniqueID){
 void Slave::deleteBuildNotify(int BuildID){
     protocolHandler->deleteBuildFromSlave(BuildID);
 }
+
+
+void Slave::resynchAll(){
+    protocolHandler->recheckAllSizes();
+}

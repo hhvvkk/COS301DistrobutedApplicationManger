@@ -4,7 +4,7 @@ xmlWriter::xmlWriter()
 {
     xmlReader xRead;
     xRead.parseXML();
-    this->buildNumber = xRead.getBuildNumber();
+    this->buildUniqueID = xRead.getBuildUniqueID();
     this->buildName = xRead.getBuildName();
     this->buildDescription = xRead.getBuildDescription();
     this->buildDirectory = xRead.getBuildDirectory();
@@ -26,7 +26,7 @@ void xmlWriter::createXMLFile()
         theXMLWriter->writeStartDocument();
         theXMLWriter->writeStartElement("builds");
 
-        QMapIterator<QString, QString> i(buildNumber);
+        QMapIterator<QString, QString> i(buildUniqueID);
         QMapIterator<QString, QString> j(buildName);
         QMapIterator<QString, QString> k(buildDescription);
         QMapIterator<QString, QString> l(buildDirectory);
@@ -52,8 +52,8 @@ xmlWriter::~xmlWriter()
     delete theXMLWriter;
 }
 
-void xmlWriter::receiveBuild(QString num,QString name,QString descript, QString direc){
-    buildNumber.insertMulti("buildNumber",num);
+void xmlWriter::receiveBuild(QString ID,QString name,QString descript, QString direc){
+    buildUniqueID.insertMulti("buildUniqueID",ID);
     buildName.insertMulti("buildName",name);
     buildDescription.insertMulti("buildDescription",descript);
     buildDirectory.insertMulti("buildDirectory",direc);
@@ -62,13 +62,13 @@ void xmlWriter::receiveBuild(QString num,QString name,QString descript, QString 
 
 int xmlWriter::findBuildIndex(int buildID){
 
-    QMapIterator<QString, QString> mapIterator = QMapIterator<QString, QString>(buildNumber);
+    QMapIterator<QString, QString> mapIterator = QMapIterator<QString, QString>(buildUniqueID);
 
     if(!mapIterator.hasNext()){
         return -1;
     }
 
-    QMapIterator<QString, QString> mapI(buildNumber);
+    QMapIterator<QString, QString> mapI(buildUniqueID);
 
     int count = 0;
     while (mapI.hasNext())
@@ -86,17 +86,17 @@ void xmlWriter::updateBuildName(int buildID, QString newBuildName){
 
     int index = findBuildIndex(buildID);
 
-    if(index <= -1 || index >= buildNumber.values().size()){
+    if(index <= -1 || index >= buildUniqueID.values().size()){
         return;
     }
 
     QString buildDescr = buildDescription.values().at(index);
     QString buildDir = buildDirectory.values().at(index);
-    QString buildNum = buildNumber.values().at(index);
+    QString theBuildID = buildUniqueID.values().at(index);
 
     RemoveBuildToBeUpdated(buildID);
 
-    buildNumber.insertMulti("buildNumber",buildNum);
+    buildUniqueID.insertMulti("buildUniqueID",theBuildID);
     buildName.insertMulti("buildName",newBuildName);
     buildDescription.insertMulti("buildDescription",buildDescr);
     buildDirectory.insertMulti("buildDirectory",buildDir);
@@ -107,17 +107,17 @@ void xmlWriter::updateBuildName(int buildID, QString newBuildName){
 void xmlWriter::updateBuildDir(int buildID, QString newBuildDir){
     int index = findBuildIndex(buildID);
 
-    if(index <= -1 || index >= buildNumber.values().size()){
+    if(index <= -1 || index >= buildUniqueID.values().size()){
         return;
     }
 
     QString theBuildName = buildName.values().at(index);
     QString theBuildDescr = buildDescription.values().at(index);
-    QString theBuildNum = buildNumber.values().at(index);
+    QString thebuildID = buildUniqueID.values().at(index);
 
     RemoveBuildToBeUpdated(buildID);
 
-    buildNumber.insertMulti("buildNumber",theBuildNum);
+    buildUniqueID.insertMulti("buildUniqueID",thebuildID);
     buildName.insertMulti("buildName",theBuildName);
     buildDescription.insertMulti("buildDescription",theBuildDescr);
     buildDirectory.insertMulti("buildDirectory",newBuildDir);
@@ -129,17 +129,17 @@ void xmlWriter::updateBuildDescr(int buildID, QString newBuildDescr){
 
     int index = findBuildIndex(buildID);
 
-    if(index <= -1 || index >= buildNumber.values().size()){
+    if(index <= -1 || index >= buildUniqueID.values().size()){
         return;
     }
 
     QString build_Name = buildName.values().at(index);
     QString buildDir = buildDirectory.values().at(index);
-    QString buildNum = buildNumber.values().at(index);
+    QString theBuildID = buildUniqueID.values().at(index);
 
     RemoveBuildToBeUpdated(buildID);
 
-    buildNumber.insertMulti("buildNumber",buildNum);
+    buildUniqueID.insertMulti("buildUniqueID",theBuildID);
     buildName.insertMulti("buildName",build_Name);
     buildDescription.insertMulti("buildDescription",newBuildDescr);
     buildDirectory.insertMulti("buildDirectory",buildDir);
@@ -149,12 +149,12 @@ void xmlWriter::updateBuildDescr(int buildID, QString newBuildDescr){
 
 void xmlWriter::RemoveBuildToBeUpdated(int buildID){
 
-    QMap <QString,QString> tmpNum;
+    QMap <QString,QString> tmpID;
     QMap <QString,QString> tmpName;
     QMap <QString,QString> tmpDesc;
     QMap <QString,QString> tmpDir;
 
-    QMapIterator<QString, QString> i(buildNumber);
+    QMapIterator<QString, QString> i(buildUniqueID);
     QMapIterator<QString, QString> j(buildName);
     QMapIterator<QString, QString> k(buildDescription);
     QMapIterator<QString, QString> l(buildDirectory);
@@ -165,15 +165,15 @@ void xmlWriter::RemoveBuildToBeUpdated(int buildID){
     {
         i.next(); j.next(); k.next(); l.next();
 
-        if(buildNumber.values().at(m).compare(QString::number(buildID))){
-            tmpNum.insertMulti("buildNumber",buildNumber.values().at(m));
+        if(buildUniqueID.values().at(m).compare(QString::number(buildID))){
+            tmpID.insertMulti("buildUniqueID",buildUniqueID.values().at(m));
             tmpName.insertMulti("buildName",buildName.values().at(m));
             tmpDesc.insertMulti("buildDescription",buildDescription.values().at(m));
             tmpDir.insertMulti("buildDirectory",buildDirectory.values().at(m));
         }
         m++;
     }
-    buildNumber = tmpNum;
+    buildUniqueID = tmpID;
     buildName = tmpName;
     buildDescription = tmpDesc;
     buildDirectory = tmpDir;
@@ -181,12 +181,12 @@ void xmlWriter::RemoveBuildToBeUpdated(int buildID){
 
 
 void xmlWriter::removeBuild(int buildID){
-    QMap <QString,QString> tmpNum;
+    QMap <QString,QString> tmpID;
     QMap <QString,QString> tmpName;
     QMap <QString,QString> tmpDesc;
     QMap <QString,QString> tmpDir;
 
-    QMapIterator<QString, QString> i(buildNumber);
+    QMapIterator<QString, QString> i(buildUniqueID);
     QMapIterator<QString, QString> j(buildName);
     QMapIterator<QString, QString> k(buildDescription);
     QMapIterator<QString, QString> l(buildDirectory);
@@ -197,9 +197,9 @@ void xmlWriter::removeBuild(int buildID){
     {
         i.next(); j.next(); k.next(); l.next();
 
-        if(buildNumber.values().at(m).compare(QString::number(buildID))){
+        if(buildUniqueID.values().at(m).compare(QString::number(buildID))){
             //if the build is not the same include the build
-            tmpNum.insertMulti("buildNumber",buildNumber.values().at(m));
+            tmpID.insertMulti("buildUniqueID",buildUniqueID.values().at(m));
             tmpName.insertMulti("buildName",buildName.values().at(m));
             tmpDesc.insertMulti("buildDescription",buildDescription.values().at(m));
             tmpDir.insertMulti("buildDirectory",buildDirectory.values().at(m));
@@ -208,7 +208,7 @@ void xmlWriter::removeBuild(int buildID){
     }
 
     //replace the current values
-    buildNumber = tmpNum;
+    buildUniqueID = tmpID;
     buildName = tmpName;
     buildDescription = tmpDesc;
     buildDirectory = tmpDir;

@@ -1,0 +1,32 @@
+
+QTreeWidget::item:hover {
+	background: lightgray; border-radius: 10px; 
+}
+
+QTreeWidget::item:selected {
+	background: darkgray;
+}
+
+QLineEdit {
+	border: 2px solid gray;
+	border-radius: 10px; 
+	padding: 0 8px; 
+	background: #D1E0FF; 
+	selection-background-color: darkgray; 
+	selection-color: black;
+}
+
+QToolTip {
+	background: lightgray; 
+	color:darkblue; padding:1px;
+	border-width:0.5px; 
+	border-style:solid;
+	border-radius:4px 
+}
+	
+QPushButton { 
+	border: 2px solid gray;
+	border-radius: 10px;  
+	padding: 0 8px;
+	background: #B2CCFF; 
+}

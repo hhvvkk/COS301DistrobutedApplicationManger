@@ -471,9 +471,20 @@ void CopySenderServer::NotifyCopySuccess(const QVariantMap jsonObject){
 
 //notifyProgress(i, buffer.size(), BuildID);
 void CopySenderServer::notifyProgress(int index, int bufferSize, int BuildID){
-    //Management::machineBuildSynched(int machineId, int buildId, double percentageSynched)
-    //double progress =
-   // qDebug()<<"int index = "<<index;
+    //display the current synch progress
+    QtConcurrent::run(this, &CopySenderServer::calculateProgress, index, bufferSize, BuildID);
+
+}
+
+void CopySenderServer::calculateProgress(int index, int bufferSize, int BuildID){
+
+    double percentageSynched = 0;
+
+    if(bufferSize != 0){
+        percentageSynched = index * 100 / bufferSize;
+    }
+
+    management->machineBuildSynched(machineId, BuildID, percentageSynched);
 }
 
 

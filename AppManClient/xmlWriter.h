@@ -90,10 +90,10 @@ private:
 
 private:
     /**
-     * @var buildNumber
+     * @var buildUniqueID
      * @brief A QMap of Build Numbers for the XML
      */
-    QMap<QString,QString> buildNumber;
+    QMap<QString,QString> buildUniqueID;
 
     /**
      * @var buildName

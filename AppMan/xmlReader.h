@@ -36,11 +36,11 @@ public:
     void parseXML();
 
     /**
-     * @fn QMap<QString,QString> getBuildNumber()
-     * @brief returns a QMap of buildNumbers
-     * @return buildNumber
+     * @fn QMap<QString,QString> getBuildUniqueID()
+     * @brief returns a QMap of buildUniqueIDs
+     * @return buildUniqueID
      */
-    QMap<QString,QString> getBuildNumber();
+    QMap<QString,QString> getBuildUniqueID();
     /**
      * @fn QMap<QString,QString> getBuildName()
      * @brief returns a QMap of buildNames
@@ -70,10 +70,10 @@ private:
     void parseBuild(QXmlStreamReader& xml);
 
     /**
-     * @var buildNumber
-     * @brief A QMap of Build Numbers for the XML
+     * @var buildUniqueID
+     * @brief A QMap of Build Unique IDs for the XML
      */
-    QMap<QString,QString> buildNumber;
+    QMap<QString,QString> buildUniqueID;
     /**
      * @var buildName
      * @brief A QMap of Build Names for the XML

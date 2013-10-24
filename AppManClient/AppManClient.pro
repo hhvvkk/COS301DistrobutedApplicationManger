@@ -89,4 +89,5 @@ FORMS    += mainwindow.ui \
 
 RESOURCES += \
     images.qrc \
-    7Zip.qrc
+    7Zip.qrc \
+    Styles.qrc

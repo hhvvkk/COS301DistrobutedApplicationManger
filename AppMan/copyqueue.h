@@ -52,7 +52,7 @@ private slots:
     /**
       * \fn void popFront(int BuildID);
       * @brief A function which will take the next physical copier in the queue and start the physical copy over process
-      * @param BuildID The build number which will be popped from the queue
+      * @param BuildID The build ID which will be popped from the queue
       */
     void popFront(int BuildID);
 

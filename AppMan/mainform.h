@@ -45,6 +45,7 @@
 #include "xmlReader.h"
 #include "moreinfo.h"
 #include "simulation.h"
+#include "watcher.h"
 
 
 namespace Ui {
@@ -52,7 +53,7 @@ class MainForm;
 }
 /**
  * @class MainForm
- * @brief The MainForm class will be the class that the user is greeted with when he opens the application
+ * @brief The MainForm class will be the main window that the user is greeted with when he opens the application
  */
 class MainForm : public QMainWindow
 {
@@ -114,13 +115,11 @@ private slots:
 
   //  void getMinStats(QString stats);
 
+
     /**
      * \fn void quitTheApplication();
      * @brief A function emitting a signal called quitApplication which will then end application
      */
-    void on_treeWidgetActiveSimulations_activated(QModelIndex index);
-
-
     void quitTheApplication();
 
     /**
@@ -257,7 +256,7 @@ private slots:
     /**
      * \fn void slaveBuildSynched(int machineId, int buildId, double percentageSynched);
      * @brief Function which indicates how far the build is synchronised on the user interface
-     * @param buildId The number of the build is the same or not
+     * @param buildId The ID of the build is the same or not
      * @param slaveId The ID of the machine which has the build
      * @param percentageSynched The percentage that the build is synchronised
      */
@@ -309,6 +308,7 @@ private slots:
      */
     void collapseMasterBuilds();
 
+
     /**
      * \fn void slaveDeletedBuild(int machineID, int buildID);
      * @brief Slot connected such that each time a slave deletes a build and all its files, this function is called
@@ -323,13 +323,28 @@ private slots:
       * @brief Executed when the build has been deleted on the master machine and all machines are notified of the delete
       */
     void buildDeleted();
-private:
+
     /**
-     * \fn dropBuildToSlave(QString from);
-     * @brief dropBuildToSlave this function will call the copy function to copy a build over from master to slave
-     * @param from The object name of the item that is dragged
-     */
-    void dropBuildToSlave(QString from);
+      * \fn void buildDeleted();
+      * @brief The function fired when the user clicks on the infobox
+      */
+    void infoboxClicked(QModelIndex index);
+
+    /**
+      * \fn void mustResynch(int buildID);
+      * @brief Slot connected such that each time a build has changed, after a amount of time, it will be resynched
+      * @param buildID The ID to resynchronise on all machines
+      */
+    void mustResynch(int buildID);
+
+    /**
+      * \fn void MainForm::buildTimerCount(int buildID, int timeRemaining);
+      * @brief Slot connected such that each time the timer counts down for the resyncrhonisation this function is called
+      * @param buildID The ID to resynchronise on all machines
+      * @param timeRemaining The amount of time remaining on the timer before the build will be resynchronised
+      */
+    void buildTimerCount(int buildID, int timeRemaining);
+private:
 
     /**
      * @brief dropNewBuildAdd This function will add new builds on the master computer and save it accordingly
@@ -371,7 +386,7 @@ private:
 
     /**
      * \fn void setBuildInfo(int setWhat, QString value)
-     * @brief A function to set the piece of build information referred to by setWhat to the value passed through in management and the gui(in the case of name or number)
+     * @brief A function to set the piece of build information referred to by setWhat to the value passed through in management and the gui(in the case of name or number - directory is set elsewhere)
      * @param setWhat The value of the BuildInformationEnum which will be set
      * @param value The value to which it will be set
      * @param buildID The id of the build to set
@@ -385,6 +400,21 @@ private:
      * @return Returns true if the mouse is over the item otherwise returns false
      */
     bool mouseCurserOver(QWidget *theItem);
+
+    /**
+     * \fn bool mouseCurserOver(QWidget *theItem);
+     * @brief Displays the slavebuild info in the infobox and gets it by using the ID of the build
+     * @param slaveBuildItem The item which was clicked
+     * @param machineID The ID of the machine in which its build was clicked
+     */
+    void displaySlaveBuildInfo(QTreeWidgetItem *slaveBuildItem, int machineID);
+
+    /**
+     * \fn void slaveItemClicked(const QModelIndex &index);
+     * @brief A function to be called when a slave item was called
+     * @param index The index that was clicked
+     */
+    void slaveItemClicked(const QModelIndex &index);
 private:
     /**
      * @var ui
@@ -435,7 +465,7 @@ private:
      */
     class SlaveStats: public QTreeWidget{
     public:
-        SlaveStats(QWidget *parent = 0, QString ip = "", QString input = "");
+        SlaveStats(QWidget *parent = 0, int id = 0, QString input = "");
     };
 
     /**
@@ -448,6 +478,8 @@ private:
     enum BuildInformationEnum { BUILDDIRECTORY, BUILDNAME, BUILDNUMBER, BUILDDESCRIPTION };
 
     QTimer *collapseTimer;
+
+    Watcher *watcher;
 
 };
 

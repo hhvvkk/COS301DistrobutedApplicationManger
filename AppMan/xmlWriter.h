@@ -46,12 +46,12 @@ public:
     /**
      * @fn void receiveBuild(QString num,QString name,QString descript, QString direc);
      * @brief The function that accepts parameters of the build
-     * @param num The Build number
+     * @param ID The Build ID
      * @param name The Build name
      * @param descript The Build Description
      * @param direc The Build Directory
      */
-     void receiveBuild(QString num,QString name,QString descript, QString direc);
+     void receiveBuild(QString ID,QString name,QString descript, QString direc);
 
 
      /**
@@ -64,7 +64,7 @@ public:
 
      /**
       * \fn void updateBuildName(int buildID, QString newBuildName);
-      * @brief Finds the index of a build inside buildNumber
+      * @brief Finds the index of a build inside buildUniqueID
       * @param buildID The Build Description
       */
      int findBuildIndex(int buildID);
@@ -89,10 +89,10 @@ private:
     void RemoveBuildToBeUpdated(int buildID);
 private:
     /**
-     * @var buildNumber
+     * @var buildUniqueID
      * @brief A QMap of Build Numbers for the XML
      */
-    QMap<QString,QString> buildNumber;
+    QMap<QString,QString> buildUniqueID;
 
     /**
      * @var buildName

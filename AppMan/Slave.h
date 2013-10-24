@@ -140,6 +140,11 @@ public:
         */
         void deleteBuildNotify(int BuildID);
 
+        /**
+        * \fn void resynchAll();
+        * @brief Manually resynchronise all the builds on the machine
+        */
+        void resynchAll();
 };
 
 #endif // Slave_H

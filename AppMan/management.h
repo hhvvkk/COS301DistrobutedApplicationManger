@@ -296,14 +296,13 @@ public:
     */
     void setSlaveBuildIsSame(bool isSame, int machineId, int buildID);
 
-    QString getMinStats(){return minStats;}
-
-    void setMinStats(QString stats);
-
-    QString getDetStats(){return detStats;}
-
-    void setDetStats(QString stats);
-
+    /**
+     * \fn void machineBuildSynched(int machineId, int buildId, double percentageSynched);
+     * @brief The function to notify where the synchronisation progress is currently at
+     * @param machineId The machine which notified apon the syncrhonisation
+     * @param percentageSynched The current synchronisation progress
+     * @param buildId The ID of the build being copied over
+     */
     void machineBuildSynched(int machineId, int buildId, double percentageSynched);
 
     /**
@@ -368,12 +367,34 @@ public:
     void deleteBuild(int buildID);
 
     /**
-      * void slaveSuccessDeleteABuild(int machineID, int buildID);
+      * \fn void slaveSuccessDeleteABuild(int machineID, int buildID);
       * @brief When there exist a build on the slave which has been sucessfully removed
       * @param machineID The machine which notified of the sucessfull deletion
       * @param buildID The build ID which was deleted on the machine
       */
     void slaveSuccessDeleteABuild(int machineID, int buildID);
+
+    /**
+      * \fn void deleteBuildFromSlave(int machineID, int buildID);
+      * @brief A function to notify a single slave that a build must be deleted
+      * @param machineID The machine which will go delete the build
+      * @param buildID The ID of the build to be deleted
+      */
+    void deleteBuildFromSlave(int machineID, int buildID);
+
+    /**
+      * \fn void resynchAllBuildsOnSlave(int machineID);
+      * @brief Manually resynch all the builds on a slave machine
+      * @param machineID The machines ID where the resynch will take place
+      */
+    void resynchAllBuildsOnSlave(int machineID);
+
+    /**
+      * \fn void resynchAllCertainBuild(int buildIDToResynch);
+      * @brief The function to resynchronise a build on all the slave machines
+      * @param buildIDToResynch The ID to resynchronise on all machines
+      */
+    void resynchAllCertainBuild(int buildIDToResynch);
 
 private:
     /**
@@ -412,10 +433,6 @@ private:
      * @brief A lock that will be used to ensure concurrent events take place in correct order
      */
     QMutex *lock;
-
-    QString minStats;
-    QString detStats;
-
 
     int simCount;
     QVector<Simulation*> allSimulations;

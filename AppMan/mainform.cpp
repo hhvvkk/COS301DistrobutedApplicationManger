@@ -11,6 +11,12 @@ MainForm::MainForm(QWidget *parent) :
     management = new Management();
     Server *server = new Server(management);
     management->setServer(server);
+    watcher = new Watcher();
+
+    //connect the watcher in order to notify the user and management of changes in builds
+    connect(watcher, SIGNAL(mustResynchBuild(int)), this, SLOT(mustResynch(int)));
+    connect(watcher, SIGNAL(buildTimerCount(int,int)), this, SLOT(buildTimerCount(int,int)));
+
     ///connect slots for backward signalling
     connect(management, SIGNAL(newSlaveConnected(Machine*)),this,SLOT(newSlaveConnected(Machine*)));
     connect(management, SIGNAL(slaveDisconnected(int)),this,SLOT(slaveDisconnected(int)));
@@ -25,6 +31,7 @@ MainForm::MainForm(QWidget *parent) :
     masterBuilds = new MasterBuilds();
     masterBuilds->setHeaderHidden(true);
 
+    ui->treeWidgetSlaves->hideColumn(1);
     /*
      * This part initializes the masterBuilds and adds it to mainform
      */
@@ -44,6 +51,14 @@ MainForm::MainForm(QWidget *parent) :
     /*
      *TOP DOCKWIDGET(END)
      **/
+
+    /*
+     * bottom dockWidget(begin)
+     */
+    connect(ui->treeWidgetInfoBox, SIGNAL(clicked(QModelIndex)), this, SLOT(infoboxClicked(QModelIndex)));
+    /*
+     * bottom dockWidget(end)
+     */
 
     //ui->dockWidgetProperty->setLayout();
     connect(masterBuilds, SIGNAL(clicked(QModelIndex)), this, SLOT(masterBuildsClicked(QModelIndex)));
@@ -134,39 +149,6 @@ void MainForm::dropEvent ( QDropEvent *event ){
 
 }
 
-void MainForm::dropBuildToSlave(QString fromBuild){
-    //remove this #<<MBIndex=
-    fromBuild.remove(0,11);
-
-    int index = -1;
-
-    index = fromBuild.toInt();
-
-    if(index <= -1 || index >= masterBuilds->topLevelItemCount())
-        return;
-
-    QString buildname = masterBuilds->topLevelItem(index)->text(0);
-
-    //create a list of name suggestions
-    QStringList nameListSuggest;
-    for(int i = 0; i < masterBuilds->topLevelItemCount(); i++)
-        nameListSuggest<<masterBuilds->topLevelItem(i)->text(0);
-
-    //create a list of ip suggestions
-    QStringList ipListSuggest;
-    QTreeWidgetItem *safetyItem;//so that if that item is retrieved, but does not exist(concurrency)
-    for(int i = 0; i < ui->treeWidgetSlaves->topLevelItemCount(); i++){
-        safetyItem = ui->treeWidgetSlaves->topLevelItem(i);
-        if(safetyItem != 0)
-            ipListSuggest<< safetyItem->text(0);
-    }
-
-    //send the lists as parameters to the new dialogue
-    CopyBuildOver *copyBuild = new CopyBuildOver(management, nameListSuggest, ipListSuggest,buildname);
-    connect(copyBuild, SIGNAL(copyBuildOver(int,QString)), this, SLOT(initiateCopyBuildOver(int,QString)));
-    copyBuild->show();
-}
-
 void MainForm::dropNewBuildAdd(QString newBuildDirectory){
     AddBuild *newBuild = new AddBuild(newBuildDirectory);
     connect(newBuild, SIGNAL(initiateAddBuild(Build*)), this, SLOT(initiateAddBuild(Build*)));
@@ -230,6 +212,7 @@ void MainForm::newSlaveConnected(Machine *m){
     slaveItem->setText(0, m->getMachineIP());
     slaveItem->setText(1, QString::number(m->getMachineID()));
     ui->treeWidgetSlaves->addTopLevelItem(slaveItem);
+    slaveItem->setBackground(0, Qt::green);//display green, until the slave notifies with builds
 
     QTreeWidgetItem *activeSimulationItem = new QTreeWidgetItem();
     activeSimulationItem->setText(0, m->getMachineIP());
@@ -241,7 +224,6 @@ void MainForm::slaveDisconnected(int uId){
 
     //destroy the build treewidget item for a slave
     QString uniqueId = QString::number(uId);
-    qDebug()<< "UniqueID:" << uniqueId;
 
     for(int i = 0; i < ui->treeWidgetSlaves->topLevelItemCount(); i++){
         QTreeWidgetItem *item = 0;
@@ -269,6 +251,7 @@ void MainForm::slaveDisconnected(int uId){
 
 void MainForm::initiateAddBuild(Build *newBuild){
     management->addBuild(newBuild);
+    watcher->addBuildPath(newBuild->getBuildID(), newBuild->getBuildDirectory());
     displayBuilds();
 }
 
@@ -300,9 +283,13 @@ void MainForm::displayBuilds(){
         QTreeWidgetItem *deleteItem = new QTreeWidgetItem();
         deleteItem->setText(0, "Delete Build");
 
+        QTreeWidgetItem *resynchItem = new QTreeWidgetItem();
+        resynchItem->setText(0, "Resynch ");
+
         //add them both
         newWidgetItem->addChild(copyOverItem);
         newWidgetItem->addChild(deleteItem);
+        newWidgetItem->addChild(resynchItem);
 
     }
 }
@@ -312,12 +299,12 @@ void MainForm::loadXMLBuilds(){
     xmlReader xRead;
     xRead.parseXML();
 
-    QMap<QString,QString> buildsNum = xRead.getBuildNumber();
+    QMap<QString,QString> buildsIDs = xRead.getBuildUniqueID();
     QMap<QString,QString> buildsName = xRead.getBuildName();
     QMap<QString,QString> buildsDesc = xRead.getBuildDescription();
     QMap<QString,QString> buildsDir = xRead.getBuildDirectory();
 
-    QMapIterator<QString, QString> i(buildsNum);
+    QMapIterator<QString, QString> i(buildsIDs);
     QMapIterator<QString, QString> j(buildsName);
     QMapIterator<QString, QString> k(buildsDesc);
     QMapIterator<QString, QString> l(buildsDir);
@@ -340,13 +327,20 @@ void MainForm::masterBuildsClicked(QModelIndex index){
 
     if(ok){
         Build *retr = management->getBuildByID(buildID);
-        clearDockWidget();
+
+        if(buildInfo != 0){
+            buildInfo->deleteLater();
+        }
+
+        buildInfo = new BuildInfo();
 
         connect(buildInfo, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)), this, SLOT(buildInfoDoubleClicked(QTreeWidgetItem*,int)));
         connect(buildInfo, SIGNAL(itemChanged(QTreeWidgetItem*,int)), this, SLOT(buildInfoItemEditedChanged(QTreeWidgetItem*,int)));
 
 
+        clearDockWidget();
         ui->dockWidgetContents->layout()->addWidget(buildInfo);
+
         populateBuildInfo(retr);
         populateTreeWidgetInfo(retr);
     }
@@ -385,12 +379,35 @@ void MainForm::masterBuildsClicked(QModelIndex index){
 
             if(!convertParentBID)
                 return;
+
+            watcher->removeBuildPath(convertParentBID);
+
             management->deleteBuild(convertedID);
+
+            buildInfo->clear();
+        }else if(itemClicked.contains("Resynch ")){
+            QString buildID = index.parent().sibling(index.parent().row(), 1).data().toString();
+
+            bool convertParentBID  = false;
+            int convertedID = buildID.toInt(&convertParentBID);
+
+            if(!convertParentBID)
+                return;
+
+            watcher->stopCountDown(convertParentBID);
+
+            //notify through management to resynch this build on all slaves
+            management->resynchAllCertainBuild(convertedID);
         }
     }
 }
 
 void MainForm::populateBuildInfo(Build *retr){
+
+    if(retr == 0)
+        return;
+
+    buildInfo->show();
     buildInfo->clear();
     QTreeWidgetItem *boola;
     for(int i = 0; i < 4; i++){
@@ -492,6 +509,7 @@ void MainForm::initiateCopyBuildOver(int uniqueId, QString buildName){
 
 void MainForm::slaveGotBuild(Machine*m, int buildId,  QString slaveBuildName, bool buildExist){
     QTreeWidgetItem *machineT = getSlaveTreeItemById(m->getMachineID());
+
     if(machineT == 0){
         return;
     }
@@ -525,6 +543,7 @@ void MainForm::slaveGotBuild(Machine*m, int buildId,  QString slaveBuildName, bo
     else{
         newBuildForSlave->setText(0, slaveBuildName);
         newBuildForSlave->setText(1,slaveBuildId);
+        newBuildForSlave->setToolTip(0, "0% synched");
     }
     machineT->addChild(newBuildForSlave);
 }
@@ -569,6 +588,7 @@ void MainForm::slaveBuildSizeSame(int buildId, int machineId, bool isTheSame){
 
     if(isTheSame){
         buildItem->setBackground(0, good);
+        buildItem->setToolTip(0, "100% synched");
     }
     else{
         buildItem->setBackground(0, bad);
@@ -590,9 +610,11 @@ void MainForm::slaveBuildSizeSame(int buildId, int machineId, bool isTheSame){
         QString zipStuffToDelete = getCompressPath();
         zipStuffToDelete.append("/"+QString::number(machineId));
         DirectoryHandler::removeDir(zipStuffToDelete);
+        slaveTreeWidgetItem->setToolTip(0, "fully synched");
     }
     else{
         slaveTreeWidgetItem->setBackground(0, bad);
+        slaveTreeWidgetItem->setToolTip(0, "synchronising");
     }
 }
 
@@ -631,10 +653,34 @@ QString MainForm::getCompressPath(){
 
 void MainForm::slaveBuildSynched(int machineId, int buildId, double percentage){
    // qDebug()<<"slaveSynched[machineID = "<< machineId <<"|| buildID = "<< buildId <<"] = "<<percentage;
+    QTreeWidgetItem *slaveItem = getSlaveTreeItemById(machineId);
+
+    if(slaveItem == 0){
+        return;
+    }
+
+    for(int i = 0; i < slaveItem->childCount(); i++){
+        QTreeWidgetItem *slaveChild = slaveItem->child(i);
+
+        bool ok = false;
+
+
+        int slaveBuildID  = slaveChild->text(1).toInt(&ok);
+
+        if(!ok)
+            continue;
+
+        if(slaveBuildID == buildId){
+            //means the correct one is found
+            QString percentSynched = QString::number(percentage) + "% synched";
+            slaveChild->setToolTip(0, percentSynched);
+            break;
+        }
+    }
 }
 
 
-MainForm::SlaveStats::SlaveStats(QWidget *parent, QString ip, QString input)
+MainForm::SlaveStats::SlaveStats(QWidget *parent, int machineID, QString input)
     :QTreeWidget(parent){
     QString labelHeader1 = "Property";
     QString labelHeader2 = "Value";
@@ -649,39 +695,59 @@ MainForm::SlaveStats::SlaveStats(QWidget *parent, QString ip, QString input)
     newItem = new QTreeWidgetItem();
     newItem->setText(0,"CPU usage %");
     newItem->setText(1,lists.at(0));
-    newItem->setText(2,ip);
+    newItem->setText(2,QString::number(machineID));
     this->addTopLevelItem(newItem);
 
     newItem = new QTreeWidgetItem();
     newItem->setText(0,"RAM usage %");
     newItem->setText(1,lists.at(1));
-    newItem->setText(2,ip);
+    newItem->setText(2,QString::number(machineID));
     this->addTopLevelItem(newItem);
 
 
     newItem = new QTreeWidgetItem();
     newItem->setText(0,"Data Transmitted");
     newItem->setText(1,lists.at(2));
-    newItem->setText(2,ip);
+    newItem->setText(2,QString::number(machineID));
     this->addTopLevelItem(newItem);
 
 
     newItem = new QTreeWidgetItem();
     newItem->setText(0,"Data Received");
     newItem->setText(1,lists.at(3));
-    newItem->setText(2,ip);
+    newItem->setText(2,QString::number(machineID));
     this->addTopLevelItem(newItem);
 
     newItem = new QTreeWidgetItem();
     newItem->setText(0,"Click for more");
     newItem->setText(1,"More");
-    newItem->setText(2,ip);
+    newItem->setText(2, QString::number(machineID));
     this->addTopLevelItem(newItem);
 }
 
 void MainForm::on_treeWidgetSlaves_clicked(const QModelIndex &index)
 {
+    slaveItemClicked(index);
+}
+
+void MainForm::slaveItemClicked(const QModelIndex &index){
     QTreeWidgetItem *item = ui->treeWidgetSlaves->selectedItems().at(0);
+
+    if(item->parent() != 0){
+        //this means that the item is not a top level item, thus the slave's build
+        //(since the item has a parent which parent() != 0
+        QTreeWidgetItem *itemsParent = item->parent();
+        bool ok = false;
+
+
+        int machineID = itemsParent->text(1).toInt(&ok);
+
+        if(!ok)
+            return;
+
+        displaySlaveBuildInfo(item, machineID);
+        return;
+    }
 
     bool *ok = new bool();
     int machineID = item->text(1).toInt();
@@ -702,14 +768,13 @@ void MainForm::on_treeWidgetSlaves_clicked(const QModelIndex &index)
     if(slaveStats != 0){
         slaveStats->deleteLater();
     }
-    slaveStats = new SlaveStats(this,selected->getMachineIP(), inp);
+    slaveStats = new SlaveStats(this,selected->getMachineID(), inp);
     connect(slaveStats, SIGNAL(clicked(QModelIndex)), this, SLOT(slaveStatsClicked(QModelIndex)));
     clearDockWidget();
     ui->dockWidgetContents->layout()->addWidget(slaveStats);
 }
 
 void MainForm::clearDockWidget(){
-
     int cnt = ui->dockWidgetContents->layout()->count();
     for(int i = 0; i < cnt; i++){
         QWidget *w = ui->dockWidgetContents->layout()->itemAt(i)->widget();
@@ -718,15 +783,24 @@ void MainForm::clearDockWidget(){
 }
 
 void MainForm::slaveStatsClicked(QModelIndex index){
-    QTreeWidgetItem *item = ui->treeWidgetSlaves->selectedItems().at(0);
+    QTreeWidgetItem *contentBoxSelected = slaveStats->topLevelItem(index.row());
+    QString selectedText = contentBoxSelected->text(0);
+
+    if(selectedText.compare("Click for more")){
+        //if yoou dont want more information(i.e. clicked another place)
+        return;
+    }
+
+    QString stringID = contentBoxSelected->text(2);
 
     bool *ok = new bool();
-    int machineID = item->text(1).toInt();
+    int machineID = stringID.toInt(ok);
 
     if(!ok){
         delete ok;
         return;
     }
+
     delete ok;
 
 
@@ -735,38 +809,8 @@ void MainForm::slaveStatsClicked(QModelIndex index){
     moreInfo * mi = new moreInfo();
     mi->show();
 
+
 }
-
-
-void MainForm::on_treeWidgetActiveSimulations_activated(QModelIndex index)
-{
-    QTreeWidgetItem *item = ui->treeWidgetSlaves->selectedItems().at(0);
-
-    bool *ok = new bool();
-    int machineID = item->text(1).toInt();
-
-    if(!ok){
-        delete ok;
-        return;
-    }
-    delete ok;
-
-    Machine * selected = management->getMachineById(machineID);
-
-    if(selected == 0)
-        return;
-    selected->getMinStats();
-    QString inp = "16%#46%#2.39695MB#5.375KB";
-    buildInfo->hide();
-    if(slaveStats != 0){
-        slaveStats->deleteLater();
-    }
-    slaveStats = new SlaveStats(this,selected->getMachineIP(), inp);
-    connect(slaveStats, SIGNAL(clicked(QModelIndex)), this, SLOT(slaveStatsClicked(QModelIndex)));
-    clearDockWidget();
-    ui->dockWidgetContents->layout()->addWidget(slaveStats);
-}
-
 
 void MainForm::slaveUpdatedBuildName(int machineID, int buildID, QString updatedName){
     QTreeWidgetItem *item = 0;
@@ -893,6 +937,8 @@ void MainForm::setBuildInfo(int setWhat, QString value, int buildID){
         //thus only set the xml
         management->setBuildDirectory(buildID, value);
 
+        watcher->changeDirToWatch(buildID, value);
+
         QTreeWidgetItem *treeWidgItem = 0;
 
         int count = 0;
@@ -920,10 +966,19 @@ void MainForm::setBuildInfo(int setWhat, QString value, int buildID){
     else if(setWhat == BUILDNAME){
         if(value.size() > NAME_SIZE_LIMIT || value.size() < 1){
             //don't allow sizes larger than 25 for names or size of 0
+            QPixmap pic(":/images/images/ALogo.png");
+            QMessageBox *messageBox = new QMessageBox();
+            messageBox->setText("Error: The allowed range for build name is between 1 & "+QString::number(NAME_SIZE_LIMIT));
+            messageBox->setWindowIcon(QIcon(pic));
+            messageBox->show();
             return;
         }
-        //set the buildinfo in gui
 
+        if(management->buildExistWithName(value)){
+            return;
+        }
+
+        //set the buildinfo in gui
         for(int i = 0; i < masterBuilds->topLevelItemCount(); i++){
             if(!masterBuilds->topLevelItem(i)->text(1).compare(QString::number(buildID))){
                 masterBuilds->topLevelItem(i)->setText(0, value);
@@ -1065,6 +1120,7 @@ void MainForm::collapseMasterBuilds(){
         buildActiveUse();
     }else{//then it is most likely not in use
         masterBuilds->collapseAll();
+        masterBuilds->clearSelection();
         //stop the timer since it is done!
         collapseTimer->stop();
     }
@@ -1110,4 +1166,122 @@ void MainForm::slaveDeletedBuild(int machineID, int buildID){
 
 void MainForm::buildDeleted(){
     displayBuilds();
+}
+
+void MainForm::displaySlaveBuildInfo(QTreeWidgetItem *slaveBuildItem, int machineID){
+    ui->treeWidgetInfoBox->clear();
+    ui->treeWidgetInfoBox->setColumnCount(2);
+
+    QStringList headers;
+    headers << "Property" << "Value";
+    ui->treeWidgetInfoBox->setHeaderLabels(headers);
+
+
+    QTreeWidgetItem *machineInfoID = new QTreeWidgetItem();
+    machineInfoID->setText(0, "Machine ID");
+    machineInfoID->setText(1, QString::number(machineID));
+    ui->treeWidgetInfoBox->addTopLevelItem(machineInfoID);
+
+    QTreeWidgetItem *slaveBuildInfo = new QTreeWidgetItem();
+    slaveBuildInfo->setText(0, "Build ID");
+    slaveBuildInfo->setText(1, slaveBuildItem->text(1));
+    ui->treeWidgetInfoBox->addTopLevelItem(slaveBuildInfo);
+
+    QTreeWidgetItem *synchInformation = new QTreeWidgetItem();
+    synchInformation->setText(0, "% Synched");
+    synchInformation->setText(1, slaveBuildItem->toolTip(0));
+    ui->treeWidgetInfoBox->addTopLevelItem(synchInformation);
+
+
+    QTreeWidgetItem *deleteOrResynch = new QTreeWidgetItem();
+    deleteOrResynch->setText(0, "Delete Build");
+    deleteOrResynch->setText(1, "Resynch Build");
+    ui->treeWidgetInfoBox->addTopLevelItem(deleteOrResynch);
+    deleteOrResynch->setBackground(0, QColor("#B2CCFF"));
+    deleteOrResynch->setBackground(1, QColor("#B2CCFF"));
+}
+
+
+void MainForm::infoboxClicked(QModelIndex index){
+    QTreeWidgetItem *item = ui->treeWidgetInfoBox->topLevelItem(index.row());
+    QString clickedItemText = item->text(index.column());
+
+    if(!clickedItemText.compare("Delete Build") || !clickedItemText.compare("Resynch Build")){
+        QString stringMachineID = "";
+        QString stringBuildID = "";
+        for(int i = 0; i < ui->treeWidgetInfoBox->topLevelItemCount(); i++){
+            QTreeWidgetItem *item = ui->treeWidgetInfoBox->topLevelItem(i);
+            if(item != 0){
+                if(!item->text(0).compare("Machine ID"))
+                    stringMachineID = item->text(1);
+                if(!item->text(0).compare("Build ID"))
+                    stringBuildID = item->text(1);
+            }
+        }
+
+        if(!stringMachineID.compare("") || !stringBuildID.compare("")  ){
+            return;
+        }
+
+        bool ok = false;
+
+        int buildID = stringBuildID.toInt(&ok);
+
+        if(!ok)
+            return;
+
+        int machineID = stringMachineID.toInt(&ok);
+
+        if(!ok)
+            return;
+
+        if(!clickedItemText.compare("Delete Build")){
+            management->deleteBuildFromSlave(machineID, buildID);
+            ui->treeWidgetInfoBox->clear();
+        }
+        if(!clickedItemText.compare("Resynch Build")){
+            management->resynchAllBuildsOnSlave(machineID);
+        }
+
+    }
+}
+
+void MainForm::mustResynch(int buildID){
+    management->resynchAllCertainBuild(buildID);
+    buildTimerCount(buildID, 0);
+}
+
+void MainForm::buildTimerCount(int buildID, int timeRemaining){
+    for(int i = 0; i < masterBuilds->topLevelItemCount(); i++){
+        QTreeWidgetItem *item = masterBuilds->topLevelItem(i);
+        bool ok = false;
+
+
+        int itemBuildID = item->text(1).toInt(&ok);
+
+        if(!ok)
+            continue;
+
+        if(itemBuildID == buildID){
+            //find its child and change the resynch value
+            for(int j = 0; j < item->childCount(); j++){
+                QTreeWidgetItem *childItem = item->child(j);
+
+                if(childItem == 0){
+                    continue;
+                }
+
+                QString childTextItem = childItem->text(0);
+
+                if(childTextItem.contains("Resynch")){
+                    if(timeRemaining <= 0)
+                        childItem->setText(0, "Resynch ");
+                    else
+                        childItem->setText(0, "Resynch ("+QString::number(timeRemaining)+")");
+                    buildActiveUse();
+                }
+            }
+            break;
+        }
+    }
 }

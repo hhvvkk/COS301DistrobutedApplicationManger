@@ -14,6 +14,10 @@ AddBuild::AddBuild(QString directory, QWidget *parent) :
 
     theXMLWriter = new xmlWriter();
 
+    //set some constant limits
+    NAME_SIZE_LIMIT = 25;
+    DESCRIPTION_SIZE_LIMIT = 300;
+
 }
 
 AddBuild::~AddBuild()
@@ -38,6 +42,10 @@ void AddBuild::okClick(){
     QString buildName = ui->lineEditName->text();
     QString buildDescription = ui->lineEditDescription->text();
 
+    if(buildName.size() > NAME_SIZE_LIMIT || !buildName.compare("")){
+        showError("Build name not within valid range(1-25)","error");
+    }
+
     //Exit if a field is empty
     if(BuildID.compare("") == 0|| buildName.compare("") == 0){
         showError("All fields are required","error");
@@ -46,7 +54,11 @@ void AddBuild::okClick(){
 
     //Exit if the BuildID is in use
     if(!checkBuildID(BuildID)){
-        showError("The Build Number cannot be a duplicate entry","error");
+        showError("The Build ID cannot contain a duplicate entry","error");
+        return;
+    }
+    if(!checkBuildName(buildName)){
+        showError("There already exist a build with that name","error");
         return;
     }
 
@@ -70,16 +82,34 @@ void AddBuild::okClick(){
     this->close();
 }
 
-bool AddBuild::checkBuildID(QString buildNum){
+bool AddBuild::checkBuildID(QString buildID){
     xmlReader xRead;
     xRead.parseXML();
     bool original = true;
-    QMap<QString,QString> buildNums = xRead.getBuildNumber();
-    QMapIterator<QString, QString> i(buildNums);
+    QMap<QString,QString> buildIDs = xRead.getBuildUniqueID();
+    QMapIterator<QString, QString> i(buildIDs);
     while (i.hasNext())
     {
         i.next();
-        if(i.value().compare(buildNum)==0){
+        if(i.value().compare(buildID)==0){
+            original = false;
+            break;
+        }
+        else original = true;
+    }
+    return original;
+}
+
+bool AddBuild::checkBuildName(QString buildName){
+    xmlReader xRead;
+    xRead.parseXML();
+    bool original = true;
+    QMap<QString,QString> buildNames = xRead.getBuildName();
+    QMapIterator<QString, QString> i(buildNames);
+    while (i.hasNext())
+    {
+        i.next();
+        if(i.value().compare(buildName)==0){
             original = false;
             break;
         }
@@ -103,9 +133,9 @@ void AddBuild::showError(QString errorMessage, QString info){
     msb->show();
 }
 
-void AddBuild::addToXML(int num,QString name,QString descript,QString direc){
-    QString bNum = QString::number(num);
-    theXMLWriter->receiveBuild(bNum,name,descript,direc);
+void AddBuild::addToXML(int ID,QString name,QString descript,QString direc){
+    QString bID = QString::number(ID);
+    theXMLWriter->receiveBuild(bID,name,descript,direc);
     theXMLWriter->createXMLFile();
 }
 

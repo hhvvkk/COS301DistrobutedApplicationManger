@@ -69,12 +69,12 @@ void Management::addMyBuilds(){
     //xRead = new xmlReader();
     xRead.parseXML();
 
-    QMap<QString,QString> buildsNum = xRead.getBuildNumber();
+    QMap<QString,QString> buildsID = xRead.getBuildUniqueID();
     QMap<QString,QString> buildsName = xRead.getBuildName();
     QMap<QString,QString> buildsDesc = xRead.getBuildDescription();
     QMap<QString,QString> buildsDir = xRead.getBuildDirectory();
 
-    QMapIterator<QString, QString> i(buildsNum);
+    QMapIterator<QString, QString> i(buildsID);
     QMapIterator<QString, QString> j(buildsName);
     QMapIterator<QString, QString> k(buildsDesc);
     QMapIterator<QString, QString> l(buildsDir);

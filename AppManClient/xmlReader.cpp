@@ -39,9 +39,9 @@ void xmlReader::parseBuild(QXmlStreamReader& xml) {
         return;
     }
     QXmlStreamAttributes attributes = xml.attributes();
-    if(attributes.hasAttribute("buildNumber")) {
-        buildNumber.insertMulti("buildNumber",attributes.value("buildNumber").toString());
-        qDebug()<<attributes.value("buildNumber").toString();
+    if(attributes.hasAttribute("buildUniqueID")) {
+        buildUniqueID.insertMulti("buildUniqueID",attributes.value("buildUniqueID").toString());
+        qDebug()<<attributes.value("buildUniqueID").toString();
     }
     if(attributes.hasAttribute("buildName")) {
         buildName.insertMulti("buildName",attributes.value("buildName").toString());
@@ -58,8 +58,8 @@ void xmlReader::parseBuild(QXmlStreamReader& xml) {
     xml.readNext();
 }
 
-QMap<QString,QString> xmlReader::getBuildNumber(){
-    return buildNumber;
+QMap<QString,QString> xmlReader::getBuildUniqueID(){
+    return buildUniqueID;
 }
 
 QMap<QString,QString> xmlReader::getBuildName(){

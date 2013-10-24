@@ -45,16 +45,16 @@ void addBuildForTest::on_pushButton_clicked()
     this->close();
 }
 
-bool addBuildForTest::checkBuildID(QString buildNum){
+bool addBuildForTest::checkBuildID(QString buildID){
     xmlReader xRead;
     xRead.parseXML();
     bool original = true;
-    QMap<QString,QString> buildNums = xRead.getBuildNumber();
-    QMapIterator<QString, QString> i(buildNums);
+    QMap<QString,QString> buildIDs = xRead.getBuildUniqueID();
+    QMapIterator<QString, QString> i(buildIDs);
     while (i.hasNext())
     {
         i.next();
-        if(i.value().compare(buildNum)==0){
+        if(i.value().compare(buildID)==0){
             original = false;
             break;
         }

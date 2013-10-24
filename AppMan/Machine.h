@@ -166,6 +166,12 @@ public:
         */
         virtual void deleteBuildNotify(int BuildID) = 0;
 
+        /**
+        * \fn void deleteBuildNotify(int BuildID) = 0;
+        * @brief The pure virtual function that will be overridden by the Slave to manually resynch all builds
+        */
+        virtual void resynchAll() = 0;
+
 };
 
 #endif // MACHINE_H
