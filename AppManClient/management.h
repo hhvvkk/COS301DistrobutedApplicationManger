@@ -10,6 +10,7 @@
 #include <QDir>
 #include <QCryptographicHash>
 #include <QSettings>
+#include<QProcess>
 
 #include "Build.h"
 #include "network.h"

@@ -69,7 +69,7 @@
           <item>
            <widget class="QGroupBox" name="groupBox_2">
             <property name="title">
-             <string>Active simulations</string>
+             <string>Available Slaves</string>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_4">
              <item>

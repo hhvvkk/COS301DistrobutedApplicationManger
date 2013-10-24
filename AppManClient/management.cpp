@@ -10,6 +10,8 @@ Management::Management()
     allBuildsDirectory = "builds";
     if(!QDir(allBuildsDirectory).exists())
         QDir().mkdir(allBuildsDirectory);
+
+    readAppList();
 }
 
 
@@ -261,16 +263,23 @@ void Management::runThisSim(QString build, QString recArg){
         if(runner.compare("") == 0){
             build.chop(build.length() - build.indexOf("-"));
             Build b = getBuildByID(build.toInt());
-            app = "\"\"C:/AppManClient\"/"+b.getBuildDirectory();
+            app = /*"\"\"C:/AppManClient\"/"+*/b.getBuildDirectory();
             arg = "/"+recArg;
+            QProcess* p = new QProcess();
+            p->start(app+arg);
+            p->waitForFinished(-1);
+            p->kill();
+            p->deleteLater();
+
         }else{
             app = "\"\""+runner+"\"\"";
             arg = "\" \""+recArg+"\"\"";
+
+            QString data = app + arg;
+            char * gg = data.toUtf8().data();
+
+            system(gg);
         }
 
-        QString data = app + arg;
-        char * gg = data.toUtf8().data();
 
-        system(gg);
-        qDebug()<<gg;
 }
