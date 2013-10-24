@@ -34,13 +34,6 @@
     <item row="3" column="0">
      <layout class="QVBoxLayout" name="vlHDD"/>
     </item>
-    <item row="4" column="1">
-     <widget class="QPushButton" name="pushButton">
-      <property name="text">
-       <string>Close</string>
-      </property>
-     </widget>
-    </item>
    </layout>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>

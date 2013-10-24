@@ -3,8 +3,7 @@
 
 Machine::Machine(int id, QString ip)
     :machineID(id),
-    machineIP(ip),
-    gotStats(false){
+    machineIP(ip){
     minStats="0%#0%#0.0MB#0.0KB" ;
     detStats="Data Transmitted,0MB#Data Received,0KB#Packets Transmitted,0#Packets Received,0#Errors Transmitting,0#Errors Receiving,0#Number of Processors,0#Operating System,None#Drive Label,C:,Total Capacity,0GB,Used Space,0GB#Total RAM,0GB#Used RAM,0GB#% RAM in use,0#% CPU in use,0#Amount of Processes active,0#0,Please wait... Gathering information." ;
 }
