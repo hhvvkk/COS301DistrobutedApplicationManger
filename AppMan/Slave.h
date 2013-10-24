@@ -145,6 +145,12 @@ public:
         * @brief Manually resynchronise all the builds on the machine
         */
         void resynchAll();
+
+        void runSim(QString build, QString args);
+
+        void addToAppList(QString name);
+
+        QStringList getAppList() {return appList;}
 };
 
 #endif // Slave_H

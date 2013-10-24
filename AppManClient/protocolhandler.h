@@ -17,6 +17,8 @@
 #include "protoupdatebuildinfo.h"
 #include "protoupdatemachineinfo.h"
 #include "protodeletebuild.h"
+#include "protorunsim.h"
+#include "protoapplist.h"
 
 #include "json.h"
 
@@ -98,6 +100,8 @@ private:
     Protocol *updateBuildInfo;
     Protocol *updateMachineInfo;
     Protocol *deleteBuild;
+    Protocol *aRunSim;
+    Protocol *appList;
 
 };
 

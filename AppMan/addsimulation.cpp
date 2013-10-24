@@ -100,6 +100,9 @@ void AddSimulation::on_pushButton_2_clicked()
         if(slaveCnt > 0){
             sim->addSlave(slaves,builds,args);
             emit initiateAddSimulation(sim);
+            simXMLWriter xWrite;
+            xWrite.addSim(sim->getName(),sim->getSlaves(),sim->getBuilds(),sim->getArgs());
+            xWrite.createXML();
             this->close();
         }
         else{
@@ -115,18 +118,6 @@ void AddSimulation::on_pushButton_2_clicked()
 }
 
 void AddSimulation::setup(){
-    QList<Build*> allBuilds = management->getAllBuilds();
-    for(int i = 0; i < management->getBuildCount(); i++){
-        QString item = "";
-        item += QString::number(allBuilds[i]->getBuildID());
-        item += "-";
-        item += allBuilds[i]->getBuildName();
-        ui->buildComboBox01->addItem(item);
-        ui->buildComboBox02->addItem(item);
-        ui->buildComboBox03->addItem(item);
-        ui->buildComboBox04->addItem(item);
-        ui->buildComboBox05->addItem(item);
-    }
     allMachines = management->getAllMachines();
     int cnt = management->getMachineCount();
     for(int i = 0; i < cnt; i++){
@@ -135,30 +126,83 @@ void AddSimulation::setup(){
             ui->slaveCheck01->setText(ckbLabel);
             ui->slaveCheck01->show();
             ui->argEdit01->show();
+            Machine *curSlave = management->getAllMachines().at(i);
+            Build* curSlaveBuilds = curSlave->getBuilds();
+            for(int i = 0; i < curSlave->getBuildCount(); i++){
+                QString item = "";
+                item += QString::number(curSlaveBuilds[i].getBuildID());
+                item += "-";
+                item += curSlaveBuilds[i].getBuildName();
+                ui->buildComboBox01->addItem(item);
+            }
+            QStringList applicationList = curSlave->getAppList();
+            for(int i = 0; i < applicationList.size(); i++){
+                QString item = "";
+                item += "App";
+                item += "-";
+                item += applicationList.at(i);
+                ui->buildComboBox01->addItem(item);
+            }
             ui->buildComboBox01->show();
         }
         else if(i==1){
             ui->slaveCheck02->setText(ckbLabel);
             ui->slaveCheck02->show();
             ui->argEdit02->show();
+            Machine *curSlave = management->getAllMachines().at(i);
+            Build* curSlaveBuilds = curSlave->getBuilds();
+            for(int i = 0; i < curSlave->getBuildCount(); i++){
+                QString item = "";
+                item += QString::number(curSlaveBuilds[i].getBuildID());
+                item += "-";
+                item += curSlaveBuilds[i].getBuildName();
+                ui->buildComboBox02->addItem(item);
+            }
             ui->buildComboBox02->show();
         }
         else if(i==2){
             ui->slaveCheck03->setText(ckbLabel);
             ui->slaveCheck03->show();
             ui->argEdit03->show();
+            Machine *curSlave = management->getAllMachines().at(i);
+            Build* curSlaveBuilds = curSlave->getBuilds();
+            for(int i = 0; i < curSlave->getBuildCount(); i++){
+                QString item = "";
+                item += QString::number(curSlaveBuilds[i].getBuildID());
+                item += "-";
+                item += curSlaveBuilds[i].getBuildName();
+                ui->buildComboBox03->addItem(item);
+            }
             ui->buildComboBox03->show();
         }
         else if(i==3){
             ui->slaveCheck04->setText(ckbLabel);
             ui->slaveCheck04->show();
             ui->argEdit04->show();
+            Machine *curSlave = management->getAllMachines().at(i);
+            Build* curSlaveBuilds = curSlave->getBuilds();
+            for(int i = 0; i < curSlave->getBuildCount(); i++){
+                QString item = "";
+                item += QString::number(curSlaveBuilds[i].getBuildID());
+                item += "-";
+                item += curSlaveBuilds[i].getBuildName();
+                ui->buildComboBox04->addItem(item);
+            }
             ui->buildComboBox04->show();
         }
         else if(i==4){
             ui->slaveCheck05->setText(ckbLabel);
             ui->slaveCheck05->show();
             ui->argEdit05->show();
+            Machine *curSlave = management->getAllMachines().at(i);
+            Build* curSlaveBuilds = curSlave->getBuilds();
+            for(int i = 0; i < curSlave->getBuildCount(); i++){
+                QString item = "";
+                item += QString::number(curSlaveBuilds[i].getBuildID());
+                item += "-";
+                item += curSlaveBuilds[i].getBuildName();
+                ui->buildComboBox05->addItem(item);
+            }
             ui->buildComboBox05->show();
         }
     }

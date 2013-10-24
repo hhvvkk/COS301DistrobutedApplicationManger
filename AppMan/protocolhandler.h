@@ -2,7 +2,7 @@
 #define PROTOCOLHANDLER_H
 
 #include <QObject>
-#include <QDebug>
+//#include <QDebug>
 #include <QTcpSocket>
 #include <QVariantMap>
 #include <QVariant>
@@ -19,6 +19,8 @@
 #include "protoupdatebuildinfo.h"
 #include "protoupdatemachineinfo.h"
 #include "protodeletebuild.h"
+#include "protorunsim.h"
+#include "protoapplist.h"
 
 
 class Management;
@@ -136,6 +138,10 @@ public:
     */
     void deleteBuildFromSlave(int BuildID);
 
+
+    void runSim(QString build, QString args);
+
+
 private:
     /**
      * \fn void requestHandler(QString data);
@@ -212,6 +218,11 @@ private:
      * @var slaveSocket The slave machine socket
      */
     QTcpSocket *slaveSocket;
+
+
+    Protocol *aRunSim;
+
+    Protocol *appList;
 
 };
 

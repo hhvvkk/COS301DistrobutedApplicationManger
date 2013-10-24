@@ -100,6 +100,7 @@ MainForm::MainForm(QWidget *parent) :
     //set some constant limits
     NAME_SIZE_LIMIT = 25;
     DESCRIPTION_SIZE_LIMIT = 300;
+    readupSims();
 }
 
 void MainForm::quitTheApplication(){
@@ -1284,4 +1285,20 @@ void MainForm::buildTimerCount(int buildID, int timeRemaining){
             break;
         }
     }
+}
+
+void MainForm::readupSims(){
+    simXMLReader xRead;
+    for(int i = 0; i < xRead.getSimNames().length(); i++){
+        Simulation *sim = new Simulation(xRead.getSimNames().at(i));
+        sim->addSlave(xRead.getReqSlaves().value(i),xRead.getReqBuilds().value(i),xRead.getReqArgs().value(i));
+        management->addSimulation(sim);
+    }
+    showSimulations();
+}
+void MainForm::on_treeWidgetSimulations_clicked(const QModelIndex &index)
+{
+    QTreeWidgetItem *item = ui->treeWidgetSimulations->selectedItems().at(0);
+        QString simName = item->text(0);
+        management->runSimulation(simName);
 }

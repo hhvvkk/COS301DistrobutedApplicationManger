@@ -22,8 +22,8 @@ void simXMLReader::readXML(){
             else if(xml.name() == "simulation") {
                 simCount++;
                 this->parseSimulation(xml);
-                qDebug()<<"1st parse";
-                qDebug()<<QString::number(simCount);
+                //qDebug()<<"1st parse";
+                //qDebug()<<QString::number(simCount);
             }
             else{
                 continue;
@@ -44,7 +44,7 @@ void simXMLReader::parseSimulation(QXmlStreamReader &xml){
     QStringList * slaves = new QStringList();
     QStringList * builds = new QStringList();
     QStringList * args = new QStringList();
-    qDebug()<<name;
+    //qDebug()<<name;
     simName.append(name);
     bool moreSlaves = true;
     while (moreSlaves)
@@ -61,26 +61,26 @@ void simXMLReader::parseSimulation(QXmlStreamReader &xml){
             if(xml.name() == "slaveID"){
                 QString slave = xml.readElementText();
                 slaves->append(slave);
-                qDebug()<<slave;
+                //qDebug()<<slave;
             }
             xml.readNextStartElement();
             if(xml.name() == "buildID"){
                 QString build = xml.readElementText();
                 builds->append(build);
-                qDebug()<<build;
+                //qDebug()<<build;
             }
             xml.readNextStartElement();
             if(xml.name() == "args"){
                 QString arg = xml.readElementText();
                 args->append(arg);
-                qDebug()<<arg;
+                //qDebug()<<arg;
             }
             xml.readNextStartElement();
             if(xml.name() == "simulation"){
                 reqSlaves.insert(simCount,slaves);
                 reqBuilds.insert(simCount,builds);
                 reqArgs.insert(simCount,args);
-                qDebug()<<"Hello:\t\t\t"<<QString::number(simCount);
+                //qDebug()<<"Hello:\t\t\t"<<QString::number(simCount);
                 parseSimulation(xml);
             }
         }
@@ -91,7 +91,7 @@ void simXMLReader::parseSimulation(QXmlStreamReader &xml){
                     reqBuilds.insert(simCount,builds);
                     reqArgs.insert(simCount,args);
                 //}
-                qDebug()<<"Hello:\t\t\t"<<QString::number(simCount);
+                //qDebug()<<"Hello:\t\t\t"<<QString::number(simCount);
                 parseSimulation(xml);
             }
             moreSlaves = false;

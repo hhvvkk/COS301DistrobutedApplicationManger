@@ -19,6 +19,7 @@
 #include "myDirIterator.h"
 #include "sysInfo.h"
 #include "directoryhandler.h"
+#include "appxmlreader.h"
 
 /**
  * @class Management
@@ -147,6 +148,10 @@ public:
     * @param buildID ID of the build to be deleted
     */
     void deleteBuild(int buildID);
+
+    void runThisSim(QString build, QString arg);
+
+    void readAppList();
 
 private:
     /**

@@ -63,6 +63,8 @@ private:
      */
     QString getThisIDBySettings();
 
+    void initiateAppList(QTcpSocket *masterSocket);
+
 private:
     /**
       * @var machineID

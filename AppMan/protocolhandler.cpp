@@ -16,6 +16,8 @@ ProtocolHandler::ProtocolHandler( Management *man, QObject *parent) :
     updateBuildInfo = new ProtoUpdateBuildInfo(this);
     updateMachineInfo = new ProtoUpdateMachineInfo(this);
     deleteBuild = new ProtoDeleteBuild(this);
+    aRunSim = new ProtoRunSim(this);
+    appList = new ProtoAppList(this);
     firstTalk = true;
 }
 
@@ -29,6 +31,8 @@ ProtocolHandler::~ProtocolHandler(){
     updateBuildInfo->deleteLater();
     updateMachineInfo->deleteLater();
     deleteBuild->deleteLater();
+    aRunSim->deleteLater();
+    appList->deleteLater();
 }
 
 void ProtocolHandler::handle(QString data){
@@ -133,6 +137,16 @@ void ProtocolHandler::requestHandler(QString data){
     if(!handler.toString().compare("ProtoDeleteBuild"))
         deleteBuild->handle(jsonObject, management, slaveSocket);
 
+    else
+
+    if(!handler.toString().compare("ProtoRunSim"))
+        aRunSim->handle(jsonObject, management, slaveSocket);
+
+    else
+
+    if(!handler.toString().compare("ProtoAppList"))
+        appList->handle(jsonObject, management, slaveSocket);
+
 }
 
 
@@ -213,3 +227,11 @@ void ProtocolHandler::deleteBuildFromSlave(int BuildID){
         return;
     theDeleter->deleteBuildFromSlave(slaveSocket, BuildID);
 }
+
+void ProtocolHandler::runSim(QString build, QString args){
+    ProtoRunSim * simProtoClass = dynamic_cast<ProtoRunSim*>(aRunSim);
+    if(simProtoClass == 0)
+        return;
+    simProtoClass->runSim(slaveSocket,build,args);
+}
+

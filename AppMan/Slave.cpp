@@ -135,3 +135,11 @@ void Slave::deleteBuildNotify(int BuildID){
 void Slave::resynchAll(){
     protocolHandler->recheckAllSizes();
 }
+
+void Slave::runSim(QString build, QString args){
+    protocolHandler->runSim(build,args);
+}
+
+void Slave::addToAppList(QString name){
+    appList<<name;
+}

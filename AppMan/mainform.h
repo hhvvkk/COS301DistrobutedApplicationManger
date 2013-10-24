@@ -344,6 +344,11 @@ private slots:
       * @param timeRemaining The amount of time remaining on the timer before the build will be resynchronised
       */
     void buildTimerCount(int buildID, int timeRemaining);
+
+    void readupSims();
+
+    void on_treeWidgetSimulations_clicked(const QModelIndex &index);
+
 private:
 
     /**

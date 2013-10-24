@@ -1,11 +1,13 @@
 #include "addapp.h"
 #include "ui_addapp.h"
+#include "management.h"
 
-AddApp::AddApp(QWidget *parent) :
+AddApp::AddApp(QWidget *parent, Management *man) :
     QDialog(parent),
     ui(new Ui::AddApp)
 {
     ui->setupUi(this);
+    manage =man;
 }
 
 AddApp::~AddApp()
@@ -33,5 +35,6 @@ void AddApp::on_pushButton_2_clicked()
     appXMLWriter axw;
     axw.receiveApp(appName,fileName);
     axw.createXMLFile();
+    manage->addToAppList(appName,fileName);
     this->close();
 }
