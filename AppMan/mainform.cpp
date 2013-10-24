@@ -380,7 +380,7 @@ void MainForm::masterBuildsClicked(QModelIndex index){
             if(!convertParentBID)
                 return;
 
-            watcher->removeBuildPath(convertParentBID);
+            watcher->removeBuildPath(convertedID);
 
             management->deleteBuild(convertedID);
 

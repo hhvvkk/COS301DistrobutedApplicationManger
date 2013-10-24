@@ -15,7 +15,7 @@ Architectural Requirements Document\\
 \begin{document}
 \maketitle
 \begin{center}
-Version 1.3
+Version 1.4
 \end{center}
 \textbf{\\}
 \textbf{\\}
@@ -39,35 +39,37 @@ Henko van Koesveld & 11009315\\
 \thispagestyle{empty}
 \textbf{\large{Change Log}}
 \vspace{6pt}\newline
-\begin{tabular}{|l|l|l|}
+\begin{tabular}{|l|l|l|l|}
 \hline
-Date & Version & Description\\
+\textbf{Date} & \textbf{Version} & \textbf{Description} & \textbf{Done by}\\
 \hline
-13 Jun & Version 0.1 & Document Created\\
+13 Jun & Version 0.1 & Document Created & Jaco\\
 \hline
-23 Jun & Version 0.2 & Added section 1.4 and 4\\
+23 Jun & Version 0.2 & Added section 1.4 and 4 & Francois\\
 \hline
-25 Jun & Version 0.3 & Added versioning system\\
+25 Jun & Version 0.3 & Added versioning system & Jaco\\
 \hline
-25 Jun & Version 0.4 & Added initial section 2 and 6\\
+25 Jun & Version 0.4 & Added initial section 2 and 6 & Francois\\
 \hline
-26 Jun & Version 0.5 & Completed section 1.2\\
+26 Jun & Version 0.5 & Completed section 1.2 & Francois\\
 \hline
-27 Jun & Version 0.6 & Completed section 3\\
+27 Jun & Version 0.6 & Completed section 3 & Jaco\\
 \hline
-28 Jun & Version 0.7 & Completed section 1.3 and 5\\
+28 Jun & Version 0.7 & Completed section 1.3 and 5 & Henko\\
 \hline
-28 Jun & Version 0.8 & Proofread and added some content\\
+28 Jun & Version 0.8 & Proofread and added some content & Henko\\
 \hline
-28 Jun & Version 0.9 & Added glossary section\\
+28 Jun & Version 0.9 & Added glossary section & Henko\\
 \hline
-28 Jun & Version 1.0 & Final grammar and spelling check\\
+28 Jun & Version 1.0 & Final grammar and spelling check & Jaco\\
 \hline
-11 Sep & Version 1.1 & Added changes as specified\\
+11 Sep & Version 1.1 & Added changes as specified & Jaco\\
 \hline
-12 Sep & Version 1.2 & Added few changes\\
+12 Sep & Version 1.2 & Added few changes & Jaco\\
 \hline
-15 Sep & Version 1.3 & Final grammar and spelling check\\
+15 Sep & Version 1.3 & Final grammar and spelling check & Jaco\\
+\hline
+22 Oct & Version 1.4 & General formatting fix \& updated glossary & Jaco\\
 \hline
 \end{tabular}
 \newpage
@@ -169,15 +171,17 @@ Furthermore the project must be deployable on Windows and Linux and be capable o
 For phase 2 in the project, the project must be capable of running applications on the slave computers that have been distributed from a master computer to a slave.\\\textbf{\\}
 The configuration for the application to be run should also be used when running the program so that different environments can be selected. This is done with the creation of simulations.
 
+\newpage
 \section{Patterns}
 The project will make use of a Component based system combined with a Client server architecture. This is because the project needs the division of functionality for copying files, network, database and more.
 \subsection{Component based system}
-A Component based system is suitable as we have various concerns/components, such as a GUI to link to the management facade, a Server component, Slave component, Build component and Simulation component. The components fit together as follows:
+A Component based system is suitable as we have various concerns/components, such as a GUI to link to the management facade, a Server component, Slave component, Build component and Simulation component. The components fit together as follows:\\
 \begin{center}
   \includegraphics[scale=1]{ArchComponentDiag.png}
 \end{center}
+\newpage
 \subsection{Client server}
-Client can in this case be the Master Computer or the Slave Computer. The server could potentially be in the Master or in the Slave, depending on the situation.
+Client can in this case be the Master Computer or the Slave Computer. The server could potentially be in the Master or in the Slave, depending on the situation.\\
 \begin{center}
   	\includegraphics[scale=0.6]{ClientServer.jpeg} 
 \end{center}
@@ -203,50 +207,13 @@ QT 4.8.4 contains file API's such as QFile and QFileSystemWatcher and QDirIterat
 QT also contains an extensive API for networking that we can make use of when implementing the project. This will allow the slave and master computers to communicate and transfer files from one computer to the other. The applications can be run on multiple slaves by making use of QT networking capabilities. Examples of those networking API's are QUdpSocket and QTcpSocket that can be used to create connections between computers. The QNetworkInterface class can be used to obtain information on networking interfaces that a computer has if the need arises.
 
 \newpage
+\textbf{\\}
 \section{Component Diagram}
 \begin{center}
 \includegraphics[angle = 90, scale=0.7]{ComponentDiag.png}
 \end{center}
 
-
-
-
-
-
-
-
-%\section{Technologies}
-
-%\begin{itemize}
-
-%\item{Platforms}
-%\begin{itemize}
-%\item{Windows}
-%\item{Linux}
-%\end{itemize}
-
-
-%\item{Database}
-%\begin{itemize}
-%\item{XML based}
-%\item{MySQL based}
-%\end{itemize}
-
-
-%\item{Network}
-%\begin{itemize}
-%\item{QT Framework Network API}
-%\end{itemize}
-
-
-%\item{Graphical User Interface}
-%\begin{itemize}
-%\item{QT Framework GUI API}
-%\end{itemize}
-
-%\end{itemize}
 \newpage
-
 \section{Glossary}
 \begin{itemize}
 \item{Build - An application build version that could potentially be distributed to slave computers.}
@@ -255,7 +222,7 @@ QT also contains an extensive API for networking that we can make use of when im
 \item{Server - A machine waiting on the network for connections from other machines.}
 \item{GUI - Graphical User Interface with which a user can control the project.}
 \item{Project - This project. The distributed application manager.}
-\item{Application Configuration - Environment variables that are specified when running an application.}
+\item{Application - A 3rd party program the client may use during simulations}
 \end{itemize}
 
 \end{document}

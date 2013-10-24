@@ -424,6 +424,11 @@ void Management::setBuildDescription(int buildID, QString value){
 }
 
 void Management::addSimulation(Simulation *sim){
+    simXMLWriter xWrite;
+    xWrite.addSim(sim->getName(),sim->getSlaves(),sim->getBuilds(),sim->getArgs());
+    qDebug()<<"about to add";
+    xWrite.createXML();
+    qDebug()<<"added";
     allSimulations.push_back(sim);
     simCount++;
 }
@@ -445,10 +450,8 @@ void Management::deleteBuild(int buildID){
         if(machine == 0)
             continue;
 
-        if(machineWithBuild(machine->getMachineID(), buildID)){
-            //only notify the machine if that machine has the build
-            machine->deleteBuildNotify(buildID);
-        }
+        //only notify the machine if that machine has the build
+        machine->deleteBuildNotify(buildID);
     }
 
     //from(4):gui

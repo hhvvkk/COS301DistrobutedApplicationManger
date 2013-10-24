@@ -163,7 +163,6 @@ void MainWindow::initiateAddBuild(Build myBuild){
     xWrite.receiveBuild(QString::number(myAltered.getBuildID()),myAltered.getBuildName(),myAltered.getBuildDescription(),myAltered.getBuildDirectory());
     xWrite.createXMLFile();
     ui->label_BuildCount->setText(QString::number(management->getBuildCount()));
-    qDebug()<<"Build added";
 }
 
 void MainWindow::on_pushButton_clicked()
