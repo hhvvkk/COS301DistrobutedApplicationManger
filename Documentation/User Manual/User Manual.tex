@@ -50,6 +50,8 @@ Henko van Koesveld & 11009315\\
 \hline
 22 Oct & Version 0.3 & Added general glossary with extensions & Jaco\\
 \hline
+22 Oct & Version 0.4 & Added images and minor checks  & Henko\\
+\hline
 \end{tabular}
 \newpage
 \tableofcontents
@@ -112,35 +114,104 @@ The port can be changed from the default, effect will be taken when the server i
 \subsection{Add Build to AppMan (Master)}
 A build can be added on the master as follows, all the info, except build description is compulsory.
 
-\subsection{Copy Build to AppManClient (Slave)}
+\begin{itemize}
+\item Either click file -> Add build or drag and drop a folder onto the form which will open the following window and just enter the required details for the build.
+\end{itemize}
+\begin{center}
+  	\includegraphics[scale=0.4]{AddBuildLinux.png}
+ \end{center}
+
+\subsection{Build syncrhonisation to AppManClient (Slave)}
 The build can be copied in the following way:
+\begin{itemize}
+\item Double click the build you wish to copy over and then click copy over or go to file -> copy build over.
+\item Enter the slave ip address you want to copy the file to
+\end{itemize}
+
+After a file changed in the build the changed files will automatically resynchronise after 25 seconds, but you can invoke it directly by:
+\begin{itemize}
+\item Double click the build you wish to resynch or click on the specefic machine where you want to resynch the build
+\end{itemize}
+ 
+ 
+Here is the menu where the build will resynchronise after 25 seconds and there is 5 seconds remaining. You can either click the resynch button to the right or directly under the build
+\begin{center}
+  	\includegraphics[scale=0.4]{5secResynch.png}
+ \end{center}
+ 
+ 
+Here is the menu of the build on the left hand side with the following options
+\begin{itemize}
+\item Copy Over
+
+\item Delete Build
+\item Resynch
+\end{itemize}
+\begin{center}
+  	\includegraphics[scale=0.4]{MENU.png}
+ \end{center}
+ 
+ 
+
+\subsection{Build information editing}
+You can edit the information for the build you just created.
+\begin{itemize}
+\item Click the build you want to edit
+\item Double click the value on the right hand side as shown in the image below. The image below the description is edited. You are only able to change a small amount of things.
+\end{itemize}
+\begin{center}
+  	\includegraphics[scale=0.4]{EditedDescription.png}
+ \end{center}
+
 
 \section{Simulation related}
 
 \subsection{Add Simulation}
 To add a simulation one must have at least one slave added. The available slaves are displayed as checkbox items. A build or application can then be selected via a drop down box. If necessary command line arguments are then typed in. Once all the information is captured one can add the simulation. See below:
 
+\begin{center}
+  	\includegraphics[scale=0.4]{AddSimFull.png}
+ \end{center}
+
 \subsection{Execute Simulation}
 A simulation can be selected on the treewidget, then double-click the selected simulation. This will send the argument and required build or application name over the network, along with the command line arguments to the necessary slave. See below:
 
+\begin{center}
+  	\includegraphics[scale=0.4]{ClickToRunSim.png}
+ \end{center}
+
 \section{Machine related}
 
-\subsection{Add Slave}
+\subsection{Connect}
 On the AppManClient one sets the port and Master IP then clicks connect. These are then stored in a settings file for future use. 
 
+\begin{center}
+  	\includegraphics[scale=0.4]{InterfaceLinux_Client.png}
+ \end{center}
+
 \subsection{Request System Information}
-When a slave is clicked the request is automatically sent to the slave, then displayed in a docking widget as follows.
+When a slave is clicked the request is automatically sent to the slave, then displayed in a docking widget as follows(To the right hand side you can see the slave stats displayed).
+
+\begin{center}
+  	\includegraphics[scale=0.4]{SlaveStats.png}
+ \end{center}
 
 \section{AppManClient}
 
-\subsection{Add Build}
-Adding a build on the client side works as follows:
-
 \subsection{Add Application to AppList}
-This is done for preinstalled programs and works as follows:
+This is done for preinstalled programs and works by clicking the add app then it will go and add the app to the list of applications
 
+\begin{center}
+  	\includegraphics[scale=0.4]{AddAppToList.png}
+ \end{center}
+ 
 \subsection{View builds}
 When the button is clicked, all builds and applications are displayed in a new window. See below:
+
+
+\begin{center}
+  	\includegraphics[scale=0.4]{SlaveBuilds.png}
+ \end{center}
 
 \newpage
 \section{Glossary}
