@@ -57,6 +57,10 @@ Henko van Koesveld & 11009315\\
 \hline
 13 Sept & Version 0.7 & Grammar check & Jaco\\
 \hline
+24 Oktober & Version 0.8 & Updated new burndown chart & Jaco\\
+\hline
+24 Oktober & Version 0.9 & Additions to document & Henko\\
+\hline
 \end{tabular}
 \newpage
 \tableofcontents
@@ -246,6 +250,24 @@ requirements and allows us to more easily adapt to that change.
 
 
 \newpage
+
+\section{Project management tools}
+\subsection{Qt Framework}
+The Qt framework allowed us to handle multiple project management issues. This allowed us to manage the project files much more easily if we had to do that ourself. A good example is the makefile which we did not have to write on our own since the qmake is able to do that for us.
+
+\subsection{File management}
+All files was handled by making use of a .pro file which is used in QT to use for building process. The files names are inside the .pro file under the respective title such as headers, source files, etc.
+
+\subsection{QT Creator}
+QT creator 2.7 allows one to make use of various version control systems including github.
+
+
+\subsection{Code quality}
+The Qt project management allows one to make use of a template which describes some of the code consistency that must be followed in order to keep the coding style similar. We followed the same coding style throughout the project and also documented thoroughly.
+
+\subsection{Version control system}
+We made use of GitHub as our version control system and that allowed us to ensure that there exist a single repository with our project. We always ensured that the project that is currently there is able to run.
+
 \section{Issue Management}
 This section describes how we report issues with the current software as it is and how we will go about resolving those issues. 
 \subsection{Priorities}
@@ -274,10 +296,7 @@ Our link to the bug tracking and handling site is appman.fogbugz.com. That is wh
 \section{Outstanding tasks / risks}
 We are currently still working on the following things:
 \begin{itemize}
-\item Simulation creation
-\item Simulation execution
-\item Storing slave vitals in a MySql database
-\item Physical copy of builds
-\item Performance issues such as slow md5 generation
+\item Delete a simulation
+\item Edit simulation information
 \end{itemize}
 \end{document}

@@ -1,15 +1,14 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012/Debian) (format=pdflatex 2012.10.25)  22 OCT 2013 09:28
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2013.2.23)  25 OCT 2013 02:30
 entering extended mode
- restricted \write18 enabled.
  %&-line parsing enabled.
 **"Project Management Document.tex"
 (./Project Management Document.tex
-LaTeX2e <2011/06/27>
-Babel <v3.8m> and hyphenation patterns for english, dumylang, nohyphenation, lo
-aded.
-(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
+LaTeX2e <2009/09/24>
+Babel <v3.8l> and hyphenation patterns for english, usenglishmax, dumylang, noh
+yphenation, loaded.
+(/usr/share/texmf-texlive/tex/latex/base/article.cls
 Document Class: article 2007/10/19 v1.4h Standard LaTeX document class
-(/usr/share/texlive/texmf-dist/tex/latex/base/size12.clo
+(/usr/share/texmf-texlive/tex/latex/base/size12.clo
 File: size12.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
 )
 \c@part=\count79
@@ -24,40 +23,33 @@ File: size12.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
 \belowcaptionskip=\skip42
 \bibindent=\dimen102
 )
-(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+(/usr/share/texmf-texlive/tex/latex/graphics/graphicx.sty
 Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
 
-(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty
+(/usr/share/texmf-texlive/tex/latex/graphics/keyval.sty
 Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
 \KV@toks@=\toks14
 )
-(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+(/usr/share/texmf-texlive/tex/latex/graphics/graphics.sty
 Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
 
-(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty
+(/usr/share/texmf-texlive/tex/latex/graphics/trig.sty
 Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
 )
-(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/graphics.cfg
-File: graphics.cfg 2010/04/23 v1.9 graphics configuration of TeX Live
+(/etc/texmf/tex/latex/config/graphics.cfg
+File: graphics.cfg 2009/08/28 v1.8 graphics configuration of TeX Live
 )
 Package graphics Info: Driver file: pdftex.def on input line 91.
 
-(/usr/share/texlive/texmf-dist/tex/latex/pdftex-def/pdftex.def
-File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
-
-(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/infwarerr.sty
-Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
-)
-(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
-Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
-)
+(/usr/share/texmf-texlive/tex/latex/pdftex-def/pdftex.def
+File: pdftex.def 2009/08/25 v0.04m Graphics/color for pdfTeX
 \Gread@gobject=\count87
 ))
 \Gin@req@height=\dimen103
 \Gin@req@width=\dimen104
 )
-(/usr/share/texlive/texmf-dist/tex/latex/tools/multicol.sty
-Package: multicol 2011/06/27 v1.7a multicolumn formatting (FMi)
+(/usr/share/texmf-texlive/tex/latex/tools/multicol.sty
+Package: multicol 2008/12/05 v1.6h multicolumn formatting (FMi)
 \c@tracingmulticols=\count88
 \mult@box=\box26
 \multicol@leftmargin=\dimen105
@@ -102,7 +94,6 @@ Package: multicol 2011/06/27 v1.7a multicolumn formatting (FMi)
 \multicolundershoot=\dimen112
 \mult@nat@firstbox=\box50
 \colbreak@box=\box51
-\multicol@sort@counter=\count96
 )
 (./Project Management Document.aux)
 \openout1 = `"Project Management Document.aux"'.
@@ -120,72 +111,21 @@ LaTeX Font Info:    ... okay on input line 15.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 15.
 LaTeX Font Info:    ... okay on input line 15.
 
-(/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
+(/usr/share/texmf/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count97
+\scratchcounter=\count96
 \scratchdimen=\dimen113
 \scratchbox=\box52
-\nofMPsegments=\count98
-\nofMParguments=\count99
+\nofMPsegments=\count97
+\nofMParguments=\count98
 \everyMPshowfont=\toks15
-\MPscratchCnt=\count100
+\MPscratchCnt=\count99
 \MPscratchDim=\dimen114
-\MPnumerator=\count101
-\makeMPintoPDFobject=\count102
+\MPnumerator=\count100
 \everyMPtoPDFconversion=\toks16
-) (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
-Package: pdftexcmds 2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO
-)
-
-(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ifluatex.sty
-Package: ifluatex 2010/03/01 v1.3 Provides the ifluatex switch (HO)
-Package ifluatex Info: LuaTeX not detected.
-)
-(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ifpdf.sty
-Package: ifpdf 2011/01/30 v2.3 Provides the ifpdf switch (HO)
-Package ifpdf Info: pdfTeX in PDF mode is detected.
-)
-Package pdftexcmds Info: LuaTeX not detected.
-Package pdftexcmds Info: \pdf@primitive is available.
-Package pdftexcmds Info: \pdf@ifprimitive is available.
-Package pdftexcmds Info: \pdfdraftmode found.
-)
-(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
-Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
-
-(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/grfext.sty
-Package: grfext 2010/08/19 v1.1 Manage graphics extensions (HO)
-
-(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/kvdefinekeys.sty
-Package: kvdefinekeys 2011/04/07 v1.3 Define keys (HO)
-))
-(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/kvoptions.sty
-Package: kvoptions 2011/06/30 v3.11 Key value format for package options (HO)
-
-(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/kvsetkeys.sty
-Package: kvsetkeys 2012/04/25 v1.16 Key value parser (HO)
-
-(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/etexcmds.sty
-Package: etexcmds 2011/02/16 v1.5 Avoid name clashes with e-TeX commands (HO)
-Package etexcmds Info: Could not find \expanded.
-(etexcmds)             That can mean that you are not using pdfTeX 1.50 or
-(etexcmds)             that some package has redefined \expanded.
-(etexcmds)             In the latter case, load this package earlier.
-)))
-Package grfext Info: Graphics extension search list:
-(grfext)             [.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPE
-G,.JBIG2,.JB2,.eps]
-(grfext)             \AppendGraphicsExtensions on input line 452.
-
-(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
-File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
-e
-))
-<101Logo.png, id=1, 1101.11375pt x 248.93pt>
+) <101Logo.png, id=1, 1101.11375pt x 248.93pt>
 File: 101Logo.png Graphic file (type png)
  <use 101Logo.png>
-Package pdftex.def Info: 101Logo.png used on input line 16.
-(pdftex.def)             Requested size: 330.33669pt x 74.67957pt.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <14.4> on input line 16.
 LaTeX Font Info:    External font `cmex10' loaded for size
@@ -229,7 +169,7 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./101Logo.png>]
-Overfull \hbox (37.64334pt too wide) in paragraph at lines 40--61
+Overfull \hbox (57.22647pt too wide) in paragraph at lines 40--65
 [] 
  []
 
@@ -238,103 +178,91 @@ Overfull \hbox (37.64334pt too wide) in paragraph at lines 40--61
 \openout3 = `"Project Management Document.toc"'.
 
  [3]
-Underfull \hbox (badness 10000) in paragraph at lines 69--86
+Underfull \hbox (badness 10000) in paragraph at lines 73--90
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 69--86
+Underfull \hbox (badness 10000) in paragraph at lines 73--90
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 87--98
+Underfull \hbox (badness 10000) in paragraph at lines 91--102
 
  []
 
 [1]
-Underfull \hbox (badness 10000) in paragraph at lines 103--119
+Underfull \hbox (badness 10000) in paragraph at lines 107--123
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 103--119
+Underfull \hbox (badness 10000) in paragraph at lines 107--123
 
  []
 
-[2] <Francois.jpg, id=24, 138.5175pt x 180.675pt>
+[2] <Francois.jpg, id=23, 138.5175pt x 180.675pt>
 File: Francois.jpg Graphic file (type jpg)
  <use Francois.jpg>
-Package pdftex.def Info: Francois.jpg used on input line 124.
-(pdftex.def)             Requested size: 85.35826pt x 111.33638pt.
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 128.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 132.
 
 
-(/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
+(/usr/share/texmf-texlive/tex/latex/base/omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 128.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 132.
  [3 <./Francois.jpg>]
-<jaco.jpg, id=29, 139.27031pt x 180.675pt>
+<jaco.jpg, id=28, 139.27031pt x 180.675pt>
 File: jaco.jpg Graphic file (type jpg)
- <use jaco.jpg>
-Package pdftex.def Info: jaco.jpg used on input line 163.
-(pdftex.def)             Requested size: 85.35826pt x 110.73814pt.
- [4 <./jaco.jpg>]
-<Henko.jpeg, id=34, 138.5175pt x 180.675pt>
+ <use jaco.jpg> [4 <./jaco.jpg>]
+<Henko.jpeg, id=33, 138.5175pt x 180.675pt>
 File: Henko.jpeg Graphic file (type jpg)
  <use Henko.jpeg>
-Package pdftex.def Info: Henko.jpeg used on input line 213.
-(pdftex.def)             Requested size: 85.35826pt x 111.33638pt.
-
-Underfull \hbox (badness 6412) in paragraph at lines 236--237
+Underfull \hbox (badness 6412) in paragraph at lines 240--241
 []\OT1/cmr/m/n/12 XML, XSLT, HTML, CSS,
  []
 
 [5 <./Henko.jpeg>]
-Underfull \hbox (badness 10000) in paragraph at lines 254--261
+Underfull \hbox (badness 10000) in paragraph at lines 276--283
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 254--261
+Underfull \hbox (badness 10000) in paragraph at lines 276--283
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 254--261
+Underfull \hbox (badness 10000) in paragraph at lines 276--283
 
  []
 
-[6] <Burndown.jpg, id=41, 659.46375pt x 413.29407pt>
+[6] [7] <Burndown.jpg, id=43, 659.46375pt x 413.29407pt>
 File: Burndown.jpg Graphic file (type jpg)
  <use Burndown.jpg>
-Package pdftex.def Info: Burndown.jpg used on input line 268.
-(pdftex.def)             Requested size: 461.62148pt x 289.30386pt.
-
-Overfull \hbox (71.62148pt too wide) in paragraph at lines 268--269
+Overfull \hbox (71.62148pt too wide) in paragraph at lines 290--291
  [] 
  []
 
-[7 <./Burndown.jpg>] (./Project Management Document.aux) ) 
+[8 <./Burndown.jpg>] (./Project Management Document.aux) ) 
 Here is how much of TeX's memory you used:
- 1631 strings out of 495059
- 23577 string characters out of 3182029
- 81289 words of memory out of 3000000
- 4808 multiletter control sequences out of 15000+200000
+ 1046 strings out of 495061
+ 13494 string characters out of 1182621
+ 67900 words of memory out of 3000000
+ 4255 multiletter control sequences out of 15000+50000
  9115 words of font info for 32 fonts, out of 3000000 for 9000
- 14 hyphenation exceptions out of 8191
- 37i,6n,23p,385b,296s stack positions out of 5000i,500n,10000p,200000b,50000s
-</usr/share/texlive/t
-exmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-d
-ist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fon
-ts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/type
-1/public/amsfonts/cm/cmsy10.pfb>
-Output written on "Project Management Document.pdf" (10 pages, 218766 bytes).
+ 28 hyphenation exceptions out of 8191
+ 25i,6n,21p,385b,296s stack positions out of 5000i,500n,10000p,200000b,50000s
+</usr/share/texmf-tex
+live/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texmf-texlive/fonts/
+type1/public/amsfonts/cm/cmr12.pfb></usr/share/texmf-texlive/fonts/type1/public
+/amsfonts/cm/cmr17.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm
+/cmsy10.pfb>
+Output written on "Project Management Document.pdf" (11 pages, 226715 bytes).
 PDF statistics:
- 60 PDF objects out of 1000 (max. 8388607)
- 37 compressed objects within 1 object stream
+ 61 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  26 words of extra memory for PDF output out of 10000 (max. 10000000)
 
