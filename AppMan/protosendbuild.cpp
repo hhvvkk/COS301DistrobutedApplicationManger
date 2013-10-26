@@ -16,12 +16,10 @@ ProtoSendBuild::~ProtoSendBuild(){
 //    if(lock != 0){
 //        delete lock;
 //    }
-    for(int i = 0; i < sendList.size(); i++){
-        CopySenderServer *copySender = sendList.at(i);
-        if(copySender != 0){
-             sendList.removeOne(copySender);
-            copySender->deleteLater();
-        }
+
+    while(sendList.size() > 0){
+        //the sendList contents will delete itself(after 30 sec of no connection or when disconnecting)
+        sendList.removeFirst();
     }
 }
 
@@ -124,10 +122,7 @@ void ProtoSendBuild::deleteCopySenderServer(CopySenderServer * deleteCopySender)
     sendList.removeOne(deleteCopySender);
 
     //This means that there is another newSender or it is empty, thus can just delete
-    while(deleteCopySender->isBusyDeleting())
-    {/*Wait untill it is finished deleting the physical files*/}
-
-    deleteCopySender->deleteLater();
+    //the NewSender deletes itself...
 }
 
 void ProtoSendBuild::SizeCheckAllBuilds(){
@@ -142,7 +137,6 @@ void ProtoSendBuild::SizeCheckAllBuilds(){
     ProtocolHandler *handler = dynamic_cast<ProtocolHandler*>(myParent);
 
     if(handler == 0){
-        qDebug()<<"handler=0";
         return;
     }
 

@@ -15,6 +15,8 @@ CopySenderServer::CopySenderServer( QStringList *differentB, QStringList *differ
     copierQueue = 0;
     socket = 0;
     zipFilesToDelete = false;
+    timer.setInterval(30000);
+    connect(&timer, SIGNAL(timeout()), SLOT(destroyServer()));
 }
 
 CopySenderServer::~CopySenderServer(){
@@ -106,6 +108,9 @@ int CopySenderServer::startServer(){
 //    else
 //        qDebug() << "SenderServerListening...";
 
+    //this timer is used in order to stop the server if there is no connection to it(it could happen that the client machine timed out)
+    timer.start();
+
     //returns a zero if it is not listening otherwise a server port
     return this->serverPort();
 }
@@ -121,14 +126,11 @@ bool CopySenderServer::isBusyDeleting(){
 }
 
 void CopySenderServer::incomingConnection(int socketID){
+    timer.stop();
     socket = new QTcpSocket();
 
     //set the socket descriptor to that client which connected
-    socket->setSocketDescriptor(socketID);
-
-
-    if(!socket){
-        qDebug()<<"Unable to send files";
+    if(!socket->setSocketDescriptor(socketID)){
         destroyServer();
         return;
     }

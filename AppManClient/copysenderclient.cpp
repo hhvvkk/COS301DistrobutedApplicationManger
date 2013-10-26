@@ -22,8 +22,7 @@ CopySenderClient::~CopySenderClient(){
     CopierPhysicalClient* cpPhy;
     if(copyList != 0){
         if(copyList->size() != 0){
-            while((cpPhy = copyList->first()) != 0){
-                copyList->removeFirst();
+            while((cpPhy = copyList->takeFirst()) != 0){
                 cpPhy->deleteLater();
             }
         }
@@ -96,7 +95,6 @@ bool CopySenderClient::connectToHost(){
     //wait for one second for connection
     if(!socket->waitForConnected(1000)){
         //error
-        qDebug()<<"Error when connecting";
         return false;
     }
 

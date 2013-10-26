@@ -165,6 +165,7 @@ private:
       */
     int i;
 
+    QTimer timer;
 };
 
 #endif // COPIERPHYSICAL_H

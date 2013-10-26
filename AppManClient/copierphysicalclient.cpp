@@ -64,7 +64,7 @@ bool CopierPhysicalClient::connectToHost(){
 
 
 void CopierPhysicalClient::disconnectedFunction(){
-    //Do not delete it, it is deleted at the copySenderServer!!!
+    //Do not delete it, it is deleted at the copySenderclient!!!
 }
 
 void CopierPhysicalClient::readyReadFunction(){

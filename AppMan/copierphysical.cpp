@@ -13,13 +13,19 @@ CopierPhysical::CopierPhysical(int machID, int theBuildID, QString pathForZip, Q
     //gaan possibly user maak die self set...
     notifyTimer.setInterval(3000);
     connect(&notifyTimer, SIGNAL(timeout()), this, SLOT(signalNotifyProgress()));
+    socket = 0;
+
+    //after 30 seconds of no connection this server will delete itself
+    timer.setInterval(30000);
+    connect(&timer, SIGNAL(timeout()), SLOT(destroyServer()));
 }
 
 CopierPhysical::~CopierPhysical(){
     notifyTimer.stop();
 
     this->close();
-    socket->disconnectFromHost();
+    if(socket != 0)
+        socket->disconnectFromHost();
     socket->deleteLater();
 }
 
@@ -29,6 +35,7 @@ int CopierPhysical::startServer(){
     }
 //    else
 //        qDebug() << "SenderServerListening...";
+    timer.start();
 
     //returns a zero if it is not listening otherwise a server port
     return this->serverPort();
@@ -45,7 +52,13 @@ int CopierPhysical::getBuildID(){
 }
 
 void CopierPhysical::incomingConnection(int socketID){
-    socket = new QTcpSocket();
+    timer.stop();
+    if(socket == 0)
+        socket = new QTcpSocket();
+    else{
+        socket->deleteLater();
+        socket = new QTcpSocket();
+    }
 
     //set the socket descriptor to that client which connected
     socket->setSocketDescriptor(socketID);
@@ -106,8 +119,9 @@ void CopierPhysical::writeFileOverNetwork(){
     for(; i < buffer.size();){
         //QByteArray  mid ( int pos, int len = -1 ) const
         QByteArray midToWrite = buffer.mid(i, maxPerSize);
-        qint64 written = socket->write(midToWrite);
+        qint64 written;
         if(socket->isWritable()){
+            written = socket->write(midToWrite);
             socket->waitForBytesWritten(-1);
         }
         else{

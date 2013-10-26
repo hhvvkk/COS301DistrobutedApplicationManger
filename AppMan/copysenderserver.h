@@ -266,6 +266,8 @@ private:
       *
       */
     bool zipFilesToDelete;
+
+    QTimer timer;
 };
 
 #endif // COPYSENDERSERVER_H
