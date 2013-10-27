@@ -7,22 +7,24 @@ CopySenderClient::CopySenderClient(QHostAddress hAdr, int portNumber, QObject *p
     port(portNumber),
     hostAddress(hAdr)
 {
+    copyList = 0;
     socket = new QTcpSocket();
     firstTalk = true;
     //connect(socket, SIGNAL(connected()), socketClient, SLOT(connected()));
-    connect(socket, SIGNAL(readyRead()), this, SLOT(readyReadFunction()));
-    connect(socket, SIGNAL(disconnected()), this, SLOT(disconnectedFunction()));
     allBuildsDirectory = "builds";
 
     copyList = new QList<CopierPhysicalClient*>();
-
+    connect(socket, SIGNAL(readyRead()), this, SLOT(readyReadFunction()));
+    connect(socket, SIGNAL(disconnected()), this, SLOT(disconnectedFunction()));
 }
 
 CopySenderClient::~CopySenderClient(){
     CopierPhysicalClient* cpPhy;
     if(copyList != 0){
         if(copyList->size() != 0){
-            while((cpPhy = copyList->takeFirst()) != 0){
+            while(copyList->size() != 0){
+                cpPhy = copyList->at(0);
+                copyList->removeOne(cpPhy);
                 cpPhy->deleteLater();
             }
         }
@@ -347,6 +349,7 @@ void CopySenderClient::ConnectPhysicalServer(const QVariantMap jsonObject){
 
     if(!connected){
         physicalClient->deleteLater();
+        return;
     }//else let it delete itself after it is done...
 
 
@@ -380,6 +383,9 @@ void CopySenderClient::PhysicalServerDone(const QVariantMap jsonObject){
 
     //let the copier write to the file it is supposed to write to...
     cpPhysical->writeToFile();
+
+    copyList->removeOne(cpPhysical);
+    cpPhysical->deleteLater();
 
 }
 
