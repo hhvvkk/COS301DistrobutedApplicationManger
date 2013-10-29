@@ -48,7 +48,8 @@ SOURCES += main.cpp\
     appxmlreader.cpp \
     protodeletebuild.cpp \
     protoapplist.cpp \
-    protorunsim.cpp
+    protorunsim.cpp \
+    protosendstructure.cpp
 
 HEADERS  += mainwindow.h \
     socketclient.h \
@@ -83,7 +84,8 @@ HEADERS  += mainwindow.h \
     appxmlreader.h \
     protodeletebuild.h \
     protoapplist.h \
-    protorunsim.h
+    protorunsim.h \
+    protosendstructure.h
 
 
 FORMS    += mainwindow.ui \

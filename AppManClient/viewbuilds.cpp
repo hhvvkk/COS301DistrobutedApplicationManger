@@ -103,12 +103,7 @@ void viewBuilds::on_treeWidget_clicked(const QModelIndex &index)
 {
     QString selBuild = index.sibling(index.row(),1).data().toString();
     int num = selBuild.toInt();
-    if(num != 0)
-    {
-        Build b;
-        b = manage->getBuildByID(num);
-        qDebug()<<b.getBuildID()<<b.getBuildName()<<b.getBuildDescription()<<b.getBuildDirectory();
-    }
+
 }
 
 void viewBuilds::getManager(Management * man){

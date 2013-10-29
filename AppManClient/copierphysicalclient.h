@@ -88,6 +88,12 @@ private:
      */
     void extractZipToDirectory();
 
+
+    void duplicateDirectoryStructure(QStringList masterDirectoryStructure, int intBuildID);
+    bool isSubPath(QString onePath, QString subPath);
+
+    void removeFolderStructure(QString masterValue, QString slaveValue);
+
 private slots:
     /**
       * \fn void disconnectedFunction();

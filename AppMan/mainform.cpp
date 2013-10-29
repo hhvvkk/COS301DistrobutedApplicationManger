@@ -545,7 +545,7 @@ void MainForm::slaveGotBuild(Machine*m, int buildId,  QString slaveBuildName, bo
     else{
         newBuildForSlave->setText(0, slaveBuildName);
         newBuildForSlave->setText(1,slaveBuildId);
-        newBuildForSlave->setToolTip(0, "0% synched");
+        newBuildForSlave->setToolTip(0, "0% Synched");
     }
     machineT->addChild(newBuildForSlave);
 }
@@ -590,7 +590,7 @@ void MainForm::slaveBuildSizeSame(int buildId, int machineId, bool isTheSame){
 
     if(isTheSame){
         buildItem->setBackground(0, good);
-        buildItem->setToolTip(0, "100% synched");
+        buildItem->setToolTip(0, "100%");
     }
     else{
         buildItem->setBackground(0, bad);
@@ -674,9 +674,21 @@ void MainForm::slaveBuildSynched(int machineId, int buildId, double percentage){
 
         if(slaveBuildID == buildId){
             //means the correct one is found
-            QString percentSynched = QString::number(percentage) + "% synched";
+            QString percentSynched = QString::number(percentage) + "%";
             slaveChild->setToolTip(0, percentSynched);
             break;
+        }
+    }
+
+    //set the other item to see how far it is synched
+    //if and only if it is shown...
+
+    for(int i = 0; i < ui->treeWidgetInfoBox->topLevelItemCount(); i++){
+        QTreeWidgetItem *item = ui->treeWidgetInfoBox->topLevelItem(i);
+        if(item == 0)
+            continue;
+        if(item->text(0).contains("Synched")){
+            item->setText(1, QString::number(percentage) + "%");
         }
     }
 }
@@ -1188,7 +1200,7 @@ void MainForm::displaySlaveBuildInfo(QTreeWidgetItem *slaveBuildItem, int machin
     ui->treeWidgetInfoBox->addTopLevelItem(slaveBuildInfo);
 
     QTreeWidgetItem *synchInformation = new QTreeWidgetItem();
-    synchInformation->setText(0, "% Synched");
+    synchInformation->setText(0, "Synched");
     synchInformation->setText(1, slaveBuildItem->toolTip(0));
     ui->treeWidgetInfoBox->addTopLevelItem(synchInformation);
 

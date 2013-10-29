@@ -8,7 +8,6 @@ CopierPhysical::CopierPhysical(int machID, int theBuildID, QString pathForZip, Q
     //management(man)
 {
     i = 0;
-    maxPerSize = 1024;
 
     //gaan possibly user maak die self set...
     notifyTimer.setInterval(3000);
@@ -105,18 +104,46 @@ void CopierPhysical::initiateCopyOver(){
     //QFuture <void>endWrittenFuture = QtConcurrent::run(this, &CopierPhysical::writeFileOverNetwork);
     //endWrittenFuture.waitForResult();
 
-
-    //emit that it is done so that the copysenderClient can be notified...
-    emit copierPhysicalDone(this->BuildID);
-    signalNotifyProgress();
-    notifyTimer.stop();
-
 }
 
 void CopierPhysical::writeFileOverNetwork(){
     socket->moveToThread(QThread::currentThread());
     notifyTimer.start();
-    for(; i < buffer.size();){
+
+    CopyRateController &rc = CopyRateController::instance();
+
+    connect(&rc, SIGNAL(transferCopierGoAhead(CopierPhysical*,int)), this, SLOT(transferNext(CopierPhysical*,int)));
+    rc.addCopier(this);
+
+
+
+}
+
+void CopierPhysical::transferNext(CopierPhysical * cpPhy, int maxPerSize){
+    if(cpPhy != this){
+        //it means it is NOT this class which will transfer next
+        return;
+    }
+
+    if(i <= -1){
+        //this means that the file transfer is complete and no further action must be taken(waiting for it to be deleted...)
+        return;
+    }
+
+    if( i >= buffer.size()){
+        i = -1;
+        //emit that it is done so that the copysenderClient can be notified...
+        emit copierPhysicalDone(this->BuildID);
+        signalNotifyProgress();
+        notifyTimer.stop();
+
+        CopyRateController &rc = CopyRateController::instance();
+        rc.removeCopier(this);
+
+        return;
+    }
+
+    //for(; i < buffer.size();){
         //QByteArray  mid ( int pos, int len = -1 ) const
         QByteArray midToWrite = buffer.mid(i, maxPerSize);
         qint64 written;
@@ -125,11 +152,11 @@ void CopierPhysical::writeFileOverNetwork(){
             socket->waitForBytesWritten(-1);
         }
         else{
-            break;
+            return;
+            //break;
         }
-        //change the speed at which it writes...
         i = i + written;
-    }
+    //}
 }
 
 QByteArray CopierPhysical::concurrentFileRead(QFile *fileToRead){

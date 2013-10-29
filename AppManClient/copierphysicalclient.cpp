@@ -70,6 +70,7 @@ void CopierPhysicalClient::disconnectedFunction(){
 void CopierPhysicalClient::readyReadFunction(){
     //read all from the socket at that stage
     QByteArray Data = socket->readAll();
+    //qDebug()<<Data;
 
     //write to the file buffer the data that was read
     fileBuffer.append(Data);
@@ -149,6 +150,10 @@ void CopierPhysicalClient::extractZipToDirectory(){
     DirectoryHandler::recurseAddDir(eDir, listOfPaths);
 
     DirectoryHandler::copyOverFromList(magicNumber, listOfPaths, buildPath, extractPath);
+
+    if(listOfPaths.size() == 0){
+
+    }
 
     DirectoryHandler::removeDir(extractPath);
 }

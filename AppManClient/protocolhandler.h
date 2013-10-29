@@ -19,6 +19,7 @@
 #include "protodeletebuild.h"
 #include "protorunsim.h"
 #include "protoapplist.h"
+#include "protosendstructure.h"
 
 #include "json.h"
 
@@ -102,6 +103,7 @@ private:
     Protocol *deleteBuild;
     Protocol *aRunSim;
     Protocol *appList;
+    Protocol *sendStructure;
 
 };
 

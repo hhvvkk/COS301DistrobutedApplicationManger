@@ -16,12 +16,19 @@ void ProtoCopyOver::handle(QVariantMap jsonObject, Management *management, QTcpS
 void ProtoCopyOver::CopyBuildOver(QVariantMap jsonObject, Management *management, QTcpSocket *masterSocket){
 
     QString BuildID = jsonObject.value("BuildID").toString();
+
+    bool ok;
+    int id = BuildID.toInt(&ok);
+
+    if(!ok)
+        return;
+
     QString buildName = jsonObject.value("buildName").toString();
-    Build newBuild = Build(BuildID.toInt() , buildName,"", "");
 
     xmlWriter xWrite;
-    Build buildToAdd = management->createBuildDirectory(newBuild);
-    xWrite.receiveBuild(QString::number(buildToAdd.getBuildID()),buildToAdd.getBuildName(),buildToAdd.getBuildDescription(),buildToAdd.getBuildDirectory());
+    Build *buildToAdd = new Build(id, buildName, "","");
+    management->createBuildDirectory(buildToAdd);
+    xWrite.receiveBuild(QString::number(buildToAdd->getBuildID()),buildToAdd->getBuildName(),buildToAdd->getBuildDescription(),buildToAdd->getBuildDirectory());
     xWrite.createXMLFile();
     management->addBuild(buildToAdd);
 

@@ -40,7 +40,7 @@ private:
     /**
      * @brief Will be used to loop through the builds
      */
-    Build * allBuilds;
+    QList<Build *> allBuilds;
 };
 
 #endif // PROTOSLAVECURRENTBUILDS_H

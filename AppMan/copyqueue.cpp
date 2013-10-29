@@ -11,8 +11,9 @@ CopyQueue::CopyQueue(QObject *parent) :
 
 CopyQueue::~CopyQueue(){
     while(!queue->isEmpty()){
-        CopierPhysical *cp = queue->dequeue();
-        cp->deleteLater();
+        queue->dequeue();
+        //the copierphysical deletes itself
+        //cp->deleteLater();
     }
     delete queue;
 }

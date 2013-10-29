@@ -11,6 +11,8 @@
 #include <QFuture>
 #include <QtConcurrentRun>
 
+#include "copyratecontroller.h"
+
 /**
  * @class CopierPhysical
  * @brief This is a class that will contain a server and a physical link to copy over the file from this machine to the other machine
@@ -90,6 +92,13 @@ private slots:
 
     void readyReadFunction();
 
+
+    /**
+     * \fn void signalNotifyProgress();
+     * @brief Function slot connected to the transfer of transfer rate in order to be able to transfer the file over the network
+     */
+    void transferNext(CopierPhysical * cpPhy, int maxPerSize);
+
 private:
 
     /**
@@ -154,10 +163,6 @@ private:
       */
     QByteArray buffer;
 
-    /**
-      * The maximum amount of bytes that may be sent across the network
-      */
-    int maxPerSize;
 
     /**
       * A placeholder to continue with sending of the file

@@ -21,6 +21,7 @@
 #include "protodeletebuild.h"
 #include "protorunsim.h"
 #include "protoapplist.h"
+#include "protosendstructure.h"
 
 
 class Management;
@@ -223,6 +224,8 @@ private:
     Protocol *aRunSim;
 
     Protocol *appList;
+
+    Protocol *sendStructure;
 
 };
 

@@ -18,6 +18,7 @@ ProtocolHandler::ProtocolHandler( Management *man, QObject *parent) :
     deleteBuild = new ProtoDeleteBuild(this);
     aRunSim = new ProtoRunSim(this);
     appList = new ProtoAppList(this);
+    sendStructure = new ProtoSendStructure(this);
     firstTalk = true;
 }
 
@@ -33,6 +34,7 @@ ProtocolHandler::~ProtocolHandler(){
     deleteBuild->deleteLater();
     aRunSim->deleteLater();
     appList->deleteLater();
+    sendStructure->deleteLater();
 }
 
 void ProtocolHandler::handle(QString data){
@@ -146,6 +148,10 @@ void ProtocolHandler::requestHandler(QString data){
 
     if(!handler.toString().compare("ProtoAppList"))
         appList->handle(jsonObject, management, slaveSocket);
+    else
+
+    if(!handler.toString().compare("ProtoSendStructure"))
+        sendStructure->handle(jsonObject, management, slaveSocket);
 
 }
 

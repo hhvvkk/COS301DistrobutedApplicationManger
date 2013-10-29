@@ -137,3 +137,71 @@ bool DirectoryHandler::removeDir(const QString &dirName){
 
 
 }
+
+
+
+void DirectoryHandler::getNextDirectory(QStringList &currentList, QString directoryToGet, QString rootDirectory, const QString unchangedRoot){
+
+    QDir currentDirectory = QDir(directoryToGet);
+
+    if(!currentDirectory.exists()){
+    }
+
+    QStringList aNewDirectoryList = currentDirectory.entryList(QDir::NoDotAndDotDot | QDir::Dirs);
+
+
+    if(aNewDirectoryList.size() == 0)
+        return;//no further directories discovered
+
+    for(int i = 0; i < aNewDirectoryList.size(); i++){
+
+        QString addThis = rootDirectory + "/" + aNewDirectoryList.at(i)+"/";
+        addThis.remove(0, (unchangedRoot.size()+1));
+
+        currentList << addThis;
+
+
+        //call the function recursively
+        QString newRoot = rootDirectory;
+        newRoot.append("/" + aNewDirectoryList.at(i));
+        QString nextPath = rootDirectory + "/" + aNewDirectoryList.at(i) ;
+
+        getNextDirectory(currentList, nextPath, newRoot, unchangedRoot);
+    }
+
+}
+
+QStringList DirectoryHandler::getDirectoryStructure(QString directoryToGet){
+
+    if(!QDir().exists(directoryToGet))
+        return QStringList();
+
+    QStringList fullDirectoryList;
+
+
+    //change all "\" to "/", causes problems otherwise
+    directoryToGet.replace("\\","/");
+
+    //get the full directorylist of only the directories(All of them)
+    getNextDirectory(fullDirectoryList, directoryToGet, directoryToGet, directoryToGet);
+
+    //sort the list
+    fullDirectoryList.sort();
+
+    //remove all the duplicates showing only the absolute necessaries
+    for(int i = 0; i < fullDirectoryList.size(); ){
+        if(i == fullDirectoryList.size()-1)
+            break;//end since you don't want to repeat
+
+        QString nextItem = fullDirectoryList.at(i+1);
+        if(nextItem.contains(fullDirectoryList.at(i))){
+            fullDirectoryList.removeAt(i);
+        }
+        else{
+            i++;
+        }
+    }
+
+    return fullDirectoryList;
+}
+

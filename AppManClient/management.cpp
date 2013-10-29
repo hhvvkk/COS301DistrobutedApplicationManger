@@ -3,7 +3,6 @@
 Management::Management()
 {
     network = new Network(this);
-    buildCount = 0;
 
     //if the directory for all builds does not exist, create it
     ///@todo change directory of builds...
@@ -18,11 +17,11 @@ Management::Management()
 Management::~Management()
 {
     delete network;
-    if(buildCount != 0)
-    {
-        delete[] allBuilds;
-    }
     //delete xRead;
+    while(allBuilds.size() > 0){
+        Build *deleteABuild = allBuilds.takeAt(0);
+        delete deleteABuild;
+    }
 }
 
 void Management::connectToServer(QString ipAddress, int port){
@@ -34,37 +33,21 @@ void Management::disconnectFromServer(){
     network->disconnect();
 }
 
-void Management::addBuild(Build buildToAdd){
+void Management::addBuild(Build *buildToAdd){
     //create the directory for that build if it does not exist
-    Build myBuild = createBuildDirectory(buildToAdd);
+    createBuildDirectory(buildToAdd);
 
+    allBuilds.append(buildToAdd);
 
-    if(buildCount != 0){
-        Build temp[buildCount];
-        for(int i = 0; i < buildCount; i++){
-            temp[i] = allBuilds[i];
-        }
-        allBuilds = new Build[buildCount+1];
-        for(int j = 0; j < buildCount; j++){
-            allBuilds[j] = temp[j];
-        }
-        allBuilds[buildCount] = myBuild;
-    }
-    else{
-        allBuilds = new Build[buildCount+1];
-        allBuilds[buildCount] = myBuild;
-    }
-    buildCount++;
 }
 
-Build Management::createBuildDirectory(Build build){
-    QString newBuildDirectory = QString::number(build.getBuildID());
+void Management::createBuildDirectory(Build *build){
+    QString newBuildDirectory = QString::number(build->getBuildID());
     if(!QDir(allBuildsDirectory+"/"+newBuildDirectory).exists())
     {
         QDir().mkdir(allBuildsDirectory+"/"+newBuildDirectory);
     }
-    build.setBuildDirectory(allBuildsDirectory+"/"+newBuildDirectory);
-    return build;
+    build->setBuildDirectory(allBuildsDirectory+"/"+newBuildDirectory);
 }
 
 void Management::addMyBuilds(){
@@ -84,27 +67,26 @@ void Management::addMyBuilds(){
     while (i.hasNext() && j.hasNext() && k.hasNext() && l.hasNext())
     {
         i.next(); j.next(); k.next(); l.next();
-        Build b(i.value().toInt(),j.value(),k.value(),l.value());
-        this->addBuild(b);
+        Build *newBuild = new Build(i.value().toInt(), j.value(), k.value(), l.value());
+        this->addBuild(newBuild);
     }
 }
 
-Build &Management::getBuildByID(int id){
+Build *Management::getBuildByID(int id){
     lock.lock();
-    for(int i = 0; i < buildCount; i++){
-        if(allBuilds[i].getBuildID() == id){
+    for(int i = 0; i < allBuilds.size(); i++){
+        if(allBuilds[i]->getBuildID() == id){
             lock.unlock();
             return allBuilds[i];
         }
     }
-    // Returns a build with id 0 to show it does not exist
-    Build b(0,"NULL","NULL","NULL");
+
     lock.unlock();
-    return b;
+    return 0;
 }
 
-QString Management::getBuildMD5(Build build){
-    BuildMD5 md5(build.getBuildDirectory(),5);
+QString Management::getBuildMD5(Build *build){
+    BuildMD5 md5(build->getBuildDirectory(),5);
     md5.generate();
     return md5.getDirectoryMD5();
 }
@@ -123,16 +105,13 @@ QString Management::getMinSysInfo(){
 }
 
 void Management::updateBuildName(int buildID, QString newBuildName){
-    Build &theBuild = getBuildByID(buildID);
+    Build *theBuild = getBuildByID(buildID);
 
-    if(!theBuild.getBuildDescription().compare("NULL")
-            && !theBuild.getBuildDirectory().compare("NULL")
-            && !theBuild.getBuildName().compare("NULL")
-            && theBuild.getBuildID() == 0){
+    if(theBuild == 0){
         return;
     }
 
-    theBuild.setBuildName(newBuildName);
+    theBuild->setBuildName(newBuildName);
     xmlWriter writer;
     writer.updateBuildName(buildID, newBuildName);
 }
@@ -160,16 +139,13 @@ QMap<QString,QString> Management::getAppList(){
 
 void Management::deleteBuild(int buildID){
 
-    Build &theBuild = getBuildByID(buildID);
+    Build *theBuild = getBuildByID(buildID);
 
-    if(!theBuild.getBuildDescription().compare("NULL")
-            && !theBuild.getBuildDirectory().compare("NULL")
-            && !theBuild.getBuildName().compare("NULL")
-            && theBuild.getBuildID() == 0){
+    if(theBuild == 0){
         return;
     }
 
-    QString buildDirectory = theBuild.getBuildDirectory();
+    QString buildDirectory = theBuild->getBuildDirectory();
 
     //go and delete build
     //from (1): logical view point
@@ -184,48 +160,14 @@ void Management::deleteBuild(int buildID){
 }
 
 void Management::removeBuildLogically(int buildID){
-    lock.lock();
-    int index = -1;
-    for(int i = 0; i < buildCount; i++){
-        if(buildID == allBuilds[i].getBuildID()){
-            index = i;
-            break;
-        }
-    }
+    Build *theBuild = getBuildByID(buildID);
 
-    if(index = -1){
-        lock.unlock();
-        return;//means the build has not been found
-    }
+    if(theBuild == 0)
+        return;
 
-    //one less build thus -1
-    Build *newAllBuilds = new Build[buildCount-1];
+    allBuilds.removeOne(theBuild);
 
-
-    //copy over from 0 to index(where build was)
-    int counter = 0;
-    for(int i =0; i < index; i++){
-        //create the build to be added
-        Build oneNewBuild = Build(allBuilds[i].getBuildID(), allBuilds[i].getBuildName(), allBuilds[i].getBuildDescription(), allBuilds[i].getBuildDirectory());
-        //add the build to new all builds
-        newAllBuilds[counter] = oneNewBuild;
-        counter++;
-    }
-
-    for(int i = index+1; i < buildCount; i++){
-        //create the build to be added
-        Build oneNewBuild = Build(allBuilds[i].getBuildID(), allBuilds[i].getBuildName(), allBuilds[i].getBuildDescription(), allBuilds[i].getBuildDirectory());
-        //add the build to new all builds
-        newAllBuilds[counter] = oneNewBuild;
-        counter++;
-    }
-
-    //set the variables
-    delete [] allBuilds;
-    allBuilds = newAllBuilds;
-    buildCount--;
-
-    lock.unlock();
+    delete theBuild;
 }
 
 void Management::readAppList(){
@@ -262,8 +204,8 @@ void Management::runThisSim(QString build, QString recArg){
         QString arg;
         if(runner.compare("") == 0){
             build.chop(build.length() - build.indexOf("-"));
-            Build b = getBuildByID(build.toInt());
-            app = /*"\"\"C:/AppManClient\"/"+*/b.getBuildDirectory();
+            Build *b = getBuildByID(build.toInt());
+            app = /*"\"\"C:/AppManClient\"/"+*/b->getBuildDirectory();
             arg = "/"+recArg;
             QProcess* p = new QProcess();
             p->start(app+arg);
@@ -282,4 +224,73 @@ void Management::runThisSim(QString build, QString recArg){
         }
 
 
+}
+
+
+void Management::duplicateDirectoryStructure(QStringList masterDirectoryStructure, int intBuildID){
+
+    QString allBuildsDirectory = "builds/";
+    QString buildDir = allBuildsDirectory + "/" + QString::number(intBuildID)+ "/";
+    QStringList thisDirectoryStructure = DirectoryHandler::getDirectoryStructure(buildDir);
+
+    //compare masterDirectoryList with this one
+    for(int i = 0; i < masterDirectoryStructure.size(); i++){
+        //firstly create the directory path
+        QDir().mkpath(buildDir + masterDirectoryStructure.at(i));
+
+        //test if it is in slave but master already contains that subpath
+        int totalSize = thisDirectoryStructure.size();
+        for(int ti = 0; ti < totalSize; ti++){
+            QString currentTIFolder = thisDirectoryStructure.at(ti);
+            //if the master contains this path with subpaths
+            if(isSubPath(masterDirectoryStructure.at(i), currentTIFolder)){
+                thisDirectoryStructure.removeAt(ti);
+                totalSize = thisDirectoryStructure.size();
+            }
+        }
+    }
+
+    //loop through the remainder of items(those that is not subpaths of the master builds
+    int totalSize = thisDirectoryStructure.size();
+    for(int i = 0; i < totalSize; i++){
+        for(int ma = 0; ma < masterDirectoryStructure.size(); ma++){
+            QString currentMasterFolder = masterDirectoryStructure.at(ma);
+            //if the master has a dir with a subpath of the clients path
+            //the path is subpath and size differs
+            //means that it can be a wrong path
+            if(isSubPath(currentMasterFolder, thisDirectoryStructure.at(i)) && (currentMasterFolder.size() != thisDirectoryStructure.size())){
+                removeFolderStructure(buildDir, currentMasterFolder, thisDirectoryStructure.at(i));
+                thisDirectoryStructure.removeAt(i);
+                totalSize = thisDirectoryStructure.size();
+                break;//there will be no more
+            }
+        }
+    }
+}
+
+bool Management::isSubPath(QString onePath, QString subPath){
+
+    if(onePath.size() < subPath.size())
+        return false;
+
+    for(int i = 0; i < subPath.size(); i++){
+        if(onePath.at(i) != subPath.at(i)){
+            return false;
+        }
+    }
+
+    return true;
+}
+
+void Management::removeFolderStructure(QString buildPath, QString masterValue, QString slaveValue){
+    qDebug()<<""<<masterValue<<" === === "<<slaveValue;
+    QString theSeparator = "/";
+    if(!masterValue.contains("/")){
+        theSeparator = "\\";
+    }
+    while(slaveValue.size() > masterValue.size()){
+        DirectoryHandler::removeDir(allBuildsDirectory + slaveValue);
+        int removedDirLength = slaveValue.size() - slaveValue.lastIndexOf(theSeparator);
+        slaveValue.remove(slaveValue.lastIndexOf(theSeparator), removedDirLength);
+    }
 }

@@ -16,6 +16,7 @@ ProtocolHandler::ProtocolHandler(Management *man, QObject *parent) :
     deleteBuild = new ProtoDeleteBuild(this);
     aRunSim = new ProtoRunSim(this);
     appList = new ProtoAppList(this);
+    sendStructure = new ProtoSendStructure(this);
     masterSocket = 0;
 }
 
@@ -31,6 +32,7 @@ ProtocolHandler::~ProtocolHandler(){
     deleteBuild->deleteLater();
     aRunSim->deleteLater();
     appList->deleteLater();
+    sendStructure->deleteLater();
 }
 
 void ProtocolHandler::handle(QString data){
@@ -87,7 +89,6 @@ QStringList ProtocolHandler::splitRequests(QString data){
 void ProtocolHandler::requestHandler(QString data){
 
     JSON *instance = &JSON::instance();
-
     //go and parse the json to an object concurrently...
     QFuture <QVariantMap>future = QtConcurrent::run(instance, &JSON::parse, data);
 
@@ -95,8 +96,7 @@ void ProtocolHandler::requestHandler(QString data){
 
     QVariant handler = jsonObject.value("handler");
 
-    if(!handler.toString().compare("QVariant(, )")){
-        qDebug()<< "invalid JSON String::"<<data;
+    if(!handler.toString().compare("QVariant(, )") || jsonObject.value("message").toString().contains("Unable to parse JSON string")){
         return;
     }
 
@@ -135,17 +135,18 @@ void ProtocolHandler::requestHandler(QString data){
 
     if(!handler.toString().compare("ProtoDeleteBuild"))
         deleteBuild->handle(jsonObject, management, masterSocket);
-
-
     else
 
-        if(!handler.toString().compare("ProtoRunSim"))
-            aRunSim->handle(jsonObject, management, masterSocket);
-
+    if(!handler.toString().compare("ProtoRunSim"))
+        aRunSim->handle(jsonObject, management, masterSocket);
     else
 
-        if(!handler.toString().compare("ProtoAppList"))
-            appList->handle(jsonObject, management, masterSocket);
+    if(!handler.toString().compare("ProtoAppList"))
+        appList->handle(jsonObject, management, masterSocket);
+    else
+
+    if(!handler.toString().compare("ProtoSendStructure"))
+        sendStructure->handle(jsonObject, management, masterSocket);
 }
 
 void ProtocolHandler::disconnectFromMaster(){

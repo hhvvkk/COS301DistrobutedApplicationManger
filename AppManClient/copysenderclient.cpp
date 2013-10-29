@@ -250,13 +250,12 @@ void CopySenderClient::SendBuildMD5Class(BuildMD5 *md5Class, int i){
         "handler":"BuildFileSumMD5",
         "BuildID":"[No of the build]",
         "BuildToMD5": {
-                        { "[FilePath1]" : "[FileMD5Value1]" },
-                        { "[FilePath2]" : "[FileMD5Value1]" },
+                         "[FilePath1]" : "[FileMD5Value1]" ,
+                         "[FilePath2]" : "[FileMD5Value2]" ,
                         ...........(n Times),
-                        { "[FilePathn]" : "[FileMD5Value1]" }
+                         "[FilePathn]" : "[FileMD5Valuen]"
                        }
      }
-
      where n = the number of
      */
 
@@ -417,7 +416,6 @@ void CopySenderClient::doneWritingToFile(int BuildID, bool success){
     //if the zip file was sucessfully sent across, only remove...
     bool successfulRemove = copyList->removeOne(cpPhysical);
     if(!successfulRemove){
-        qDebug()<<"not successful remove--copysenderlclient--line401";
     }
 
     //delete the physical copier

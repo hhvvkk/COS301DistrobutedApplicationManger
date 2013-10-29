@@ -46,6 +46,25 @@ public:
      * @return Return true if it succeeded in removing the directory
      */
     static bool removeDir(const QString &dirName);
+
+    /**
+     * \fn static QStringList getDirectoryStructure(QString directoryToGet);
+     * @brief Gets the QStringList as all the directories to make up the structure from the directory path in parameterlist
+     * @param directoryToGet The directory to which the structure will be obtained
+     */
+    static QStringList getDirectoryStructure(QString directoryToGet);
+
+private:
+    /**
+     * \fn void getNextDirectory(QStringList &currentList);
+     * @brief A function which recursively adds the next directories to the current list of directories
+     * @param currentList The current directory where the list is obtained from
+     * @param directoryToGet The current directory to get the path from
+     * @param rootDirectory Same as directoryToGet, but will change
+     * @param unchangedRoot The unchanged root structure
+     */
+    static void getNextDirectory(QStringList &currentList, QString directoryToGet, QString rootDirectory, const QString unchangedRoot);
+
 };
 
 #endif // DIRECTORYHANDLER_H

@@ -10,7 +10,7 @@ class Machine;
 
 /**
   * @class ProtoSendBuild
-  * @brief This is the protocol for SendBuild
+  * @brief This is the protocol for SendBuild(Which will create a server to physically copy the file over the network)
   */
 class ProtoSendBuild : public Protocol
 {
@@ -33,9 +33,9 @@ public:
      * @brief The function that will handle all the SendBuild protocol functions
      * @param jsonObject A QVariantMap which contains values
      * @param man the management to perform functions on
-     * @param masterSocket the socket if it is needed to write to it
+     * @param slaveSocket the socket if it is needed to write to it
      */
-    void handle(QVariantMap jsonObject, Management *management, QTcpSocket *masterSocket);
+    void handle(QVariantMap jsonObject, Management *management, QTcpSocket *slaveSocket);
 
 
     /**
@@ -56,6 +56,8 @@ public:
       * @brief The following invokes the check if of all build sizes and is used to create a loop to continually update the build until the information is updated.
       */
     void SizeCheckAllBuilds();
+
+
 private slots:
     /**
       * \fn void copySenderServerDone(CopySenderServer * deleteCopySender);
@@ -77,20 +79,24 @@ private slots:
     void fullySynchronisedBuild(int intBuildID, int machineId, Management *management);
 
 private:
+
     /**
-      * \fn void deleteCopySenderServer(CopySenderServer * deleteCopySender);
-      * @brief A which will be called concurrently by copySenderServerDone to delete the copySenderServer
-      * @param deleteCopySender The CopySenderServer to be deleted
+      * \fn void initiateGetBuildStructure(int buildID);
+      * @brief A function to transfer the directory structure of the build over the network such that it is completely synchronised
+      * @param buildID The ID for which the client must initiate the transferral of the directory structure
+      * @param slaveSocket The slave socket that will be used to initiate the ProtoStructure
       */
-    void deleteCopySenderServer(CopySenderServer * deleteCopySender);
+    void initiateGetBuildStructure(int buildID, QTcpSocket * slaveSocket);
+
+
+    /**
+      * \fn void removeCopySenderServer(CopySenderServer * deleteCopySender);
+      * @brief A which will be called concurrently by copySenderServerDone to remove the copySenderServer
+      * @param removeThis The CopySenderServer to be deleted
+      */
+    void removeCopySenderServer(CopySenderServer * removeThis);
 
 private:
-    /**
-      * A lock to prevent multiple CopySenderServers from being created and prevent
-      * CopySenderServers which are being deleted from being used
-      */
-    QMutex *lock;
-
     QList <CopySenderServer*>sendList;
 
     ProtoSendBuild *thisPointer;

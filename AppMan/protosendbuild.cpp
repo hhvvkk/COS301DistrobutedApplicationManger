@@ -9,13 +9,9 @@
 ProtoSendBuild::ProtoSendBuild(QObject *parent)
     :Protocol(parent)
 {
-    //lock = new QMutex();
 }
 
 ProtoSendBuild::~ProtoSendBuild(){
-//    if(lock != 0){
-//        delete lock;
-//    }
 
     while(sendList.size() > 0){
         //the sendList contents will delete itself(after 30 sec of no connection or when disconnecting)
@@ -33,6 +29,7 @@ void ProtoSendBuild::SizeCheckAllBuildsDone(QTcpSocket *slaveSocket, Management 
     if(slaveSocket == 0){
         return;
     }
+
     QObject *myParent = this->parent();
     if(myParent == 0)
         return;
@@ -56,6 +53,7 @@ void ProtoSendBuild::SizeCheckAllBuildsDone(QTcpSocket *slaveSocket, Management 
         if(!aBuild.getIsSame()){//if the build is not the same, append it to the list
             differentBuildIDs->append(QString::number(aBuild.getBuildID()));
             differentBuildDirectories->append(aBuild.getBuildDirectory());
+            initiateGetBuildStructure(aBuild.getBuildID(), slaveSocket);
         }
         else{//if they are the same...
             //show that they are the same through the function...(redundency)
@@ -112,13 +110,24 @@ void ProtoSendBuild::sizeCheckCertainBuildDone(/*int buildID, Machine *machine, 
 }
 
 
+void ProtoSendBuild::initiateGetBuildStructure(int buildID, QTcpSocket * slaveSocket){
+    //BEFORE anything you create the directory structure on the other side...
+    QString jsonMessage = startJSONMessage();
+    appendJSONValue(jsonMessage, "handler", "ProtoSendStructure", true);
+    appendJSONValue(jsonMessage, "subHandler", "InitiateGetStructure", true);
+    appendJSONValue(jsonMessage, "buildID", QString::number(buildID), false);
+    endJSONMessage(jsonMessage);
+
+    sendJSONMessage(slaveSocket, jsonMessage);
+}
+
 void ProtoSendBuild::copySenderServerDone(CopySenderServer * deleteCopySender){
     //go and finish the copySender since it is done
-    QtConcurrent::run(this, &ProtoSendBuild::deleteCopySenderServer, deleteCopySender);
+    QtConcurrent::run(this, &ProtoSendBuild::removeCopySenderServer, deleteCopySender);
     SizeCheckAllBuilds();
 }
 
-void ProtoSendBuild::deleteCopySenderServer(CopySenderServer * deleteCopySender){
+void ProtoSendBuild::removeCopySenderServer(CopySenderServer * deleteCopySender){
     sendList.removeOne(deleteCopySender);
 
     //This means that there is another newSender or it is empty, thus can just delete

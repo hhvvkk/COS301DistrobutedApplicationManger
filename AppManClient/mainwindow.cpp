@@ -156,11 +156,11 @@ void MainWindow::on_pushButtonViewBuilds_clicked()
     ui->label_BuildCount->setText(QString::number(management->getBuildCount()));
 }
 
-void MainWindow::initiateAddBuild(Build myBuild){
-    Build myAltered = management->createBuildDirectory(myBuild);
-    management->addBuild(myAltered);
+void MainWindow::initiateAddBuild(Build *myBuild){
+    management->createBuildDirectory(myBuild);
+    management->addBuild(myBuild);
     xmlWriter xWrite;
-    xWrite.receiveBuild(QString::number(myAltered.getBuildID()),myAltered.getBuildName(),myAltered.getBuildDescription(),myAltered.getBuildDirectory());
+    xWrite.receiveBuild(QString::number(myBuild->getBuildID()),myBuild->getBuildName(),myBuild->getBuildDescription(),myBuild->getBuildDirectory());
     xWrite.createXMLFile();
     ui->label_BuildCount->setText(QString::number(management->getBuildCount()));
 }

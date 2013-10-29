@@ -61,7 +61,9 @@ SOURCES += main.cpp\
     simxmlreader.cpp \
     simxmlwriter.cpp \
     protoapplist.cpp \
-    protorunsim.cpp
+    protorunsim.cpp \
+    copyratecontroller.cpp \
+    protosendstructure.cpp
 
 HEADERS  += mainform.h \
     aboutversion.h \
@@ -108,7 +110,9 @@ HEADERS  += mainform.h \
     simxmlreader.h \
     simxmlwriter.h \
     protoapplist.h \
-    protorunsim.h
+    protorunsim.h \
+    copyratecontroller.h \
+    protosendstructure.h
 
 FORMS    += mainform.ui \
     aboutversion.ui \

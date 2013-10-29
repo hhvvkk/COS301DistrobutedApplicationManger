@@ -95,10 +95,10 @@ private slots:
     void on_pushButtonViewBuilds_clicked();
 
     /**
-    * \fn void initiateAddBuild(Build b);
+    * \fn void initiateAddBuild(Build *b);
     * @brief initiateAddBuild will emit a signal to add the build
     */
-    void initiateAddBuild(Build b);
+    void initiateAddBuild(Build *b);
 
     /**
      * @fn void on_pushButton_clicked();
