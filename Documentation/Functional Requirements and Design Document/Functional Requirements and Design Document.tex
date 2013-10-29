@@ -71,6 +71,8 @@ Henko van Koesveld & 11009315\\
 \hline
 12 Oct & Version 1.3 & Updated usecase diagrams & Jaco\\
 \hline
+29 Oct & Version 1.4 & Added Database section & Francois\\
+\hline
 \end{tabular}
 \newpage
 \tableofcontents
@@ -377,9 +379,40 @@ applications with the application configuration.\\
 ProtoUpdate: This is a communication protocol which will be used in order to update build
 information or other information on the slave machines.
 
+\section{Database}
+AppMan uses a SQLite database to store slave related information. The database currently has two tables:
+\newline
+\newline
+CREATE TABLE Machine ( \newline
+	machineId int	PRIMARY KEY, \newline
+    IPaddr	text \newline
+)
+\newline
+\newline
+CREATE TABLE Vitality ( \newline
+	machineId int	PRIMARY KEY, \newline
+    CPUusage int, \newline
+    RAMused int, \newline
+    RAMavail int, \newline
+    FOREIGN KEY(machineId) REFERENCES Machine(machineId) \newline
+)
+\newline
+\newline
+The database is designed using the singleton design pattern, which means that on creation it will create a single pointer to the database object that will be used consistently throughout the application.
+\newline
+\newline
+On creation the database will also create the database file [AppMan.db3] and along with the tables; providing the file does not already exist.
+\newline
+\newline
+The main purpose of the database is to store each slave, with their machineId and last known IP address, which allows AppMan to remember slaves that have previously connected to the master.
+\newline
+\newline
+Desired future features include:
+\begin{itemize}
+\item Logging system information of each Slave.
+\item Specialized queries to retrieve needed information.
+\end{itemize}
 
-
-\newpage
 \section{Glossary}
 \begin{itemize}
 \item{Build - An application build version that could potentially be distributed to slave computers.}
