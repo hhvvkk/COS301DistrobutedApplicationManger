@@ -52,6 +52,8 @@ Henko van Koesveld & 11009315\\
 \hline
 22 Oct & Version 0.4 & Added images and minor checks  & Henko\\
 \hline
+29 Oct & Version 0.5 & Add detailed sys info  & Francois\\
+\hline
 \end{tabular}
 \newpage
 \tableofcontents
@@ -189,11 +191,18 @@ On the AppManClient one sets the port and Master IP then clicks connect. These a
   	\includegraphics[scale=0.4]{InterfaceLinux_Client.png}
  \end{center}
 
-\subsection{Request System Information}
-When a slave is clicked the request is automatically sent to the slave, then displayed in a docking widget as follows(To the right hand side you can see the slave stats displayed).
+\subsection{Request Minimal System Information}
+When a slave is clicked the request is automatically sent to the slave, then displayed in a docking widget as follows (To the right hand side you can see the slave stats displayed).
 
 \begin{center}
   	\includegraphics[scale=0.4]{SlaveStats.png}
+ \end{center}
+ 
+\subsection{Request Complete System Information}
+After a slave is clicked to gain minimal system information the [Click for more...] button can be pressed to reveal much more detailed system information, such as a task list and disk drive information.
+
+\begin{center}
+  	\includegraphics[scale=0.5]{DetSlaveStats.png}
  \end{center}
 
 \section{AppManClient}
