@@ -46,11 +46,11 @@ void ProtoConnect::handle(QVariantMap jsonObject, Management *management, QTcpSo
 }
 
 void ProtoConnect::disconnectFromMaster(Management *management, QTcpSocket *socket){
-    management->setConnected(false);
     if(socket == 0){
         return;
     }
     socket->disconnectFromHost();
+    management->setConnected(false);
 }
 
 void ProtoConnect::initiateSlaveCurrentBuilds(QTcpSocket *masterSocket){
@@ -75,7 +75,6 @@ void ProtoConnect::connectToMaster(QString ipAddress, int serverPort, ProtocolHa
     //wait for one second for connection
     if(!socket->waitForConnected(1000)){
         //error
-        qDebug()<<"Error when connecting";
         return;
     }
 

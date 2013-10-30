@@ -17,7 +17,6 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainform.cpp \
-    aboutversion.cpp \
     abouthelp.cpp \
     management.cpp \
     serverthread.cpp \
@@ -66,7 +65,6 @@ SOURCES += main.cpp\
     protosendstructure.cpp
 
 HEADERS  += mainform.h \
-    aboutversion.h \
     abouthelp.h \
     management.h \
     server.h \
@@ -115,7 +113,6 @@ HEADERS  += mainform.h \
     protosendstructure.h
 
 FORMS    += mainform.ui \
-    aboutversion.ui \
     abouthelp.ui \
     inputdialogue.ui \
     addbuild.ui \

@@ -215,7 +215,7 @@ void sysInfo::netStat(){
 QString sysInfo::recrun(QString in){
     //loop through string recursively to strip unnecessary #'s
     int ip = in.length();
-    for(int i = 0; i < ip; i++){
+    for(int i = 0; i < ip-1; i++){
         if((in.at(i)=='#'&&in.at(i+1)=='#')){
             in.remove(i,1);
             return recrun(in);

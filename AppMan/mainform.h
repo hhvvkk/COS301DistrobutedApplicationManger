@@ -34,7 +34,6 @@
 
 #include "mainbuildinfo.h"
 #include "abouthelp.h"
-#include "aboutversion.h"
 #include "addbuild.h"
 #include "copybuildover.h"
 #include "Build.h"
@@ -46,6 +45,7 @@
 #include "moreinfo.h"
 #include "simulation.h"
 #include "watcher.h"
+#include "applicationsettings.h"
 
 
 namespace Ui {
@@ -111,6 +111,9 @@ protected:
 
 private slots:
 
+    void on_actionApplication_Settings_triggered();
+
+
     /**
      * \fn void quitTheApplication();
      * @brief A function emitting a signal called quitApplication which will then end application
@@ -168,12 +171,6 @@ private slots:
      * @brief on_actionHelp_triggered The Help menu dropdown item clicked
      */
     void on_actionHelp_triggered();
-
-    /**
-     * @fn void on_actionVersion_triggered();
-     * @brief on_actionVersion_triggered The function called when the About>Version function is called
-     */
-    void on_actionVersion_triggered();
 
     /**
      * @fn void masterBuildsClicked(QModelIndex index);
@@ -480,8 +477,10 @@ private:
 
     QTimer *collapseTimer;
 
+
     Watcher *watcher;
 
+    QMutex slaveLock;
 
 };
 

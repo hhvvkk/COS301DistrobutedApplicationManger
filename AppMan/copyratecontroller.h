@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QTimer>
 #include <QMutex>
+#include <QSettings>
 
 class CopierPhysical;
 
@@ -44,6 +45,13 @@ public:
       * @param toRemove The  copier to be deleted to the transfer box
       */
     void removeCopier(CopierPhysical *toRemove);
+
+    /**
+      * \fn void setUploadRate(int bytesPer50MS);
+      * @brief Sets the upload rate of the controller to parameter passed through
+      * @param bytesPer50MS The amount of bytes which will be sent in 50 mili seconds
+      */
+    void setUploadRate(int bytesPer50MS);
 protected:
     explicit CopyRateController(QObject *parent = 0);
 
@@ -54,6 +62,12 @@ private slots:
       */
     void signalTransferGO();
 private:
+    /**
+      * \fn  void loadUploadSpeed();
+      * @brief Function which uploads the upload speed
+      */
+    void loadUploadSpeed();
+
 
     /**
       * \fn CopierPhysical *next();
@@ -61,6 +75,7 @@ private:
       * @return Returns the next CopierPhysical which will transfer a piece of the file
       */
     CopierPhysical *next();
+
 
 private:
     QTimer transferTimer;
@@ -70,6 +85,9 @@ private:
     QList<CopierPhysical*> transferBox;
 
     int counter;
+
+    //the maximum upload rate to slaves combined
+    int maxUploadBytes;
 
 };
 

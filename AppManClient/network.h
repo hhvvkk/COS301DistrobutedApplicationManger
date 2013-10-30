@@ -26,6 +26,13 @@ public:
      */
     Network(Management *man);
 
+
+    /**
+     * @brief Destructor
+     */
+    ~Network();
+
+
     /**
      * @brief connecToServer Function that will call the connect on the SocketClass (SocketClient)
      */

@@ -173,11 +173,6 @@ void MainForm::on_actionHelp_triggered(){
     abHelp->show();
 }
 
-void MainForm::on_actionVersion_triggered(){
-    AboutVersion *abversion = new AboutVersion();
-    abversion->show();
-}
-
 void MainForm::on_actionStart_triggered()
 {
     //start the server
@@ -207,6 +202,7 @@ void MainForm::showOrHideTrayClick(){
 }
 
 void MainForm::newSlaveConnected(Machine *m){
+    slaveLock.lock();
     //now go find slave and show it if needed
     QTreeWidgetItem *slaveItem = new QTreeWidgetItem();
     slaveItem->setText(0, m->getMachineIP());
@@ -220,10 +216,11 @@ void MainForm::newSlaveConnected(Machine *m){
     ui->treeWidgetActiveSimulations->addTopLevelItem(activeSimulationItem);
 
     m->getMinStats();
+    slaveLock.unlock();
 }
 
 void MainForm::slaveDisconnected(int uId){
-
+    slaveLock.lock();
     //destroy the build treewidget item for a slave
     QString uniqueId = QString::number(uId);
 
@@ -233,7 +230,6 @@ void MainForm::slaveDisconnected(int uId){
         if(item != 0){
             if(!item->text(1).compare(uniqueId)){
                 item->~QTreeWidgetItem();
-                break;
             }
         }
     }
@@ -245,10 +241,10 @@ void MainForm::slaveDisconnected(int uId){
         if(item != 0){
             if(!item->text(1).compare(uniqueId)){
                 item->~QTreeWidgetItem();
-                break;
             }
         }
     }
+    slaveLock.unlock();
 }
 
 void MainForm::initiateAddBuild(Build *newBuild){
@@ -1312,4 +1308,10 @@ void MainForm::on_treeWidgetSimulations_clicked(const QModelIndex &index)
     QTreeWidgetItem *item = ui->treeWidgetSimulations->selectedItems().at(0);
         QString simName = item->text(0);
         management->runSimulation(simName);
+}
+
+void MainForm::on_actionApplication_Settings_triggered()
+{
+    ApplicationSettings *apPSettings = new ApplicationSettings();
+    apPSettings->show();
 }

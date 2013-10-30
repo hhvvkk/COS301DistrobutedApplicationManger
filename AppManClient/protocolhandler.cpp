@@ -5,6 +5,7 @@ ProtocolHandler::ProtocolHandler(Management *man, QObject *parent) :
     QObject(parent),
     management(man)
 {
+    masterSocket = 0;
     sizeCheckBuilds = new ProtoSizeCheckBuilds(this);
     slaveCurrentBuilds = new ProtoSlaveCurrentBuilds(this);
     connect = new ProtoConnect(this);
@@ -17,7 +18,6 @@ ProtocolHandler::ProtocolHandler(Management *man, QObject *parent) :
     aRunSim = new ProtoRunSim(this);
     appList = new ProtoAppList(this);
     sendStructure = new ProtoSendStructure(this);
-    masterSocket = 0;
 }
 
 ProtocolHandler::~ProtocolHandler(){

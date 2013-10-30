@@ -7,6 +7,17 @@ QTreeWidget::item:selected {
 	background: darkgray;
 }
 
+QTabBar::tab:hover{
+	border: 1px solid darkblue;
+}
+
+QMenu::item:selected {
+     border-color: darkblue;
+     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0 #aaffaa, stop: 1 #11ff11);
+ }
+
+
 QLineEdit {
 	border: 2px solid gray;
 	border-radius: 10px; 
@@ -14,6 +25,10 @@ QLineEdit {
 	background: #D1E0FF; 
 	selection-background-color: darkgray; 
 	selection-color: black;
+}
+
+QLineEdit:focus{
+    border: 2px solid #1111ff;
 }
 
 QToolTip {
@@ -28,5 +43,31 @@ QPushButton {
 	border: 2px solid gray;
 	border-radius: 10px;  
 	padding: 0 8px;
-	background: #B2CCFF; 
+     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0 #B2CCFF, stop: 1 #B5CCFF);
 }
+	
+QComboBox { 
+	border: 2px solid gray;
+	border-radius: 10px;  
+	padding: 0 8px;
+	
+     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0 #B2CCFF, stop: 1 #B5CCFF);
+}
+
+
+QPushButton:hover{
+     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0 #aaffaa, stop: 1 #afFFfb);
+}
+	
+QComboBox:hover { 
+     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0 #aaffaa, stop: 1 #afFFfb);
+}
+
+QPushButton:pressed {
+     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0 #aaffaa, stop: 1 #11ff11);
+ }

@@ -13,10 +13,35 @@ CopyRateController::CopyRateController(QObject *parent) :
     transferTimer.setInterval(50);
     connect(&transferTimer, SIGNAL(timeout()),this, SLOT(signalTransferGO()));
     counter = 0;
+    loadUploadSpeed();
+}
+
+
+void CopyRateController::loadUploadSpeed(){
+
+    QSettings setting("settings.ini", QSettings::IniFormat);
+    //grouping the settings
+    setting.beginGroup("Network");
+
+    //default settings values
+    QVariant defaultUploadRate;
+    defaultUploadRate.setValue(25600);
+
+    //send in the default values in case it does not exist...
+    QString loadedUploadRate = setting.value("uploadRate(Bytes)", defaultUploadRate).toString();
+
+    setting.endGroup();
+
+    bool validUprate;
+    maxUploadBytes = loadedUploadRate.toInt(&validUprate);
+
+    if(!validUprate){
+        maxUploadBytes = defaultUploadRate.toInt();
+    }
 }
 
 void CopyRateController::signalTransferGO(){
-    emit transferCopierGoAhead(next(), 102400);
+    emit transferCopierGoAhead(next(), maxUploadBytes);
 }
 
 CopierPhysical *CopyRateController::next(){
@@ -59,5 +84,12 @@ void CopyRateController::removeCopier(CopierPhysical *toRemove){
         transferTimer.stop();
     }
 
+    lock.unlock();
+}
+
+
+void CopyRateController::setUploadRate(int bytesPer50MS){
+    lock.lock();
+    maxUploadBytes = bytesPer50MS;
     lock.unlock();
 }

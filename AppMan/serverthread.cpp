@@ -43,8 +43,14 @@ void ServerThread::readyReadFunction(){
     QByteArray Data = socket->readAll();
     QString data = Data;
 
-    //Send the data to the requestHandler to handle
-    protocolHandler->handle(data);
+
+    try{
+        //Send the data to the requestHandler to handle
+        protocolHandler->handle(data);
+    }
+    catch(...){
+
+    }
 }
 
 void ServerThread::disconnectedFunction(){

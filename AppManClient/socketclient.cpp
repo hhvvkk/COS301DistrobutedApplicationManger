@@ -27,5 +27,9 @@ void SocketClient::readyRead(){
     QByteArray Data = socket->readAll();
     QString data = Data;
 
-    protocolHandler->handle(data);
+    try{
+        protocolHandler->handle(data);
+    }catch(...){
+
+    }
 }
