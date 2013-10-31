@@ -49,6 +49,8 @@ Henko van Koesveld & 11009315\\
 \hline
 24 Oct & Version 0.3 & Updated&Jaco\\
 \hline
+31 Oct & Version 0.4 &  Changes to integration testing & Henko\\
+\hline
 \end{tabular}
 \newpage
 \tableofcontents
@@ -138,10 +140,10 @@ There are two areas with regards to JSON that are tested. Firstly the JSON class
 
 
 \section{Integration Testing}
-This section is a stub and will continuously be improved
+
 \subsection{Integration Testing AppMan}
 \subsubsection{Communication}
-
+Testing done through physcal connections by connecting client and master machines to each other. The master machine must perform as expected during the integration testing phase such as destroying the view of a build when deleting a build on master and it goes through to client.
 \subsubsection{Management Class}
 \begin{itemize}
 \item Signal Testing : Signals are tested in order to determine whether they exibit their required behavior when the management class should emit them.
@@ -160,7 +162,7 @@ This section is a stub and will continuously be improved
 \subsection{Integration Testing AppManClient}
 
 \subsubsection{Communication}
-
+Testing done through physcal connections by connecting client and master machines to each other.
 \subsubsection{Management Class}
 \begin{itemize}
 \item Signal Testing : Signals are tested in order to determine whether they exibit their required behavior when the management class should emit them.
@@ -171,6 +173,7 @@ This section is a stub and will continuously be improved
 This section is a stub and will continuously be improved
 \begin{itemize}
 \item We have conducted minor scalability tests in the Informatorium labs with 6(5 slaves, 1 master) pc's so far
+\item Other scalability tests done such as copying multiple files for a build across the network of 400Mb in size.
 \item We will be testing on various versions of Windows and Linux at home and in the labs
 \item Our usability testers found some features hard to use, we updated the GUI accordingly and made a user manual for this reason.
 \end{itemize}

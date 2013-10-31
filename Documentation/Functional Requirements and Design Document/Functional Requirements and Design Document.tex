@@ -15,7 +15,7 @@ Functional Requirements and Design Document\\
 \begin{document}
 \maketitle
 \begin{center}
-Version 1.3
+Version 1.6
 \end{center}
 \textbf{\\}
 \textbf{\\}
@@ -63,7 +63,7 @@ Henko van Koesveld & 11009315\\
 \hline
 13 Sept & Version 0.9 & Added AddBuild via network usecase & Jaco\\
 \hline
-13 Sept & Version 1.0 & Added description of communication diagrams & Henko\\
+13 Sept & Version 1.0 & Added description of communication and strategies & Henko\\
 \hline
 15 Sept & Version 1.1 & Final grammar check & Jaco\\
 \hline
@@ -72,6 +72,10 @@ Henko van Koesveld & 11009315\\
 12 Oct & Version 1.3 & Updated usecase diagrams & Jaco\\
 \hline
 29 Oct & Version 1.4 & Added Database section & Francois\\
+\hline
+31 Oct & Version 1.5 & Additions to strategies & Henko\\
+\hline
+31 Oct & Version 1.6 & Added file watcher section & Henko\\
 \hline
 \end{tabular}
 \newpage
@@ -323,14 +327,21 @@ on when they need to use it.\\
 
 \subsection{Strategies}
 The strategy design pattern is easy to adapt and add new classes in order to include
-new strategies for other application communications to take place. The current concrete
-strategies are:
+new strategies for other communications to take place. This project(AppMan and AppManClient) 
+makes use of the Strategy design pattern in order to communicate.
+The current concrete strategies are:
 \begin{itemize}
 \item ProtoConnect
 \item ProtoSlaveCurrentBuilds
 \item ProtoSizeCheckBuilds
 \item ProtoCopyOver
 \item ProtoSendBuild
+\item ProtoSendStructure
+\item ProtoDeleteBuild
+\item ProtoRunSim
+\item ProtoAppList
+\item ProtoUpdateUpdateBuildInfo
+\item ProtoUpdateMachineInfo
 \end{itemize}
 
 ProtoConnect: This strategy will be used in the event that a new client tries to connect. If 
@@ -362,22 +373,32 @@ from the master to the slave machine. The strategy will update on the master onl
 slave machine has confirmed the presence of a new build that should be on it. 
 \\
 \textbf{\\}
-ProtoSendBuild: This strategy will communicate when there needs to be a new build that
-must be copied over the network from the master to the slave machine. The master machine will
-create another server by which the slave build connects to.
+ProtoSendStructure: The strategy that sends the build directory structure in order to have it duplicated on the slave
+machine side. This will duplicate the structure in order to keep the file structure similar. The directory structure of the
+builds are duplicated in order to completely resynchronise the build.
 \\
 \textbf{\\}
-Future expansion will include the following
-\begin{itemize}
-\item ProtoSimulations
-\item ProtoUpdate
-\end{itemize}
-
-ProtoSimulations: This protocol will be used to run simulations on the slave machine by running
-applications with the application configuration.\\
+ProtoSendBuild: This strategy will be used after the size check strategy(ProtoSizeCheckBuilds) has confirmed a difference
+between master and slave builds. Then after that the ProtoSendBuild strategy creates a new server to which the client connects
+and communicates the differences to send the physical files of the build across the network.
+\\
 \textbf{\\}
-ProtoUpdate: This is a communication protocol which will be used in order to update build
-information or other information on the slave machines.
+ProtoDeleteBuild: This strategy will communicate when the slave machine needs to delete a build. This slave will have to delete a build
+on 3 different occasions(the build is deleted on the master, the build is deleted on slave or when connecting the build does not exist anymore).
+\\
+\textbf{\\}
+ProtoRunSim: This strategy will be used to run simulations on the slave machine by running
+applications with the command that the application uses to run. Configuration can be set through the use of the run simulation.
+\\
+\textbf{\\}
+ProtoAppList: This is a strategy where the slave machine will add an application name to a list and communicate this to the master. This 
+strategy can then be used to run an application from the master machine.
+\\
+\textbf{\\}
+ProtoUpdateUpdateBuildInfo: This strategy is used to update build specefic information for example the build name.
+\\
+\textbf{\\}
+ProtoUpdateMachineInfo: The machine info will be updated by this strategy such as the machine ID.
 
 \section{Database}
 AppMan uses a SQLite database to store slave related information. The database currently has two tables:
@@ -412,6 +433,15 @@ Desired future features include:
 \item Logging system information of each Slave.
 \item Specialized queries to retrieve needed information.
 \end{itemize}
+
+
+
+\section{File watcher}
+A file watcher has been implemented for a build, which is used to monitor the builds. If changes occur to the build, a timer will count down
+from the change and continually resetting to 25 seconds untill no more changes has been made. Once the timer is done counting down the 
+build will be resynchronised on all the slave machines who is in the posession of the build.
+
+
 
 \section{Glossary}
 \begin{itemize}
