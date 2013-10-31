@@ -15,7 +15,7 @@ User Manual\\
 \begin{document}
 \maketitle
 \begin{center}
-Version 0.7
+Version 0.3
 \end{center}
 \textbf{\\}
 \textbf{\\}
@@ -52,11 +52,9 @@ Henko van Koesveld & 11009315\\
 \hline
 22 Oct & Version 0.4 & Added images and minor checks  & Henko\\
 \hline
-29 Oct & Version 0.5 & Add detailed sys info  & Francois\\
+29 Oct & Version 0.5 & Added detailed sys info  & Francois\\
 \hline
-29 Oct & Version 0.6 & Added transfer rate documentation & Henko\\
-\hline
-29 Oct & Version 0.7 & Added  & Henko\\
+31 Oct & Version 0.6 & Added help section info  & Francois\\
 \hline
 \end{tabular}
 \newpage
@@ -102,45 +100,18 @@ the necessary machines.
 \section{Purpose of this document}
 This document is intended to assist users of the application, known as AppMan and AppManClient, with neccessary tasks.
 
-\textbf{\\}
-The main application layout
-\begin{center}
-  	\includegraphics[scale=0.4]{MENU.png}
- \end{center}
+
 
 \section{Server use}
 
 \subsection{Start Server}
 The server is started automatically, but after a manual stop can be restarted maually as follows:
-\begin{itemize}
-\item Click on the menu bar on the top of the application window
-\item Stop the server by clicking stop
-\item Start the server again by clicking start
-\end{itemize}
 
 \subsection{Stop Server}
 The server can be stopped using this menu item:
-\begin{itemize}
-\item Click on the menu bar on the top of the application window
-\item Stop the server by clicking stop
-\end{itemize}
 
 \subsection{Set Port}
 The port can be changed from the default, effect will be taken when the server is restarted via a stop then start. The process looks as follows:
-\begin{itemize}
-\item Click on the menu bar on the top of the application window
-\item Click set port to set the port of the application
-\item Note: after that the port will be set and server will be listening on another port
-\end{itemize}
-
-
-
-\subsection{Limiting transfer rate}
-You can limit the transfer rate by clicking "Settings"::"Application Settings" which will open the following window(see image below). This form can be used to limit the transfer rate of the application if needed.
-
-\begin{center}
-  	\includegraphics[scale=0.5]{uploadLimitation.png}
- \end{center}
 
 \section{Build related}
 
@@ -148,7 +119,7 @@ You can limit the transfer rate by clicking "Settings"::"Application Settings" w
 A build can be added on the master as follows, all the info, except build description is compulsory.
 
 \begin{itemize}
-\item Either click "File" :: "Add build" or drag and drop a folder onto the form which will open the following window and just enter the required details for the build.
+\item Either click file -> Add build or drag and drop a folder onto the form which will open the following window and just enter the required details for the build.
 \end{itemize}
 \begin{center}
   	\includegraphics[scale=0.4]{AddBuildLinux.png}
@@ -157,8 +128,7 @@ A build can be added on the master as follows, all the info, except build descri
 \subsection{Build syncrhonisation to AppManClient (Slave)}
 The build can be copied in the following way:
 \begin{itemize}
-\item Click a build to see the menu and click Copy over or,
-\item double click the build you wish to copy over and then click copy over or go to "File"::"Copy build over".
+\item Double click the build you wish to copy over and then click copy over or go to file -> copy build over.
 \item Enter the slave ip address you want to copy the file to
 \end{itemize}
 
@@ -236,7 +206,15 @@ After a slave is clicked to gain minimal system information the [Click for more.
 \begin{center}
   	\includegraphics[scale=0.5]{DetSlaveStats.png}
  \end{center}
+ 
+\section{Help section}
+AppMan has a help section if any quick help is needed. It can be found by selecting the [About] menu option and then selecting [Help].  The help contains steps on doing most tasks relating to successful operation of AppMan.
 
+\begin{center}
+  	\includegraphics[scale=0.7]{AboutHelp.jpg}
+ \end{center}
+
+\newpage
 \section{AppManClient}
 
 \subsection{Add Application to AppList}
@@ -253,6 +231,7 @@ When the button is clicked, all builds and applications are displayed in a new w
 \begin{center}
   	\includegraphics[scale=0.4]{SlaveBuilds.png}
  \end{center}
+
 
 \newpage
 \section{Glossary}

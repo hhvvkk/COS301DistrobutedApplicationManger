@@ -14,7 +14,7 @@
    <bool>true</bool>
   </property>
   <property name="windowTitle">
-   <string>MainForm</string>
+   <string>AppMan</string>
   </property>
   <property name="windowIcon">
    <iconset resource="images.qrc">
@@ -161,7 +161,7 @@
      <x>0</x>
      <y>0</y>
      <width>818</width>
-     <height>27</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuAbout">
