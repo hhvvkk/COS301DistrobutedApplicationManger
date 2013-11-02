@@ -190,6 +190,20 @@ private:
     void BuildFileSumMD5(const QVariantMap jsonObject);
 
     /**
+     * \fn void compareBuildFiles();
+     * @brief Creates the copyCompare and continues the build copy process
+     */
+    void compareBuildFiles();
+
+
+    /**
+     * \fn void generateBuildMD5Class(int buildID);
+     * @brief Goes and generates or obtains the buildMD5 class for a build
+     * @param buildID the id of build to generate it for
+     */
+    void generateBuildMD5Class(int buildID);
+
+    /**
      * \fn void SendDifferences();
      * @brief Creates a CopyCompare class by comparing the build files on the slave machine to the one on the master
      * @param keys The keys of the json md5 values of the slave(i.e. the directories)
@@ -235,6 +249,9 @@ protected:
     void incomingConnection(int socketID);
 
 private:
+    //the buildmD5 which was obtained or generated to be used in sending files across
+    BuildMD5 * buildMD5;
+
     //this ip address is to be used for reference purposes
     //so that can let the mainform know who has what percentage
     //of builds
@@ -268,6 +285,12 @@ private:
     bool zipFilesToDelete;
 
     QTimer timer;
+
+    //a json object where data will be stored
+    QVariantMap jsonObject;
+
+    QFuture <void>*futureMD5 ;
+    QFutureWatcher<void> *futureWatcherMD5;
 };
 
 #endif // COPYSENDERSERVER_H

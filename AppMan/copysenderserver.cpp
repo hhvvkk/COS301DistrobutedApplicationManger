@@ -34,6 +34,7 @@ CopySenderServer::~CopySenderServer(){
         differentBuildIDs->clear();
         delete differentBuildIDs;
     }
+    qDebug()<<"Deleting";
 }
 
 void CopySenderServer::loadCompressPath(){
@@ -275,6 +276,9 @@ void CopySenderServer::SendDifferences(){
 
     sendJSONMessage(socket, jsonMessage);
 }
+void CopySenderServer::generateBuildMD5Class(int buildID){
+    buildMD5 = management->getBuildMD5Class(buildID);
+}
 
 void CopySenderServer::BuildFileSumMD5(const QVariantMap jsonObject){
     QVariant allMD5s = jsonObject.value("BuildToMD5");
@@ -297,10 +301,13 @@ void CopySenderServer::BuildFileSumMD5(const QVariantMap jsonObject){
     }
 
 
-    BuildMD5 *buildMD5Class = new BuildMD5(theBuildDirectory,5);
+    generateBuildMD5Class(intBuildID);
 
-    QFuture <void>future = QtConcurrent::run(buildMD5Class, &BuildMD5::generate);
-    future.waitForFinished();//wait untill the md5 class has been created
+    if(buildMD5 == 0)
+        return;
+    else
+        buildMD5->setIsInUse(true);
+
 
     //here it gets all the build md5 values with their keys(The keys are their file directory)
     QVariantMap mapOfBuilds = allMD5s.toMap();
@@ -310,14 +317,18 @@ void CopySenderServer::BuildFileSumMD5(const QVariantMap jsonObject){
 
     //create a copy compare class to be able to build it later on
     //make use of QConcurrent to do so
-    QFuture <CopyCompare *> futureCopyCompare = QtConcurrent::run(this, &CopySenderServer::createCopyCompare, keys, mapOfBuilds, buildMD5Class, theBuildDirectory);
+    QFuture <CopyCompare *> futureCopyCompare = QtConcurrent::run(this, &CopySenderServer::createCopyCompare, keys, mapOfBuilds, buildMD5, theBuildDirectory);
     //after computation retrieve the future value
     CopyCompare *copyCompareForBuild = futureCopyCompare.result();
 
     copyCompareForBuild->getDeleteJsonString(BuildID.toString());
-    //done with the class so delete it
-    buildMD5Class->deleteLater();
-    buildMD5Class = 0;
+
+    //done with the class so delete it only if it is old and nothing uses it
+    if(buildMD5->isOld())
+        buildMD5->tryDelete();
+    else{
+        buildMD5->setIsInUse(false);
+    }
 
     if(copyCompareForBuild->isSynchronised()){
         //this point the build is fully syncrhonised, but it may happen that the buildMD5 differ from master to slave since it could possibly be calculated with different files first
@@ -365,8 +376,8 @@ CopyCompare *CopySenderServer::createCopyCompare(QList<QString> &keys, QVariantM
     //The from will increase as the index is reduced
     int from = 0;
 
-    while(md5Class->getCurrentIndex() < md5Class->getSize()){
-        QString fileToFind = *md5Class->getCurrentBuildDirectory();
+    for(int i = 0; i < md5Class->getSize(); i++){
+        QString fileToFind = *(md5Class->getCurrentBuildDirectory(i));
         fileToFind = fileToFind.mid(theBuildDirectory.length()+1);
         int indexOfKey = keys.indexOf(fileToFind, from);
         if(indexOfKey != -1){//this means that there exist a key such that the build directory exist
@@ -374,14 +385,12 @@ CopyCompare *CopySenderServer::createCopyCompare(QList<QString> &keys, QVariantM
             if(from == indexOfKey){
                 from++;
             }
-            copyCompare->compareMD5(md5Class->getCurrentFileMd5Sum(), md5Class->getCurrentBuildDirectory(), mapOfBuilds.value(keys.at(indexOfKey)).toString());
+            copyCompare->compareMD5(md5Class->getCurrentFileMd5Sum(i), md5Class->getCurrentBuildDirectory(i), mapOfBuilds.value(keys.at(indexOfKey)).toString());
             comparedFiles.append(indexOfKey);
         }else{
             //that does not exist in the slave machine
-            copyCompare->createFile(*md5Class->getCurrentBuildDirectory());
+            copyCompare->createFile(*md5Class->getCurrentBuildDirectory(i));
         }
-        //go to the next file
-        md5Class->next();
     }
 
     //all the files that will be deleted...

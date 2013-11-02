@@ -7,6 +7,10 @@
 #define BUILD_H
 
 #include <QString>
+#include <QMutex>
+#include <QFuture>
+#include <QtConcurrentRun>
+#include "buildmd5.h"
 
 /**
 * @class Build
@@ -29,18 +33,27 @@ class Build{
 		* @brief the Description of the Build
 		*/
 		QString buildDescription;
-                /**
-                * @var buildDirectory
-                * @brief the Diretory of the Build
-                */
-                QString buildDirectory;
+        /**
+          * @var buildDirectory
+          * @brief the Diretory of the Build
+          */
+        QString buildDirectory;
 
-                /**
-                  * @var isSame
-                  * @brief This is a flag indicating if there is a difference between the master build and slave build(purely used in slave builds)
-                  */
-                bool isSame;
-	public:
+        /**
+        * @var isSame
+        * @brief This is a flag indicating if there is a difference between the master build and slave build(purely used in slave builds)
+        */
+        bool isSame;
+
+        /**
+        * @var buildMD5
+        * @brief The buildMD5 class to be used by all other machines, such that they all do not recreate this class
+        */
+        BuildMD5 *buildMD5;
+
+        ///lock for the buildMD5Class
+        QMutex lock;
+    public:
 		/**
         * \fn Build(int id, QString name, QString descript, QString direc);
 		* @brief The parameterised constructor
@@ -130,6 +143,26 @@ class Build{
         * @return Returns true if the build on master and slave are the same and false if its different
         */
         bool getIsSame();
+
+        /**
+        * \fn BuildMD5 *getBuildMD5Class();
+        * @brief Function to generate buildMD5 class or return it if it exists
+        * @return Returns the buildMD5 class for this build which was generated
+        */
+        BuildMD5 *getBuildMD5Class();
+
+
+        /**
+        * \fn  void setBuildMD5Expired();
+        * @brief Sets the variable to notify that the buildMD5 Class  is old and needs to be regenerated
+        */
+        void setBuildMD5Expired();
+private:
+        /**
+        * \fn void generateBuildMD5();
+        * @brief Function to generate the buildmd5 class
+        */
+        void generateBuildMD5();
 };
 
 

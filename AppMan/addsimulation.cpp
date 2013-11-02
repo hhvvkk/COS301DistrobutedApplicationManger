@@ -127,12 +127,13 @@ void AddSimulation::setup(){
             ui->slaveCheck01->show();
             ui->argEdit01->show();
             Machine *curSlave = management->getAllMachines().at(i);
-            Build* curSlaveBuilds = curSlave->getBuilds();
+
             for(int i = 0; i < curSlave->getBuildCount(); i++){
+                Build* curSlaveBuild = curSlave->getBuildAt(i);
                 QString item = "";
-                item += QString::number(curSlaveBuilds[i].getBuildID());
+                item += QString::number(curSlaveBuild->getBuildID());
                 item += "-";
-                item += curSlaveBuilds[i].getBuildName();
+                item += curSlaveBuild->getBuildName();
                 ui->buildComboBox01->addItem(item);
             }
             QStringList applicationList = curSlave->getAppList();
@@ -150,12 +151,13 @@ void AddSimulation::setup(){
             ui->slaveCheck02->show();
             ui->argEdit02->show();
             Machine *curSlave = management->getAllMachines().at(i);
-            Build* curSlaveBuilds = curSlave->getBuilds();
+
             for(int i = 0; i < curSlave->getBuildCount(); i++){
+                Build* curSlaveBuild = curSlave->getBuildAt(i);
                 QString item = "";
-                item += QString::number(curSlaveBuilds[i].getBuildID());
+                item += QString::number(curSlaveBuild->getBuildID());
                 item += "-";
-                item += curSlaveBuilds[i].getBuildName();
+                item += curSlaveBuild->getBuildName();
                 ui->buildComboBox02->addItem(item);
             }
             ui->buildComboBox02->show();
@@ -165,12 +167,13 @@ void AddSimulation::setup(){
             ui->slaveCheck03->show();
             ui->argEdit03->show();
             Machine *curSlave = management->getAllMachines().at(i);
-            Build* curSlaveBuilds = curSlave->getBuilds();
+
             for(int i = 0; i < curSlave->getBuildCount(); i++){
+                Build *curSlaveBuild = curSlave->getBuildAt(i);
                 QString item = "";
-                item += QString::number(curSlaveBuilds[i].getBuildID());
+                item += QString::number(curSlaveBuild->getBuildID());
                 item += "-";
-                item += curSlaveBuilds[i].getBuildName();
+                item += curSlaveBuild->getBuildName();
                 ui->buildComboBox03->addItem(item);
             }
             ui->buildComboBox03->show();
@@ -180,12 +183,13 @@ void AddSimulation::setup(){
             ui->slaveCheck04->show();
             ui->argEdit04->show();
             Machine *curSlave = management->getAllMachines().at(i);
-            Build* curSlaveBuilds = curSlave->getBuilds();
+
             for(int i = 0; i < curSlave->getBuildCount(); i++){
+                Build *curSlaveBuild = curSlave->getBuildAt(i);
                 QString item = "";
-                item += QString::number(curSlaveBuilds[i].getBuildID());
+                item += QString::number(curSlaveBuild->getBuildID());
                 item += "-";
-                item += curSlaveBuilds[i].getBuildName();
+                item += curSlaveBuild->getBuildName();
                 ui->buildComboBox04->addItem(item);
             }
             ui->buildComboBox04->show();
@@ -195,12 +199,13 @@ void AddSimulation::setup(){
             ui->slaveCheck05->show();
             ui->argEdit05->show();
             Machine *curSlave = management->getAllMachines().at(i);
-            Build* curSlaveBuilds = curSlave->getBuilds();
+
             for(int i = 0; i < curSlave->getBuildCount(); i++){
+                Build * curBuild = curSlave->getBuildAt(i);
                 QString item = "";
-                item += QString::number(curSlaveBuilds[i].getBuildID());
+                item += QString::number(curBuild->getBuildID());
                 item += "-";
-                item += curSlaveBuilds[i].getBuildName();
+                item += curBuild->getBuildName();
                 ui->buildComboBox05->addItem(item);
             }
             ui->buildComboBox05->show();

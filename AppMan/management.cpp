@@ -77,7 +77,7 @@ void Management::removeMachine(Machine *m){
     if(allMachines.size() == 0){
         return;
     }
-    for(unsigned int i = 0; i < allMachines.size(); i++)
+    for(int i = 0; i < allMachines.size(); i++)
         if(m == allMachines.at(i)){
             index = i;
         }
@@ -175,7 +175,7 @@ void Management::copyBuildOver(int machineId, QString buildName){
 
     //only add if the machine does not have the build
     if(!hasBuild)
-        machine->copyBuildOver(*build);
+        machine->copyBuildOver(build);
 
 }
 
@@ -191,11 +191,13 @@ bool Management::machineWithBuild(int machineID, int buildID){
     if(machine == 0)
         return false;//there exist no such machine
 
-
-    Build *machineBuilds = machine->getBuilds();
-
     for(int i = 0; i < machine->getBuildCount(); i++){
-        if(machineBuilds[i].getBuildID() == buildID){
+        Build *build = machine->getBuildAt(i);
+
+        if(build == false)
+            return false;
+
+        if(build->getBuildID() == buildID){
             return true;
         }
     }
@@ -230,20 +232,22 @@ void Management::addBuildToSlave(int machineId, int BuildID, QString buildName){
         machine->deleteBuildNotify(BuildID);
     }
     else{
-        Build buildToAdd = Build(BuildID, buildName, "", trueBuild->getBuildDirectory());
+        Build *buildToAdd = new Build(BuildID, buildName, "", trueBuild->getBuildDirectory());
 
-        bool existMachineWithBuild = machineWithBuild(machine->getMachineID(), buildToAdd.getBuildID());
+        bool existMachineWithBuild = machineWithBuild(machine->getMachineID(), buildToAdd->getBuildID());
 
         //if there already exist that build for the machine, don't add it twice
         if(existMachineWithBuild == false)
             machine->addBuild(buildToAdd);
+        else
+            return;
 
         emit slaveGotBuild(machine, BuildID, buildName, true);
 
         //check if the build name corrolate with the information on the
         //slave side
         if(buildName.compare(trueBuild->getBuildName())){
-            machine->updateBuildName(buildToAdd.getBuildID(), trueBuild->getBuildName());
+            machine->updateBuildName(buildToAdd->getBuildID(), trueBuild->getBuildName());
         }
     }
 
@@ -259,9 +263,14 @@ QString Management::getBuildMD5(Build* build){
 
 //    md5->deleteLater();
 //    return returnValue;
-    BuildMD5 md5(build->getBuildDirectory(),5);
-    md5.generate();
-    return md5.getDirectoryMD5();
+    BuildMD5 *md5 = build->getBuildMD5Class();
+    md5->setIsInUse(true);
+    QString md5Sum = md5->getDirectoryMD5();
+    md5->setIsInUse(false);
+    if(md5->isOld()){
+        md5->tryDelete();
+    }
+    return md5Sum;
 }
 
 
@@ -290,7 +299,6 @@ void Management::slaveBuildSize(int BuildID, QString buildMD5Value, int slaveId)
 
     QFuture<QString> future = QtConcurrent::run(this, &Management::getBuildMD5, theBuild);
     QString currentBuildMD5Value = future.result();
-
 
     if(!buildMD5Value.compare(currentBuildMD5Value)){
         setSlaveBuildIsSame(true, slaveId, theBuild->getBuildID());
@@ -513,6 +521,8 @@ void Management::resynchAllCertainBuild(int buildIDToResynch){
     if(theBuild == 0)
         return;
 
+    theBuild->setBuildMD5Expired();
+
     for(int i = 0; i < machineCount; i++){
         Machine * machine = getMachineAt(i);
         if(machine == 0)
@@ -557,4 +567,14 @@ void Management::runSimulation(QString simName){
         }
     }
 
+}
+
+
+BuildMD5 *Management::getBuildMD5Class(int buildID){
+    Build *theBuild = getBuildByID(buildID);
+
+    if(theBuild == 0)
+        return 0;
+
+    return theBuild->getBuildMD5Class();
 }

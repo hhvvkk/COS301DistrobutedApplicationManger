@@ -55,12 +55,12 @@ void ProtoSlaveCurrentBuilds::Rechecker(QVariantMap jsonObject, Management *mana
 
     QtConcurrent::run(this, &ProtoSlaveCurrentBuilds::addBuildToSlave, management, BuildIDId, buildName);
 
-    QString jsonMessage = startJSONMessage();
-    appendJSONValue(jsonMessage, "handler", "ProtoSlaveCurrentBuilds", true);
-    appendJSONValue(jsonMessage, "subHandler", "Rechecker", false);
-    endJSONMessage(jsonMessage);
+//    QString jsonMessage = startJSONMessage();
+//    appendJSONValue(jsonMessage, "handler", "ProtoSlaveCurrentBuilds", true);
+//    appendJSONValue(jsonMessage, "subHandler", "Rechecker", false);
+//    endJSONMessage(jsonMessage);
 
-    sendJSONMessage(slaveSocket, jsonMessage);
+//    sendJSONMessage(slaveSocket, jsonMessage);
 }
 
 void ProtoSlaveCurrentBuilds::addBuildToSlave(Management *management, int buildID, QString buildName){

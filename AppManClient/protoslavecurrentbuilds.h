@@ -32,15 +32,6 @@ private:
      */
     void Rechecker(Management *management, QTcpSocket *masterSocket);
 
-private:
-    /**
-     * @brief A management link that will allow backwards communication
-     */
-    int buildIterator;
-    /**
-     * @brief Will be used to loop through the builds
-     */
-    QList<Build *> allBuilds;
 };
 
 #endif // PROTOSLAVECURRENTBUILDS_H

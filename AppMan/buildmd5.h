@@ -60,31 +60,49 @@ public:
     void patchThreads(int threadNumber, QStringList* dirs, QStringList* dirsMD5, QByteArray mainHash);
 
     /**
-     * \fn QString getCurrentBuildDirectory()
-     * @brief returns the build directory at currentIndex
+     * \fn QString getCurrentBuildDirectory(int i)
+     * @brief returns the build directory at i
+     * @param i The index of the directory to get
      */
-    const QString* getCurrentBuildDirectory() const;
+    const QString* getCurrentBuildDirectory(int i) const;
     /**
-     * \fn QString getCurrentFileMd5Sum()
+     * \fn QString getCurrentFileMd5Sum(int i)
      * @brief returns the md5 sum of a build directory at currentIndex
      */
-    const QString* getCurrentFileMd5Sum() const;
-    /**
-     * \fn QString next()
-     * @brief advances currentIndex by 1
-     */
-    void next();
-    /**
-     * \fn QString getCurrentIndex()
-     * @brief returns currentIndex
-     */
-    int getCurrentIndex();
+    const QString* getCurrentFileMd5Sum(int i) const;
+
     /**
      * \fn QString getSize()
      * @brief returns how meany directories are in buildFiles
      */
     int getSize();
 
+    /**
+     * \fn void setIsOld(bool value = true);
+     * @brief sets whether this buildMD5 is old or not
+     * @param value The value to which the isOld will be set
+     */
+    void setIsOld(bool value = true);
+
+    /**
+     * \fn bool isOld();
+     * @brief returns how meany directories are in buildFiles     *
+     * @return Returns true if this buildMD5 class is old, and false if it is not
+     */
+    bool isOld();
+
+    /**
+     * \fn void setIsInUse(bool value);
+     * @brief sets whether this buildMD5 is used or not
+     * @param value The value to which the isOld will be set
+     */
+    void setIsInUse(bool value);
+
+    /**
+     * \fn void tryDelete();
+     * @brief Tries to delete this class, but will not if there exists other entities still using this clas
+     */
+    void tryDelete();
 private:
     /**
       * @var threads A list of handles for all running threads
@@ -127,15 +145,32 @@ private:
       * @var lock Ensures mutual exclusivity for funtion patchThreads
       **/
     QMutex* lock;
+
     /**
       * @var dirHash The md5 hasher which will calcutate the total md5 of directory
       **/
     QCryptographicHash* dirHash;
 
     /**
-      * @var currentIndex Maintains the position of which directory is currently used
+      * @var old A boolean which indicates if this class is outdated or not
       **/
-    int currentIndex;
+    bool old;
+
+    /**
+      * @var inUse A boolean showing if the buildMD5 class is being used or not
+      **/
+    bool inUse ;
+
+
+    /**
+      * @var deleteLock A lock that ensures that the user amount is increased as it should be
+      **/
+    QMutex deleteLock;
+
+    /**
+      * @var users Showing the amount of entities using this
+      **/
+    int users;
 };
 
 #endif // BUILDMD5_H

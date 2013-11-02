@@ -86,7 +86,6 @@ void CopierPhysicalClient::writeToFile(){
         zipFile.remove();
     }
     if(!zipFile.open(QFile::ReadWrite)){
-        qDebug()<<"Cannot open for read"<<zipFile.fileName();
         return;
     }
 
@@ -95,7 +94,6 @@ void CopierPhysicalClient::writeToFile(){
     zipFile.close();
 
     bool zipCopySuccess = zipInTact();
-
 
     emit doneWritingToFile(BuildID, zipCopySuccess);
 

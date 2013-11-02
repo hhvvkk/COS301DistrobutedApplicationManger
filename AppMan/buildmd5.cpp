@@ -27,8 +27,10 @@ BuildMD5::BuildMD5(QString directory, int threadCnt)
     threadCount = threadCnt;
     dirHash = new QCryptographicHash(QCryptographicHash::Md5);
     lock = new QMutex();
-    currentIndex = 0;
     md5perthread = 0;//will be initiated later
+    this->old = false;
+    this->inUse = true;
+    users = 0;
 }
 
 BuildMD5::~BuildMD5(){
@@ -98,33 +100,57 @@ void BuildMD5::patchThreads(int threadNumber, QStringList* dirs, QStringList* di
     lock->unlock();
 }
 
-const QString* BuildMD5::getCurrentBuildDirectory() const{
+const QString* BuildMD5::getCurrentBuildDirectory(int i) const{
     if(buildFiles->isEmpty())
         return NULL;
-    else if(currentIndex >= buildFiles->size())
+    else if(i >= buildFiles->size())
         return NULL;
 
-    return &buildFiles->at(currentIndex);
+    return &buildFiles->at(i);
 }
 
-const QString* BuildMD5::getCurrentFileMd5Sum() const{
+const QString* BuildMD5::getCurrentFileMd5Sum(int i) const{
     if(buildFilesMD5->isEmpty())
         return NULL;
-    else if(currentIndex >= buildFiles->size())
+    else if(i >= buildFiles->size())
         return NULL;
 
-    return &buildFilesMD5->at(currentIndex);
-}
-
-void BuildMD5::next(){
-    //a Simple iterator to loop through the builds
-    currentIndex++;
-}
-
-int BuildMD5::getCurrentIndex(){
-    return currentIndex;
+    return &buildFilesMD5->at(i);
 }
 
 int BuildMD5::getSize(){
     return buildFiles->size();
+}
+
+void BuildMD5::setIsOld(bool value){
+    if(value)
+        qDebug()<<"yes";
+    if(!this->old)
+        qDebug()<<"No";
+    this->old = value;
+}
+
+bool BuildMD5::isOld(){
+    return this->old;
+}
+
+void BuildMD5::setIsInUse(bool value){
+    deleteLock.lock();
+    if(value == true)
+        users++;
+    else
+        users--;
+
+    this->inUse = value;
+    deleteLock.unlock();
+}
+
+
+void BuildMD5::tryDelete(){
+    lock->lock();
+    //looks to see whether there is nobody more using this class,
+    //if there are none delete it
+    if(users == 0)
+        this->deleteLater();
+    lock->unlock();
 }

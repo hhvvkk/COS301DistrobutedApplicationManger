@@ -113,11 +113,11 @@ public:
         virtual void deleteBuild(int id) = 0;
 
         /**
-        * \fn virtual void addBuild(Build buildToAdd);
+        * \fn virtual void addBuild(Build *buildToAdd);
         * @brief The pure virtual addBuild function that will be overridden by Slave class
         * @param buildToAdd The Build to add
         */
-        virtual void addBuild(Build buildToAdd) = 0;
+        virtual void addBuild(Build *buildToAdd) = 0;
 
         /**
         * \fn void setServerThread(ServerThread *sVThread);
@@ -130,14 +130,14 @@ public:
         * \fn void copyBuildOver(Build build) = 0;
         * @brief The pure virtual function that will be overridden by the Slave class to initiate a copy of a build
         */
-        virtual void copyBuildOver(Build build) = 0;
+        virtual void copyBuildOver(Build *build) = 0;
 
         /**
-        * \fn Build* getBuilds() = 0;
+        * \fn Build* getBuildAt(int i) = 0;
         * @brief The pure virtual function that will be overridden by the Slave class to return all builds
         * @return Returns all builds for this machine. Will be overridden by Slave to return all the builds
         */
-        virtual Build* getBuilds() = 0;
+        virtual Build* getBuildAt(int i) = 0;
 
         /**
         * \fn int getBuildCount() = 0;

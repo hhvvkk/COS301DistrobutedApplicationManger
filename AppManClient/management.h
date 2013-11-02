@@ -161,6 +161,15 @@ public:
     * @param intBuildID The build ID to be duplicated
     */
     void duplicateDirectoryStructure(QStringList masterDirectoryStructure, int intBuildID);
+
+
+    /**
+    * \fn Build * getBuildAt(int i);
+    * @brief This function returns the build at the location specified
+    * @param  i Index of the build to be retrieved
+    * @return Returns a build at the location specified
+    */
+    Build * getBuildAt(int i);
 private:
     /**
     * \fn void removeBuildLogically(int buildID);

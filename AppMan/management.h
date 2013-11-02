@@ -255,7 +255,7 @@ public:
     void addBuildToSlave(int machineId, int BuildID, QString buildName);
 
     /**
-    * \fn QString getBuildMD5(Build b);
+    * \fn QString getBuildMD5(Build *build);
     * @brief This function will calculate the MD5 of a build by calculating the MD5 of the whole directory where build is stored
     * @param build The build on which the MD5 will be calculated
     * @return Returns the MD5 sum of a directory where a build will be
@@ -399,6 +399,13 @@ public:
 
     void runSimulation(QString simName);
 
+    /**
+    * \fn BuildMD5 *getBuildMD5Class(int buildID);
+    * @brief Function that goes and creates the BuildMD5 class for a build if it does not yet exist, or returns it if it does
+    * @param buildID ID of the build to get the MD5 class from
+    * @return Returns the md5 class for a build or computes it and save it inside the build
+    */
+    BuildMD5 *getBuildMD5Class(int buildID);
 private:
     /**
     * \fn void removeBuildLogically(int buildID);

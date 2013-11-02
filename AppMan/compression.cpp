@@ -49,7 +49,7 @@ void Compression::compress(QStringList dirs, QString toDir, QString buildDirecto
     //7zip does not have commands to force the directories to be kept
     int buildDirectorySize = buildDirectory.size();
 
-    int maximumBytes = 1500000000;//maximum for byteArray is //2147483647, therefore only allow this amount
+    int maximumBytes = 1000000000;//maximum for byteArray is //2147483647, therefore only allow this amount
 
     int currentBytes = 0;
 
@@ -65,14 +65,18 @@ void Compression::compress(QStringList dirs, QString toDir, QString buildDirecto
 
         currentBytes += copyFile.size();
 
-        //limit the amount to send if it goes over it...
-        if(currentBytes >= maximumBytes)
-            break;
-
         bool copied = copyFile.copy(whereToCopy);
         copyFile.waitForBytesWritten(-1);
-        if(!copied){
+        //if(!copied){
 
+       // }
+
+        //limit the amount to send if it goes over it...
+        if(currentBytes >= maximumBytes){
+            //
+            qDebug()<<"the following file makes it over"<<dirs.at(i);
+            qDebug()<<"--SIZ:"<<copyFile.size();
+            break;
         }
     }
 

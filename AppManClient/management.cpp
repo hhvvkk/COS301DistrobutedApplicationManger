@@ -159,6 +159,12 @@ void Management::deleteBuild(int buildID){
     DirectoryHandler::removeDir(buildDirectory);
 }
 
+Build * Management::getBuildAt(int i){
+    if(i < 0 || i >= allBuilds.size())
+        return 0;
+    return allBuilds.at(i);
+}
+
 void Management::removeBuildLogically(int buildID){
     Build *theBuild = getBuildByID(buildID);
 

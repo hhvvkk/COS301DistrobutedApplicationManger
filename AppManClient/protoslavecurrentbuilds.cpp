@@ -4,7 +4,6 @@
 ProtoSlaveCurrentBuilds::ProtoSlaveCurrentBuilds(QObject *parent)
     :Protocol(parent)
 {
-    buildIterator = 0;
 }
 
 void ProtoSlaveCurrentBuilds::handle(QVariantMap jsonObject, Management *management, QTcpSocket *masterSocket){
@@ -14,32 +13,30 @@ void ProtoSlaveCurrentBuilds::handle(QVariantMap jsonObject, Management *managem
 
 void ProtoSlaveCurrentBuilds::Rechecker(Management *management, QTcpSocket *masterSocket){
 
-    if((allBuilds.size() == 0) &&  (management->getAllBuilds().size() != 0))
-        allBuilds = management->getAllBuilds();
+    for(int i = 0; i < management->getBuildCount(); i++){
+        Build *build = management->getBuildAt(i);
 
-    if(buildIterator < management->getBuildCount()){
+        if(build == 0){
+            return;
+        }
+
         QString jsonMessage = startJSONMessage();
         appendJSONValue(jsonMessage, "handler", "ProtoSlaveCurrentBuilds", true);
         appendJSONValue(jsonMessage, "subHandler", "Rechecker", true);
-        appendJSONValue(jsonMessage, "BuildID", QString::number(allBuilds.at(buildIterator)->getBuildID()), true);
-        appendJSONValue(jsonMessage, "buildName", allBuilds.at(buildIterator)->getBuildName(), false);
-        endJSONMessage(jsonMessage);
-
-        masterSocket->write(jsonMessage.toUtf8().data());
-        masterSocket->flush();
-        buildIterator++;
-    }
-    else{
-        //reset the iterator
-        buildIterator = 0;
-
-
-        QString jsonMessage = startJSONMessage();
-        appendJSONValue(jsonMessage, "handler", "ProtoSlaveCurrentBuilds", true);
-        appendJSONValue(jsonMessage, "subHandler", "RecheckDone", false);
+        appendJSONValue(jsonMessage, "BuildID", QString::number(build->getBuildID()), true);
+        appendJSONValue(jsonMessage, "buildName", build->getBuildName(), false);
         endJSONMessage(jsonMessage);
 
         masterSocket->write(jsonMessage.toUtf8().data());
         masterSocket->flush();
     }
+
+    //notify that it is done...
+    QString jsonMessage = startJSONMessage();
+    appendJSONValue(jsonMessage, "handler", "ProtoSlaveCurrentBuilds", true);
+    appendJSONValue(jsonMessage, "subHandler", "RecheckDone", false);
+    endJSONMessage(jsonMessage);
+
+    masterSocket->write(jsonMessage.toUtf8().data());
+    masterSocket->flush();
 }

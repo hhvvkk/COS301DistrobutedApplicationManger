@@ -40,24 +40,26 @@ void ProtoSendBuild::SizeCheckAllBuildsDone(QTcpSocket *slaveSocket, Management 
         return;
     }
 
-    Build *slaveBuilds = handler->getMachine()->getBuilds();
-
     int machineId = handler->getMachine()->getMachineID();
 
     QStringList *differentBuildDirectories = new QStringList();
     QStringList *differentBuildIDs = new QStringList();
 
     for(int i = 0; i < handler->getMachine()->getBuildCount(); i++){
-        Build aBuild = slaveBuilds[i];
+        Build *aBuild = handler->getMachine()->getBuildAt(i);
 
-        if(!aBuild.getIsSame()){//if the build is not the same, append it to the list
-            differentBuildIDs->append(QString::number(aBuild.getBuildID()));
-            differentBuildDirectories->append(aBuild.getBuildDirectory());
-            initiateGetBuildStructure(aBuild.getBuildID(), slaveSocket);
+        if(aBuild == 0){
+            continue;
+        }
+
+        if(!aBuild->getIsSame()){//if the build is not the same, append it to the list
+            differentBuildIDs->append(QString::number(aBuild->getBuildID()));
+            differentBuildDirectories->append(aBuild->getBuildDirectory());
+            initiateGetBuildStructure(aBuild->getBuildID(), slaveSocket);
         }
         else{//if they are the same...
             //show that they are the same through the function...(redundency)
-            management->setSlaveBuildIsSame(true, machineId, aBuild.getBuildID());
+            management->setSlaveBuildIsSame(true, machineId, aBuild->getBuildID());
         }
     }
 
@@ -129,7 +131,6 @@ void ProtoSendBuild::copySenderServerDone(CopySenderServer * deleteCopySender){
 
 void ProtoSendBuild::removeCopySenderServer(CopySenderServer * deleteCopySender){
     sendList.removeOne(deleteCopySender);
-
     //This means that there is another newSender or it is empty, thus can just delete
     //the NewSender deletes itself...
 }

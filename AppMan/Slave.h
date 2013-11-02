@@ -19,11 +19,6 @@
 class Slave : public Machine{
 private:
         /**
-        * @var slaveBuilds
-        * @brief an array of Builds
-        */
-        Build * slaveBuilds;
-        /**
         * @var buildCount
         * @brief a counter for the Builds
         */
@@ -35,6 +30,8 @@ private:
         * @brief The protocolHandler to send data via the protocols
         */
         ProtocolHandler *protocolHandler;
+
+        QList<Build *> allBuilds;
 public:
         /**
         * \fn Slave(int id, QString ip);
@@ -71,11 +68,11 @@ public:
         void deleteBuild(int id);
 
         /**
-        * \fn void addBuild(Build buildToAdd);
+        * \fn void addBuild(Build *buildToAdd);
         * @brief The overridden addBuild function
         * @param buildToAdd The Build to add
         */
-        void addBuild(Build buildToAdd);
+        void addBuild(Build *buildToAdd);
 
         /**
         * \fn void setProtocolHandler(ProtocolHandler *handler);
@@ -85,18 +82,18 @@ public:
         void setProtocolHandler(ProtocolHandler *handler);
 
         /**
-        * \fn copyBuildOver(Build b);
+        * \fn copyBuildOver(Build *b);
         * @brief The overridden copyBuildOver function
         * @param buildToAdd The Build to add
         */
-        void copyBuildOver(Build b);
+        void copyBuildOver(Build *b);
 
         /**
-        * \fn Build* getBuilds() = 0;
+        * \fn Build* getBuildAt(int i);
         * @brief This function will return all builds related to this slave
         * @return Returns all builds for this machine
         */
-        Build *getBuilds();
+        Build* getBuildAt(int i);
 
         /**
         * \fn int getBuildCount();
