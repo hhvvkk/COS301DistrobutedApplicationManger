@@ -1109,9 +1109,19 @@ void MainForm::showSimulations(){
     ui->treeWidgetSimulations->clear();
         ui->treeWidgetSimulations->setColumnCount(1);
         QTreeWidgetItem *newItem;
+        QTreeWidgetItem *sub1;
+        QTreeWidgetItem *sub2;
         for(int i = 0; i < management->getSimCount(); i++){
             newItem = new QTreeWidgetItem();
+            sub1 = new QTreeWidgetItem();
+            sub2 = new QTreeWidgetItem();
             newItem->setText(0,management->getAllSims().at(i)->getName());
+            sub1->setText(0,"Start");
+            sub1->setText(1,management->getAllSims().at(i)->getName());
+            sub2->setText(0,"Stop");
+            sub2->setText(1,management->getAllSims().at(i)->getName());
+            newItem->addChild(sub1);
+            newItem->addChild(sub2);
             ui->treeWidgetSimulations->addTopLevelItem(newItem);
         }
 }
@@ -1306,8 +1316,14 @@ void MainForm::readupSims(){
 void MainForm::on_treeWidgetSimulations_clicked(const QModelIndex &index)
 {
     QTreeWidgetItem *item = ui->treeWidgetSimulations->selectedItems().at(0);
-        QString simName = item->text(0);
-        management->runSimulation(simName);
+        QString action = item->text(0);
+        QString simName = item->text(1);
+        if(action.compare("Start")==0){
+            management->runSimulation(simName);
+        }
+        else if(action.compare("Stop") == 0){
+            management->stopSimulation(simName);
+        }
 }
 
 void MainForm::on_actionApplication_Settings_triggered()

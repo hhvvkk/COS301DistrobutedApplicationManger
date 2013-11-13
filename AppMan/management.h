@@ -399,6 +399,8 @@ public:
 
     void runSimulation(QString simName);
 
+    void stopSimulation(QString simName);
+
     /**
     * \fn BuildMD5 *getBuildMD5Class(int buildID);
     * @brief Function that goes and creates the BuildMD5 class for a build if it does not yet exist, or returns it if it does

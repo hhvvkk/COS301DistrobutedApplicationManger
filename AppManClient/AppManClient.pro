@@ -49,7 +49,8 @@ SOURCES += main.cpp\
     protodeletebuild.cpp \
     protoapplist.cpp \
     protorunsim.cpp \
-    protosendstructure.cpp
+    protosendstructure.cpp \
+    simthread.cpp
 
 HEADERS  += mainwindow.h \
     socketclient.h \
@@ -85,7 +86,8 @@ HEADERS  += mainwindow.h \
     protodeletebuild.h \
     protoapplist.h \
     protorunsim.h \
-    protosendstructure.h
+    protosendstructure.h \
+    simthread.h
 
 
 FORMS    += mainwindow.ui \

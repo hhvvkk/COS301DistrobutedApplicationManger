@@ -569,6 +569,41 @@ void Management::runSimulation(QString simName){
 
 }
 
+void Management::stopSimulation(QString simName){
+    int index = -1;
+    for(int i = 0; i < simCount; i++){
+        if(allSimulations.at(i)->getName().compare(simName) == 0){
+            index = i;
+        }
+    }
+    if(index != -1){
+         Simulation * toRun = allSimulations.at(index);
+         QStringList* slaves = toRun->getSlaves();
+         QStringList* builds = toRun->getBuilds();
+         QStringList* args = toRun->getArgs();
+         for(int i = 0; i < slaves->size(); i++){
+             qDebug()<<slaves->at(i);
+             QString myslave = slaves->at(i);
+             int pos = myslave.length() - myslave.indexOf("-");
+             myslave.chop(pos);
+             int id = myslave.toInt();
+             Machine *s = getMachineById(id);
+             if(s != 0){
+                 //s->runSim(builds->at(i),args->at(i));
+                 qDebug()<<builds->at(i),args->at(i);
+             }
+             else{
+                 QMessageBox *msb = new QMessageBox();
+                 msb->setIcon(QMessageBox::Critical);
+                 QPixmap pic(":/images/images/ALogo.png");
+                 msb->setWindowIcon(QIcon(pic));
+                 msb->setText("Slave with ID "+QString::number(id)+" is not connected");
+                 msb->show();
+             }
+         }
+    }
+}
+
 
 BuildMD5 *Management::getBuildMD5Class(int buildID){
     Build *theBuild = getBuildByID(buildID);

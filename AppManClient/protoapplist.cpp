@@ -24,23 +24,28 @@ void ProtoAppList::handle(QVariantMap jsonObject, Management *man, QTcpSocket *s
 
 void ProtoAppList::requestAppList(QTcpSocket *slaveSocket, Management *man){
     qDebug()<<"requesting";
-    QString jsonMessage = startJSONMessage();
-    appendJSONValue(jsonMessage,"handler","ProtoAppList",true);
-    appendJSONValue(jsonMessage,"subHandler","appListFollows",true);
-    QMap<QString,QString> apps = man->getAppList();
-    qDebug()<<apps<<"hi";
-    QMapIterator<QString,QString> iter (apps);
-    int count = 0;
-    while(iter.hasNext()){
-        iter.next();
-        appendJSONValue(jsonMessage,"AppName"+QString::number(count),iter.key(),true);
-        count++;
+    if(machineID == -1){
+        //Will error if applist is sent and ID is not sent
     }
-    appendJSONValue(jsonMessage,"count",QString::number(count),true);
-    appendJSONValue(jsonMessage,"MachineID",QString::number(machineID),false);
-    endJSONMessage(jsonMessage);
+    else{
+        QString jsonMessage = startJSONMessage();
+        appendJSONValue(jsonMessage,"handler","ProtoAppList",true);
+        appendJSONValue(jsonMessage,"subHandler","appListFollows",true);
+        QMap<QString,QString> apps = man->getAppList();
+        qDebug()<<apps<<"hi";
+        QMapIterator<QString,QString> iter (apps);
+        int count = 0;
+        while(iter.hasNext()){
+            iter.next();
+            appendJSONValue(jsonMessage,"AppName"+QString::number(count),iter.key(),true);
+            count++;
+        }
+        appendJSONValue(jsonMessage,"count",QString::number(count),true);
+        appendJSONValue(jsonMessage,"MachineID",QString::number(machineID),false);
+        endJSONMessage(jsonMessage);
 
-    slaveSocket->write(jsonMessage.toUtf8().data());
-    slaveSocket->flush();
-    qDebug()<<jsonMessage;
+        slaveSocket->write(jsonMessage.toUtf8().data());
+        slaveSocket->flush();
+        qDebug()<<jsonMessage;
+    }
 }

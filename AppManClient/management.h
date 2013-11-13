@@ -21,6 +21,7 @@
 #include "sysInfo.h"
 #include "directoryhandler.h"
 #include "appxmlreader.h"
+#include "simthread.h"
 
 /**
  * @class Management
